@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="./js/sessao.js"></script>
+    
+</head>
+
+<body>
+    <header>
+
+       
+    </header>
+
+
+   
+
+
+        
+            <h1>Faça seu login</h1>
+
+            
+                <input type="text" placeholder="Insira seu e-mail" id="ipt_login">
+                <input type="password" placeholder="Insira sua senha" id="ipt_senha">
+                
+                    <button type="button" onclick="logar()">ENTRAR</button>
+                
+                
+                    <p><a href="cadastro.html" class="link">Ainda não tenho uma conta</a></p>
+                
+          
+
+
+
+        
+
+
+        <div class="card_erro" id="cardErro">
+            <span id="mensagem_erro"></span>
+        </div>
+
+
+    
+
+
+</body>
+
+</html>
+<script>
+
+    function logar() {
+
+
+        let emailVar = ipt_login.value;
+        let senhaVar = ipt_senha.value;
+
+        if (emailVar == "" || senhaVar == "") {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "Insira os dados no campo";
+            setTimeout(sumirMensagem, 2000);
+
+
+            return false;
+
+        }
+        else {
+            setTimeout(sumirMensagem, 2000)
+        }
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO logar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+
+                    alert("Login feito com sucesso!")
+
+                    setTimeout(function () {
+                        window.location = "quiz.html";
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+                alert("Email ou senha invalidos")
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+    function sumirMensagem() {
+        cardErro.style.display = "none";
+        mensagem_erro.innerHTML = "";
+
+    }
+
+
+</script>
