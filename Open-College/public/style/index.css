@@ -1,192 +1,762 @@
- @import url('https://fonts.cdnfonts.com/css/bebas-neue');
- @import url('https://fonts.cdnfonts.com/css/telegraf');
+    @import url('https://fonts.cdnfonts.com/css/bebas-neue');
+    @import url('https://fonts.cdnfonts.com/css/telegraf');
 
- * {
+    * {
 
-     margin: 0px;
-     padding: 0px;
- }
+        margin: 0px;
+        padding: 0px;
+    }
 
- /* ====================================== NAVBAR ======================================*/
+    /* ====================================== NAVBAR ======================================*/
 
- .navbar {
+    .navbar {
 
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-     width: 100%;
-     height: 120px;
+        width: 100%;
+        height: 120px;
 
-     background-color: var(--corNavBar);
- }
+        background-color: var(--corNavBar);
+    }
 
- .navbar-logo {
+    .navbar-logo {
 
-     display: flex;
-     justify-content: center;
-     align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-     height: 80px;
-     width: 200px;
+        height: 80px;
+        width: 200px;
 
-     margin-bottom: 20px;
+        margin-bottom: 20px;
 
 
-     background-color: var(--cor1);
-     border-radius: 0px 80px 80px 0px;
- }
+        background-color: var(--cor1);
+        border-radius: 0px 80px 80px 0px;
+    }
 
- .navbar-logo img {
+    .navbar-logo img {
 
-     height: 70px;
-     width: 140px;
+        height: 70px;
+        width: 140px;
 
-     margin-right: 20px;
- }
+        margin-right: 20px;
+    }
 
- .navbar-li {
+    .navbar-li {
 
-     display: flex;
-     justify-content: center;
-     align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-     height: 100%;
-     width: 60%;
+        height: 100%;
+        width: 60%;
 
-     text-align: center;
+        text-align: center;
 
-     gap: 40px;
- }
+        gap: 40px;
+    }
 
- .navbar-li a {
+    .navbar-li a {
 
-     text-decoration: none;
-     color: var(--cor1);
+        text-decoration: none;
+        color: var(--cor1);
 
-     font-family: 'Bebas Neue', sans-serif;
-     font-weight: bold;
-     font-size: 30px;
+        font-family: 'Bebas Neue', sans-serif;
+        font-weight: bold;
+        font-size: 30px;
 
-     cursor: pointer;
- }
+        cursor: pointer;
+    }
 
- .navbar-botao {
+    .navbar-botao {
 
-     display: flex;
-     justify-content: center;
-     align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-     gap: 40px;
+        gap: 40px;
 
-     height: 100%;
-     width: 22%;
- }
+        height: 100%;
+        width: 22%;
+    }
 
- .botao {
+    .botao {
 
-     display: flex;
-     align-items: center;
+        display: flex;
+        align-items: center;
 
-     padding: 12px 22px;
-     border-radius: 10px;
+        padding: 12px 22px;
+        border-radius: 10px;
 
-     font-size: 16px;
-     font-family: 'Telegraf', sans-serif;
-     cursor: pointer;
+        font-size: 16px;
+        font-family: 'Telegraf', sans-serif;
+        cursor: pointer;
 
 
-     background-color: var(--cor1);
+        background-color: var(--cor1);
 
-     transition: all 0.5s
- }
+        transition: all 0.5s
+    }
 
- .botao:hover {
-     transform: scale(1.08);
-     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
- }
+    .botao:hover {
+        transform: scale(1.08);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
 
- /* ====================================== BANNER ======================================*/
+    /* ====================================== BANNER ======================================*/
 
 
- .banner {
+    .banner {
 
-     background-image: linear-gradient(to right, rgba(10, 25, 45, 0.753), rgba(10, 25, 45, 0.35)), url("../img/faculdade.png");
-     background-repeat: no-repeat;
-     background-size: cover;
+        background-image: linear-gradient(to right, rgba(10, 25, 45, 0.75), rgba(10, 25, 45, 0.35)), url("../img/faculdade.png");
+        background-repeat: no-repeat;
+        background-size: cover;
 
-     height: 580px;
-     width: 100%;
- }
+        height: 580px;
+        width: 100%;
+    }
 
- .banner-msg {
+    .banner-msg {
 
-     text-align: end;
-     line-height: 1.4;
-     font-size: 70px;
-     font-family: 'Bebas Neue', sans-serif;
+        text-align: end;
+        line-height: 1.4;
+        font-size: 70px;
+        font-family: 'Bebas Neue', sans-serif;
 
-     padding-right: 40px;
-     padding-top: 40px;
-     color: var(--cor1);
- }
+        padding-right: 40px;
+        padding-top: 40px;
+        color: var(--cor1);
+    }
 
- /* ====================================== CICLO ======================================*/
+    /* ====================================== CICLO ======================================*/
 
- .ciclo {
+    .ciclo {
 
-     height: 800px;
-     background-color: var(--corNavBar);
- }
+        height: 800px;
+        background-color: var(--corNavBar);
+    }
 
- .ciclo-titulo {
+    .ciclo-titulo {
 
-     display: flex;
-     justify-content: center;
-     align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
 
-     height: 25%;
+        height: 25%;
 
-     color: var(--cor1);
-     font-size: 40px;
-     font-family: 'Telegraf', sans-serif;
-     text-align: center;
+        color: var(--cor1);
+        font-size: 40px;
+        font-family: 'Telegraf', sans-serif;
+        text-align: center;
 
 
- }
+    }
 
- .ciclo-container {
+    .ciclo-container {
 
-     display: flex;
-     align-items: center;
-     justify-content: space-around;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
 
-     font-family: 'Telegraf', sans-serif;
-     text-align: center;
-     color: var(--cor1);
-     font-size: 24px;
+        font-family: 'Telegraf', sans-serif;
+        text-align: center;
+        color: var(--cor1);
+        font-size: 24px;
 
- }
+    }
 
- .ciclo-caixa {
+    .ciclo-caixa {
 
-     justify-content: center;
-     align-items: center;
+        min-height: 400px;
+        min-width: 300px;
 
-     min-height: 400px;
-     min-width: 300px;
+        border: 6px solid var(--cor2);
+        border-radius: 40px;
 
-     border: 6px solid var(--cor2);
-     border-radius: 40px;
+        box-shadow:
+            0 0 2px var(--cor2),
+            0 0 5px var(--cor2),
+            0 0 10px var(--cor2);
 
-     box-shadow:
-         0 0 2px var(--cor2),
-         0 0 5px var(--cor2),
-         0 0 10px var(--cor2);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
 
- }
+    .ciclo-caixa img {
 
- .icone-lupa {
-     margin-top: 20px;
- }
+        height: 200px;
+        width: auto;
+        margin-top: 10px;
+
+        transition: transform 0.4s ease;
+
+    }
+
+    .ciclo-caixa h3 {
+
+        font-size: 22px;
+        font-weight: bold;
+
+        line-height: 1.2;
+        transition: transform 0.3s ease;
+    }
+
+    .ciclo-descricao {
+
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+
+        font-size: 16px;
+
+        color: var(--cor1);
+
+        margin-top: 0;
+        transition: max-height 0.5s ease, opacity 0.5s ease, margin-top 0.4s ease;
+    }
+
+    .ciclo-caixa:hover {
+
+        transform: translateY(-10px);
+        box-shadow:
+            0 0 5px var(--cor2),
+            0 0 15px var(--cor2),
+            0 0 25px var(--cor2);
+
+        /* Aumentando a quantidade de "neon" da border*/
+    }
+
+    .ciclo-caixa:hover img {
+
+        transform: scale(0.8) translateY(-15px);
+
+    }
+
+    .ciclo-caixa:hover h3 {
+        transform: translateY(-25px);
+    }
+
+    .ciclo-caixa:hover .ciclo-descricao {
+
+        max-height: 150px;
+        opacity: 1;
+        margin-top: -10px;
+
+    }
+
+
+    .icone-lupa {
+
+        margin-top: 20px;
+    }
+
+    /* ====================================== PAINEL-ATUALIZAÇÕES ======================================*/
+
+
+    .painel-atualizacoes {
+
+        display: flex;
+
+        height: 740px;
+        width: 100%;
+
+        box-sizing: border-box;
+        padding: 40px 60px;
+
+        background-color: var(--cor3);
+
+    }
+
+    .painel-texto {
+
+        width: 65%;
+
+    }
+
+    .painel-icones {
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        width: 35%;
+        gap: 20px;
+
+    }
+
+    .painel-coluna {
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        gap: 15px;
+
+    }
+
+    .painel-titulo {
+
+        font-family: 'Telegraph', sans-serif;
+        font-size: 84px;
+        color: var(--cor1);
+
+        margin-bottom: 60px;
+    }
+
+    .painel-paragrafo {
+
+        font-family: 'Telegraph', sans-serif;
+        line-height: 1.4;
+        font-size: 50px;
+        color: var(--cor1);
+
+    }
+
+    .forma-retangulo {
+
+        width: 220px;
+        height: 300px;
+
+        background-color: var(--cor1);
+        border-radius: 30px;
+    }
+
+    .forma-barra {
+
+        width: 220px;
+        height: 40px;
+
+        background-color: var(--cor1);
+        border-radius: 50px;
+    }
+
+    .forma-circulo {
+
+        width: 220px;
+        height: 220px;
+
+        background-color: var(--cor1);
+        border-radius: 50%;
+    }
+
+    .forma-bandeira {
+
+        width: 220px;
+        height: 100px;
+
+        background-color: var(--cor1);
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 70%, 0% 100%);
+    }
+
+    .carrossel-janela {
+
+        height: 400px;
+        width: 220px;
+
+        overflow: hidden;
+    }
+
+    .carrossel-janela1 {
+        height: 670px;
+    }
+
+    .carrossel-janela2 {
+        height: 700px;
+    }
+
+    .carrossel-lista {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        animation: rolar-carrossel 16s linear infinite;
+    }
+
+    /* 
+        Keyframe: recurso que perimite criar animações 
+        personalizadas,determinando o estado do ponto 
+        inicial até o ponto final 
+    */
+
+    @keyframes rolar-carrossel {
+        from {
+            transform: translateY(0%);
+        }
+
+        to {
+            transform: translateY(-50%);
+        }
+    }
+
+    /* ====================================== FALE-CONOSCO ======================================*/
+
+    .contato {
+
+        display: flex;
+
+        height: 740px;
+        width: 100%;
+
+        box-sizing: border-box;
+        padding: 60px 0px 40px 120px;
+
+        background-color: var(--corNavBar);
+
+    }
+
+    .contato-caixa {
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        height: 90%;
+        width: 35%;
+
+        padding: 40px 30px;
+        box-sizing: border-box;
+
+        border: 6px solid var(--cor2);
+        border-radius: 40px;
+
+        box-shadow:
+            0 0 1px var(--cor2),
+            0 0 3px var(--cor2),
+            0 0 8px var(--cor2);
+    }
+
+    .contato-caixa-titulo h3 {
+
+        font-size: 38px;
+        font-family: 'Bebas Neue', sans-serif;
+
+        text-align: center;
+        letter-spacing: 1px;
+        color: var(--cor1);
+    }
+
+    .contato-caixa input {
+
+        height: 45px;
+        width: 100%;
+        box-sizing: border-box;
+
+        background-color: var(--cor1);
+        border: none;
+        border-radius: 8px;
+
+        padding: 0 15px;
+
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 18px;
+        color: var(--corNavBar);
+        outline: none;
+
+    }
+
+    .contato-pergunta input {
+
+        height: 250px;
+        border-radius: 8px;
+        padding-bottom: 200px;
+    }
+
+
+    .contato-texto {
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        flex-direction: column;
+
+        height: 100%;
+        width: 55%;
+
+        padding-top: 50px;
+        padding-left: 50px;
+
+        text-align: right;
+        color: var(--cor1);
+
+    }
+
+    .contato-texto-titulo h3 {
+
+        font-family: 'Telegraf', sans-serif;
+        font-size: 80px;
+
+        margin-bottom: 20px;
+
+    }
+
+    .contato-texto-paragrafo p {
+
+        font-family: 'Telegraf', sans-serif;
+        font-size: 50px;
+
+        line-height: 1.4;
+        font-weight: 300;
+    }
+
+    /* ====================================== FOOTER ======================================*/
+
+    .footer {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        height: 60px;
+
+        background-color: var(--cor1);
+    }
+
+    .footer p {
+
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 18px;
+        font-weight: bolder;
+
+        letter-spacing: 1px;
+        color: var(--corNavBar);
+    }
+
+
+
+
+
+
+    /* ====================================== RESPONSIVIDADE ====================================== */
+
+    @media (max-width: 768px) {
+
+        html,
+        body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* ====================================== NAVBAR ====================================== */
+
+        .navbar {
+
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2px 4px;
+
+        }
+
+        .navbar-logo {
+
+            width: 80px;
+            height: 32px;
+
+            border-radius: 16px;
+            margin-bottom: 0;
+        }
+
+        .navbar-logo img {
+
+            height: 26px;
+            width: auto;
+            margin-right: 0;
+        }
+
+        .navbar-li {
+
+            width: auto;
+            justify-content: center;
+
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .navbar-li a {
+
+            font-size: 12px;
+        }
+
+        .navbar-botao {
+
+            width: auto;
+            justify-content: center;
+            gap: 5px;
+
+            margin-right: 4px;
+
+        }
+
+        .botao {
+
+            padding: 6px 10px;
+            font-size: 10px;
+
+        }
+
+        /* ====================================== BANNER ====================================== */
+
+        .banner {
+
+            height: auto;
+            min-height: 240px;
+
+            padding: 80px 20px;
+            box-sizing: border-box;
+
+        }
+
+        .banner-msg {
+
+            font-size: 24px;
+            text-align: end;
+
+            padding: 0;
+            line-height: 1.2;
+        }
+
+        /* ====================================== CICLO ====================================== */
+
+        .ciclo {
+
+            height: auto;
+            padding: 10px 15px;
+
+            box-sizing: border-box;
+
+        }
+
+        .ciclo-titulo {
+
+            height: auto;
+            margin-bottom: 25px;
+
+            font-size: 26px;
+            text-align: center;
+
+        }
+
+        .ciclo-container {
+
+            flex-direction: column;
+            align-items: center;
+            
+            gap: 25px;
+
+        }
+
+        .ciclo-caixa {
+
+            width: 100%;
+            max-width: 320px;
+            min-height: auto;
+
+            padding: 25px 15px;
+            box-sizing: border-box;
+        }
+
+        /* ====================================== PAINEL ATUALIZAÇÕES ====================================== */
+
+        .painel-atualizacoes {
+
+            flex-direction: column;
+            height: auto;
+
+            padding: 60px 20px;
+            box-sizing: border-box;
+        }
+
+        .painel-texto {
+
+            width: 100%;
+            text-align: center;
+        }
+
+        .painel-titulo {
+
+            font-size: 28px;
+            line-height: 1.2;
+
+            margin-bottom: 15px;
+            word-wrap: break-word;
+        }
+
+        .painel-paragrafo {
+
+            font-size: 16px;
+            line-height: 1.4;
+            margin-bottom: 25px;
+
+        }
+
+        .painel-icones {
+
+            display: none;
+        }
+
+        /* ====================================== FALE CONOSCO ====================================== */
+
+        .contato {
+
+            flex-direction: column-reverse;
+            height: 100%;
+            padding: 40px 15px;
+            
+            gap: 30px;
+            box-sizing: border-box;
+        }
+
+        .contato-caixa {
+            
+            width: 100%;
+            height: 100%;
+            
+            padding: 25px 15px;
+            gap: 15px;
+            box-sizing: border-box;
+        }
+
+        .contato-texto {
+            
+            width: 100%;
+            padding: 0;
+            
+            text-align: center;
+            align-items: center;
+
+        }
+
+        .contato-texto-titulo h3 {
+            
+            font-size: 30px;
+            margin-bottom: 10px;
+
+        }
+
+        .contato-texto-paragrafo p {
+            
+            font-size: 16px;
+            line-height: 1.4;
+            
+        }
+
+        .carrossel-janela {
+            transform: rotate(-90deg);
+            scale: 0.7;
+        }
+
+        /* ====================================== FOOTER ====================================== */
+
+        .footer {
+            padding: 15px 10px;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 13px;
+        }
+    }
