@@ -6,44 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <script src="./js/sessao.js"></script>
-    
+    <link rel="stylesheet" href="./style/global.css">
+    <link rel="stylesheet" href="./style/cadastroLogin.css">
+
 </head>
 
 <body>
-    <header>
-
-       
+    <header class="navbar">
+        <div class="navbar-logo">
+            <img src="./img/logo/logo.png" alt="Open College">
+        </div>
     </header>
 
+    <h1 class="cadastro-titulo">FAÇA SEU LOGIN</h1>
+    <a href="cadastro.html" class="cadastro-link-login">AINDA NÃO TENHO UMA CONTA</a>
 
-   
+    <div class="formulario-caixa">
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconEmail.png" alt=""> EMAIL</label>
+            <input type="text" placeholder="joaosilva@gmail.com" id="ipt_login">
+        </div>
 
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconSenha.png" alt=""> SENHA</label>
+            <input type="password" placeholder="••••••••" id="ipt_senha">
+        </div>
 
-        
-            <h1>Faça seu login</h1>
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconSenha.png" alt=""> CONFIRME SUA SENHA</label>
+            <input type="password" placeholder="••••••••" id="ipt_senhaConfirmar">
+        </div>
 
-            
-                <input type="text" placeholder="Insira seu e-mail" id="ipt_login">
-                <input type="password" placeholder="Insira sua senha" id="ipt_senha">
-                
-                    <button type="button" onclick="logar()">ENTRAR</button>
-                
-                
-                    <p><a href="cadastro.html" class="link">Ainda não tenho uma conta</a></p>
-                
-          
-
-
-
-        
-
+        <div class="container-btn-etapa">
+            <button type="button" class="btn-proxima-etapa" onclick="logar()">ENTRAR</button>
+        </div>
 
         <div class="card_erro" id="cardErro">
             <span id="mensagem_erro"></span>
         </div>
+    </div>
+
+    <footer class="footer">
+        <p>OPEN COLLEGE © 2024</p>
+    </footer>
 
 
-    
 
 
 </body>
@@ -110,7 +117,7 @@
 
                 resposta.text().then(texto => {
                     console.error(texto);
-                    
+
                 });
             }
 
