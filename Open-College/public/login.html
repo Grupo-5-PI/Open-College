@@ -32,11 +32,6 @@
             <input type="password" placeholder="••••••••" id="ipt_senha">
         </div>
 
-        <div class="campo-grupo">
-            <label><img src="./img/icones/iconSenha.png" alt=""> CONFIRME SUA SENHA</label>
-            <input type="password" placeholder="••••••••" id="ipt_senhaConfirmar">
-        </div>
-
         <div class="container-btn-etapa">
             <button type="button" class="btn-proxima-etapa" onclick="logar()">ENTRAR</button>
         </div>
@@ -106,7 +101,7 @@
                     alert("Login feito com sucesso!")
 
                     setTimeout(function () {
-                        window.location = "quiz.html";
+                        window.location = "index.html";
                     }, 1000); // apenas para exibir o loading
 
                 });
