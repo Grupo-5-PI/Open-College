@@ -1,0 +1,301 @@
+@import url('https://fonts.cdnfonts.com/css/bebas-neue');
+@import url('https://fonts.cdnfonts.com/css/telegraf');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
+
+:root {
+    --corNavBar: #0c263b;
+    --cor1: #e6fbda;
+    --cor2: #84d175;
+    --cor3: #3c749c;
+
+    /* Novas cores no mesmo padrao */
+    --cor4: #9eb299; /* Fundo principal */
+    --cor5: #b8c4bc; /* Fundo dos inputs */
+    --cor6: #8fa3b3; /* Labels e icones */
+    --cor7: #1a2a2a; /* Texto dos inputs */
+    --cor8: #2b4570; /* Botoes e seletores */
+    --corErro: #ffcccc;
+    --corTextoErro: #990000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--cor4);
+    font-family: 'Telegraf', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* ====================================== NAVBAR ====================================== */
+
+.navbar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 120px;
+}
+
+.navbar-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    width: 220px;
+    background-color: var(--cor1);
+    border-radius: 0 90px 90px 0;
+}
+
+.navbar-logo img {
+    height: 70px;
+    width: auto;
+    margin-right: 20px;
+}
+
+/* ====================================== CABEÇALHO & PROGRESSO ====================================== */
+
+.cadastro-titulo {
+    font-size: 46px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 800;
+    color: #000;
+    letter-spacing: 2px;
+    margin-top: -20px;
+}
+
+.cadastro-link-login {
+    text-decoration: none;
+    color: var(--cor8);
+    font-weight: 800;
+    font-size: 18px;
+    margin: 8px 0 18px 0;
+}
+
+.progresso-container {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 22px;
+}
+
+.progresso-barra {
+    width: 100%;
+    height: 14px;
+    border: 2px solid var(--corNavBar);
+    border-radius: 20px;
+    padding: 1px;
+}
+
+.progresso-preenchido {
+    width: 33%;
+    height: 100%;
+    background-color: var(--corNavBar);
+    border-radius: 20px;
+}
+
+.progresso-texto {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--corNavBar);
+    letter-spacing: 1px;
+}
+
+/* ====================================== TOGGLE PERFIL ====================================== */
+
+.perfil-seletor {
+    display: flex;
+    background-color: #b7c5b7;
+    border: 1px solid #7c8e7c;
+    border-radius: 35px;
+    padding: 16px;
+    margin-bottom: 25px;
+}
+
+.perfil-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 22px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 35px;
+}
+
+.perfil-btn.ativo {
+    background-color: var(--cor8);
+    color: var(--cor1);
+}
+
+/* ====================================== FORMULÁRIO ====================================== */
+
+.formulario-caixa {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--corNavBar);
+    border-radius: 24px;
+    padding: 40px 50px;
+    margin-bottom: 40px;
+}
+
+.campo-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.campo-grupo label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--cor6);
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+}
+
+.campo-grupo label img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.campo-grupo input {
+    height: 46px;
+    width: 100%;
+    background-color: var(--cor5);
+    border: none;
+    border-radius: 8px;
+    padding: 0 16px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    color: var(--cor7);
+    outline: none;
+}
+
+.campo-grupo input::placeholder {
+    color: #556666;
+}
+
+/* ====================================== ANEXO DE FOTO ====================================== */
+
+.campo-foto {
+    align-items: flex-start;
+    margin-top: 5px;
+}
+
+.input-foto-pilula {
+    display: block;
+    height: 44px;
+    width: 210px;
+    background-color: var(--cor5);
+    border-radius: 22px;
+    cursor: pointer;
+    transition: filter 0.2s ease;
+}
+
+.input-foto-pilula:hover {
+    filter: brightness(0.95);
+}
+
+.container-btn-etapa {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-proxima-etapa {
+    background-color: var(--cor8);
+    color: var(--cor5);
+    border: none;
+    border-radius: 30px;
+    padding: 14px 45px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+}
+
+/* ====================================== FEEDBACK ====================================== */
+
+.card_erro {
+    display: none;
+    background-color: var(--corErro);
+    color: var(--corTextoErro);
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+}
+
+    /* ====================================== FOOTER ======================================*/
+
+    .footer {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        height: 60px;
+
+        background-color: var(--corNavBar);
+    }
+
+    .footer p {
+        
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 18px;
+        font-weight: bolder;
+
+        letter-spacing: 1px;
+        color: var(--cor1);
+    }
+
+/* ====================================== RESPONSIVIDADE ====================================== */
+
+@media (max-width: 768px) {
+    .navbar {
+        height: 70px;
+    }
+
+    .navbar-logo {
+        width: 130px;
+        height: 50px;
+        border-radius: 0 50px 50px 0;
+    }
+
+    .navbar-logo img {
+        height: 38px;
+        margin-right: 8px;
+    }
+
+    .cadastro-titulo {
+        font-size: 28px;
+        margin-top: 0;
+    }
+
+    .progresso-container {
+        width: 85%;
+    }
+
+    .formulario-caixa {
+        border-radius: 20px 20px 0 0;
+        padding: 25px 20px;
+        margin-bottom: 0;
+    }
+}
