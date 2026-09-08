@@ -33,8 +33,12 @@
     </div>
 
     <div class="perfil-seletor">
-        <button type="button" class="perfil-btn ativo" onclick="selecionar(this)">Investidor</button>
-        <button type="button" class="perfil-btn" onclick="selecionar(this)">Gerente de Marketing</button>
+        <select id="select_perfil" class="perfil-btn ativo">
+        <option value="" disabled selected hidden>Selecione seu perfil</option>
+        <option value="Investidor">Investidor</option>
+        <option value="Gerente de Marketing">Gerente de Marketing</option>
+    </select>
+
     </div>
 
     <div class="formulario-caixa">
@@ -45,12 +49,12 @@
 
         <div class="campo-grupo">
             <label><img src="./img/icones/iconCPF.png" alt=""> CPF</label>
-            <input type="text" placeholder="000.000.000-00" id="ipt_cpf">
+            <input type="text" placeholder="Apenas números sem pontos ou traços" id="ipt_cpf">
         </div>
 
         <div class="campo-grupo">
             <label><img src="./img/icones/iconTelefone.png" alt=""> TELEFONE</label>
-            <input type="text" placeholder="(00) 00000-0000" id="ipt_telefone">
+            <input type="text" placeholder="Apenas números (incluindo o DDD)" id="ipt_telefone">
         </div>
 
         <div class="campo-grupo">
@@ -70,9 +74,8 @@
         </div>
 
         <div class="campo-grupo campo-foto">
-            <label><img src="./img/icones/iconAnexo_img.png" alt=""> ANEXE SUA FOTO</label>
-            <label for="ipt_foto" class="input-foto-pilula"></label>
-            <input type="file" id="ipt_foto" accept="image/*" style="display: none;">
+            <label><img src="./img/icones/iconAnexo_img.png" alt=""> ANEXE SUA FOTO (OPCIONAL)</label>
+            <input id="ipt_foto">
         </div>
 
         <div class="container-btn-etapa">
@@ -95,11 +98,15 @@
 
     function cadastrar() {
 
-
+        let admin = null;
         let nomeVar = ipt_nome.value;
+        let cpfVar = ipt_cpf.value;
+        let telefoneVar = ipt_telefone.value;
         let emailVar = ipt_login.value;
         let senhaVar = ipt_senha.value;
         let confirmacaoSenhaVar = ipt_senhaConfirmar.value;
+        let fotoVar = ipt_foto.value;
+        let perfilVar = select_perfil.value;
         let msg = '';
 
 
@@ -108,9 +115,12 @@
 
         if (
             nomeVar == "" ||
+            cpfVar == "" ||
+            telefoneVar == "" ||
             emailVar == "" ||
             senhaVar == "" ||
-            confirmacaoSenhaVar == ""
+            confirmacaoSenhaVar == ""||
+            perfilVar == ""
         ) { // verificar os campos em branco
 
             cardErro.style.display = "block";
@@ -121,7 +131,9 @@
             return false;
 
 
-        } if (nomeVar !== '') {
+        }        
+        
+        if (nomeVar !== '') {
             if (nomeVar.length <= 1) { // verificar se o tamanho do nome é maior que 1
                 cardErro.style.display = "block";
                 mensagem_erro.innerHTML = `Nome inválido`
@@ -147,7 +159,21 @@
 
             }
 
-        } if (!emailVar.includes('@') || !emailVar.endsWith('.com')) {
+        }if(ipt_cpf.value.length !== 11){
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "CPF inválido";
+            setTimeout(sumirMensagem, 3000);
+            return false;
+        } 
+        if(ipt_telefone.value.length !== 11){
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "Número de telefone inválido";
+            setTimeout(sumirMensagem, 3000);
+            return false;
+        }    
+        if (!emailVar.includes('@') || !emailVar.endsWith('.com')) {
             cardErro.style.display = "block";
             mensagem_erro.innerHTML =
                 "Insira um email válido, email deve conter @ e .com";
@@ -171,6 +197,13 @@
             return false;
         }
 
+        if(perfilVar == "Investidor"){
+            admin = 0;
+        }else{
+            admin = 1;
+        }
+        
+
 
         fetch("/usuarios/cadastrar", {
             method: "POST",
@@ -179,8 +212,12 @@
             },
             body: JSON.stringify({
                 nomeServer: nomeVar,
+                cpfServer: cpfVar,
+                telefoneServer: telefoneVar,
                 emailServer: emailVar,
                 senhaServer: senhaVar,
+                perfilServer: perfilVar,
+                adminServer: admin,
 
 
             }),
