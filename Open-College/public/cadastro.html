@@ -7,43 +7,86 @@
     <title>Cadastro</title>
 
     <script src="./js/sessao.js"></script>
+    <link rel="stylesheet" href="./style/global.css">
+    <link rel="stylesheet" href="./style/cadastroLogin.css">
+
 
 
 </head>
 
 <body>
 
-    <header>
-
-       
-
+    <header class="navbar">
+        <div class="navbar-logo">
+            <img src="./img/logo/logo.png" alt="Open College">
+        </div>
     </header>
 
-   
-     
+    <h1 class="cadastro-titulo">CRIE SUA CONTA</h1>
+    <a href="login.html" class="cadastro-link-login">JÁ POSSUI CONTA ? FAÇA SEU LOGIN</a>
 
-       
-            <h1>Faça seu cadastro</h1>
+    <div class="progresso-container">
+        <div class="progresso-barra">
+            <div class="progresso-preenchido"></div>
+        </div>
+        <span class="progresso-texto">PASSO 1 DE 3 : VALIDAÇÃO</span>
+    </div>
 
-           
-                <input type="text" placeholder="Insira seu nome" id="ipt_nome">
-                <input type="text" placeholder="Insira seu e-mail" id="ipt_login">
-                <input type="password" placeholder="Senha mais de 6 caracteres" id="ipt_senha">
-                <input type="password" placeholder="Insira sua senha novamente" id="ipt_senhaConfirmar">
-                
-                    <button onclick="cadastrar()">CADASTRAR</button>
+    <div class="perfil-seletor">
+        <button type="button" class="perfil-btn ativo" onclick="selecionar(this)">Investidor</button>
+        <button type="button" class="perfil-btn" onclick="selecionar(this)">Gerente de Marketing</button>
+    </div>
 
-               
-            
-        
+    <div class="formulario-caixa">
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconUsuario.png" alt=""> NOME</label>
+            <input type="text" placeholder="João Silva" id="ipt_nome">
+        </div>
 
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconCPF.png" alt=""> CPF</label>
+            <input type="text" placeholder="000.000.000-00" id="ipt_cpf">
+        </div>
+
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconTelefone.png" alt=""> TELEFONE</label>
+            <input type="text" placeholder="(00) 00000-0000" id="ipt_telefone">
+        </div>
+
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconEmail.png" alt=""> E-MAIL</label>
+            <input type="text" placeholder="Insira seu e-mail" id="ipt_login">
+        </div>
+
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconSenha.png" alt=""> SENHA</label>
+            <input type="password" placeholder="Senha mais de 6 caracteres" id="ipt_senha">
+        </div>
+
+
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconSenha.png" alt=""> CONFIRME SUA SENHA</label>
+            <input type="password" placeholder="••••••••" id="ipt_senhaConfirmar">
+        </div>
+
+        <div class="campo-grupo campo-foto">
+            <label><img src="./img/icones/iconAnexo_img.png" alt=""> ANEXE SUA FOTO</label>
+            <label for="ipt_foto" class="input-foto-pilula"></label>
+            <input type="file" id="ipt_foto" accept="image/*" style="display: none;">
+        </div>
+
+        <div class="container-btn-etapa">
+            <button type="button" class="btn-proxima-etapa" onclick="cadastrar()">PRÓXIMA ETAPA</button>
+        </div>
 
         <div class="card_erro" id="cardErro">
             <span id="mensagem_erro"></span>
         </div>
+    </div>
 
-  
-   
+    <div class="footer">
+        <p>COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.</p>
+    </div>
 </body>
 
 </html>
