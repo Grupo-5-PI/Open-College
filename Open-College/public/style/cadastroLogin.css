@@ -42,6 +42,10 @@ body {
     width: auto;
     margin-right: 20px;
 }
+.navbar-logo img:hover{
+    transform: scale(1.1);
+    transition: all 0.2s;
+}
 
 /* ====================================== CABEÇALHO & PROGRESSO ====================================== */
 
