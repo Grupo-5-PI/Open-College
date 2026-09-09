@@ -10,7 +10,7 @@
 }
 
 body {
-    background-color: var(--cor4);
+    background-color: var(--cor1);
     font-family: 'Telegraf', sans-serif;
     display: flex;
     flex-direction: column;
@@ -33,7 +33,7 @@ body {
     align-items: center;
     height: 90px;
     width: 220px;
-    background-color: var(--cor1);
+    background-color: #fff;
     border-radius: 0 90px 90px 0;
 }
 
