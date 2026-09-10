@@ -120,19 +120,22 @@
             telefoneVar == "" ||
             emailVar == "" ||
             senhaVar == "" ||
-            confirmacaoSenhaVar == ""||
-            perfilVar == ""
+            confirmacaoSenhaVar == ""
         ) { // verificar os campos em branco
 
             cardErro.style.display = "block";
             mensagem_erro.innerHTML =
-                "Insira valores válidos";
+                "Existem campos em branco, preencha os dados corretamente para continuar.";
             setTimeout(sumirMensagem, 3000);
 
             return false;
 
 
-        }        
+        } 
+        if(perfilVar == ""){
+            alert("Selecione um perfil para continuar");
+            return false;
+        }      
         
         if (nomeVar !== '') {
             if (nomeVar.length <= 1) { // verificar se o tamanho do nome é maior que 1
