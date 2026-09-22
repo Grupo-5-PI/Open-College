@@ -1,0 +1,45 @@
+body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+main{
+    box-sizing: border-box;
+    flex: 1;
+    margin-left: 35vh;
+    border: 1px solid green;
+    height: 100vh;
+}
+
+/* ================= MENU LATERAL ================= */
+
+.menu-lateral{
+    border: 1px solid red;
+    box-sizing: border-box;
+    position: fixed;
+    height: 100vh;
+    width: 35vh;
+    padding: 15px 0;
+    flex-direction: column;
+}
+
+.menu-lateral nav{
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-menu-lateral{
+    box-sizing: border-box;
+    height: 10vh;
+    width: 100%;
+    border: 1px solid blue;
+    text-decoration: none;
+}
+
+.icone-menu-lateral{
+    height: 75%;
+}
