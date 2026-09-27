@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+
+    <script src="./js/sessao.js"></script>
+    <link rel="icon" href="img/logo/logo.png">
+    <link rel="stylesheet" href="./style/global.css">
+    <link rel="stylesheet" href="./style/cadastroLogin.css">
+
+
+
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="navbar-logo">
+            <a href="index.html"><img src="./img/logo/logo.png" alt="Open College"></a>
+        </div>
+    </header>
+
+    <h1 class="cadastro-titulo">CADASTRE SUA INSTITUIÇAO</h1>
+    <a  class="cadastro-link-login">COMO DESEJA PROSSEGUIR?</a>
+
+   
+    
+
+    <div class="formulario-caixa">
+        <div class="campo-grupo">
+            <select class="perfil-seletor" id="selectModo" onchange="alternarModo()">
+                <option value="novaInstituicao">Cadastrar Nova</option>
+                <option value="vincularInstituicao">Vincular a uma instituicao existente</option>
+            </select>
+            </div>
+            
+            <div class="campo-grupo" id="novaInstituicao">
+            <label><img src="./img/icones/iconUsuario.png" alt=""> NOME</label>
+            <input type="text" placeholder="Sao Paulo Tech School" id="ipt_nome">
+        </div>
+
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconCPF.png" alt=""> CNPJ</label>
+            <input type="text" placeholder="Apenas números sem pontos ou traços" id="ipt_cnpj" onblur="verificarCnpj()">
+        </div>
+
+        <div class="formulario-caixa" id="vincularInstituicao" style="display: none;">
+            <div class="campo-grupo">
+                <label>SELECIONE SUA INSTITUICAO</label>
+                <select id="selectInstituicao"></select>
+            </div>
+        </div>
+
+        
+
+        <div class="container-btn-etapa">
+            <button type="button" class="btn-proxima-etapa" onclick="cadastrar()">CADASTRAR</button>
+        </div>
+
+        <div class="card_erro" id="cardErro">
+            <span id="mensagem_erro"></span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.</p>
+    </div>
+</body>
+
+</html>
+
+<script>
+    let idUsuario = sessionStorage.getItem("idUsuario");
+
+    if(idUsuario == null){
+        alert("Voce precisa se cadastrar antes de continuar.")
+        window.location = "cadastro.html";
+    }
+    function alternarModo(){
+        let modo = selectModo.value;
+
+        if(modo == "vincularInstituicao"){
+            novaInstituicao.style.display = "none";
+            vincularInstituicao.style.display = "block";
+            carregarInstituicaoSelect();
+        }else{
+            novaInstituicao.style.display = "block";
+            vincularInstituicao.style.display = "none";
+        }
+    }
+    function carregarInstituicaoSelect(){
+        fetch("/instituicao/listarTodas")
+        .then(function (resposta){
+            return resposta.json();
+        })
+        .then(function (instituicoes){
+            let novaMsg = `<option value ="" disabled selected hidden> Selecione uma instituicao</option>`;
+
+            for(let i = 0; i < instituicoes.length; i++){
+                novaMsg+= `<option value ="${instituicoes[i].idInstituicao}">${instituicoes[i].nome}</option>`;
+            }
+            selectInstituicao.innerHTML = novaMsg;
+        })
+        .catch(function (erro) {
+            console.log("#ERRO: ", erro);
+        });
+    }
+    function verificarCnpj(){
+        let modo = selectModo.value;
+        let cnpj = ipt_cnpj.value;
+
+        if(cnpj.length != 14){
+            return;
+        }
+        fetch(`/instituicao/buscar/${cnpj}`)
+        .then(function (resposta){
+          if(resposta.status === 404){
+            cardErro.style.display = "none";
+            return null;
+          }
+          return resposta.json();
+    
+        })
+        .then(function (institucao) {
+            if(institucao == null){
+                return;               
+            }
+            if(modo == "vincularInstituicao"){
+                selectInstituicao.value = institucao.idInstituicao;
+                cardErro.style.display = "none";
+            }else{
+                cardErro.style.display = "block";
+                mensagem_erro.innerHTML = `Este CNPJ já está cadastrado para: ${institucao.nome}`;
+            }
+        })
+        .catch (function (erro) {
+            console.log("#ERRO: ",erro);
+        });
+        
+    }
+
+    function cadastrar() {
+        let modo = selectModo.value;
+        let nomeVar = null;
+        let cnpjVar = null;
+        let idInstituicao = null;
+        
+        let msg = '';
+
+        if(modo == "novaInstituicao"){
+            nomeVar = ipt_nome.value;
+            cnpjVar = ipt_cnpj.value;
+
+        
+
+
+
+
+
+        if (
+            nomeVar == "" ||
+            cnpjVar == "" 
+        ) { // verificar os campos em branco
+
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "Existem campos em branco, preencha os dados corretamente para continuar.";
+            setTimeout(sumirMensagem, 3000);
+
+            return false;
+
+
+        } 
+       
+        
+        if (nomeVar !== '') {
+            if (nomeVar.length <= 1) { // verificar se o tamanho do nome é maior que 1
+                cardErro.style.display = "block";
+                mensagem_erro.innerHTML = `Nome inválido`
+                setTimeout(sumirMensagem, 3000);
+
+                return false;
+            }
+
+            for (let i = 0; i < nomeVar.length; i++) {
+
+                if (nomeVar[i] == ' ') {
+                    continue; // para se o nome tiver espaço, caso contrario nao da para cadastrar nomes como Vitor Henrique
+                }
+
+                if (nomeVar[i].toLowerCase() == nomeVar[i].toUpperCase()) { // se o caractere digitado nao tiver como ser transformado para letra maiuscula ent é numero ou simbolo
+                    cardErro.style.display = "block";
+                    mensagem_erro.innerHTML = `Nome inválido`
+
+                    setTimeout(sumirMensagem, 3000);
+
+                    return false;
+                }
+
+            }
+
+        }if(ipt_cnpj.value.length !== 14){
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "Cnpj inválido";
+            setTimeout(sumirMensagem, 3000);
+            return false;
+        } 
+    }else{ // aqui e onde vincula
+            idInstituicao = selectInstituicao.value;
+            if(idInstituicao == ""){
+                cardErro.style.display = "block";
+                mensagem_erro.innerHTML = "Selecione uma instituicao.";
+                setTimeout(sumirMensagem,3000);
+                return false;
+            }
+    }
+        
+
+        fetch("/instituicao/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                modoServer: modo,
+                nomeServer: nomeVar,
+                cnpjServer: cnpjVar,
+                idInstituicaoServer: idInstituicao,
+                idUsuarioServer: idUsuario
+               
+
+
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+
+
+                    cardErro.style.display = "none";
+                    alert("Cadastro de instituicao realizado com sucesso! Redirecionando para a página de login")
+
+                    setTimeout(() => {
+                        window.location = "login.html";
+                    }, 2000);
+
+                    limparFormulario();
+
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+
+
+
+            });
+
+        return false;
+
+        function sumirMensagem() {
+            cardErro.style.display = "none";
+            mensagem_erro.innerHTML = "";
+
+        }
+    }
+
+</script>
