@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../style/plataforma_global_style.css">
+    <link rel="stylesheet" href="../style/minha_instituicao_style.css">
 </head>
 <body>
     
-    <div class="menu-lateral">
+    <!-- <div class="menu-lateral">
         <div class="menu-lateral-logo">
-            <!-- <img src=""> -->
+            <img src="">
              <span>COLOCAR IMG AQUI DEPOIS</span>
         </div>
-<!-- USANDO ÍCONES DE EXEMPLO POR ENQUANTO DEPOIS FAÇO ISSO DIREITO -->
         <nav>
             <a href="" class="item-menu-lateral">
                 <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Dashboard" class="icone-menu-lateral">
@@ -50,10 +50,73 @@
                 <span>Sair</span>
             </button>
         </div>
-    </div>
+    </div> -->
+
     
+
     <main>
+        <header>
+            <div class="header-esquerda">
+                <span>Minha Instituição</span>
+            </div>
+            <div class="header-direita">
+                <button>Adicionar Polo</button>
+            </div>
+        </header>
         
+        <div class="main-conteudo">
+
+            <div class="sessao-filtros">
+                <select name="filtro-polos-uf" id="filtro_polos_uf" class="selecao-filtro">
+                    <option value="0" selected disabled>UF</option>
+                </select>
+
+                <select name="filtro-polos-municipio" id="filtro_polos_municipio" class="selecao-filtro">
+                    <option value="0" selected disabled>Município</option>
+                </select>
+
+                <button>Limpar Filtros</button>
+            </div>
+            
+            <input type="text" id="polos_barra_de_pesquisa" placeholder="Pesquisar" class="barra-de-pesquisa">
+            
+            <div class="sessao-polos">
+
+                <div class="item-sessao-polos">
+                    <div class="item-sessao-polos-esquerda">
+                        <span class="nome-polo">Polo Município 1</span>
+                        
+                        <div class="endereco-polo">
+                            <span>Município | UF</span>
+                            <br>
+                            <span>Rua Exemplo, 1234, Bairro</span>
+                        </div>
+                    </div>
+
+                    <div class="item-sessao-polos-direita">
+                        <span class="qtd-cursos">Quantidade de Cursos: 3</span>
+                    </div>
+                </div>
+
+                <div class="item-sessao-polos">
+                    <div class="item-sessao-polos-esquerda">
+                        <span class="nome-polo">Polo Município 2</span>
+                        
+                        <div class="endereco-polo">
+                            <span>Município | UF</span>
+                            <br>
+                            <span>Rua Amostra, 5678, Bairro</span>
+                        </div>
+                    </div>
+
+                    <div class="item-sessao-polos-direita">
+                        <span class="qtd-cursos">Quantidade de Cursos: 5</span>
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
     </main>
 
 </body>
