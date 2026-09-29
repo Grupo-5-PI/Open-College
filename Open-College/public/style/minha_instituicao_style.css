@@ -20,6 +20,7 @@ main{
     height: fit-content;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
 }
 
@@ -74,4 +75,46 @@ main{
 
 .item-sessao-polos .endereco-polo, .item-sessao-polos .qtd-cursos{
     font-size: 1.1em;
+}
+
+.dados-curso{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dados-curso span{
+    font-size: 1.8em;
+}
+
+.sessao-pag-curso{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.titulo-sessao-pag-curso{
+    font-size: 1.8em;
+}
+
+.sessao-pag-curso table{
+    width: 60%;
+    font-size: 1.5em;
+    border-collapse: collapse;
+}
+
+.sessao-pag-curso table td, .sessao-pag-curso table th{
+    padding: 8px 16px;
+    text-align: center;
+    border: 2px solid black;
+}
+
+.sessao-pag-curso div{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 1.2em;
 }
