@@ -1,23 +1,55 @@
-main header{
-    box-sizing: border-box;
-    border: 1px solid red;
-    height: fit-content;
-    width: 100%;
-    padding: 7px 25px;
+html, body{
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: var(--cor1);
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    font-size: 16px;
 }
 
 main{
-    border: 1px solid green;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+}
+
+main header{
+    background-color: var(--cor10);
+    box-sizing: border-box;
+    height: 5vh;
+    width: 100%;
+    padding: 0 25px 0 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+main header div{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+main header button{
+    height: 100%;
+    background-color: transparent;
+    border: none;
+}
+
+main header button:hover{
+    background-color: var(--cor4);
 }
 
 .main-conteudo{
-    border: 1px solid yellow;
     box-sizing: border-box;
     margin: 5vh;
-    height: fit-content;
+    min-height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,6 +66,7 @@ main{
 }
 
 .selecao-filtro{
+    background-color: var(--cor10);
     flex: 1;
     height: 40px;
     /* width: 30vw; */
@@ -42,15 +75,17 @@ main{
 }
 
 .barra-de-pesquisa{
+    background-color: var(--cor10);
     height: 40px;
     width: 100%;
     border-radius: 15px;
 }
 
 .sessao-polos{
-    border: 1px solid blue;
+    border-radius: 15px;
+    background-color: var(--corNavBar);
     box-sizing: border-box;
-    height: fit-content;
+    flex: 1;
     width: 100%;
     padding: 20px;
     display: flex;
@@ -59,7 +94,8 @@ main{
 }
 
 .item-sessao-polos{
-    border: 1px solid orange;
+    border-radius: 15px;
+    background-color: var(--cor10);
     box-sizing: border-box;
     height: fit-content;
     padding: 10px 25px;
@@ -69,6 +105,7 @@ main{
 }
 
 .item-sessao-polos .nome-polo{
+    color: #000000;
     text-decoration: none;
     font-size: 1.9em;
 }
