@@ -102,11 +102,11 @@ main header button:hover{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    text-decoration: none;
+    color: #000000;
 }
 
 .item-sessao-polos .nome-polo{
-    color: #000000;
-    text-decoration: none;
     font-size: 1.9em;
 }
 
