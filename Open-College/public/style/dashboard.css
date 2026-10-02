@@ -218,21 +218,142 @@ main {
 }
 
 .filtro-ano {
-    background-color: #d6e9c7;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 30px 6px 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--cor1);
+    border-color: var(--cor1);
+    border-radius: 6px;
+    padding: 8px 32px 8px 14px;
     font-family: 'Telegraf', sans-serif;
-    font-weight: 800;
-    font-size: 15px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #000;
     cursor: pointer;
+    outline: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filtro-ano:hover {
+    border-color: #999;
+}
+
+.filtro-ano:focus {
+    border-color: #4a7ff7;
+    box-shadow: 0 0 0 3px rgba(74, 127, 247, 0.2);
 }
 
 
-    /* ====================================== DASH PERFIL ======================================*/
+ /* ====================================== DASH GERAL ======================================*/
+
+.card-grafico{
+    display: grid;
+    grid-template-columns: 1.6fr 1fr; 
+    gap: 20px;
+    flex: 1;
+}
+
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;
+}
 
 
+/* ================= CARD KPI ================= */
+.card-kpi {
+    background-color: transparent;
+    border: 3px solid var(--cor1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+    color: #ffffff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 
+.card-kpi:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-titulo {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.2;
+    font-family: 'Telegraf', sans-serif;
+}
+
+.card-valor {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.card-rodape {
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Telegraf', sans-serif;
+}
+
+.graficoDireito{
+    background-color: transparent;
+    border: 3px solid var(--cor1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    color: #ffffff;
+    font-family: 'Telegraf', sans-serif;
+}
+
+.grafico-coluna-deitado{
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.graficosLadoaLado{
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 40px;
+    width: 100%;
+    flex: 1;
+}
+
+.grafico-duplo{
+    background-color: transparent;
+    border: 3px solid var(--cor1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff;
+    font-family: 'Telegraf', sans-serif;
+    height: 300px;
+}
+
+.grafico-coluna {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ====================================== DASH PERFIL ======================================*/
 .container-graficos {
     display: grid;
     grid-template-columns: 1fr 1fr; 
@@ -261,23 +382,18 @@ main {
 /* ====================================== FOOTER ======================================*/
 
 .footer {
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     width: 100%;
     height: 60px;
-
     background-color: var(--cor1);
 }
 
 .footer p {
-
     font-family: 'Bebas Neue', sans-serif;
     font-size: 18px;
     font-weight: bolder;
-
     letter-spacing: 1px;
     color: var(--corNavBar);
 }
