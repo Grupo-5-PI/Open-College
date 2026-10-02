@@ -10,14 +10,19 @@
     <link rel="icon" href="../img/logo/logo.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="../js/sessao.js"></script>
 </head>
 
+<!-- onload="validarSessao()" -->
 <body>
     <nav class="menu-lateral">
         <header class="menu-lateral-logo">
-            <span class="logo">
-                <img src="../img/logo/logo.png" alt="">
-            </span>
+            <a href="" class="perfil-link">
+                <div class="foto-wrapper">
+                    <img src="../img/icones/iconPerfil.png" alt="foto de perfil" class="foto-perfil" id="foto-perfil">
+                </div>
+                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+            </a>
         </header>
         <nav class="content">
             <ul id="nav-item">
@@ -62,7 +67,7 @@
 
         <div class="sair">
             <div class="btn-sair">
-                <button>
+                <button onclick="limparSessao()">
                     <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
                     <span>Sair</span>
                 </button>
@@ -201,7 +206,7 @@
                 maintainAspectRatio: false,
                 layout: {
                     padding: {
-                        right: 50 
+                        right: 50
                     }
                 },
                 plugins: {
@@ -282,7 +287,7 @@
             data: {
                 labels: ['MEDICINA', 'DIREITO', 'TI', 'PEDAGOGIA'],
                 datasets: [
-                     {
+                    {
                         type: 'line',
                         label: 'Meta Mínima',
                         data: [80, 80, 80, 80],
@@ -295,14 +300,14 @@
                         }
                     },
                     {
-                    data: [100, 55, 60, 75],
-                    backgroundColor: '#3cc027',
-                    borderWidth: 0,
-                    borderRadius: 3,
-                    categoryPercentage: 0.9,
-                    barPercentage: 0.9
-                }
-            ]
+                        data: [100, 55, 60, 75],
+                        backgroundColor: '#3cc027',
+                        borderWidth: 0,
+                        borderRadius: 3,
+                        categoryPercentage: 0.9,
+                        barPercentage: 0.9
+                    }
+                ]
             },
             options: {
                 responsive: true,
