@@ -44,19 +44,45 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80px;
+    height: 100px;
     padding-top: 40px;
 }
 
 .menu-lateral-logo img {
-    height: 30px;
+    height: 45px;
     width: auto;
     object-fit: contain;
     transition: height 0.5s ease;
 }
 
 .menu-lateral:hover .menu-lateral-logo img {
-    height: 60px;
+    height: 80px;
+}
+
+/* ================= LINK-PERFIL ================= */
+.nome-usuario {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s ease 0.1s, max-width 0.4s ease;
+     display: flex;
+    align-items: center;
+    color: black;
+    font-size: 15px;
+    font-family: 'Telegraf', sans-serif;
+    font-weight: 800;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.perfil-link {
+      text-decoration: none;
+}
+
+.menu-lateral:hover .nome-usuario {
+    opacity: 1;
+    max-width: 200px;
 }
 
 /* ================= ÁREA DE ITENS ================= */
