@@ -75,7 +75,7 @@
                 <a href="dashGeral.html" class="buttons-header active">Geral</a>
                 <a href="dashPerfil.html" class="buttons-header">Perfil</a>
                 <a href="" class="buttons-header">Demanda</a>
-                <a href="" class="buttons-header">Região</a>
+                <a href="dashRegiao.html" class="buttons-header">Região</a>
                 <a href="" class="buttons-header">Tendência</a>
                 <a href="" class="buttons-header btn-add">+</a>
 
@@ -211,7 +211,7 @@
             data: {
                 labels: ['Mulher Cisgênero', 'Homem Cisgênero', 'Outra Identidade'],
                 datasets: [{
-                    data: [2000, 1850, 300],
+                    data: [47, 8, 45],
                     backgroundColor: ['#4a7ff7', '#ae8df5', '#f3b86b'],
                     borderWidth: 0
                 }]
@@ -237,7 +237,8 @@
                         font: {
                             weight: 'bold',
                             size: 12
-                        }
+                        },
+                        formatter: (valor) => `${valor}%`
                     },
                     legend: {
                         position: 'left',
@@ -260,7 +261,7 @@
             data: {
                 labels: ['Rede Pública', 'Rede Privada'],
                 datasets: [{
-                    data: [5940, 8300],
+                    data: [58, 42],
                     backgroundColor: ['#ef737c', '#ffde59'],
                     borderWidth: 0
                 }]
@@ -286,7 +287,8 @@
                         font: {
                             weight: 'bold',
                             size: 12
-                        }
+                        },
+                        formatter: (valor) => `${valor}%`
                     },
                     legend: {
                         position: 'left',
