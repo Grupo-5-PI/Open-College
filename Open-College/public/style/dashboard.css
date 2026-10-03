@@ -217,6 +217,18 @@ main {
     font-size: 22px;
 }
 
+.grupo-filtro {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.grupo-filtro p {
+    font-size: 16px;
+    margin: 0;
+}
+
 .filtro-ano {
     appearance: none;
     -webkit-appearance: none;
@@ -246,11 +258,41 @@ main {
 }
 
 
- /* ====================================== DASH GERAL ======================================*/
+.filtro-regiao:hover {
+    border-color: #999;
+}
 
-.card-grafico{
+.filtro-regiao:focus {
+    border-color: #4a7ff7;
+    box-shadow: 0 0 0 3px rgba(74, 127, 247, 0.2);
+}
+
+.filtro-regiao {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--cor1);
+    border-color: var(--cor1);
+    border-radius: 6px;
+    padding: 8px 32px 8px 14px;
+    font-family: 'Telegraf', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #000;
+    cursor: pointer;
+    outline: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+
+/* ====================================== DASH GERAL ======================================*/
+
+.card-grafico {
     display: grid;
-    grid-template-columns: 1.6fr 1fr; 
+    grid-template-columns: 1.6fr 1fr;
     gap: 20px;
     flex: 1;
 }
@@ -303,7 +345,7 @@ main {
     font-family: 'Telegraf', sans-serif;
 }
 
-.graficoDireito{
+.graficoDireito {
     background-color: transparent;
     border: 3px solid var(--cor1);
     padding: 20px;
@@ -315,7 +357,7 @@ main {
     font-family: 'Telegraf', sans-serif;
 }
 
-.grafico-coluna-deitado{
+.grafico-coluna-deitado {
     flex: 1;
     width: 100%;
     display: flex;
@@ -324,15 +366,15 @@ main {
 }
 
 
-.graficosLadoaLado{
+.graficosLadoaLado {
     display: grid;
-    grid-template-columns: 1fr 1fr; 
+    grid-template-columns: 1fr 1fr;
     gap: 40px;
     width: 100%;
     flex: 1;
 }
 
-.grafico-duplo{
+.grafico-duplo {
     background-color: transparent;
     border: 3px solid var(--cor1);
     padding: 20px;
@@ -356,16 +398,16 @@ main {
 /* ====================================== DASH PERFIL ======================================*/
 .container-graficos {
     display: grid;
-    grid-template-columns: 1fr 1fr; 
-    gap: 20px; 
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
     padding: 20px;
     width: 1050px;
 }
 
 .grafico {
-    border: 3px solid #e6fbda; 
-    padding: 20px; 
-    background-color: transparent; 
+    border: 3px solid #e6fbda;
+    padding: 20px;
+    background-color: transparent;
     height: 250px;
     display: flex;
     justify-content: center;
@@ -373,10 +415,62 @@ main {
 }
 
 .grafico:first-child {
-    grid-column: span 2; 
+    grid-column: span 2;
     height: 280px;
 }
 
+
+/* ====================================== DASH REGIÃO ======================================*/
+
+.container-graficos-regiao {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.grafico-regiao {
+    border: 3px solid #e6fbda;
+    padding: 20px;
+    background-color: transparent;
+    height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+
+}
+
+.grid-cards-regiao {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.card-kpi-regiao {
+    background-color: transparent;
+    border: 3px solid var(--cor1);
+    padding: 20px 15px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 12px;
+    color: #ffffff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-kpi-regiao:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
 
 
 /* ====================================== FOOTER ======================================*/
