@@ -1,7 +1,11 @@
+    @import url('https://fonts.cdnfonts.com/css/bebas-neue');
+    @import url('https://fonts.cdnfonts.com/css/telegraf');
+
 html, body{
     height: 100vh;
     margin: 0;
     padding: 0;
+    font-family: 'telegraf';
 }
 
 body{
@@ -18,6 +22,7 @@ main{
 }
 
 main header{
+    font-weight: bold;
     background-color: var(--cor10);
     box-sizing: border-box;
     height: 5vh;
@@ -40,9 +45,12 @@ main header button{
     height: 100%;
     background-color: transparent;
     border: none;
+    font-family: 'telegraf';
+    font-weight: bold;
 }
 
 main header button:hover{
+    cursor: pointer;
     background-color: var(--cor4);
 }
 
@@ -66,19 +74,46 @@ main header button:hover{
 }
 
 .selecao-filtro{
+    box-sizing: border-box;
     background-color: var(--cor10);
     flex: 1;
     height: 40px;
     /* width: 30vw; */
     padding: 0 15px;
     border-radius: 15px;
+    border: none;
+    border-right: 18px solid transparent;
+    font-family: 'telegraf';
+    font-size: 1.1em;
+}
+
+.sessao-filtros button{
+    border: none;
+    border-radius: 15px;
+    background-color: var(--cor10);
+    font-family: 'telegraf';
+    padding: 10px;
+}
+
+.sessao-filtros button:hover{
+    cursor: pointer;
+    background-color: var(--cor4);
 }
 
 .barra-de-pesquisa{
+    box-sizing: border-box;
     background-color: var(--cor10);
     height: 40px;
     width: 100%;
     border-radius: 15px;
+    border: none;
+    padding: 0 0 0 25px;
+    font-family: 'telegraf';
+    font-size: 1.1em;
+}
+
+.barra-de-pesquisa::placeholder{
+    font-family: 'telegraf';
 }
 
 .sessao-polos{
@@ -94,6 +129,7 @@ main header button:hover{
 }
 
 .item-sessao-polos{
+    font-family: 'Bebas Neue';
     border-radius: 15px;
     background-color: var(--cor10);
     box-sizing: border-box;
@@ -102,16 +138,20 @@ main header button:hover{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    text-decoration: none;
+    color: #000000;
 }
 
 .item-sessao-polos .nome-polo{
+    font-family: 'telegraf';
+    font-weight: bold;
     color: #000000;
     text-decoration: none;
     font-size: 1.9em;
 }
 
 .item-sessao-polos .endereco-polo, .item-sessao-polos .qtd-cursos{
-    font-size: 1.1em;
+    font-size: 1.2em;
 }
 
 .dados-curso{
