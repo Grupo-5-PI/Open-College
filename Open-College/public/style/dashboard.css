@@ -473,6 +473,58 @@ main {
 }
 
 
+/* ====================================== DASH PERSONALIZADA ======================================*/
+
+.grid-cards-personalizado {
+    width: 400px;
+    height: 200px;
+    border-radius: 20px;
+    background-color: #c8d1d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botao-kpis {
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    font-size: 70px;
+    font-family: 'Poppins';
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-graficos-personalizado {
+    width: 700px;
+    height: 400px;
+    border-radius: 20px;
+    background-color: #c8d1d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botao-graficos {
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    font-size: 70px;
+    font-family: 'Poppins';
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
 /* ====================================== FOOTER ======================================*/
 
 .footer {
