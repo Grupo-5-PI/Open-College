@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Perfil </title>
+    <link rel="stylesheet" href="../style/global.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+    <link rel="icon" href="../img/logo/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.2.8/build/index.umd.min.js"></script>
+</head>
+
+<body>
+    <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <span class="logo">
+                <img src="../img/logo/logo.png" alt="">
+            </span>
+        </header>
+        <nav class="content">
+            <ul id="nav-item">
+                <li class="nav-item active">
+                    <a href="dashGeral.html">
+                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                            class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Painel de Atualização
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha Instituição
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha conta
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sair">
+            <div class="btn-sair">
+                <button>
+                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="painel-fundo">
+            <header class="header-dash">
+                <a href="dashGeral.html" class="buttons-header active">Geral</a>
+                <a href="dashPerfil.html" class="buttons-header">Perfil</a>
+                <a href="" class="buttons-header">Demanda</a>
+                <a href="dashRegiao.html" class="buttons-header">Região</a>
+                <a href="" class="buttons-header">Tendência</a>
+                <a href="" class="buttons-header btn-add">+</a>
+
+                <nav class="nav-dash">
+                    <p>Dashboard - Região (ANO)</p>
+                    <div class="grupo-filtro">
+                        <p>Região:</p>
+                        <select class="filtro-regiao">
+                            <option>SP</option>
+                            <option>MG</option>
+                            <option>RJ</option>
+                            <option>BA</option>
+                            <option>CE</option>
+                            <option>PA</option>
+                            <option>SC</option>
+                        </select>
+                    </div>
+                    <div class="grupo-filtro">
+                        <p>Ano:</p>
+                        <select class="filtro-ano">
+                            <option>2025</option>
+                            <option>2024</option>
+                            <option>2023</option>
+                            <option>2022</option>
+                            <option>2021</option>
+                            <option>2020</option>
+                            <option>2019</option>
+                        </select>
+                    </div>
+                </nav>
+            </header>
+
+            <div class="grid-cards-regiao">
+                <div class="card-kpi-regiao">
+                    <span class="card-titulo">Modalidade com mais alunos em <span class="texto-regiao">SP</span></span>
+                    <strong class="card-valor">EAD</strong>
+                    <span class="card-rodape">Anterior (2023): Presencial</span>
+                </div>
+
+                <div class="card-kpi-regiao">
+                    <span class="card-titulo">Curso com mais alunos em <span class="texto-regiao">SP</span></span>
+                    <strong class="card-valor">Direito</strong>
+                    <span class="card-rodape">Anterior (2023): Administração</span>
+                </div>
+
+                <div class="card-kpi-regiao">
+                    <span class="card-titulo">Área com mais alunos na região <span class="texto-regiao">SP</span></span>
+                    <strong class="card-valor">Tecnologia</strong>
+                    <span class="card-rodape">Anterior (2023): Saúde</span>
+                </div>
+            </div>
+
+            <div class="container-graficos-regiao">
+                <div class="grafico-regiao">
+                    <canvas id="grafico-alunos-area"></canvas>
+                </div>
+                <div class="grafico-regiao">
+                    <canvas id="grafico-ingressantes-regiao"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <div class="footer">
+        <p>COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.</p>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+
+    Chart.register(ChartGeo.ChoroplethController, ChartGeo.GeoFeature, ChartGeo.ColorScale, ChartGeo.ProjectionScale)
+
+    let filtroRegiao = document.querySelector('.filtro-regiao')
+    let textosRegiao = document.querySelectorAll('.texto-regiao')
+
+    function atualizarRegiao() {
+        let regiaoSelecionada = filtroRegiao.value;
+
+        for (let i = 0; i < textosRegiao.length; i++) {
+            textosRegiao[i].textContent = regiaoSelecionada
+        }
+    }
+
+    filtroRegiao.addEventListener('change', atualizarRegiao)
+    atualizarRegiao()
+
+    let tituloDash = document.querySelector('.nav-dash p')
+    let filtroAno = document.querySelector('.filtro-ano')
+
+    function atualizarAno() {
+        let anoSelecionado = filtroAno.value
+        tituloDash.textContent = `Dashboard - Regional (${anoSelecionado})`
+    }
+
+    filtroAno.addEventListener('change', atualizarAno)
+
+    atualizarAno()
+
+
+    function carregarAlunosArea() {
+        let alunosArea = document.getElementById('grafico-alunos-area')
+
+        new Chart(alunosArea, {
+            type: 'bar',
+            plugins: [ChartDataLabels],
+            data: {
+                labels: ['SP', 'ABC', 'Campinas', 'Sorocaba'],
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Meta Mínima',
+                        data: [600, 600, 600, 600],
+                        borderColor: '#ff5555',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        fill: false,
+                        datalabels: {
+                            display: false
+                        }
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Número de Alunos',
+                        data: [1500, 1000, 900, 500],
+                        backgroundColor: [
+                            '#4a7ff7', '#ae8df5', '#f3b86b', '#ffde59'
+                        ],
+                        borderRadius: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Quantidade de alunos por área na região - Top 4',
+                        color: '#ffffff',
+                        font: { size: 20, family: 'Telegraf' },
+                        padding: { bottom: 20 }
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        color: '#ffffff',
+                        font: {
+                            weight: 'bold',
+                            size: 12
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 2000,
+                        ticks: { color: '#ffffff' },
+                        grid: { display: false }
+                    },
+                    x: {
+                        ticks: { color: '#ffffff' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        })
+    }
+
+
+    function carregarIngressantesRegiao() {
+        let canvas = document.getElementById('grafico-ingressantes-regiao')
+
+        fetch('https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (geoData) {
+                const states = geoData.features;
+
+                new Chart(canvas, {
+                    type: 'choropleth',
+                    data: {
+                        labels: states.map(d => d.properties.name),
+                        datasets: [{
+                            label: 'Estados',
+                            outline: states,
+                            data: states.map((d, index) => ({
+                                feature: d,
+                                value: index
+                            })),
+                            backgroundColor: '#9e9e9e',
+                            borderColor: '#ffffff',
+                            borderWidth: 1,
+                            hoverBackgroundColor: '#4a7ff7'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Ingressantes por região',
+                                color: '#ffffff',
+                                font: { size: 20, family: 'Telegraf' },
+                                padding: { bottom: 20 }
+                            },
+                            legend: { display: false }
+                        },
+                        scales: {
+                            projection: {
+                                axis: 'x',
+                                projection: 'mercator',
+                                display: false 
+                            },
+                            color: {
+                                axis: 'x',
+                                display: false 
+                            }
+                        }
+                    }
+                });
+            });
+    }
+
+    carregarAlunosArea()
+    carregarIngressantesRegiao()
+
+</script>

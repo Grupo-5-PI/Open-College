@@ -202,6 +202,22 @@ CREATE TABLE tblCenso (
 			REFERENCES tblCurso (idCurso)
 );
 
+CREATE TABLE tblNoticia (
+    idNoticia INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(150) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    dtNoticia DATETIME,
+    setor VARCHAR(50),
+    nota INT,
+    fkUsuario INT,
+    CONSTRAINT chUsuario
+    FOREIGN KEY(fkUsuario)
+    REFERENCES tblUsuario (idUsuario)
+);
+
+
+
+
 
 
 
