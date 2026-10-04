@@ -18,7 +18,7 @@ body{
 main{
     box-sizing: border-box;
     flex: 1;
-    /* margin-left: 35vh; */
+    margin-left: 70px;
     min-height: 100vh;
     max-height: fit-content;
 }
@@ -95,6 +95,10 @@ main header button:hover{
     font-size: 1.1em;
 }
 
+.selecao-filtro:hover{
+    cursor: pointer;
+}
+
 .sessao-filtros button{
     border: none;
     border-radius: 15px;
@@ -148,6 +152,10 @@ main header button:hover{
     justify-content: space-between;
     text-decoration: none;
     color: #000000;
+}
+
+.item-sessao-polos:hover{
+    background-color: var(--cor4);
 }
 
 .item-sessao-polos .nome-polo{
