@@ -50,12 +50,14 @@
 
         <div class="campo-grupo">
             <label><img src="./img/icones/iconCPF.png" alt=""> CPF</label>
-            <input type="text" placeholder="Apenas números sem pontos ou traços" id="ipt_cpf">
+            <input type="text" placeholder="000.000.000-00" maxlength="14" oninput="this.value= mascaraCpf(this.value)"
+             id="ipt_cpf">
         </div>
 
         <div class="campo-grupo">
             <label><img src="./img/icones/iconTelefone.png" alt=""> TELEFONE</label>
-            <input type="text" placeholder="Apenas números (incluindo o DDD)" id="ipt_telefone">
+            <input type="text" placeholder="(11) 99999-8888" maxlength="15"  oninput="this.value= mascaraTelefone(this.value)"
+            id="ipt_telefone">
         </div>
 
         <div class="campo-grupo">
@@ -97,12 +99,28 @@
 
 <script>
 
+     function mascaraCpf(limpo) {
+
+        return limpo.replace(/\D/g, '') // aqui remove tudo que nao e numero
+            .replace(/^(\d{3})(\d)/, '$1.$2') // coloca os ponto dos 3 primeiros digitos
+            .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // ponto dps do 6 digito
+            .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4') // ponto e o hifen             
+            .slice(0, 14); // deixa o tamanho maximo em 14
+    }
+    function mascaraTelefone(limpo){
+        return limpo.replace(/\D/g,'') // remove tudo que nao e numero
+        .replace(/^(\d{2})(\d)/g, '($1) $2') // parenteses no DDD
+        .replace(/(\d{5})(\d)/, '$1-$2') // coloca o hifen pos o 5 digito
+        .slice(0,15); // limita o tamanho em 15
+    }
+
+
     function cadastrar() {
 
         let admin = null;
         let nomeVar = ipt_nome.value;
-        let cpfVar = ipt_cpf.value;
-        let telefoneVar = ipt_telefone.value;
+        let cpfVar = ipt_cpf.value.replace(/\D/g, '') ;
+        let telefoneVar = ipt_telefone.value.replace(/\D/g, '');
         let emailVar = ipt_login.value;
         let senhaVar = ipt_senha.value;
         let confirmacaoSenhaVar = ipt_senhaConfirmar.value;
@@ -163,14 +181,14 @@
 
             }
 
-        }if(ipt_cpf.value.length !== 11){
+        }if(cpfVar.length !== 11){
             cardErro.style.display = "block";
             mensagem_erro.innerHTML =
                 "CPF inválido";
             setTimeout(sumirMensagem, 3000);
             return false;
         } 
-        if(ipt_telefone.value.length !== 11){
+        if(telefoneVar.length !== 11){
             cardErro.style.display = "block";
             mensagem_erro.innerHTML =
                 "Número de telefone inválido";

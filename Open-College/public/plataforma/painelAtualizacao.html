@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/painelAtualizacao.css">
+    <link rel="stylesheet" href="../style/global.css">
+    <title>Painel de atualizações</title>
+</head>
+
+<!-- conteúdo das preferências -->
+<dialog id="popup" class="popup" aria-labelledby="popup-titulo">
+    <form class="form-atualizacao">
+        <h2 id="popup-titulo" class="popup-titulo">Criar atualização</h2>
+
+        <div class="campo">
+            <label for="curso">curso</label>
+            <select id="curso"></select>
+        </div>
+
+        <div class="campo">
+            <label for="area">area geral</label>
+            <select id="area"></select>
+        </div>
+
+        <div class="campo">
+            <label for="modalidade">modalidade</label>
+            <select id="modalidade"></select>
+        </div>
+
+        <div class="linha-uf-municipio">
+            <div class="campo">
+                <label for="uf">uf</label>
+                <select id="uf"></select>
+            </div>
+            <div class="campo">
+                <label for="municipio">município</label>
+                <select id="municipio"></select>
+            </div>
+        </div>
+
+        <div class="campo">
+            <label for="turno">turno</label>
+            <select id="turno"></select>
+        </div>
+
+        <button type="submit" class="btn-enviar">&gt;</button>
+    </form>
+</dialog>
+
+<body>
+    <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <span class="logo">
+                <img src="../img/logo/logo.png" alt="">
+            </span>
+        </header>
+        <nav class="content">
+            <ul id="nav-item">
+                <li class="nav-item active">
+                    <a href="dashGeral.html">
+                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                            class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Painel de Atualização
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha Instituição
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha conta
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sair">
+            <div class="btn-sair">
+                <button>
+                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- titulo da pagina -->
+    <header class="topo-pagina">
+    <h1 class="titulo-pagina">Painel de Atualizações</h1>
+
+
+    <!-- botão para abrir as preferências -->
+    <button type="button" class="icone-topo" id="btn-popup" aria-label="Abrir painel">
+        <img src="../img/icones/iconeEditar.png" alt="">
+    </button>
+</header>
+
+<!-- notificações -->
+    <div class="fundoNoti">
+
+    <div class="notificacao">
+        <div class="notificacao-topo">
+            <span class="notificacao-titulo">Área Geral - Tecnologia</span>
+            <button class="notificacao-menu" aria-label="Opções">⋮</button>
+        </div>
+        <span class="notificacao-tempo">35 min</span>
+    </div>
+
+    <div class="notificacao">
+        <div class="notificacao-topo">
+            <span class="notificacao-titulo">curso - ciências da computação</span>
+            <button class="notificacao-menu" aria-label="Opções">⋮</button>
+        </div>
+        <span class="notificacao-tempo">35 min</span>
+    </div>
+
+    <div class="notificacao">
+        <div class="notificacao-topo">
+            <span class="notificacao-titulo">Modalidade - presencial</span>
+            <button class="notificacao-menu" aria-label="Opções">⋮</button>
+        </div>
+        <span class="notificacao-tempo">35 min</span>
+    </div>
+
+    <div class="notificacao">
+        <div class="notificacao-topo">
+            <span class="notificacao-titulo">turno - matutino</span>
+            <button class="notificacao-menu" aria-label="Opções">⋮</button>
+        </div>
+        <span class="notificacao-tempo">35 min</span>
+    </div>
+
+     <div class="notificacao">
+        <div class="notificacao-topo">
+            <span class="notificacao-titulo">uf - SP</span>
+            <button class="notificacao-menu" aria-label="Opções">⋮</button>
+        </div>
+        <span class="notificacao-tempo">35 min</span>
+    </div>
+
+     <div class="notificacao">
+        <div class="notificacao-topo">
+            <span class="notificacao-titulo">município - São Caetano</span>
+            <button class="notificacao-menu" aria-label="Opções">⋮</button>
+        </div>
+        <span class="notificacao-tempo">35 min</span>
+    </div>
+
+</div> 
+</body>
+
+<script>
+    const popup = document.getElementById('popup');
+    const btnAbrir = document.getElementById('btn-popup');
+    const btnFechar = document.getElementById('btn-fechar');
+
+    btnAbrir.addEventListener('click', () => popup.showModal());
+    btnFechar.addEventListener('click', () => popup.close());
+
+    // fecha ao clicar fora (no fundo escuro)
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) popup.close();
+    });
+</script>
+</html>
