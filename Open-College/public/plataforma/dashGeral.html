@@ -80,8 +80,9 @@
             <header class="header-dash">
                 <a href="dashGeral.html" class="buttons-header active">Geral</a>
                 <a href="dashPerfil.html" class="buttons-header">Perfil</a>
-                <a href="" class="buttons-header">Demanda</a>
+                <a href="dashDemanda.html" class="buttons-header">Demanda</a>
                 <a href="dashRegiao.html" class="buttons-header">Região</a>
+                <a href="dashDemanda.html" class="buttons-header">Região</a>
                 <a href="" class="buttons-header">Tendência</a>
                 <a href="" class="buttons-header btn-add">+</a>
 
@@ -187,7 +188,7 @@
 
     atualizarAno()
 
-    function carregarMaisProcurado() {
+    function carregarGraficoMaisProcurado() {
         let maisProcurado = document.getElementById('grafico-grad-mais-procurada');
 
         new Chart(maisProcurado, {
@@ -278,9 +279,9 @@
         });
     }
 
-    carregarMaisProcurado();
+    carregarGraficoMaisProcurado();
 
-    function carregarAreaGeralMatricula() {
+    function carregarGraficoAreaGeralMatricula() {
         let areaGeral = document.getElementById('grafico-area-geral-matricula');
 
         new Chart(areaGeral, {
@@ -369,7 +370,7 @@
             }
         });
     }
-    carregarAreaGeralMatricula();
+    carregarGraficoAreaGeralMatricula();
 
     function carregarGraficoModalidadeProcurada() {
         let modalidadeProcurada = document.getElementById('grafico-mod-mais-procurada-curso');
