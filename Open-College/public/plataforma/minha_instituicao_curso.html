@@ -7,9 +7,67 @@
     <link rel="stylesheet" href="../style/global.css">
     <!-- <link rel="stylesheet" href="../style/plataforma_global_style.css"> -->
     <link rel="stylesheet" href="../style/minha_instituicao_style.css">
+    <link rel="stylesheet" href="../style/menuLateral.css">
 </head>
 <body>
     
+    <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <span class="logo">
+                <img src="../img/logo/logo.png" alt="">
+            </span>
+        </header>
+        <nav class="content">
+            <ul id="nav-item">
+                <li class="nav-item active">
+                    <a href="dashGeral.html">
+                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                            class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Painel de Atualização
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha Instituição
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha conta
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sair">
+            <div class="btn-sair">
+                <button>
+                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
     <main>
 
         <header>
@@ -35,19 +93,19 @@
                 <span class="titulo-sessao-pag-curso">Estatísticas</span>
                 
                 <table>
-                    <tr>
-                        <th>VAGAS</th>
-                        <th>MATRÍCULAS</th>
+                    <tr class="topo-tabela">
+                        <th style="border-top-left-radius: 27px;">VAGAS</th>
+                        <th style="border-top-right-radius: 27px;">MATRÍCULAS</th>
                     </tr>
                     <tr>
-                        <td>999</td>
-                        <td>999</td>
+                        <td style="border-bottom-left-radius: 27px;">999</td>
+                        <td style="border-bottom-right-radius: 27px;">999</td>
                     </tr>
                 </table>
                 
                 <div>
                     <span>Atualizado por último em: DD/MM/YYYY</span>
-                    <button>Atualizar</button>
+                    <button>ATUALIZAR</button>
                 </div>
                 
             </div>
@@ -58,16 +116,16 @@
                 
                 <table>
                     <tr>
-                        <th>MATRÍCULAS</th>
+                        <th style="border-top-left-radius: 27px; border-top-right-radius: 27px;">MATRÍCULAS</th>
                     </tr>
                     <tr>
-                        <td>999</td>
+                        <td style="border-bottom-left-radius: 27px; border-bottom-right-radius: 27px;">999</td>
                     </tr>
                 </table>
                 
                 <div>
                     <span>Para: DD/MM/YYYY</span>
-                    <button>Atualizar</button>
+                    <button>ATUALIZAR</button>
                 </div>
                 
             </div>
