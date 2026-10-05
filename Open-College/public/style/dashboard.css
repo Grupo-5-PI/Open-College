@@ -20,151 +20,6 @@ main {
     background-color: var(--corNavBar);
 }
 
-/* ================= MENU LATERAL ================= */
-.menu-lateral {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 70px;
-    background-color: var(--cor1);
-    transition: width 0.5s ease;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-}
-
-.menu-lateral:hover {
-    width: 250px;
-}
-
-/* ================= LOGO ================= */
-.menu-lateral-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100px;
-    padding-top: 40px;
-}
-
-.menu-lateral-logo img {
-    height: 45px;
-    width: auto;
-    object-fit: contain;
-    transition: height 0.5s ease;
-}
-
-.menu-lateral:hover .menu-lateral-logo img {
-    height: 80px;
-}
-
-/* ================= LINK-PERFIL ================= */
-.nome-usuario {
-    opacity: 0;
-    max-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    transition: opacity 0.3s ease 0.1s, max-width 0.4s ease;
-     display: flex;
-    align-items: center;
-    color: black;
-    font-size: 15px;
-    font-family: 'Telegraf', sans-serif;
-    font-weight: 800;
-    white-space: nowrap;
-    width: 100%;
-}
-
-.perfil-link {
-      text-decoration: none;
-}
-
-.menu-lateral:hover .nome-usuario {
-    opacity: 1;
-    max-width: 200px;
-}
-
-/* ================= ÁREA DE ITENS ================= */
-.menu-lateral .content {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-top: 20px;
-}
-
-.menu-lateral ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* ================= LINK ================= */
-.nav-item a,
-.btn-sair button {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    height: 55px;
-    padding-left: 15px;
-    box-sizing: border-box;
-    color: black;
-    font-size: 15px;
-    font-family: 'Telegraf', sans-serif;
-    font-weight: 800;
-    text-decoration: none;
-    white-space: nowrap;
-    width: 100%;
-}
-
-.nav-item.active {
-    background-color: var(--cor9);
-}
-
-.nav-item:hover:not(.active),
-.btn-sair:hover {
-    background-color: #e3e9f7;
-}
-
-/* ================= ÍCONES ================= */
-.icone-menu-lateral {
-    display: block;
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    flex-shrink: 0;
-    object-fit: contain;
-    padding: 3px;
-    box-sizing: border-box;
-}
-
-/* ================= TEXTO ================= */
-.titulo-menu-lateral {
-    opacity: 0;
-    max-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    transition: opacity 0.3s ease 0.1s, max-width 0.4s ease;
-}
-
-.menu-lateral:hover .titulo-menu-lateral {
-    opacity: 1;
-    max-width: 200px;
-}
-
-/* ================= SAIR ================= */
-.sair {
-    padding-bottom: 20px;
-}
-
-.btn-sair button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    text-align: start;
-
-}
-
 /* ================= FUNDO AZUL ================= */
 .painel-fundo {
     background-color: var(--cor9);
@@ -497,6 +352,98 @@ main {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
+
+
+/* ====================================== DASH DEMANDA ======================================*/
+.grid-cards-demanda {
+     display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    flex: 1;
+    width: 100%;
+}
+
+.card-kpi-demanda {
+    display: flex;
+    justify-content: center;  
+    align-items: center;        
+}
+
+.container-graficos-demanda {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    gap: 15px;
+    width: 100%;
+    flex: 1;
+}
+
+.grafico-demanda {
+    background-color: transparent;
+    border: 3px solid var(--cor1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff;
+    font-family: 'Telegraf', sans-serif;
+    height: 280px;
+}
+
+ .grafico-demanda:nth-child(3) {
+    grid-column: 1/ 3;
+    height: 300px;
+} 
+/* ====================================== DASH PERSONALIZADA ======================================*/
+
+.grid-cards-personalizado {
+    width: 400px;
+    height: 200px;
+    border-radius: 20px;
+    background-color: #c8d1d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botao-kpis {
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    font-size: 70px;
+    font-family: 'Poppins';
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-graficos-personalizado {
+    width: 700px;
+    height: 400px;
+    border-radius: 20px;
+    background-color: #c8d1d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botao-graficos {
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    font-size: 70px;
+    font-family: 'Poppins';
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 
 /* ====================================== FOOTER ======================================*/
