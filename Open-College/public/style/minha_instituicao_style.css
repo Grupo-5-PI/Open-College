@@ -230,3 +230,22 @@ main header button:hover{
     cursor: pointer;
     background-color: var(--cor4);
 }
+
+.sombra-popup{
+    z-index: 1001;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: #0000004f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-interacao{
+    z-index: 1002;
+    position: absolute;
+    border: 2px solid red;
+    width: 65vw;
+    background-color: var(--corNavBar);
+}
