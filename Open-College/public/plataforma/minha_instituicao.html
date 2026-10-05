@@ -8,6 +8,7 @@
     <!-- <link rel="stylesheet" href="../style/plataforma_global_style.css"> -->
      <!-- DEPOIS EU VEJO ESSE ESTILO EM CIMA, POR CONTA DA BARRA LATERAL.... -->
     <link rel="stylesheet" href="../style/minha_instituicao_style.css">
+    <link rel="stylesheet" href="../style/menuLateral.css">
 </head>
 <body>
     
@@ -54,7 +55,62 @@
         </div>
     </div> -->
 
-    
+    <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <span class="logo">
+                <img src="../img/logo/logo.png" alt="">
+            </span>
+        </header>
+        <nav class="content">
+            <ul id="nav-item">
+                <li class="nav-item active">
+                    <a href="dashGeral.html">
+                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                            class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Painel de Atualização
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha Instituição
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha conta
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sair">
+            <div class="btn-sair">
+                <button>
+                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </nav>
 
     <main>
         <header>
@@ -84,9 +140,9 @@
             
             <div class="sessao-polos">
 
-                <div class="item-sessao-polos">
+                <a href="./minha_instituicao_polo.html" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
-                        <a href="./minha_instituicao_polo.html" class="nome-polo">Polo Município 1</a>
+                        <div class="nome-polo">Polo Município 1</div>
                         
                         <div class="endereco-polo">
                             <span>Município | UF</span>
@@ -98,11 +154,11 @@
                     <div class="item-sessao-polos-direita">
                         <span class="qtd-cursos">Quantidade de Cursos: 3</span>
                     </div>
-                </div>
+                </a>
 
-                <div class="item-sessao-polos">
+                <a  href="./minha_instituicao_polo.html" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
-                        <a href="./minha_instituicao_polo.html" class="nome-polo">Polo Município 2</a>
+                        <div class="nome-polo">Polo Município 2</div>
                         
                         <div class="endereco-polo">
                             <span>Município | UF</span>
@@ -114,7 +170,7 @@
                     <div class="item-sessao-polos-direita">
                         <span class="qtd-cursos">Quantidade de Cursos: 5</span>
                     </div>
-                </div>
+                </a>
 
             </div>
             
