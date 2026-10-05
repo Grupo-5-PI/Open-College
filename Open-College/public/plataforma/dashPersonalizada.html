@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Perfil </title>
+    <link rel="stylesheet" href="../style/global.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+    <link rel="icon" href="../img/logo/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.2.8/build/index.umd.min.js"></script>
+</head>
+
+<body>
+    <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <span class="logo">
+                <img src="../img/logo/logo.png" alt="">
+            </span>
+        </header>
+        <nav class="content">
+            <ul id="nav-item">
+                <li class="nav-item active">
+                    <a href="dashGeral.html">
+                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                            class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Painel de Atualização
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha Instituição
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="">
+                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha conta
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sair">
+            <div class="btn-sair">
+                <button>
+                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="painel-fundo">
+            <header class="header-dash">
+                <a href="dashGeral.html" class="buttons-header active">Geral</a>
+                <a href="dashPerfil.html" class="buttons-header">Perfil</a>
+                <a href="" class="buttons-header">Demanda</a>
+                <a href="dashRegiao.html" class="buttons-header">Região</a>
+                <a href="" class="buttons-header">Tendência</a>
+                <a href="" class="buttons-header btn-add">+</a>
+
+                <nav class="nav-dash">
+                    <p>Dashboard - Região (ANO)</p>
+                    <div class="grupo-filtro">
+                        <p>Ano:</p>
+                        <select class="filtro-ano">
+                            <option>2025</option>
+                            <option>2024</option>
+                            <option>2023</option>
+                            <option>2022</option>
+                            <option>2021</option>
+                            <option>2020</option>
+                            <option>2019</option>
+                        </select>
+                    </div>
+                </nav>
+            </header>
+
+            <div class="grid-cards-personalizado">
+                <button class="botao-kpis">+</button>
+            </div>
+
+            <div class="container-graficos-personalizado">
+                <button class="botao-graficos">+</button>
+            </div>
+
+        </div>
+    </main>
+    <div class="footer">
+        <p>COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.</p>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    let tituloDash = document.querySelector('.nav-dash p')
+    let filtroAno = document.querySelector('.filtro-ano')
+
+    function atualizarAno() {
+        let anoSelecionado = filtroAno.value
+        tituloDash.textContent = `Dashboard - Regional (${anoSelecionado})`
+    }
+
+    filtroAno.addEventListener('change', atualizarAno)
+
+    atualizarAno()
+</script>
