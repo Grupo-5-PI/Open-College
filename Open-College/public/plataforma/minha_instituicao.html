@@ -180,44 +180,51 @@
     <div class="sombra-popup">
         <div class="popup-interacao" id="popup_adicionar_polo">
             <div class="header-popup">
-                <span>x</span>
-                <span>Adicionar Polo</span>
+                <span>
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Adicionar Polo</span>
             </div>
             
             <div class="inputs-popup">
-                <div>
-                    <div class="input-popup">
-                        <label for="logradouro">Logradouro: </label>
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 70%">
+                        <label for="logradouro">LOGRADOURO: </label>
                         <input type="text" name="logradouro">
                     </div>
                     
-                    <div class="input-popup">
-                        <label for="numero">Número: </label>
+                    <div class="input-popup" style="width: 30%">
+                        <label for="numero">NÚMERO: </label>
                         <input type="text" name="numero">
                     </div>
                 </div>
                 
-                <div>
-                    <div class="input-popup">
-                        <label for="bairro">Bairro: </label>
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 35%;">
+                        <label for="bairro">BAIRRO: </label>
                         <input type="text" name="bairro">
                     </div>
                     
-                    <div class="input-popup">
-                        <label for="municipio">Município: </label>
+                    <div class="input-popup" style="width: 55%">
+                        <label for="municipio">MUNICÍPIO: </label><br>
                         <select name="municipio" id="">
                             <option value="0"></option>
                         </select>
                     </div>
                     
-                    <div class="input-popup">
-                        <label for="uf">UF: </label>
+                    <div class="input-popup" style="width: 10%">
+                        <label for="uf">UF: </label><br>
                         <select name="uf" id="">
                             <option value="0"></option>
                         </select>
                     </div>
                 </div>
             </div>
+
+            <button>
+                ADICIONAR
+            </button>
+            
         </div>
     </div>
 
