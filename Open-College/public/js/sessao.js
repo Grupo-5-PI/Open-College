@@ -7,7 +7,8 @@ function validarSessao() {
     
   
     var b_usuario = document.getElementById("b_usuario");
-    var imgUsuario = document.getElementById("foto_usuario");
+    var imgUsuario = document.getElementById("imgUsuario");
+  
 
 
     if (email != null && nome != null) {
