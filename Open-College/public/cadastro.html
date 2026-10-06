@@ -77,8 +77,8 @@
         </div>
 
         <div class="campo-grupo campo-foto">
-            <label><img src="./img/icones/iconAnexo_img.png" alt=""> ANEXE SUA FOTO (OPCIONAL)</label>
-            <input id="ipt_foto">
+            <label><img src="./img/icones/iconAnexo_img.png" alt=""> LINK SUA FOTO (OPCIONAL)</label>
+            <input id="ipt_foto" type="url" placeholder="https://exemplo.com" maxlength="1000">
         </div>
 
         <div class="container-btn-etapa">
@@ -98,6 +98,8 @@
 </html>
 
 <script>
+
+  
 
      function mascaraCpf(limpo) {
 
@@ -124,8 +126,8 @@
         let emailVar = ipt_login.value;
         let senhaVar = ipt_senha.value;
         let confirmacaoSenhaVar = ipt_senhaConfirmar.value;
-        let fotoVar = ipt_foto.value;
         let perfilVar = select_perfil.value;
+        let fotoVar = ipt_foto.value;
         let msg = '';
 
 
@@ -239,6 +241,7 @@
                 emailServer: emailVar,
                 senhaServer: senhaVar,
                 perfilServer: perfilVar,
+                fotoServer: fotoVar,
                 adminServer: admin,
 
 
