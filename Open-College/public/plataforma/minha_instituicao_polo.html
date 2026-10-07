@@ -74,8 +74,8 @@
                 <span>Polo Município 1</span>
             </div>
             <div class="header-direita">
-                <button>Adicionar Curso</button>
-                <button>Editar Polo</button>
+                <button onclick="abrirFecharPopup('popup_adicionar_curso')">Adicionar Curso</button>
+                <button onclick="abrirFecharPopup('popup_editar_polo')">Editar Polo</button>
             </div>
         </header>
         
@@ -134,5 +134,66 @@
         </div>
     </main>
 
+    <div class="container-popup" id="popup_editar_polo">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_editar_polo')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_editar_polo')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Editar Polo</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 70%">
+                        <label for="logradouro">LOGRADOURO: </label>
+                        <input type="text" name="logradouro">
+                    </div>
+                    
+                    <div class="input-popup" style="width: 30%">
+                        <label for="numero">NÚMERO: </label>
+                        <input type="text" name="numero">
+                    </div>
+                </div>
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 35%;">
+                        <label for="bairro">BAIRRO: </label>
+                        <input type="text" name="bairro">
+                    </div>
+                    
+                    <div class="input-popup" style="width: 55%">
+                        <label for="municipio">MUNICÍPIO: </label><br>
+                        <select name="municipio" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-popup" style="width: 10%">
+                        <label for="uf">UF: </label><br>
+                        <select name="uf" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button>
+                    SALVAR
+                </button>
+            
+                <button class="botao-excluir">
+                    EXCLUIR
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
 </body>
 </html>
+
+<script src="../js/minhaInstituicaoScript.js"></script>
