@@ -118,7 +118,7 @@
                 <span>Minha Instituição</span>
             </div>
             <div class="header-direita">
-                <button>Adicionar Polo</button>
+                <button onclick="abrirFecharPopup('popup_adicionar_polo')">Adicionar Polo</button>
             </div>
         </header>
         
@@ -176,11 +176,14 @@
             
         </div>
     </main>
+    
+    
+    <div class="container-popup" id="popup_adicionar_polo">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_adicionar_polo')"></div>
 
-    <div class="sombra-popup">
-        <div class="popup-interacao" id="popup_adicionar_polo">
+        <div class="popup-interacao">
             <div class="header-popup">
-                <span>
+                <span onclick="abrirFecharPopup('popup_adicionar_polo')">
                     <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
                 </span>
                 <span class="titulo-popup">Adicionar Polo</span>
@@ -220,7 +223,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <button>
                 ADICIONAR
             </button>
@@ -230,3 +233,5 @@
 
 </body>
 </html>
+
+<script src="../js/minhaInstituicaoScript.js"></script>
