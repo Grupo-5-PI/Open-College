@@ -26,7 +26,7 @@ function autenticar(req, res) {
                                         email: resultadoAutenticar[0].email,
                                         nome: resultadoAutenticar[0].nome,
                                         senha: resultadoAutenticar[0].senha,
-                                        
+                                        foto: resultadoAutenticar[0].foto,
                                     });
                         
                          
@@ -54,6 +54,7 @@ function cadastrar(req, res) {
     var telefone = req.body.telefoneServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
+    var foto = req.body.fotoServer;
     var tipo = req.body.perfilServer;
     var admin = req.body.adminServer;
 
@@ -78,7 +79,7 @@ function cadastrar(req, res) {
     else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome,cpf,telefone,email,senha,tipo,admin)
+        usuarioModel.cadastrar(nome,cpf,telefone,email,senha,foto,tipo,admin)
             .then(
                 function (resultado) {
                     res.json(resultado);

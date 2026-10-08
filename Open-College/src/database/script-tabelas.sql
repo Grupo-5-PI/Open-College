@@ -6,7 +6,7 @@
 comandos para mysql server
 */
 
-CREATE DATABASE opencollege;
+CREATE DATABASE IF NOT EXISTS opencollege;
 USE opencollege;
 
 CREATE TABLE tblInstituicao (

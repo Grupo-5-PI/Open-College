@@ -7,6 +7,7 @@
     <title>Dashboard | Geral </title>
     <link rel="stylesheet" href="../style/global.css">
     <link rel="stylesheet" href="../style/dashboard.css">
+    <link rel="stylesheet" href="../style/menuLateral.css">
     <link rel="icon" href="../img/logo/logo.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -19,7 +20,7 @@
         <header class="menu-lateral-logo">
             <a href="" class="perfil-link">
                 <div class="foto-wrapper">
-                    <img src="../img/icones/iconPerfil.png" alt="foto de perfil" class="foto-perfil" id="foto-perfil">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
                 </div>
                  <span class="nome-usuario" id="b_usuario">Carregando...</span>
             </a>
@@ -190,7 +191,7 @@
 
     atualizarAno()
 
-    function carregarMaisProcurado() {
+    function carregarGraficoMaisProcurado() {
         let maisProcurado = document.getElementById('grafico-grad-mais-procurada');
 
         new Chart(maisProcurado, {
@@ -281,9 +282,9 @@
         });
     }
 
-    carregarMaisProcurado();
+    carregarGraficoMaisProcurado();
 
-    function carregarAreaGeralMatricula() {
+    function carregarGraficoAreaGeralMatricula() {
         let areaGeral = document.getElementById('grafico-area-geral-matricula');
 
         new Chart(areaGeral, {
@@ -372,7 +373,7 @@
             }
         });
     }
-    carregarAreaGeralMatricula();
+    carregarGraficoAreaGeralMatricula();
 
     function carregarGraficoModalidadeProcurada() {
         let modalidadeProcurada = document.getElementById('grafico-mod-mais-procurada-curso');

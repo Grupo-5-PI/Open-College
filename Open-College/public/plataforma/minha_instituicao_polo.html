@@ -8,24 +8,8 @@
     <link rel="stylesheet" href="../style/global.css">
     <!-- <link rel="stylesheet" href="../style/plataforma_global_style.css"> -->
     <link rel="stylesheet" href="../style/minha_instituicao_style.css">
-<<<<<<< Updated upstream
 </head>
 <body>
-=======
-    <link rel="stylesheet" href="../style/menuLateral.css">
-    <script src="../js/sessao.js"></script>
-</head>
-
-<!-- onload="validarSessao()" -->
-<body>
-    <nav class="menu-lateral">
-        <header class="menu-lateral-logo">
-            <a href="" class="perfil-link">
-                <div class="foto-wrapper">
-                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
-                </div>
-                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
-            </a>
         </header>
         <nav class="content">
             <ul id="nav-item">
@@ -77,7 +61,6 @@
             </div>
         </div>
     </nav>
->>>>>>> Stashed changes
     
     <main>
         <header>
@@ -85,8 +68,8 @@
                 <span>Polo Município 1</span>
             </div>
             <div class="header-direita">
-                <button>Adicionar Curso</button>
-                <button>Editar Polo</button>
+                <button onclick="abrirFecharPopup('popup_adicionar_curso')">Adicionar Curso</button>
+                <button onclick="abrirFecharPopup('popup_editar_polo')">Editar Polo</button>
             </div>
         </header>
         
@@ -116,9 +99,9 @@
             
             <div class="sessao-polos">
 
-                <div class="item-sessao-polos">
+                <a href="./minha_instituicao_curso.html" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
-                        <a href="./minha_instituicao_curso.html" class="nome-polo">Curso 1</a>
+                        <div class="nome-polo">Curso 1</div>
                         
                         <div class="endereco-polo">
                             <span>Área</span>
@@ -126,11 +109,11 @@
                             <span>Turno | Modalidade</span>
                         </div>
                     </div>
-                </div>
+                </a>
 
-                <div class="item-sessao-polos">
+                <a href="./minha_instituicao_curso.html" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
-                        <a href="./minha_instituicao_curso.html" class="nome-polo">Curso 2</a>
+                        <div class="nome-polo">Curso 2</div>
                         
                         <div class="endereco-polo">
                             <span>Área</span>
@@ -138,12 +121,71 @@
                             <span>Turno | Modalidade</span>
                         </div>
                     </div>
-                </div>
+                </a>
 
             </div>
             
         </div>
     </main>
+
+    <div class="container-popup" id="popup_editar_polo">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_editar_polo')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_editar_polo')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Editar Polo</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 70%">
+                        <label for="logradouro">LOGRADOURO: </label>
+                        <input type="text" name="logradouro">
+                    </div>
+                    
+                    <div class="input-popup" style="width: 30%">
+                        <label for="numero">NÚMERO: </label>
+                        <input type="text" name="numero">
+                    </div>
+                </div>
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 35%;">
+                        <label for="bairro">BAIRRO: </label>
+                        <input type="text" name="bairro">
+                    </div>
+                    
+                    <div class="input-popup" style="width: 55%">
+                        <label for="municipio">MUNICÍPIO: </label><br>
+                        <select name="municipio" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-popup" style="width: 10%">
+                        <label for="uf">UF: </label><br>
+                        <select name="uf" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button>
+                    SALVAR
+                </button>
+            
+                <button class="botao-excluir">
+                    EXCLUIR
+                </button>
+            </div>
+            
+        </div>
+    </div>
 
 </body>
 </html>
@@ -151,3 +193,5 @@
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
 </script>
+
+<script src="../js/minhaInstituicaoScript.js"></script>
