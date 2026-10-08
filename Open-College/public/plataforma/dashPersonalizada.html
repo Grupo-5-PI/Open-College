@@ -4,21 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Perfil </title>
+    <title>Dashboard | Personalizada </title>
     <link rel="stylesheet" href="../style/global.css">
     <link rel="stylesheet" href="../style/dashboard.css">
+    <link rel="stylesheet" href="../style/menuLateral.css">
     <link rel="icon" href="../img/logo/logo.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.2.8/build/index.umd.min.js"></script>
+    <script src="../js/sessao.js"></script>
 </head>
 
+<!-- onload="validarSessao()" -->
 <body>
     <nav class="menu-lateral">
         <header class="menu-lateral-logo">
-            <span class="logo">
-                <img src="../img/logo/logo.png" alt="">
-            </span>
+            <a href="" class="perfil-link">
+                <div class="foto-wrapper">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
+                </div>
+                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+            </a>
         </header>
         <nav class="content">
             <ul id="nav-item">
@@ -116,6 +122,10 @@
 
 
 <script>
+
+    let foto = sessionStorage.FOTO_USUARIO;
+    imgUsuario.src = `${foto}`
+
     let tituloDash = document.querySelector('.nav-dash p')
     let filtroAno = document.querySelector('.filtro-ano')
 
