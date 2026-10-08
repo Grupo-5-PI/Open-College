@@ -4,15 +4,6 @@ function validarSessao() {
     var nome = sessionStorage.NOME_USUARIO;
     var idUsuario = sessionStorage.ID_USUARIO;
     
-<<<<<<< Updated upstream
-  
-
-    var b_usuario = document.getElementById("b_usuario");
-    
-
-    if (email != null && nome != null) {
-        b_usuario.innerHTML = nome;
-=======
     var b_usuario = document.getElementById("b_usuario");
     var imgUsuario = document.getElementById("imgUsuario");
   
@@ -30,7 +21,6 @@ function validarSessao() {
         } else {
             imgUsuario.src = "../img/icones/iconPerfil.png";
         }
->>>>>>> Stashed changes
     } else {
         window.location = "../login.html";
     }
