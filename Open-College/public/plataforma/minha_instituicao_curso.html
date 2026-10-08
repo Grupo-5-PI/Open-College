@@ -112,7 +112,7 @@
                 
                 <div>
                     <span>Atualizado por último em: DD/MM/YYYY</span>
-                    <button>ATUALIZAR</button>
+                    <button onclick="abrirFecharPopup('popup_atualizar_estatisticas')">ATUALIZAR</button>
                 </div>
                 
             </div>
@@ -178,6 +178,74 @@
             
                 <button class="botao-excluir">
                     EXCLUIR
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+     <div class="container-popup" id="popup_atualizar_estatisticas">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_atualizar_estatisticas')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_atualizar_estatisticas')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Atualizar Estatísticas</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 50%">
+                        <label for="vagas">VAGAS: </label>
+                        <input type="text">
+                    </div>
+
+                    <div class="input-popup" style="width: 50%;">
+                        <label for="matriculas">MATRÍCULAS: </label>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button>
+                    SALVAR
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="container-popup" id="popup_atualizar_estatisticas">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_atualizar_estatisticas')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_atualizar_estatisticas')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Adicionar Curso</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 50%">
+                        <label for="vagas">VAGAS: </label>
+                        <input type="text">
+                    </div>
+
+                    <div class="input-popup" style="width: 50%;">
+                        <label for="matriculas">MATRÍCULAS: </label>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button>
+                    SALVAR
                 </button>
             </div>
             
