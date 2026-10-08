@@ -14,6 +14,16 @@
     <script src="../js/sessao.js"></script>
 </head>
 
+<!-- onload="validarSessao()" -->
+<body>
+    <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <a href="" class="perfil-link">
+                <div class="foto-wrapper">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
+                </div>
+                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+            </a>
 <body>
     <nav class="menu-lateral">
         <header class="menu-lateral-logo">
@@ -79,6 +89,7 @@
                 <a href="dashDemanda.html" class="buttons-header active">Demanda</a>
                 <a href="dashRegiao.html" class="buttons-header">Região</a>
                 <a href="" class="buttons-header">Tendência</a>
+                <a href="dashPersonalizada.html" class="buttons-header btn-add">+</a>
                 <a href="" class="buttons-header btn-add">+</a>
 
                 <nav class="nav-dash">
@@ -88,6 +99,7 @@
                         <option>2024</option>
                         <option>2023</option>
                         <option>2022</option>
+                        <option>2021</option>
                         <option>2022</option>
                         <option>2020</option>
                         <option>2019</option>
@@ -149,6 +161,10 @@
 
 </html>
 <script>
+
+    let foto = sessionStorage.FOTO_USUARIO;
+    imgUsuario.src = `${foto}`
+
     Chart.register(ChartDataLabels);
 
     let tituloDash = document.querySelector('.nav-dash p')

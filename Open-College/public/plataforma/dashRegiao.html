@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Perfil </title>
+    <title>Dashboard | Região </title>
     <link rel="stylesheet" href="../style/global.css">
     <link rel="stylesheet" href="../style/dashboard.css">
     <link rel="stylesheet" href="../style/menuLateral.css">
@@ -15,12 +15,16 @@
     <script src="../js/sessao.js"></script>
 </head>
 
+<!-- onload="validarSessao()" -->
 <body>
     <nav class="menu-lateral">
-        <header class="menu-lateral-logo">
-            <span class="logo">
-                <img src="../img/logo/logo.png" alt="">
-            </span>
+       <header class="menu-lateral-logo">
+            <a href="" class="perfil-link">
+                <div class="foto-wrapper">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
+                </div>
+                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+            </a>
         </header>
         <nav class="content">
             <ul id="nav-item">
@@ -151,6 +155,9 @@
 
 
 <script>
+
+    let foto = sessionStorage.FOTO_USUARIO;
+    imgUsuario.src = `${foto}`
 
     Chart.register(ChartGeo.ChoroplethController, ChartGeo.GeoFeature, ChartGeo.ColorScale, ChartGeo.ProjectionScale)
 

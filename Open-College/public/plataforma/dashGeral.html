@@ -68,7 +68,7 @@
 
         <div class="sair">
             <div class="btn-sair">
-                <button onclick="limparSessao()">
+                <button>
                     <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
                     <span>Sair</span>
                 </button>
@@ -82,9 +82,8 @@
                 <a href="dashPerfil.html" class="buttons-header">Perfil</a>
                 <a href="dashDemanda.html" class="buttons-header">Demanda</a>
                 <a href="dashRegiao.html" class="buttons-header">Região</a>
-                <a href="dashDemanda.html" class="buttons-header">Região</a>
                 <a href="" class="buttons-header">Tendência</a>
-                <a href="" class="buttons-header btn-add">+</a>
+                <a href="dashPersonalizada.html" class="buttons-header btn-add">+</a>
 
                 <nav class="nav-dash">
                     <p>Dashboard - Visão Geral (ANO)</p>
@@ -93,7 +92,7 @@
                         <option>2024</option>
                         <option>2023</option>
                         <option>2022</option>
-                        <option>2022</option>
+                        <option>2021</option>
                         <option>2020</option>
                         <option>2019</option>
                     </select>
@@ -169,11 +168,9 @@
 
 </html>
 <script>
-
+    
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
-    
-
 
     Chart.register(ChartDataLabels);
 

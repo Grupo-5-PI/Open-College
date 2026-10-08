@@ -22,19 +22,67 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80px;
+    height: 100px;
     padding-top: 40px;
 }
 
 .menu-lateral-logo img {
-    height: 30px;
-    width: auto;
-    object-fit: contain;
-    transition: height 0.5s ease;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: width 0.5s ease, height 0.5s ease;
 }
 
 .menu-lateral:hover .menu-lateral-logo img {
-    height: 60px;
+    width: 70px;
+    height: 70px;
+}
+
+
+.foto-perfil {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+
+/* ================= LINK-PERFIL ================= */
+.nome-usuario {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s ease 0.1s, max-width 0.4s ease;
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 20px;
+    font-family: 'Telegraf', sans-serif;
+    font-weight: 800;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.perfil-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: inherit;
+    font-family: 'Telegraf', sans-serif;
+    cursor: pointer;
+    max-width: 100%;
+    transition: transform 0.2s ease;
+}
+
+
+.menu-lateral:hover .nome-usuario {
+    opacity: 1;
+    max-width: 200px;
 }
 
 /* ================= ÁREA DE ITENS ================= */
