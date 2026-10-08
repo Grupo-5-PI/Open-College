@@ -82,7 +82,7 @@
                 <span>Curso 1</span>
             </div>
             <div class="header-direita">
-                <button>Editar Curso</button>
+                <button onclick="abrirFecharPopup('popup_editar_curso')">Editar Curso</button>
                 <button>Adicionar ao Feed de Atualizações</button>
             </div>
         </header>
@@ -140,6 +140,49 @@
         </div>
 
     </main>
+
+    <div class="container-popup" id="popup_editar_curso">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_editar_curso')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_editar_curso')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Editar Curso</span>
+            </div>
+            
+            <div class="inputs-popup">
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 50%">
+                        <label for="turno">TURNO: </label><br>
+                        <select name="turno" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-popup" style="width: 50%">
+                        <label for="modalidade">MODALIDADE: </label><br>
+                        <select name="modalidade" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button>
+                    SALVAR
+                </button>
+            
+                <button class="botao-excluir">
+                    EXCLUIR
+                </button>
+            </div>
+            
+        </div>
+    </div>
     
 </body>
 </html>
@@ -147,3 +190,4 @@
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
 </script>
+<script src="../js/minhaInstituicaoScript.js"></script>
