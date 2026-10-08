@@ -1,7 +1,11 @@
+    @import url('https://fonts.cdnfonts.com/css/bebas-neue');
+    @import url('https://fonts.cdnfonts.com/css/telegraf');
+
 html, body{
     height: 100vh;
     margin: 0;
     padding: 0;
+    font-family: 'telegraf';
 }
 
 body{
@@ -13,11 +17,20 @@ body{
 
 main{
     box-sizing: border-box;
+    flex: 1;
+    margin-left: 70px;
+    min-height: 100vh;
+    max-height: fit-content;
+}
+
+main{
+    box-sizing: border-box;
     height: 100%;
     width: 100%;
 }
 
 main header{
+    font-weight: bold;
     background-color: var(--cor10);
     box-sizing: border-box;
     height: 5vh;
@@ -40,9 +53,12 @@ main header button{
     height: 100%;
     background-color: transparent;
     border: none;
+    font-family: 'telegraf';
+    font-weight: bold;
 }
 
 main header button:hover{
+    cursor: pointer;
     background-color: var(--cor4);
 }
 
@@ -66,19 +82,50 @@ main header button:hover{
 }
 
 .selecao-filtro{
+    box-sizing: border-box;
     background-color: var(--cor10);
     flex: 1;
     height: 40px;
     /* width: 30vw; */
     padding: 0 15px;
     border-radius: 15px;
+    border: none;
+    border-right: 18px solid transparent;
+    font-family: 'telegraf';
+    font-size: 1.1em;
+}
+
+.selecao-filtro:hover{
+    cursor: pointer;
+}
+
+.sessao-filtros button{
+    border: none;
+    border-radius: 15px;
+    background-color: var(--cor10);
+    font-family: 'telegraf';
+    padding: 10px;
+}
+
+.sessao-filtros button:hover{
+    cursor: pointer;
+    background-color: var(--cor4);
 }
 
 .barra-de-pesquisa{
+    box-sizing: border-box;
     background-color: var(--cor10);
     height: 40px;
     width: 100%;
     border-radius: 15px;
+    border: none;
+    padding: 0 0 0 25px;
+    font-family: 'telegraf';
+    font-size: 1.1em;
+}
+
+.barra-de-pesquisa::placeholder{
+    font-family: 'telegraf';
 }
 
 .sessao-polos{
@@ -94,6 +141,7 @@ main header button:hover{
 }
 
 .item-sessao-polos{
+    font-family: 'Bebas Neue';
     border-radius: 15px;
     background-color: var(--cor10);
     box-sizing: border-box;
@@ -102,26 +150,35 @@ main header button:hover{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    text-decoration: none;
+    color: #000000;
+}
+
+.item-sessao-polos:hover{
+    background-color: var(--cor4);
 }
 
 .item-sessao-polos .nome-polo{
+    font-family: 'telegraf';
+    font-weight: bold;
     color: #000000;
     text-decoration: none;
     font-size: 1.9em;
 }
 
 .item-sessao-polos .endereco-polo, .item-sessao-polos .qtd-cursos{
-    font-size: 1.1em;
+    font-size: 1.2em;
 }
 
 .dados-curso{
     display: flex;
     flex-direction: column;
     gap: 10px;
+    font-family: 'Bebas Neue';
 }
 
 .dados-curso span{
-    font-size: 1.8em;
+    font-size: 2.3em;
 }
 
 .sessao-pag-curso{
@@ -139,19 +196,148 @@ main header button:hover{
 .sessao-pag-curso table{
     width: 60%;
     font-size: 1.5em;
-    border-collapse: collapse;
+    border-radius: 30px;
+    border: 2px solid black;
+    background-color: black;
+    font-family: 'Bebas Neue';
 }
 
 .sessao-pag-curso table td, .sessao-pag-curso table th{
     padding: 8px 16px;
     text-align: center;
-    border: 2px solid black;
+    background-color: var(--cor10);
 }
 
 .sessao-pag-curso div{
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.2em;
+}
+
+.sessao-pag-curso button{
+    height: 40px;
+    width: 200px;
+    font-size: 0.9em;
+    font-weight: bold;
+    background-color: var(--cor10);
+    border-radius: 20px;
+    border: none;
+}
+
+.sessao-pag-curso button:hover{
+    cursor: pointer;
+    background-color: var(--cor4);
+}
+
+.sombra-popup{
+    display: block;
+    z-index: 1001;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: #0000004f;
+}
+
+.container-popup{
+    display: none;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-interacao{
+    box-sizing: border-box;
+    z-index: 1002;
+    color: white;
+    position: absolute;
+    height: fit-content;
+    width: 65vw;
+    padding: 4vh 2vw;
+    background-color: var(--corNavBar);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10vh;
+}
+
+.header-popup{
+    width: 100%;
+    text-align: center;
+}
+
+.icone-sair{
+    width: 2em;
+    position: absolute;
+    left: 2vw;
+}
+
+.icone-sair:hover{
+    cursor: pointer;
+}
+
+.titulo-popup{
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.inputs-popup{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+.separacao-inputs-popup{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1.5vw;
+}
+
+.input-popup input, .input-popup select{
+    margin-top: 3px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.popup-interacao-botoes{
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    font-size: 1.2em;
+}
+
+.popup-interacao button{
+    /* align-self: center; */
+    height: 8vh;
+    width: 25%;
+    font-family: 'telegraf';
+    font-weight: bold;
+    font-size: 1.3em;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--cor10);
+}
+
+.popup-interacao button:hover{
+    cursor: pointer;
+    background-color: var(--cor4);
+}
+
+.popup-interacao-botoes button.botao-excluir{
+    background-color: rgb(175, 37, 37);
+}
+
+.popup-interacao-botoes button.botao-excluir:hover{
+    box-sizing: border-box;
+    border: 3px solid rgb(175, 37, 37);
+    background-color: rgb(214, 62, 62);
 }

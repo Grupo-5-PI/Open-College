@@ -7,6 +7,7 @@
     <title>Dashboard | Geral </title>
     <link rel="stylesheet" href="../style/global.css">
     <link rel="stylesheet" href="../style/dashboard.css">
+    <link rel="stylesheet" href="../style/menuLateral.css">
     <link rel="icon" href="../img/logo/logo.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -19,7 +20,7 @@
         <header class="menu-lateral-logo">
             <a href="" class="perfil-link">
                 <div class="foto-wrapper">
-                    <img src="../img/icones/iconPerfil.png" alt="foto de perfil" class="foto-perfil" id="foto-perfil">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
                 </div>
                  <span class="nome-usuario" id="b_usuario">Carregando...</span>
             </a>
@@ -79,13 +80,8 @@
             <header class="header-dash">
                 <a href="dashGeral.html" class="buttons-header active">Geral</a>
                 <a href="dashPerfil.html" class="buttons-header">Perfil</a>
-<<<<<<< Updated upstream
-                <a href="" class="buttons-header">Demanda</a>
-                <a href="" class="buttons-header">Região</a>
-=======
                 <a href="dashDemanda.html" class="buttons-header">Demanda</a>
                 <a href="dashRegiao.html" class="buttons-header">Região</a>
->>>>>>> Stashed changes
                 <a href="" class="buttons-header">Tendência</a>
                 <a href="dashPersonalizada.html" class="buttons-header btn-add">+</a>
 
@@ -172,13 +168,10 @@
 
 </html>
 <script>
-<<<<<<< Updated upstream
-=======
     
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
 
->>>>>>> Stashed changes
     Chart.register(ChartDataLabels);
 
     let tituloDash = document.querySelector('.nav-dash p')
@@ -198,7 +191,7 @@
 
     atualizarAno()
 
-    function carregarMaisProcurado() {
+    function carregarGraficoMaisProcurado() {
         let maisProcurado = document.getElementById('grafico-grad-mais-procurada');
 
         new Chart(maisProcurado, {
@@ -289,9 +282,9 @@
         });
     }
 
-    carregarMaisProcurado();
+    carregarGraficoMaisProcurado();
 
-    function carregarAreaGeralMatricula() {
+    function carregarGraficoAreaGeralMatricula() {
         let areaGeral = document.getElementById('grafico-area-geral-matricula');
 
         new Chart(areaGeral, {
@@ -380,7 +373,7 @@
             }
         });
     }
-    carregarAreaGeralMatricula();
+    carregarGraficoAreaGeralMatricula();
 
     function carregarGraficoModalidadeProcurada() {
         let modalidadeProcurada = document.getElementById('grafico-mod-mais-procurada-curso');
