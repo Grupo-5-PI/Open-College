@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Instituição - Polo</title>
-    <link rel="icon" href="../img/logo/logo.png">
+    <title>Dashboard | Personalizada </title>
     <link rel="stylesheet" href="../style/global.css">
-    <!-- <link rel="stylesheet" href="../style/plataforma_global_style.css"> -->
-    <link rel="stylesheet" href="../style/minha_instituicao_style.css">
-<<<<<<< Updated upstream
-</head>
-<body>
-=======
+    <link rel="stylesheet" href="../style/dashboard.css">
     <link rel="stylesheet" href="../style/menuLateral.css">
+    <link rel="icon" href="../img/logo/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.2.8/build/index.umd.min.js"></script>
     <script src="../js/sessao.js"></script>
 </head>
 
@@ -77,77 +76,65 @@
             </div>
         </div>
     </nav>
->>>>>>> Stashed changes
-    
     <main>
-        <header>
-            <div class="header-esquerda">
-                <span>Polo Município 1</span>
-            </div>
-            <div class="header-direita">
-                <button>Adicionar Curso</button>
-                <button>Editar Polo</button>
-            </div>
-        </header>
-        
-        <div class="main-conteudo">
+        <div class="painel-fundo">
+            <header class="header-dash">
+                <a href="dashGeral.html" class="buttons-header active">Geral</a>
+                <a href="dashPerfil.html" class="buttons-header">Perfil</a>
+                <a href="" class="buttons-header">Demanda</a>
+                <a href="dashRegiao.html" class="buttons-header">Região</a>
+                <a href="" class="buttons-header">Tendência</a>
+                <a href="" class="buttons-header btn-add">+</a>
 
-            <div class="sessao-filtros">
-                <select name="filtro-cursos-area" id="filtro-cursos-area" class="selecao-filtro">
-                    <option value="0" selected disabled>Área</option>
-                </select>
-
-                <select name="filtro-cursos-curso" id="filtro_cursos-curso" class="selecao-filtro">
-                    <option value="0" selected disabled>Curso</option>
-                </select>
-
-                <select name="filtro-cursos-modalidade" id="filtro_cursos-modalidade" class="selecao-filtro">
-                    <option value="0" selected disabled>Modalidade</option>
-                </select>
-
-                <select name="filtro-cursos-turno" id="filtro_cursos-turno" class="selecao-filtro">
-                    <option value="0" selected disabled>Turno</option>
-                </select>
-
-                <button>Limpar Filtros</button>
-            </div>
-            
-            <input type="text" id="polos_barra_de_pesquisa" placeholder="Pesquisar" class="barra-de-pesquisa">
-            
-            <div class="sessao-polos">
-
-                <div class="item-sessao-polos">
-                    <div class="item-sessao-polos-esquerda">
-                        <a href="./minha_instituicao_curso.html" class="nome-polo">Curso 1</a>
-                        
-                        <div class="endereco-polo">
-                            <span>Área</span>
-                            <br>
-                            <span>Turno | Modalidade</span>
-                        </div>
+                <nav class="nav-dash">
+                    <p>Dashboard - Região (ANO)</p>
+                    <div class="grupo-filtro">
+                        <p>Ano:</p>
+                        <select class="filtro-ano">
+                            <option>2025</option>
+                            <option>2024</option>
+                            <option>2023</option>
+                            <option>2022</option>
+                            <option>2021</option>
+                            <option>2020</option>
+                            <option>2019</option>
+                        </select>
                     </div>
-                </div>
+                </nav>
+            </header>
 
-                <div class="item-sessao-polos">
-                    <div class="item-sessao-polos-esquerda">
-                        <a href="./minha_instituicao_curso.html" class="nome-polo">Curso 2</a>
-                        
-                        <div class="endereco-polo">
-                            <span>Área</span>
-                            <br>
-                            <span>Turno | Modalidade</span>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="grid-cards-personalizado">
+                <button class="botao-kpis">+</button>
             </div>
-            
+
+            <div class="container-graficos-personalizado">
+                <button class="botao-graficos">+</button>
+            </div>
+
         </div>
     </main>
-
+    <div class="footer">
+        <p>COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.</p>
+    </div>
 </body>
+
 </html>
+
+
 <script>
+
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
+
+    let tituloDash = document.querySelector('.nav-dash p')
+    let filtroAno = document.querySelector('.filtro-ano')
+
+    function atualizarAno() {
+        let anoSelecionado = filtroAno.value
+        tituloDash.textContent = `Dashboard - Regional (${anoSelecionado})`
+    }
+
+    filtroAno.addEventListener('change', atualizarAno)
+
+    atualizarAno()
 </script>

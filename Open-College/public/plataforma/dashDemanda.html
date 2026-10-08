@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Geral </title>
+    <title>Dashboard | Demanda </title>
     <link rel="stylesheet" href="../style/global.css">
     <link rel="stylesheet" href="../style/dashboard.css">
+    <link rel="stylesheet" href="../style/menuLateral.css">
     <link rel="icon" href="../img/logo/logo.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -19,7 +20,7 @@
         <header class="menu-lateral-logo">
             <a href="" class="perfil-link">
                 <div class="foto-wrapper">
-                    <img src="../img/icones/iconPerfil.png" alt="foto de perfil" class="foto-perfil" id="foto-perfil">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
                 </div>
                  <span class="nome-usuario" id="b_usuario">Carregando...</span>
             </a>
@@ -77,15 +78,10 @@
     <main>
         <div class="painel-fundo">
             <header class="header-dash">
-                <a href="dashGeral.html" class="buttons-header active">Geral</a>
+                <a href="dashGeral.html" class="buttons-header">Geral</a>
                 <a href="dashPerfil.html" class="buttons-header">Perfil</a>
-<<<<<<< Updated upstream
-                <a href="" class="buttons-header">Demanda</a>
-                <a href="" class="buttons-header">Região</a>
-=======
-                <a href="dashDemanda.html" class="buttons-header">Demanda</a>
+                <a href="dashDemanda.html" class="buttons-header active">Demanda</a>
                 <a href="dashRegiao.html" class="buttons-header">Região</a>
->>>>>>> Stashed changes
                 <a href="" class="buttons-header">Tendência</a>
                 <a href="dashPersonalizada.html" class="buttons-header btn-add">+</a>
 
@@ -103,66 +99,51 @@
                 </nav>
             </header>
 
-            <section class="card-grafico">
-                <div class="grid-cards">
-                    <div class="card-kpi">
-                        <span class="card-titulo">Total de Matrículas</span>
-                        <strong class="card-valor">45.3K</strong>
-                        <span class="card-rodape">No ano de ANO</span>
-                    </div>
-
-                    <div class="card-kpi">
-                        <span class="card-titulo">Total de Concluintes</span>
-                        <strong class="card-valor">22.3K</strong>
-                        <span class="card-rodape">No ano de ANO</span>
-                    </div>
-
-                    <div class="card-kpi">
-                        <span class="card-titulo">Modalidade mais procurada</span>
-                        <strong class="card-valor">EAD</strong>
-                        <span class="card-rodape">No ano de ANO</span>
-                    </div>
-
-                    <div class="card-kpi">
-                        <span class="card-titulo">Período mais procurado</span>
-                        <strong class="card-valor">NOTURNO</strong>
-                        <span class="card-rodape">No ano de ANO</span>
-                    </div>
-
-                    <div class="card-kpi">
-                        <span class="card-titulo">Área mais procurada</span>
-                        <strong class="card-valor">TECNOLOGIA</strong>
-                        <span class="card-rodape">No ano de ANO</span>
-                    </div>
-
-                    <div class="card-kpi">
-                        <span class="card-titulo">Tipo de graduação mais procurada</span>
-                        <strong class="card-valor">TÉCNICO</strong>
+            <section class="grid-cards-demanda">
+                <div class="card-kpi-demanda">
+                     <div class="card-kpi">
+                        <span class="card-titulo">Cursos Mais Procurados</span>
+                        <strong class="card-valor">Culinária</strong>
+                        <strong class="card-valor">Psicologia</strong>
+                        <strong class="card-valor">Medicina</strong>
+                        <strong class="card-valor">ADS</strong>
+                        <strong class="card-valor">Computação</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
                 </div>
-                <div class="graficoDireito">
-                    <div class="grafico-coluna-deitado">
-                        <canvas id="grafico-grad-mais-procurada"></canvas>
+
+                <div class="card-kpi-demanda">
+                    <div class="card-kpi">
+                        <span class="card-titulo">Cursos Menos Procurados</span>
+                        <strong class="card-valor">História</strong>
+                        <strong class="card-valor">Letras</strong>
+                        <strong class="card-valor">Matemática</strong>
+                        <strong class="card-valor">Fisíca</strong>
+                        <strong class="card-valor">Literatura</strong>
+                        <span class="card-rodape">No ano de ANO</span>
                     </div>
                 </div>
 
-
-            </section>
-            <section class="graficosLadoaLado">
-                <div class="grafico-duplo">
-                    <div class="grafico-coluna">
-                        <canvas id="grafico-area-geral-matricula"></canvas>
-                    </div>
-                </div>
-                <div class="grafico-duplo">
-                    <div class="grafico-coluna">
-                        <canvas id="grafico-mod-mais-procurada-curso"></canvas>
+                <div class="card-kpi-demanda">
+                    <div class="card-kpi">
+                        <span class="card-titulo">Taxa de Ocupação</span>
+                        <strong class="card-valor">((Vagas/matriculas) * 100)</strong>
+                        <span class="card-rodape">No ano de ANO</span>
                     </div>
                 </div>
             </section>
 
-
+            <div class="container-graficos-demanda">
+                <div class="grafico-demanda">
+                    <canvas id="grafico-matriculas-por-area"></canvas>
+                </div>
+                <div class="grafico-demanda">
+                    <canvas id="grafico-taxa-ocupacao"></canvas>
+                </div>
+                <div class="grafico-demanda">
+                    <canvas id="grafico-periodo-mais-procurado"></canvas>
+                </div>
+            </div>
         </div>
     </main>
     <div class="footer">
@@ -172,13 +153,10 @@
 
 </html>
 <script>
-<<<<<<< Updated upstream
-=======
-    
+
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
 
->>>>>>> Stashed changes
     Chart.register(ChartDataLabels);
 
     let tituloDash = document.querySelector('.nav-dash p')
@@ -187,7 +165,7 @@
 
     function atualizarAno() {
         let anoSelecionado = filtroAno.value
-        tituloDash.textContent = `Dashboard - Visão Geral (${anoSelecionado})`
+        tituloDash.textContent = `Dashboard - Demanda (${anoSelecionado})`
 
         for (let i = 0; i < cardKPI.length; i++) {
             cardKPI[i].textContent = `No ano de ${anoSelecionado}`;
@@ -198,10 +176,10 @@
 
     atualizarAno()
 
-    function carregarMaisProcurado() {
-        let maisProcurado = document.getElementById('grafico-grad-mais-procurada');
+    function carregarGraficoMatriculasPorArea() {
+        let areaMatricula = document.getElementById('grafico-matriculas-por-area');
 
-        new Chart(maisProcurado, {
+        new Chart(areaMatricula, {
             type: 'bar',
             data: {
                 labels: ['Medicina', 'Direito', 'Pedagogia', 'Administração'],
@@ -224,7 +202,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Graduação Mais Procurada',
+                        text: 'Matrículas Dos Cursos Por Área',
                         color: '#ffffff',
                         align: 'center',
                         font: {
@@ -267,7 +245,7 @@
                     },
                     y: {
                         afterFit: (scale) => {
-                            scale.width = 130;
+                            scale.width = 120;
                         },
                         ticks: {
                             color: '#ffffff',
@@ -289,12 +267,12 @@
         });
     }
 
-    carregarMaisProcurado();
+    carregarGraficoMatriculasPorArea();
 
-    function carregarAreaGeralMatricula() {
-        let areaGeral = document.getElementById('grafico-area-geral-matricula');
+    function carregarGraficoTaxaOcupacao() {
+        let taxaOcupacao = document.getElementById('grafico-taxa-ocupacao');
 
-        new Chart(areaGeral, {
+        new Chart(taxaOcupacao, {
             type: 'bar',
             data: {
                 labels: ['MEDICINA', 'DIREITO', 'TI', 'PEDAGOGIA'],
@@ -327,7 +305,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Área geral Por Matrículas',
+                        text: 'Taxa De Ocupação Por Área',
                         color: '#ffffff',
                         font: {
                             size: 23,
@@ -380,36 +358,36 @@
             }
         });
     }
-    carregarAreaGeralMatricula();
+    carregarGraficoTaxaOcupacao();
 
-    function carregarGraficoModalidadeProcurada() {
-        let modalidadeProcurada = document.getElementById('grafico-mod-mais-procurada-curso');
+    function carregarGraficoPeriodoProcurado() {
+        let periodoMaisPeriodo = document.getElementById('grafico-periodo-mais-procurado');
 
-        new Chart(modalidadeProcurada, {
+        new Chart(periodoMaisPeriodo, {
             type: 'bar',
             data: {
                 labels: ['2020', '2021', '2022', '2023', '2024'],
                 datasets: [
                     {
-                        label: 'Medicina',
+                        label: 'Matutino',
                         data: [120, 150, 180, 200, 220],
                         backgroundColor: '#4a7ff7',
                         borderRadius: 4
                     },
                     {
-                        label: 'Direito',
+                        label: 'Vespertino',
                         data: [100, 120, 140, 160, 170],
                         backgroundColor: '#ae8df5',
                         borderRadius: 4
                     },
                     {
-                        label: 'Pedagogia',
+                        label: 'Noturno',
                         data: [80, 90, 100, 110, 120],
                         backgroundColor: '#f3b86b',
                         borderRadius: 4
                     },
                     {
-                        label: 'Administração',
+                        label: 'Integral',
                         data: [60, 70, 80, 90, 100],
                         backgroundColor: '#3cc027',
                         borderRadius: 4
@@ -422,7 +400,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Modalidade Mais Procurada Por Curso',
+                        text: 'Período Mais Procurada Por Curso',
                         color: '#ffffff',
                         font: {
                             size: 23,
@@ -488,5 +466,5 @@
         });
     }
 
-    carregarGraficoModalidadeProcurada();
+    carregarGraficoPeriodoProcurado();
 </script>
