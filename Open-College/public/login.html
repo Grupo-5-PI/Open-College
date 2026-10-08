@@ -98,11 +98,12 @@
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.FOTO_USUARIO = json.foto;
 
                     alert("Login feito com sucesso!")
 
                     setTimeout(function () {
-                        window.location = "index.html";
+                        window.location = "plataforma/dashGeral.html";
                     }, 1000); // apenas para exibir o loading
 
                 });
