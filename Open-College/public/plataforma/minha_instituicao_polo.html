@@ -196,6 +196,62 @@
         </div>
     </div>
 
+    <div class="container-popup" id="popup_adicionar_curso">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_adicionar_curso')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_adicionar_curso')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Adicionar Curso</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 100%">
+                        <label for="logradouro">ÁREA GERAL: </label>
+                        <select name="area_geral" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 100%">
+                        <label for="logradouro">CURSO: </label>
+                        <select name="curso" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 50%;">
+                        <label for="bairro">TURNO: </label>
+                        <select name="turno" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-popup" style="width: 50%">
+                        <label for="municipio">MODALIDADE: </label><br>
+                        <select name="modalidade" id="">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button>
+                    ADICIONAR
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
 </body>
 </html>
 <script>
