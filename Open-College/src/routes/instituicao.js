@@ -13,4 +13,8 @@ router.get("/buscar/:cnpj", function (req, res) {
     instituicaoControler.buscarPorCnpj(req, res);
 })
 
+router.post("/adicionarPolo", function(req, res){
+    instituicaoControler.adicionarPolo(req, res);
+})
+
 module.exports = router;
