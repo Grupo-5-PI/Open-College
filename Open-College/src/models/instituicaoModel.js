@@ -34,9 +34,22 @@ function vincularUsuario(idUsuario, idInstituicao){
     return database.executar(instrucaoSql);
 }
 
+function buscarPorIdUsuario(idUsuario){
+
+    var instrucaoSql = `
+        SELECT ins.* FROM tblUsuario usu 
+        JOIN tblInstituicao ins ON usu.idInstituicao = ins.idInstituicao
+        LIMIT 1;
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
 module.exports = {
     buscarPorCnpj,
     listarTodas,
     cadastrar,
-    vincularUsuario
+    vincularUsuario,
+    buscarPorIdUsuario,
 };
