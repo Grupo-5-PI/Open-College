@@ -36,6 +36,9 @@ function vincularUsuario(idUsuario, idInstituicao){
 
 function buscarPorIdUsuario(idUsuario){
 
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarPorIdUsuario");
+
     var instrucaoSql = `
         SELECT ins.* FROM tblUsuario usu 
         JOIN tblInstituicao ins ON usu.idInstituicao = ins.idInstituicao
@@ -49,9 +52,12 @@ function buscarPorIdUsuario(idUsuario){
 
 function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao){
 
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO adicionarPolo");
+
     var instrucaoSql = `
         INSERT INTO tblPolo (idInstituicao, uf, municipio, bairro, numero, logradouro) VALUES 
-        (${idInstituicao}, ${uf}, ${municipio}, ${bairro}, ${numero}, ${logradouro});
+        (${idInstituicao}, '${uf}', '${municipio}', '${bairro}', '${numero}', '${logradouro}');
     `;
 
     return database.executar(instrucaoSql);
