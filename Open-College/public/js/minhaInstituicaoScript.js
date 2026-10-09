@@ -18,6 +18,11 @@ async function buscarInstituicaoPorIdUsuario(){
 
     let idUsuario = sessionStorage.ID_USUARIO;
 
+    if(idUsuario == undefined || idUsuario == null){
+        console.log("ID_USUARIO inexistente!");
+        return null;
+    }
+
     let instituicao = await fetch(`/instituicao/buscar/${idUsuario}`)
     .then(function(resposta){
         if(resposta.status === 404){
@@ -37,6 +42,12 @@ async function adicionarPolo(){
     let bairro = document.getElementById("input_bairro_polo");
     let municipio = document.getElementById("select_municipio_polo");
     let uf = document.getElementById("select_uf_polo");
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == undefined){
+        console.log("Instituição não encontrada!")
+        return;
+    }
 
     fetch("/instituicao/adicionarPolo", {
         method: "POST",
@@ -49,6 +60,7 @@ async function adicionarPolo(){
             bairroServer: bairro,
             municipioServer: municipio,
             ufServer: uf,
+            idInstituicaoServer: idInstituicao,
         })
     })
     .then(function(resposta){
