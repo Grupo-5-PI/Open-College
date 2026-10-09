@@ -39,10 +39,19 @@ function buscarPorIdUsuario(idUsuario){
     var instrucaoSql = `
         SELECT ins.* FROM tblUsuario usu 
         JOIN tblInstituicao ins ON usu.idInstituicao = ins.idInstituicao
+        WHERE usu.idUsuario = ${idUsuario} 
         LIMIT 1;
     `;
 
     return database.executar(instrucaoSql);
+
+}
+
+function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao){
+
+    var instrucaoSql = `
+        INSERT INTO tblPolo (idInstituicao, uf, municipio, bairro, numero, logradouro)
+    `;
 
 }
 
@@ -52,4 +61,5 @@ module.exports = {
     cadastrar,
     vincularUsuario,
     buscarPorIdUsuario,
+    adicionarPolo,
 };
