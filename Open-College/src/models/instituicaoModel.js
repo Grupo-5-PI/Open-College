@@ -50,8 +50,11 @@ function buscarPorIdUsuario(idUsuario){
 function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao){
 
     var instrucaoSql = `
-        INSERT INTO tblPolo (idInstituicao, uf, municipio, bairro, numero, logradouro)
+        INSERT INTO tblPolo (idInstituicao, uf, municipio, bairro, numero, logradouro) VALUES 
+        (${idInstituicao}, ${uf}, ${municipio}, ${bairro}, ${numero}, ${logradouro});
     `;
+
+    return database.executar(instrucaoSql);
 
 }
 
