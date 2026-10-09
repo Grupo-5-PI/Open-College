@@ -115,11 +115,34 @@ function cadastrar(req, res) {
         }
 
     }
+
+    function adicionarPolo(req, res){
+
+        let logradouro = req.body.logradouroServer;
+        let numero = req.body.numeroServer;
+        let bairro = req.body.bairroServer;
+        let municipio = req.body.municipioServer;
+        let uf = req.body.ufServer;
+        let idInstituicao = req.body.idInstituicaoServer;
+
+        instituicaoModel.adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao)
+        .then(function(resposta){
+            res.status(201);
+            res.body(resposta.json());
+        })
+        .catch(function(erro){
+            console.log(erro);
+            console.log("\nHouve um erro ao adicionar o polo! Erro : ", erro.sqlMessage);
+            res.status(500).erro.sqlMessage;
+        })
+
+    }
                         
 module.exports = {
     cadastrar,
     listarTodas,
     buscarPorCnpj,
-    buscarPorIdUsuario
+    buscarPorIdUsuario,
+    adicionarPolo,
    
 };

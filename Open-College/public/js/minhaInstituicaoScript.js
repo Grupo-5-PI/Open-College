@@ -44,7 +44,7 @@ async function adicionarPolo(){
     let uf = document.getElementById("select_uf_polo");
     let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
 
-    if(idInstituicao == undefined){
+    if(idInstituicao == undefined || idInstituicao == null){
         console.log("Instituição não encontrada!")
         return;
     }
