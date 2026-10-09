@@ -24,7 +24,8 @@
                 </div>
                  <span class="nome-usuario" id="b_usuario">Carregando...</span>
             </a>
-<body>
+        </header>
+    </nav>
     <nav class="menu-lateral">
         <header class="menu-lateral-logo">
             <span class="logo">
@@ -43,7 +44,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="minha_instituicao.html">
+                    <a href="painelAtualizacao.html">
                         <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
                             class="icone-menu-lateral">
                         <span class="titulo-menu-lateral">
@@ -53,7 +54,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="">
+                    <a href="minha_instituicao.html">
                         <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
                         <span class="titulo-menu-lateral">
                             Minha Instituição
@@ -62,7 +63,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="">
+                    <a href="EditarPerfil.html">
                         <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
                         <span class="titulo-menu-lateral">
                             Minha conta
@@ -161,6 +162,7 @@
 
 </html>
 <script>
+    
 
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
@@ -172,7 +174,7 @@
     let cardKPI = document.querySelectorAll('.card-rodape')
 
     function atualizarAno() {
-        let anoSelecionado = filtroAno.value
+        let anoSelecionado = filtroAno.value;
         tituloDash.textContent = `Dashboard - Demanda (${anoSelecionado})`
 
         for (let i = 0; i < cardKPI.length; i++) {
@@ -182,7 +184,7 @@
 
     filtroAno.addEventListener('change', atualizarAno)
 
-    atualizarAno()
+    atualizarAno();
 
     function carregarGraficoMatriculasPorArea() {
         let areaMatricula = document.getElementById('grafico-matriculas-por-area');
@@ -275,7 +277,7 @@
         });
     }
 
-    carregarGraficoMatriculasPorArea();
+   
 
     function carregarGraficoTaxaOcupacao() {
         let taxaOcupacao = document.getElementById('grafico-taxa-ocupacao');
@@ -366,8 +368,7 @@
             }
         });
     }
-    carregarGraficoTaxaOcupacao();
-
+    
     function carregarGraficoPeriodoProcurado() {
         let periodoMaisPeriodo = document.getElementById('grafico-periodo-mais-procurado');
 
@@ -474,5 +475,7 @@
         });
     }
 
+    carregarGraficoMatriculasPorArea();
+    carregarGraficoTaxaOcupacao();
     carregarGraficoPeriodoProcurado();
 </script>
