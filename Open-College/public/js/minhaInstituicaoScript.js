@@ -14,6 +14,22 @@ function abrirFecharPopup(idPopup){
 
 }
 
+async function buscarInstituicaoPorIdUsuario(){
+
+    let idUsuario = sessionStorage.ID_USUARIO;
+
+    let instituicao = await fetch(`/instituicao/buscar/${idUsuario}`)
+    .then(function(resposta){
+        if(resposta.status === 404){
+            return null;
+        }
+        return resposta.json();
+    });
+
+    return instituicao;
+
+}
+
 async function adicionarPolo(){
 
     let logradouro = document.getElementById("input_logradouro_polo");
