@@ -108,8 +108,8 @@ function cadastrar(req, res) {
             })
             .catch(function(erro){
                 console.log(erro);
-                console.log("\nHouve um erro ao buscar a instituição! Erro: ", erro.sqlMessage);
-                res.status(500).erro.sqlMessage;
+                // console.log("\nHouve um erro ao buscar a instituição! Erro: ", erro.sqlMessage);
+                // res.status(500).erro.sqlMessage;
             })
 
         }
@@ -128,12 +128,12 @@ function cadastrar(req, res) {
         instituicaoModel.adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao)
         .then(function(resposta){
             res.status(201);
-            res.body(resposta.json());
+            // res.body(resposta);
         })
         .catch(function(erro){
             console.log(erro);
-            console.log("\nHouve um erro ao adicionar o polo! Erro : ", erro.sqlMessage);
-            res.status(500).erro.sqlMessage;
+            // console.log("\nHouve um erro ao adicionar o polo! Erro : ", erro.sqlMessage);
+            // res.status(500).erro.sqlMessage;
         })
 
     }

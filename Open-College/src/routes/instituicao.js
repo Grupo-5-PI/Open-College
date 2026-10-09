@@ -13,7 +13,7 @@ router.get("/buscar/:cnpj", function (req, res) {
     instituicaoController.buscarPorCnpj(req, res);
 })
 
-router.get("/buscar/:idUsuario", function(req, res){
+router.get("/buscarPorIdUsuario/:idUsuario", function(req, res){
     instituicaoController.buscarPorIdUsuario(req, res);
 })
 
