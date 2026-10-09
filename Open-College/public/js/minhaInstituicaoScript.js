@@ -14,8 +14,7 @@ function abrirFecharPopup(idPopup){
 
 }
 
-
-function adicionarPolo(){
+async function adicionarPolo(){
 
     let logradouro = document.getElementById("input_logradouro_polo");
     let numero = document.getElementById("input_numero_polo");
@@ -23,7 +22,7 @@ function adicionarPolo(){
     let municipio = document.getElementById("select_municipio_polo");
     let uf = document.getElementById("select_uf_polo");
 
-    fetch("/instituicao/adicioanarPolo", {
+    fetch("/instituicao/adicionarPolo", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
