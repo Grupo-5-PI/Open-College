@@ -128,6 +128,7 @@ function cadastrar(req, res) {
         instituicaoModel.adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao)
         .then(function(resposta){
             res.status(201);
+            res.json(resposta);
             // res.body(resposta);
         })
         .catch(function(erro){

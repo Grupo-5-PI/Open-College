@@ -64,9 +64,9 @@ async function adicionarPolo(){
         })
     })
     .then(function(resposta){
-
+        console.log(resposta);
         if(resposta.ok){
-
+            console.log('oi')
         }
 
     })
