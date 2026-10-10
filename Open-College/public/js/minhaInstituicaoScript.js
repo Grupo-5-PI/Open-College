@@ -43,9 +43,24 @@ async function adicionarPolo(){
     let municipio = document.getElementById("select_municipio_polo").value;
     let uf = document.getElementById("select_uf_polo").value;
     let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    
+    let mensagemPopup = document.querySelector("#popup_adicionar_polo .popup-mensagem");
 
     if(idInstituicao == undefined || idInstituicao == null){
         console.log("Instituição não encontrada!")
+        return;
+    }
+
+    if(
+        logradouro == "" ||
+        numero == "" ||
+        bairro == "" ||
+        municipio == "" ||
+        uf == ""
+    ){
+        mensagemPopup.innerHTML = 'Preencha todos os campos!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
         return;
     }
 
@@ -64,9 +79,18 @@ async function adicionarPolo(){
         })
     })
     .then(function(resposta){
+
         console.log(resposta);
+        
         if(resposta.ok){
-            console.log('oi')
+            // console.log('oi');
+            mensagemPopup.innerHTML = `Polo adicionado com sucesso!`;
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+        } else{
+            mensagemPopup.innerHTML = 'Falha ao adicionar polo!';
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'red';
         }
 
     })

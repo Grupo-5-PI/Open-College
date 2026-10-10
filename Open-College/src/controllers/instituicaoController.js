@@ -124,7 +124,7 @@ function cadastrar(req, res) {
         let municipio = req.body.municipioServer;
         let uf = req.body.ufServer;
         let idInstituicao = req.body.idInstituicaoServer;
-
+            
         instituicaoModel.adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao)
         .then(function(resposta){
             res.status(201);
@@ -136,7 +136,7 @@ function cadastrar(req, res) {
             // console.log("\nHouve um erro ao adicionar o polo! Erro : ", erro.sqlMessage);
             // res.status(500).erro.sqlMessage;
         })
-
+            
     }
                         
 module.exports = {
