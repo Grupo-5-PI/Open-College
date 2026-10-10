@@ -123,14 +123,15 @@ function cadastrar(req, res) {
         instituicaoModel.buscarPolos(idInstituicao)
         .then(function(resposta){
             if(resposta.length > 0){
-                res.json(resposta);
-                res.status(200);
+                // res.json(resposta);
+                res.status(200).json(resposta);
             } else{
-                res.status(204);
+                res.status(204).send();
             }
         })
         .catch(function(erro){
             console.log(erro);
+            res.status(500).json(erro);
         })
 
     }

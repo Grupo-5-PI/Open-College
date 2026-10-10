@@ -85,7 +85,10 @@ async function exibirPolos(){
     } else if(polos.length > 0){
         let containerHtmlPolos = document.querySelector("main .sessao-polos");
         containerHtmlPolos.innerHTML = "";
-        for(const polo in polos){
+        // for(const polo in polos){
+        for(i = 0; i < polos.length; i++){
+
+            let polo = polos[i];
 
             containerHtmlPolos.innerHTML += `
                 <a href="./minha_instituicao_polo.html/${polo.idPolo}" class="item-sessao-polos">
