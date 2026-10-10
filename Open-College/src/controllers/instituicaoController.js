@@ -116,6 +116,25 @@ function cadastrar(req, res) {
 
     }
 
+    function buscarPolos(req, res){
+
+        let idInstituicao = req.params.idInstituicao;
+
+        instituicaoModel.buscarPolos(idInstituicao)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                res.json(resposta);
+                res.status(200);
+            } else{
+                res.status(204);
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+        })
+
+    }
+
     function adicionarPolo(req, res){
 
         let logradouro = req.body.logradouroServer;
@@ -144,6 +163,7 @@ module.exports = {
     listarTodas,
     buscarPorCnpj,
     buscarPorIdUsuario,
+    buscarPolos,
     adicionarPolo,
    
 };
