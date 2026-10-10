@@ -4,6 +4,10 @@ window.onload = popupAberto = false;
 
 function abrirFecharPopup(idPopup){
 
+    let mensagemPopup = document.querySelector(`#${idPopup} .popup-mensagem`);
+    mensagemPopup.innerHTML = '';
+    mensagemPopup.style.display = 'none';
+    
     if(popupAberto){
         document.getElementById(idPopup).style.display = 'none';
         popupAberto = false;
@@ -43,9 +47,24 @@ async function adicionarPolo(){
     let municipio = document.getElementById("select_municipio_polo").value;
     let uf = document.getElementById("select_uf_polo").value;
     let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    
+    let mensagemPopup = document.querySelector("#popup_adicionar_polo .popup-mensagem");
 
     if(idInstituicao == undefined || idInstituicao == null){
         console.log("Instituição não encontrada!")
+        return;
+    }
+
+    if(
+        logradouro == "" ||
+        numero == "" ||
+        bairro == "" ||
+        municipio == "" ||
+        uf == ""
+    ){
+        mensagemPopup.innerHTML = 'Preencha todos os campos!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
         return;
     }
 
@@ -65,8 +84,26 @@ async function adicionarPolo(){
     })
     .then(function(resposta){
 
+        console.log(resposta);
+        
         if(resposta.ok){
+            // console.log('oi');
+            mensagemPopup.innerHTML = `Polo adicionado com sucesso!`;
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            mensagemPopup.style.borderColor = 'green';
 
+            document.getElementById("input_logradouro_polo").value = '';
+            document.getElementById("input_numero_polo").value = '';
+            document.getElementById("input_bairro_polo").value = '';
+            document.getElementById("select_municipio_polo").value = '';
+            document.getElementById("select_uf_polo").value = '';
+            
+        } else{
+            mensagemPopup.innerHTML = 'Falha ao adicionar polo!';
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'red';
+            mensagemPopup.style.borderColor = 'red';
         }
 
     })
