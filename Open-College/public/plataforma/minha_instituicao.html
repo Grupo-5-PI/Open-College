@@ -202,32 +202,32 @@
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 70%">
                         <label for="logradouro">LOGRADOURO: </label>
-                        <input type="text" name="logradouro">
+                        <input type="text" name="logradouro" id="input_logradouro_polo">
                     </div>
                     
                     <div class="input-popup" style="width: 30%">
                         <label for="numero">NÚMERO: </label>
-                        <input type="text" name="numero">
+                        <input type="text" name="numero" id="input_numero_polo">
                     </div>
                 </div>
                 
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 35%;">
                         <label for="bairro">BAIRRO: </label>
-                        <input type="text" name="bairro">
+                        <input type="text" name="bairro" id="input_bairro_polo">
                     </div>
                     
                     <div class="input-popup" style="width: 55%">
                         <label for="municipio">MUNICÍPIO: </label><br>
-                        <select name="municipio" id="">
-                            <option value="0"></option>
+                        <select name="municipio" id="select_municipio_polo">
+                            <option value="são caetano">são caetano</option>
                         </select>
                     </div>
                     
                     <div class="input-popup" style="width: 10%">
                         <label for="uf">UF: </label><br>
-                        <select name="uf" id="">
-                            <option value="0"></option>
+                        <select name="uf" id="select_uf_polo">
+                            <option value="sp">sp</option>
                         </select>
                     </div>
                 </div>
@@ -235,10 +235,12 @@
             
 
             <div class="popup-interacao-botoes">
-                <button>
+                <button onclick="adicionarPolo()">
                     ADICIONAR
                 </button>
             </div>
+
+            <span class="popup-mensagem">oi</span>
             
         </div>
     </div>
