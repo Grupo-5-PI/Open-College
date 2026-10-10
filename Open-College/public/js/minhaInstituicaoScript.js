@@ -83,7 +83,30 @@ async function exibirPolos(){
             <span onclick="abrirFecharPopup('popup_adicionar_polo')">Cadastre o seu primeiro polo!</span>
         `;
     } else if(polos.length > 0){
-        containerHtmlMensagem.innerHTML = 'oierr';
+        let containerHtmlPolos = document.querySelector("main .sessao-polos");
+        containerHtmlPolos.innerHTML = "";
+        for(const polo in polos){
+
+            containerHtmlPolos.innerHTML += `
+                <a href="./minha_instituicao_polo.html/${polo.idPolo}" class="item-sessao-polos">
+                    <div class="item-sessao-polos-esquerda">
+                        <div class="nome-polo">Polo ${polo.municipio}</div>
+                        
+                        <div class="endereco-polo">
+                            <span>${polo.municipio} | ${polo.uf}</span>
+                            <br>
+                            <span>${polo.logradouro}, ${polo.numero}, ${polo.bairro}</span>
+                        </div>
+                    </div>
+
+                    <div class="item-sessao-polos-direita">
+                        <span class="qtd-cursos">Quantidade de Cursos: 3</span>
+                    </div>
+                </a>
+            `;
+
+        }
+        
     }
 
 }
