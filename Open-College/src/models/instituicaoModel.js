@@ -50,6 +50,19 @@ function buscarPorIdUsuario(idUsuario){
 
 }
 
+function buscarPolos(idInstituicao){
+
+    console.log("\ACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarPolos");
+
+    var instrucaoSql = `
+        SELECT * FROM tblPolo WHERE idInstituicao = ${idInstituicao} ORDER BY idPolo ASC;
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
 function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -70,5 +83,6 @@ module.exports = {
     cadastrar,
     vincularUsuario,
     buscarPorIdUsuario,
+    buscarPolos,
     adicionarPolo,
 };
