@@ -18,6 +18,19 @@ function abrirFecharPopup(idPopup){
 
 }
 
+async function buscarPolos(){
+
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == null){
+        console.log("Instituição não encontrada!");
+        return;
+    }
+
+    fetch()
+
+}
+
 async function buscarInstituicaoPorIdUsuario(){
 
     let idUsuario = sessionStorage.ID_USUARIO;
