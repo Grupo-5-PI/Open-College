@@ -85,19 +85,19 @@
         <div class="main-conteudo">
 
             <div class="sessao-filtros">
-                <select name="filtro-cursos-area" id="filtro-cursos-area" class="selecao-filtro">
+                <select name="filtro-cursos-area" id="filtro_cursos_area" class="selecao-filtro">
                     <option value="0" selected disabled>Área</option>
                 </select>
 
-                <select name="filtro-cursos-curso" id="filtro_cursos-curso" class="selecao-filtro">
+                <select name="filtro-cursos-curso" id="filtro_cursos_curso" class="selecao-filtro">
                     <option value="0" selected disabled>Curso</option>
                 </select>
 
-                <select name="filtro-cursos-modalidade" id="filtro_cursos-modalidade" class="selecao-filtro">
+                <select name="filtro-cursos-modalidade" id="filtro_cursos_modalidade" class="selecao-filtro">
                     <option value="0" selected disabled>Modalidade</option>
                 </select>
 
-                <select name="filtro-cursos-turno" id="filtro_cursos-turno" class="selecao-filtro">
+                <select name="filtro-cursos-turno" id="filtro_cursos_turno" class="selecao-filtro">
                     <option value="0" selected disabled>Turno</option>
                 </select>
 
@@ -137,65 +137,6 @@
         </div>
     </main>
 
-    <div class="container-popup" id="popup_editar_polo">
-        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_editar_polo')"></div>
-
-        <div class="popup-interacao">
-            <div class="header-popup">
-                <span onclick="abrirFecharPopup('popup_editar_polo')">
-                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
-                </span>
-                <span class="titulo-popup">Editar Polo</span>
-            </div>
-            
-            <div class="inputs-popup">
-                <div class="separacao-inputs-popup">
-                    <div class="input-popup" style="width: 70%">
-                        <label for="logradouro">LOGRADOURO: </label>
-                        <input type="text" name="logradouro">
-                    </div>
-                    
-                    <div class="input-popup" style="width: 30%">
-                        <label for="numero">NÚMERO: </label>
-                        <input type="text" name="numero">
-                    </div>
-                </div>
-                
-                <div class="separacao-inputs-popup">
-                    <div class="input-popup" style="width: 35%;">
-                        <label for="bairro">BAIRRO: </label>
-                        <input type="text" name="bairro">
-                    </div>
-                    
-                    <div class="input-popup" style="width: 55%">
-                        <label for="municipio">MUNICÍPIO: </label><br>
-                        <select name="municipio" id="">
-                            <option value="0"></option>
-                        </select>
-                    </div>
-                    
-                    <div class="input-popup" style="width: 10%">
-                        <label for="uf">UF: </label><br>
-                        <select name="uf" id="">
-                            <option value="0"></option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="popup-interacao-botoes">
-                <button>
-                    SALVAR
-                </button>
-            
-                <button class="botao-excluir">
-                    EXCLUIR
-                </button>
-            </div>
-            
-        </div>
-    </div>
-
     <div class="container-popup" id="popup_adicionar_curso">
         <div class="sombra-popup"   onclick="abrirFecharPopup('popup_adicionar_curso')"></div>
 
@@ -211,7 +152,7 @@
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 100%">
                         <label for="area_geral">ÁREA GERAL: </label>
-                        <select name="area_geral" id="">
+                        <select name="area_geral" id="select_area_geral_curso">
                             <option value="0"></option>
                         </select>
                     </div>
@@ -220,7 +161,7 @@
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 100%">
                         <label for="curso">CURSO: </label>
-                        <select name="curso" id="">
+                        <select name="curso" id="select_curso_curso">
                             <option value="0"></option>
                         </select>
                     </div>
@@ -229,14 +170,14 @@
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 50%;">
                         <label for="turno">TURNO: </label>
-                        <select name="turno" id="">
+                        <select name="turno" id="select_turno_curso">
                             <option value="0"></option>
                         </select>
                     </div>
                     
                     <div class="input-popup" style="width: 50%">
                         <label for="modalidade">MODALIDADE: </label><br>
-                        <select name="modalidade" id="">
+                        <select name="modalidade" id="select_modalidade_curso">
                             <option value="0"></option>
                         </select>
                     </div>
@@ -248,6 +189,8 @@
                     ADICIONAR
                 </button>
             </div>
+
+            <span class="popup-mensagem"></span>
             
         </div>
     </div>
@@ -267,31 +210,31 @@
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 70%">
                         <label for="logradouro">LOGRADOURO: </label>
-                        <input type="text" name="logradouro">
+                        <input type="text" name="logradouro" id="input_logradouro_editar_polo">
                     </div>
                     
                     <div class="input-popup" style="width: 30%">
                         <label for="numero">NÚMERO: </label>
-                        <input type="text" name="numero">
+                        <input type="text" name="numero" id="input_numero_editar_polo">
                     </div>
                 </div>
                 
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 35%;">
                         <label for="bairro">BAIRRO: </label>
-                        <input type="text" name="bairro">
+                        <input type="text" name="bairro" id="input_bairro_editar_polo">
                     </div>
                     
                     <div class="input-popup" style="width: 55%">
                         <label for="municipio">MUNICÍPIO: </label><br>
-                        <select name="municipio" id="">
+                        <select name="municipio" id="select_municipio_editar_polo">
                             <option value="0"></option>
                         </select>
                     </div>
                     
                     <div class="input-popup" style="width: 10%">
                         <label for="uf">UF: </label><br>
-                        <select name="uf" id="">
+                        <select name="uf" id="selecy_uf_editar_polo">
                             <option value="0"></option>
                         </select>
                     </div>
@@ -307,6 +250,8 @@
                     EXCLUIR
                 </button>
             </div>
+
+            <span class="popup-mensagem"></span>
             
         </div>
     </div>

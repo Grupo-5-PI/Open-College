@@ -18,6 +18,102 @@ function abrirFecharPopup(idPopup){
 
 }
 
+function exibirMensagemPadraoDeBusca(){
+    
+}
+
+async function buscarPolos(){
+
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == null){
+        console.log("Instituição não encontrada!");
+        return;
+    }
+
+    let retorno = await fetch(`/instituicao/buscarPolos/${idInstituicao}`)
+    .then(function(resposta){
+
+        if(resposta.status === 404){
+            return '404';
+        } else if(resposta.status === 204){
+            return '204';
+        } else if(resposta.status === 200){
+            return resposta.json();
+        }
+    });
+
+    console.log(retorno);
+    
+    return retorno;
+
+}
+
+async function exibirPolos(){
+
+    let containerHtmlMensagem = document.querySelector("main .sessao-polos-mensagem");
+
+    let contadorMensagemPadrao = 1;
+
+    const mensagemPadrao = setInterval(() => {
+
+        if(contadorMensagemPadrao == 1){
+            containerHtmlMensagem.innerHTML = `Buscando polos da sua instituição.`;
+            contadorMensagemPadrao++;
+        } else if(contadorMensagemPadrao == 2){
+            containerHtmlMensagem.innerHTML += `.`;
+            contadorMensagemPadrao++;
+        } else if(contadorMensagemPadrao == 3){
+            containerHtmlMensagem.innerHTML += `.`;
+            contadorMensagemPadrao = 1;
+        }
+
+    }, 500);
+
+    let polos = await buscarPolos();
+    clearInterval(mensagemPadrao);
+
+    if(polos == 404){
+        containerHtmlMensagem.innerHTML = `
+            Erro ao buscar polos!
+        `;
+    } else if(polos == 204){
+        containerHtmlMensagem.innerHTML = `
+            Sua instituição ainda não tem polos.<br>
+            <span onclick="abrirFecharPopup('popup_adicionar_polo')">Cadastre o seu primeiro polo!</span>
+        `;
+    } else if(polos.length > 0){
+        let containerHtmlPolos = document.querySelector("main .sessao-polos");
+        containerHtmlPolos.innerHTML = "";
+        // for(const polo in polos){
+        for(i = 0; i < polos.length; i++){
+
+            let polo = polos[i];
+
+            containerHtmlPolos.innerHTML += `
+                <a href="./minha_instituicao_polo.html/${polo.idPolo}" class="item-sessao-polos">
+                    <div class="item-sessao-polos-esquerda">
+                        <div class="nome-polo">Polo ${polo.municipio}</div>
+                        
+                        <div class="endereco-polo">
+                            <span>${polo.municipio} | ${polo.uf}</span>
+                            <br>
+                            <span>${polo.logradouro}, ${polo.numero}, ${polo.bairro}</span>
+                        </div>
+                    </div>
+
+                    <div class="item-sessao-polos-direita">
+                        <span class="qtd-cursos">Quantidade de Cursos: 3</span>
+                    </div>
+                </a>
+            `;
+
+        }
+        
+    }
+
+}
+
 async function buscarInstituicaoPorIdUsuario(){
 
     let idUsuario = sessionStorage.ID_USUARIO;
