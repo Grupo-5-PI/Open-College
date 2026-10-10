@@ -88,11 +88,61 @@ function cadastrar(req, res) {
         }
     }
 
-                
+    function buscarPorIdUsuario(req, res){
+
+        let idUsuario = req.params.idUsuario;
+
+        if(idUsuario == undefined){
+            res.status(400).send("ID Usuário está undefined!");
+        } else{
+
+            instituicaoModel.buscarPorIdUsuario(idUsuario)
+            .then(function (resposta){
+
+                if(resposta.length > 0){
+                    res.json(resposta[0]);    
+                } else{
+                    res.status(404).send("Instituição não encontrada!");
+                }
+
+            })
+            .catch(function(erro){
+                console.log(erro);
+                // console.log("\nHouve um erro ao buscar a instituição! Erro: ", erro.sqlMessage);
+                // res.status(500).erro.sqlMessage;
+            })
+
+        }
+
+    }
+
+    function adicionarPolo(req, res){
+
+        let logradouro = req.body.logradouroServer;
+        let numero = req.body.numeroServer;
+        let bairro = req.body.bairroServer;
+        let municipio = req.body.municipioServer;
+        let uf = req.body.ufServer;
+        let idInstituicao = req.body.idInstituicaoServer;
+
+        instituicaoModel.adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao)
+        .then(function(resposta){
+            res.status(201);
+            // res.body(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            // console.log("\nHouve um erro ao adicionar o polo! Erro : ", erro.sqlMessage);
+            // res.status(500).erro.sqlMessage;
+        })
+
+    }
                         
 module.exports = {
     cadastrar,
     listarTodas,
-    buscarPorCnpj
+    buscarPorCnpj,
+    buscarPorIdUsuario,
+    adicionarPolo,
    
 };

@@ -64,11 +64,10 @@ CREATE TABLE tblUsuario (
 CREATE TABLE tblPolo (
     idPolo INT PRIMARY KEY AUTO_INCREMENT,
     idInstituicao INT NOT NULL,
-    cep CHAR(8) NOT NULL,
     uf CHAR(2) NOT NULL,
-    cidade VARCHAR(100) NOT NULL,
+    municipio VARCHAR(100) NOT NULL,
     bairro VARCHAR(100) NOT NULL,
-    rua VARCHAR(150) NOT NULL,
+    logradouro VARCHAR(150) NOT NULL,
     numero VARCHAR(10) NOT NULL,
     CONSTRAINT FK_tblPolo_tblInstituicao 
 		FOREIGN KEY (idInstituicao) 
