@@ -27,7 +27,21 @@ async function buscarPolos(){
         return;
     }
 
-    fetch()
+    let retorno = await fetch(`/instituicao/buscarPolos/${idInstituicao}`)
+    .then(function(resposta){
+
+        if(resposta.status === 404){
+            return '404';
+        } else if(resposta.status === 204){
+            return '204';
+        } else if(resposta.status === 200){
+            return resposta.json();
+        }
+    });
+
+    console.log(retorno);
+    
+    return retorno;
 
 }
 
