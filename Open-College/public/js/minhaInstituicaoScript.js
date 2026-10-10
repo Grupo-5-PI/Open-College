@@ -18,6 +18,10 @@ function abrirFecharPopup(idPopup){
 
 }
 
+function exibirMensagemPadraoDeBusca(){
+    
+}
+
 async function buscarPolos(){
 
     let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
@@ -42,6 +46,45 @@ async function buscarPolos(){
     console.log(retorno);
     
     return retorno;
+
+}
+
+async function exibirPolos(){
+
+    let containerHtmlMensagem = document.querySelector("main .sessao-polos-mensagem");
+
+    let contadorMensagemPadrao = 1;
+
+    const mensagemPadrao = setInterval(() => {
+
+        if(contadorMensagemPadrao == 1){
+            containerHtmlMensagem.innerHTML = `Buscando polos da sua instituição.`;
+            contadorMensagemPadrao++;
+        } else if(contadorMensagemPadrao == 2){
+            containerHtmlMensagem.innerHTML += `.`;
+            contadorMensagemPadrao++;
+        } else if(contadorMensagemPadrao == 3){
+            containerHtmlMensagem.innerHTML += `.`;
+            contadorMensagemPadrao = 1;
+        }
+
+    }, 500);
+
+    let polos = await buscarPolos();
+    clearInterval(mensagemPadrao);
+
+    if(polos == 404){
+        containerHtmlMensagem.innerHTML = `
+            Erro ao buscar polos!
+        `;
+    } else if(polos == 204){
+        containerHtmlMensagem.innerHTML = `
+            Sua instituição ainda não tem polos.<br>
+            <span onclick="abrirFecharPopup('popup_adicionar_polo')">Cadastre o seu primeiro polo!</span>
+        `;
+    } else if(polos.length > 0){
+        containerHtmlMensagem.innerHTML = 'oierr';
+    }
 
 }
 
