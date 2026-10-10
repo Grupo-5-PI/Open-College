@@ -91,7 +91,7 @@ async function exibirPolos(){
             let polo = polos[i];
 
             containerHtmlPolos.innerHTML += `
-                <a href="./minha_instituicao_polo.html/${polo.idPolo}" class="item-sessao-polos">
+                <a href="./minha_instituicao_polo.html?${polo.idPolo}" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
                         <div class="nome-polo">Polo ${polo.municipio}</div>
                         
