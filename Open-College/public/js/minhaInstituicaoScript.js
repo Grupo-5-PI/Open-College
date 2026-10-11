@@ -18,8 +18,10 @@ function abrirFecharPopup(idPopup){
 
 }
 
-function exibirMensagemPadraoDeBusca(){
-    
+function recarregarPagina(){
+    setTimeout(()=>{
+        location.reload();
+    }, 1500);
 }
 
 async function buscarPolos(){
@@ -91,7 +93,7 @@ async function exibirPolos(){
             let polo = polos[i];
 
             containerHtmlPolos.innerHTML += `
-                <a href="./minha_instituicao_polo.html?${polo.idPolo}" class="item-sessao-polos">
+                <a href="./minha_instituicao_polo.html?id_polo=${polo.idPolo}" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
                         <div class="nome-polo">Polo ${polo.municipio}</div>
                         
@@ -194,6 +196,8 @@ async function adicionarPolo(){
             document.getElementById("input_bairro_polo").value = '';
             document.getElementById("select_municipio_polo").value = '';
             document.getElementById("select_uf_polo").value = '';
+ 
+            recarregarPagina();
             
         } else{
             mensagemPopup.innerHTML = 'Falha ao adicionar polo!';
@@ -202,6 +206,20 @@ async function adicionarPolo(){
             mensagemPopup.style.borderColor = 'red';
         }
 
-    })
+    });
 
+}
+
+async function editarPolo(){
+
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    let idPolo = new URLSearchParams(window.location.search).get("id_polo");
+    let logradouro = document.getElementById("input_logradouro_editar_polo").value;
+    let numero = document.getElementById("input_numero_editar_polo").value;
+    let bairro = document.getElementById("input_bairro_editar_polo").value;
+    let municipio = document.getElementById("select_municipio_editar_polo").value;
+    let uf = document.getElementById("selecy_uf_editar_polo").value;
+
+    fetch("")
+    
 }

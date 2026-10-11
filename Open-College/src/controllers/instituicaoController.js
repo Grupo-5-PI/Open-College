@@ -161,6 +161,28 @@ function cadastrar(req, res) {
             
     }
                         
+    function editarPolo(){
+
+        let logradouro = req.body.logradouroServer;
+        let numero = req.body.numeroServer;
+        let bairro = req.body.bairroServer;
+        let municipio = req.body.municipioServer;
+        let uf = req.body.ufServer;
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+
+        instituicaoModel.editarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(201).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+
+    }
+    
 module.exports = {
     cadastrar,
     listarTodas,
@@ -168,5 +190,6 @@ module.exports = {
     buscarPorIdUsuario,
     buscarPolos,
     adicionarPolo,
+    editarPolo,
    
 };
