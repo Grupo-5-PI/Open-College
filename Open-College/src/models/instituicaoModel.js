@@ -63,14 +63,27 @@ function buscarPolos(idInstituicao){
 
 }
 
-function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao){
+function buscarIdParaAdicionarPolo(idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarIdParaAdicionarPolo");
+
+    var instrucaoSql = `
+        SELECT COUNT(*) AS ultimoId FROM tblPolo WHERE idInstituicao = ${idInstituicao};
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
+function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
     console.log("FUNÇÃO adicionarPolo");
 
     var instrucaoSql = `
-        INSERT INTO tblPolo (idInstituicao, uf, municipio, bairro, numero, logradouro) VALUES 
-        (${idInstituicao}, '${uf}', '${municipio}', '${bairro}', '${numero}', '${logradouro}');
+        INSERT INTO tblPolo (idPolo, idInstituicao, uf, municipio, bairro, numero, logradouro) VALUES 
+        (${idPolo}, ${idInstituicao}, '${uf}', '${municipio}', '${bairro}', '${numero}', '${logradouro}');
     `;
 
     return database.executar(instrucaoSql);
@@ -84,5 +97,6 @@ module.exports = {
     vincularUsuario,
     buscarPorIdUsuario,
     buscarPolos,
+    buscarIdParaAdicionarPolo,
     adicionarPolo,
 };
