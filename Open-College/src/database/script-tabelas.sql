@@ -21,16 +21,6 @@ CREATE TABLE tblAreaGeral (
     descricao VARCHAR(500)
 );
 
-CREATE TABLE tblAreaEspecifica (
-    idAreaEspecifica INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(150) UNIQUE NOT NULL,
-    descricao VARCHAR(500),
-    idAreaGeral INT NOT NULL,
-    CONSTRAINT FK_tblAreaEspecifica_tblAreaGeral 
-		FOREIGN KEY (idAreaGeral) 
-			REFERENCES tblAreaGeral (idAreaGeral)
-);
-
 CREATE TABLE tblCurso (
     idCurso INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
@@ -62,13 +52,15 @@ CREATE TABLE tblUsuario (
 );
 
 CREATE TABLE tblPolo (
-    idPolo INT PRIMARY KEY AUTO_INCREMENT,
-    idInstituicao INT NOT NULL,
+    idPolo INT,
+    idInstituicao INT,
     uf CHAR(2) NOT NULL,
     municipio VARCHAR(100) NOT NULL,
     bairro VARCHAR(100) NOT NULL,
     logradouro VARCHAR(150) NOT NULL,
     numero VARCHAR(10) NOT NULL,
+    CONSTRAINT PK_tblPolo
+		PRIMARY KEY (idPolo, idInstituicao),
     CONSTRAINT FK_tblPolo_tblInstituicao 
 		FOREIGN KEY (idInstituicao) 
 			REFERENCES tblInstituicao (idInstituicao),
