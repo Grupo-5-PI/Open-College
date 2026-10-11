@@ -63,6 +63,19 @@ function buscarPolos(idInstituicao){
 
 }
 
+function buscarIdParaAdicionarPolo(idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarIdParaAdicionarPolo");
+
+    var instrucaoSql = `
+        SELECT COUNT(*) AS ultimoId FROM tblPolo WHERE idInstituicao = ${idInstituicao};
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
 function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -84,5 +97,6 @@ module.exports = {
     vincularUsuario,
     buscarPorIdUsuario,
     buscarPolos,
+    buscarIdParaAdicionarPolo,
     adicionarPolo,
 };
