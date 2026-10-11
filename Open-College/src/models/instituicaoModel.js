@@ -76,14 +76,14 @@ function buscarIdParaAdicionarPolo(idInstituicao){
 
 }
 
-function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao){
+function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
     console.log("FUNÇÃO adicionarPolo");
 
     var instrucaoSql = `
-        INSERT INTO tblPolo (idInstituicao, uf, municipio, bairro, numero, logradouro) VALUES 
-        (${idInstituicao}, '${uf}', '${municipio}', '${bairro}', '${numero}', '${logradouro}');
+        INSERT INTO tblPolo (idPolo, idInstituicao, uf, municipio, bairro, numero, logradouro) VALUES 
+        (${idPolo}, ${idInstituicao}, '${uf}', '${municipio}', '${bairro}', '${numero}', '${logradouro}');
     `;
 
     return database.executar(instrucaoSql);
