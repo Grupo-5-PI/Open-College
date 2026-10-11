@@ -27,4 +27,12 @@ router.post("/adicionarPolo", function(req, res){
     instituicaoController.adicionarPolo(req, res);
 });
 
+router.get("/buscarDadosPolo/:params", function(req, res){
+    instituicaoController.buscarDadosPolo(req, res);
+});
+
+router.post("/editarPolo", function(req, res){
+    instituicaoController.editarPolo(req, res);
+});
+
 module.exports = router;
