@@ -5,7 +5,6 @@
 /*
 comandos para mysql server
 */
-
 CREATE DATABASE IF NOT EXISTS opencollege;
 USE opencollege;
 
@@ -25,10 +24,6 @@ CREATE TABLE tblCurso (
     idCurso INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
     formacao VARCHAR(20) NOT NULL,
-    idAreaEspecifica INT NOT NULL,
-    CONSTRAINT FK_tblCurso_tblAreaEspecifica 
-		FOREIGN KEY (idAreaEspecifica) 
-			REFERENCES tblAreaEspecifica (idAreaEspecifica),
     CONSTRAINT CK_tblCurso_formacao 
 		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo'))
 );
@@ -101,7 +96,6 @@ CREATE TABLE tblAtualizacao (
     idUsuario INT NOT NULL,
     idCurso INT,
     idAreaGeral INT,
-    idAreaEspecifica INT,
     tipo VARCHAR(50) NOT NULL,
     conteudo VARCHAR(500) NOT NULL,
     dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -114,10 +108,7 @@ CREATE TABLE tblAtualizacao (
 			REFERENCES tblCurso (idCurso),
     CONSTRAINT FK_tblAtualizacao_tblAreaGeral 
 		FOREIGN KEY (idAreaGeral) 
-			REFERENCES tblAreaGeral (idAreaGeral),
-    CONSTRAINT FK_tblAtualizacao_tblAreaEspecifica 
-		FOREIGN KEY (idAreaEspecifica) 
-			REFERENCES tblAreaEspecifica (idAreaEspecifica)
+			REFERENCES tblAreaGeral (idAreaGeral)
 );
 
 CREATE TABLE tblCenso (
