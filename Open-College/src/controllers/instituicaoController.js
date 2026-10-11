@@ -144,7 +144,8 @@ function cadastrar(req, res) {
         let municipio = req.body.municipioServer;
         let uf = req.body.ufServer;
         let idInstituicao = req.body.idInstituicaoServer;
-        let idPolo = await instituicaoModel.buscarIdParaAdicionarPolo(idInstituicao);
+        let idPolo = (await instituicaoModel.buscarIdParaAdicionarPolo(idInstituicao))[0].ultimoId + 1;
+        console.log("idPolo: ", idPolo);
             
         instituicaoModel.adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo)
         .then(function(resposta){
