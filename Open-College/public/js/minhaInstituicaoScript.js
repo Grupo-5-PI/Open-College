@@ -18,8 +18,10 @@ function abrirFecharPopup(idPopup){
 
 }
 
-function exibirMensagemPadraoDeBusca(){
-    
+function recarregarPagina(){
+    setTimeout(()=>{
+        location.reload();
+    }, 1500);
 }
 
 async function buscarPolos(){
@@ -194,6 +196,8 @@ async function adicionarPolo(){
             document.getElementById("input_bairro_polo").value = '';
             document.getElementById("select_municipio_polo").value = '';
             document.getElementById("select_uf_polo").value = '';
+ 
+            recarregarPagina();
             
         } else{
             mensagemPopup.innerHTML = 'Falha ao adicionar polo!';
