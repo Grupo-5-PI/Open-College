@@ -27,4 +27,8 @@ router.post("/adicionarPolo", function(req, res){
     instituicaoController.adicionarPolo(req, res);
 });
 
+router.post("/editarPolo", function(req, res){
+    instituicaoController.editarPolo(req, res);
+});
+
 module.exports = router;
