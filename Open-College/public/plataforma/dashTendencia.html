@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Tendência </title>
+    <link rel="stylesheet" href="../style/global.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+    <link rel="stylesheet" href="../style/menuLateral.css">
+    <link rel="icon" href="../img/logo/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="../js/sessao.js"></script>
+</head>
+
+<!-- onload="validarSessao()" -->
+
+<body>
+    <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <a href="" class="perfil-link">
+                <div class="foto-wrapper">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
+                </div>
+                <span class="nome-usuario" id="b_usuario">Carregando...</span>
+            </a>
+        </header>
+        <nav class="content">
+            <ul id="nav-item">
+                <li class="nav-item active">
+                    <a href="dashGeral.html">
+                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="painelAtualizacao.html">
+                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                            class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Painel de Atualização
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha Instituição
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="EditarPerfil.html">
+                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha conta
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sair">
+            <div class="btn-sair">
+                <button>
+                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="painel-fundo">
+            <header class="header-dash">
+                <a href="dashGeral.html" class="buttons-header">Geral</a>
+                <a href="dashPerfil.html" class="buttons-header">Perfil</a>
+                <a href="dashDemanda.html" class="buttons-header">Demanda</a>
+                <a href="dashRegiao.html" class="buttons-header">Região</a>
+                <a href="dashTendencia.html" class="buttons-header active">Tendência</a>
+                <a href="dashPersonalizada.html" class="buttons-header btn-add">+</a>
+
+                <nav class="nav-dash">
+                    <p>Dashboard - Tendência (ANO)</p>
+                    <select class="filtro-ano">
+                        <option>2025</option>
+                        <option>2024</option>
+                        <option>2023</option>
+                        <option>2022</option>
+                        <option>2021</option>
+                        <option>2020</option>
+                        <option>2019</option>
+                    </select>
+                </nav>
+            </header>
+
+            <section class="graficosLadoaLado">
+                <div class="grafico-duplo">
+                    <div class="grafico-linha">
+                        <canvas id="grafico-crescimento-graduacao"></canvas>
+                    </div>
+                </div>
+                <div class="grafico-duplo">
+                    <div class="grafico-linha">
+                        <canvas id="grafico-evo-matricula-mod"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card-tendencia">
+                <div class="grid-cards">
+                    <div class="card-kpi">
+                        <span class="card-titulo">Cursos com Maior Crescimento</span>
+                        <strong class="card-valor">ADS – 287%</strong>
+                        <strong class="card-valor">Odontologia – 192%</strong>
+                        <strong class="card-valor">Computação - 100%</strong>
+                        <strong class="card-valor">Psicologia – 65%</strong>
+                        <span class="card-rodape">No ano de ANO</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <div class="footer">
+        <p>COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.</p>
+    </div>
+</body>
+
+</html>
+<script>
+
+    let foto = sessionStorage.FOTO_USUARIO;
+    imgUsuario.src = `${foto}`
+
+    Chart.register(ChartDataLabels);
+
+    let tituloDash = document.querySelector('.nav-dash p')
+    let filtroAno = document.querySelector('.filtro-ano')
+    let cardKPI = document.querySelectorAll('.card-rodape')
+
+    function atualizarAno() {
+        let anoSelecionado = filtroAno.value
+        tituloDash.textContent = `Dashboard - Tendência (${anoSelecionado})`
+
+        for (let i = 0; i < cardKPI.length; i++) {
+            cardKPI[i].textContent = `No ano de ${anoSelecionado}`;
+        }
+    }
+
+    filtroAno.addEventListener('change', atualizarAno)
+
+    atualizarAno()
+
+    function carregarGraficoCrescimentoTipoDeGraduacao() {
+        let crecimentoGraduacao = document.getElementById('grafico-crescimento-graduacao');
+
+        new Chart(crecimentoGraduacao, {
+            type: 'line',
+            data: {
+                labels: ['2020', '2021', '2022', '2023', '2024'],
+                datasets: [
+                    {
+                        label: 'Medicina',
+                        data: [42, 46, 49, 52, 55],
+                        borderColor: '#4a7ff7',
+                        backgroundColor: '#4a7ff7',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#4a7ff7',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Pedagogia',
+                        data: [10, 11, 12, 14, 15],
+                        borderColor: '#f3b86b',
+                        backgroundColor: '#f3b86b',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#f3b86b',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Direito',
+                        data: [30, 28, 33, 28, 31],
+                        borderColor: '#ae8df5',
+                        backgroundColor: '#ae8df5',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#ae8df5',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Histório',
+                        data: [20, 24, 29, 22, 30],
+                        borderColor: '#3cc027',
+                        backgroundColor: '#3cc027',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#3cc027',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { top: 10, right: 20, bottom: 10, left: 10 }
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Crescimento Anual Por Tipo De Graduação',
+                        color: '#ffffff',
+                        align: 'center',
+                        padding: { top: 5, bottom: 15 },
+                        font: {
+                            size: 23,
+                            family: 'Telegraf',
+                            weight: 'bold'
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                size: 13,
+                                family: 'Telegraf',
+                                weight: 'bold'
+                            },
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            boxWidth: 10,     
+                            boxHeight: 10,
+                            padding: 15
+                        }
+                    },
+                    datalabels: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        padding: 10,
+                        titleFont: {
+                            family: 'Telegraf',
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            family: 'Telegraf',
+                            size: 13
+                        },
+                        callbacks: {
+                            label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y}%`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 13,
+                                family: 'Telegraf',
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grace: '10%',
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                family: 'Telegraf'
+                            },
+                            callback: (valor) => `${valor}%`
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.15)'
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    carregarGraficoCrescimentoTipoDeGraduacao();
+
+    function carregarGraficoEvolucaoPorModalidade() {
+        let evolucaoMatricula = document.getElementById('grafico-evo-matricula-mod');
+
+        new Chart(evolucaoMatricula, {
+            type: 'line',
+            data: {
+                labels: ['Bacherelado', 'Licenciatura', 'Tecnólogo'],
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Meta Mínima',
+                        data: [1500, 1500, 1500],
+                        borderColor: '#ff5555',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                        datalabels: {
+                            display: false
+                        }
+                    },
+                    {
+                        type: 'line',
+                        label: 'Matrículas',
+                        data: [2108, 1390, 3245],
+                        borderColor: '#3cc027',
+                        backgroundColor: '#3cc027',
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#3cc027',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        fill: false,
+                        datalabels: {
+                            display: false
+                        }
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Evolução De Matrícula Por Modalidade',
+                        color: '#ffffff',
+                        font: {
+                            size: 23,
+                            family: 'Telegraf',
+                            weight: 'bold'
+                        }
+                    },
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                family: 'Telegraf',
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        afterFit: (scale) => {
+                            scale.width = 60;
+                        },
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                family: 'Telegraf'
+                            },
+                            stepSize: 500
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.15)'
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+    carregarGraficoEvolucaoPorModalidade();
+
+</script>
