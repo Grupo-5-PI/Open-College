@@ -444,6 +444,62 @@ main {
     justify-content: center;
 }
 
+/* ====================================== DASH TENDÊNCIA ======================================*/
+
+.graficosLadoaLado {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    width: 100%;
+    flex: 1;
+}
+
+.grafico-duplo {
+    background-color: transparent;
+    border: 3px solid var(--cor1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff;
+    font-family: 'Telegraf', sans-serif;
+    height: 300px;
+}
+
+.grafico-linha {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-tendencia {
+   width: 100%;
+    box-sizing: border-box;
+}
+
+.card-tendencia .grid-cards {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.card-tendencia .card-kpi {
+    width: 100%;
+     background-color: transparent;
+    border: 3px solid var(--cor1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+    color: #ffffff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
 
 
 /* ====================================== FOOTER ======================================*/
