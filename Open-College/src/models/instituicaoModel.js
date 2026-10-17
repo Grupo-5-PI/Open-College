@@ -90,6 +90,25 @@ function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao,
 
 }
 
+function editarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO editarPolo");
+
+    var instrucaoSql = `
+        UPDATE tblPolo SET 
+        uf = '${uf}', 
+        municipio = '${municipio}', 
+        bairro = '${bairro}', 
+        numero = '${numero}', 
+        logradouro = '${logradouro}' 
+        WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
     buscarPorCnpj,
     listarTodas,
@@ -99,4 +118,5 @@ module.exports = {
     buscarPolos,
     buscarIdParaAdicionarPolo,
     adicionarPolo,
+    editarPolo,
 };
