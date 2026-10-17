@@ -172,7 +172,7 @@ function cadastrar(req, res) {
         .then(function(resposta){
             if(resposta.length > 0){
                 console.log(resposta);
-                res.status(200).json(resposta);
+                res.status(200).json(resposta[0]);
             } else{
                 res.status(404).send("Polo não encontrado!");
             }
