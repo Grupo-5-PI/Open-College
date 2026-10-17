@@ -348,7 +348,7 @@ async function adicionarCurso(){
 
     let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
     let idPolo = (await buscarDadosPolo())?.idPolo;
-    let areaGeral = document.getElementById('select_area_geral_curso').value;
+    // let areaGeral = document.getElementById('select_area_geral_curso').value;
     let curso = document.getElementById('select_curso_curso').value;
     let turno = document.getElementById('select_turno_curso').value;
     let modalidade = document.getElementById('select_modalidade_curso').value;
@@ -363,7 +363,7 @@ async function adicionarCurso(){
     }
     
     if(
-        areaGeral == "" ||
+        // areaGeral == "" ||
         curso == "" ||
         turno == "" ||
         modalidade == "" 
@@ -382,7 +382,7 @@ async function adicionarCurso(){
         body: JSON.stringify({
             idInstituicaoServer: idInstituicao,
             idPoloServer: idPolo,
-            areaGeralServer: areaGeral,
+            // areaGeralServer: areaGeral,
             cursoServer: curso,
             turnoServer: turno,
             modalidadeServer: modalidade,
@@ -399,7 +399,7 @@ async function adicionarCurso(){
             mensagemPopup.style.color = 'green';
             mensagemPopup.style.borderColor = 'green';
 
-            document.getElementById("select_area_geral_curso").value = '';
+            // document.getElementById("select_area_geral_curso").value = '';
             document.getElementById("select_curso_curso").value = '';
             document.getElementById("select_turno_curso").value = '';
             document.getElementById("select_modalidade_curso").value = '';
