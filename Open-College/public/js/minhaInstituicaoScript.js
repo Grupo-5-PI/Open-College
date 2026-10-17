@@ -343,3 +343,65 @@ async function editarPolo(){
     })
 
 }
+
+async function adicionarCurso(){
+
+    let areaGeral = document.getElementById('select_area_geral_curso').value;
+    let curso = document.getElementById('select_curso_curso').value;
+    let turno = document.getElementById('select_turno_curso').value;
+    let modalidade = document.getElementById('select_modalidade_curso').value;
+    
+    let mensagemPopup = document.querySelector("#popup_adicionar_curso .popup-mensagem");
+
+    if(
+        areaGeral == "" ||
+        curso == "" ||
+        turno == "" ||
+        modalidade == "" 
+    ){
+        mensagemPopup.innerHTML = 'Preencha todos os campos!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    fetch("/instituicao/adicionarCurso", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            areaGeralServer: areaGeral,
+            cursoServer: curso,
+            turnoServer: turno,
+            modalidadeServer: modalidade,
+        })
+    })
+    .then(function(resposta){
+
+        console.log(resposta);
+        
+        if(resposta.ok){
+            // console.log('oi');
+            mensagemPopup.innerHTML = `Curso adicionado com sucesso!`;
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            mensagemPopup.style.borderColor = 'green';
+
+            document.getElementById("select_area_geral_curso").value = '';
+            document.getElementById("select_curso_curso").value = '';
+            document.getElementById("select_turno_curso").value = '';
+            document.getElementById("select_modalidade_curso").value = '';
+ 
+            recarregarPagina();
+            
+        } else{
+            mensagemPopup.innerHTML = 'Falha ao adicionar curso!';
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'red';
+            mensagemPopup.style.borderColor = 'red';
+        }
+
+    });
+
+}
