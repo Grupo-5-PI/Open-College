@@ -35,4 +35,8 @@ router.post("/editarPolo", function(req, res){
     instituicaoController.editarPolo(req, res);
 });
 
+router.post("/adicionarCurso", function(req, res){
+    instituicaoController.adicionarCurso(req, res);
+});
+
 module.exports = router;
