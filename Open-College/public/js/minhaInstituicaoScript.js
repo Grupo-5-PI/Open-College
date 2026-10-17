@@ -222,7 +222,7 @@ async function buscarDadosPolo(){
         idPoloParam: idPolo
     });
 
-    let dadosPolo = fetch(`/instituicao/buscarDadosPolo/${parametros}`)
+    let dadosPolo = await fetch(`/instituicao/buscarDadosPolo/${parametros}`)
     .then(function(resposta){
         if(resposta.status == 404 || resposta.status == 500){
             return null;
