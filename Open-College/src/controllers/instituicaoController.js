@@ -161,7 +161,7 @@ function cadastrar(req, res) {
             
     }
                         
-    function editarPolo(){
+    function editarPolo(req, res){
 
         let logradouro = req.body.logradouroServer;
         let numero = req.body.numeroServer;
