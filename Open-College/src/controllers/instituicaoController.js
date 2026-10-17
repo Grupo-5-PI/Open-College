@@ -160,8 +160,31 @@ function cadastrar(req, res) {
         })
             
     }
+
+    function buscarDadosPolo(req, res){
+
+        let dadosPolo = JSON.parse(req.params.parametros);
+        
+        let idInstituicao = dadosPolo.idInstituicaoParam;
+        let idPolo = dadosPolo.idPoloParam;
+
+        instituicaoModel.buscarDadosPolo(idInstituicao, idPolo)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                console.log(resposta);
+                res.status(200).json(resposta[0]);
+            } else{
+                res.status(404).send("Polo não encontrado!");
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
                         
-    function editarPolo(){
+    function editarPolo(req, res){
 
         let logradouro = req.body.logradouroServer;
         let numero = req.body.numeroServer;
@@ -174,13 +197,34 @@ function cadastrar(req, res) {
         instituicaoModel.editarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo)
         .then(function(resposta){
             console.log(resposta);
-            res.status(201).json(resposta);
+            res.status(200).json(resposta);
         })
         .catch(function(erro){
             console.log(erro);
             res.status(500).json(erro);
         })
 
+    }
+
+    async function adicionarCurso(req, res){
+        
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let turno = req.body.turnoServer;
+        let modalidade = req.body.modalidadeServer;
+        let idInstituicaoPoloCurso = (await instituicaoModel.buscarIdParaAdicionarCurso(idInstituicao, idPolo))[0].ultimoId + 1;
+
+        instituicaoModel.adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(201).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
     }
     
 module.exports = {
@@ -190,6 +234,7 @@ module.exports = {
     buscarPorIdUsuario,
     buscarPolos,
     adicionarPolo,
+    buscarDadosPolo,
     editarPolo,
-   
+    adicionarCurso,
 };

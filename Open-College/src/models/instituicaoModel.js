@@ -90,6 +90,65 @@ function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao,
 
 }
 
+function buscarDadosPolo(idInstituicao, idPolo){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarDadosPolo");
+
+    var instrucaoSql = `
+        SELECT * FROM tblPolo WHERE idPolo = ${idPolo} AND idInstituicao = ${idInstituicao};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function editarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO editarPolo");
+
+    var instrucaoSql = `
+        UPDATE tblPolo SET 
+        uf = '${uf}', 
+        municipio = '${municipio}', 
+        bairro = '${bairro}', 
+        numero = '${numero}', 
+        logradouro = '${logradouro}' 
+        WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function buscarIdParaAdicionarCurso(idInstituicao, idPolo){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarIdParaAdicionarCurso");
+
+    var instrucaoSql = `
+        SELECT COUNT(*) AS ultimoId FROM tblInstituicaoPoloCurso WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
+    `;
+    
+    return database.executar(instrucaoSql);
+    
+}
+
+function adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO adicionarCurso");
+
+    instrucaoSql = `
+        INSERT INTO tblInstituicaoPoloCurso (idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, tipoModalidade)
+        VALUES (${idInstituicaoPoloCurso}, ${idInstituicao}, ${idPolo}, ${idCurso}, '${turno}', '${modalidade}');
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
     buscarPorCnpj,
     listarTodas,
@@ -99,4 +158,8 @@ module.exports = {
     buscarPolos,
     buscarIdParaAdicionarPolo,
     adicionarPolo,
+    buscarDadosPolo,
+    editarPolo,
+    buscarIdParaAdicionarCurso,
+    adicionarCurso,
 };

@@ -27,12 +27,16 @@ router.post("/adicionarPolo", function(req, res){
     instituicaoController.adicionarPolo(req, res);
 });
 
-router.get("/buscarDadosPolo/:params", function(req, res){
+router.get("/buscarDadosPolo/:parametros", function(req, res){
     instituicaoController.buscarDadosPolo(req, res);
 });
 
 router.post("/editarPolo", function(req, res){
     instituicaoController.editarPolo(req, res);
+});
+
+router.post("/adicionarCurso", function(req, res){
+    instituicaoController.adicionarCurso(req, res);
 });
 
 module.exports = router;

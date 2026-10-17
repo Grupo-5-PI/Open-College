@@ -312,12 +312,15 @@ main header button:hover{
     gap: 1.5vw;
 }
 
-.input-popup input, .input-popup select{
+.input-popup input, .input-popup select, .input-popup-travado input{
     margin-top: 3px;
     box-sizing: border-box;
     width: 100%;
     height: 40px;
     border-radius: 20px;
+    border: none;
+    background-color: #ffffff;
+    padding-left: 5px;
 }
 
 .popup-interacao-botoes{
