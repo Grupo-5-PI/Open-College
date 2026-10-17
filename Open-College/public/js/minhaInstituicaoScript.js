@@ -594,3 +594,23 @@ async function buscarDadosCurso(){
     return dadosCurso;
     
 }
+
+async function exibirDadosCurso(){
+
+    let dadosCurso = await buscarDadosCurso();
+
+    let nomeCurso = dadosCurso.nomeCurso;
+    let municipioPolo = dadosCurso.municipio;
+    let turno = dadosCurso.turno;
+    let modalidade = dadosCurso.tipoModalidade;
+    let qtdVagas = dadosCurso.qtdVagas;
+    let qtdMatriculas = dadosCurso.qtdMatriculas;
+
+    document.getElementById('curso_header').innerHTML = nomeCurso;
+    document.getElementById('curso_polo').innerHTML = `Polo: ${municipioPolo}`;
+    document.getElementById('curso_turno').innerHTML = `Turno: ${turno}`;
+    document.getElementById('curso_modalidade').innerHTML = `Modalidade: ${modalidade}`;
+    document.getElementById('estatisticas_vagas').innerHTML = qtdVagas;
+    document.getElementById('estatisticas_matriculas').innerHTML = qtdMatriculas;
+    
+}
