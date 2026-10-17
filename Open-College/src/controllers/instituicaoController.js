@@ -254,8 +254,13 @@ function cadastrar(req, res) {
 
         instituicaoModel.buscarCursos(idInstituicao, idPolo)
         .then(function(resposta){
-            console.log(resposta);
-            res.status(200).json(resposta);
+            
+            if(resposta.length > 0){
+                res.status(200).json(resposta);
+            } else{
+                res.status(204).send();
+            }
+            
         })
         .catch(function(erro){
             console.log(erro);
