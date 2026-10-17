@@ -429,6 +429,67 @@ async function buscarCursos(){
 
 }
 
+async function exibirCursos(){
+
+    let containerHtmlMensagem = document.querySelector("main .sessao-polos-mensagem");
+
+    let contadorMensagemPadrao = 1;
+
+    const mensagemPadrao = setInterval(() => {
+
+        if(contadorMensagemPadrao == 1){
+            containerHtmlMensagem.innerHTML = `Buscando cursos do polo.`;
+            contadorMensagemPadrao++;
+        } else if(contadorMensagemPadrao == 2){
+            containerHtmlMensagem.innerHTML += `.`;
+            contadorMensagemPadrao++;
+        } else if(contadorMensagemPadrao == 3){
+            containerHtmlMensagem.innerHTML += `.`;
+            contadorMensagemPadrao = 1;
+        }
+
+    }, 500);
+
+    let cursos = await buscarCursos();
+    clearInterval(mensagemPadrao);
+
+    if(cursos == 404){
+        containerHtmlMensagem.innerHTML = `
+            Erro ao buscar polos!
+        `;
+    } else if(cursos == 204){
+        containerHtmlMensagem.innerHTML = `
+            Este polo ainda não tem cursos.<br>
+            <span onclick="abrirFecharPopup('popup_adicionar_curso')">Cadastre primeiro curso!</span>
+        `;
+    } else if(cursos.length > 0){
+        let containerHtmlCursos = document.querySelector("main .sessao-polos");
+        containerHtmlCursos.innerHTML = "";
+        // for(const polo in polos){
+        for(i = 0; i < cursos.length; i++){
+
+            let curso = cursos[i];
+
+            containerHtmlCursos.innerHTML += `
+                <a href="./minha_instituicao_curso.html?id_curso=${curso.idInstituicaoPoloCurso}&id_polo=${curso.idPolo}&id_instituicao=${curso.idInstituicao}" class="item-sessao-polos">
+                    <div class="item-sessao-polos-esquerda">
+                        <div class="nome-polo">${curso.nomeCurso}</div>
+                        
+                        <div class="endereco-polo">
+                            <span>${curso.nomeArea}</span>
+                            <br>
+                            <span>${curso.turno} | ${curso.tipoModalidade}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+
+        }
+        
+    }
+
+}
+
 async function adicionarCurso(){
 
     let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
