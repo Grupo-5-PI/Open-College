@@ -148,6 +148,19 @@ function excluirPolo(idInstituicao, idPolo){
     
 }
 
+function buscarCursos(idInstituicao, idPolo){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarCursos");
+
+    var instrucaoSql = `
+        SELECT * FROM tblInstituicaoPoloCurso WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function buscarIdParaAdicionarCurso(idInstituicao, idPolo){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -188,6 +201,7 @@ module.exports = {
     editarPolo,
     excluirCursosPolo,
     excluirPolo,
+    buscarCursos,
     buscarIdParaAdicionarCurso,
     adicionarCurso,
 };
