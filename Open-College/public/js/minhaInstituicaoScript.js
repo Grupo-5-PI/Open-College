@@ -223,7 +223,7 @@ async function editarPolo(){
     let municipio = document.getElementById("select_municipio_editar_polo").value;
     let uf = document.getElementById("select_uf_editar_polo").value;
 
-    fetch("instituicao/editarPolo", {
+    fetch("/instituicao/editarPolo", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
