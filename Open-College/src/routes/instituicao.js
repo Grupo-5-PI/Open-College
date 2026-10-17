@@ -39,6 +39,10 @@ router.delete("/excluirPolo/:parametros", function(req, res){
     instituicaoController.excluirPolo(req, res);
 });
 
+router.get("/buscarCursos/:parametros", function(req, res){
+    instituicaoController.buscarCursos(req, res);
+});
+
 router.post("/adicionarCurso", function(req, res){
     instituicaoController.adicionarCurso(req, res);
 });
