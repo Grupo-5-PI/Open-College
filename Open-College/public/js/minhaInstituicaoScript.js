@@ -257,10 +257,14 @@ async function exibirDadosPolo(){
     let municipioPolo = dadosPolo.municipio;
     let ufPolo = dadosPolo.uf;
 
-    document.getElementById("polo_header").innerHTML = `Polo ${logradouroPolo}`;
+    document.getElementById("polo_header").innerHTML = `Polo ${municipioPolo}`;
 
     
-    document.getElementById("")
+    document.getElementById("input_logradouro_dados_polo").placeholder = logradouroPolo;
+    document.getElementById("input_numero_dados_polo").placeholder = numeroPolo;
+    document.getElementById("input_bairro_dados_polo").placeholder = bairroPolo;
+    document.getElementById("input_municipio_dados_polo").placeholder = municipioPolo;
+    document.getElementById("input_uf_dados_polo").placeholder = ufPolo;
     
 }
 

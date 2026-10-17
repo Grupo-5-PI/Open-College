@@ -79,6 +79,7 @@
             <div class="header-direita">
                 <button onclick="abrirFecharPopup('popup_adicionar_curso')">Adicionar Curso</button>
                 <button onclick="abrirFecharPopup('popup_editar_polo')">Editar Polo</button>
+                <button onclick="abrirFecharPopup('popup_dados_polo')">Dados do Polo</button>
             </div>
         </header>
         
@@ -250,6 +251,63 @@
                     EXCLUIR
                 </button>
             </div>
+
+            <span class="popup-mensagem"></span>
+            
+        </div>
+    </div>
+
+    <div class="container-popup" id="popup_dados_polo">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_dados_polo')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_dados_polo')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Dados do Polo</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup-travado" style="width: 70%">
+                        <label for="logradouro">LOGRADOURO: </label>
+                        <input disabled type="text" name="logradouro" id="input_logradouro_dados_polo">
+                    </div>
+                    
+                    <div class="input-popup-travado" style="width: 30%">
+                        <label for="numero">NÚMERO: </label>
+                        <input disabled type="text" name="numero" id="input_numero_dados_polo">
+                    </div>
+                </div>
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup-travado" style="width: 35%;">
+                        <label for="bairro">BAIRRO: </label>
+                        <input disabled type="text" name="bairro" id="input_bairro_dados_polo">
+                    </div>
+                    
+                    <div class="input-popup-travado" style="width: 55%">
+                        <label for="municipio">MUNICÍPIO: </label><br>
+                        <input disabled name="municipio" id="input_municipio_dados_polo">
+                    </div>
+                    
+                    <div class="input-popup-travado" style="width: 10%">
+                        <label for="uf">UF: </label><br>
+                        <input disabled name="uf" id="input_uf_dados_polo">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- <div class="popup-interacao-botoes">
+                <button onclick="editarPolo()">
+                    SALVAR
+                </button>
+            
+                <button class="botao-excluir">
+                    EXCLUIR
+                </button>
+            </div> -->
 
             <span class="popup-mensagem"></span>
             
