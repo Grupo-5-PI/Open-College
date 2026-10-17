@@ -235,6 +235,20 @@ async function buscarDadosPolo(){
 
 }
 
+async function exibirDadosPolo(){
+
+    let dadosPolo = await buscarDadosPolo();
+
+    let logradouroPolo = dadosPolo.logradouro;
+    let numeroPolo = dadosPolo.numero;
+    let bairroPolo = dadosPolo.bairro;
+    let municipioPolo = dadosPolo.municipio;
+    let ufPolo = dadosPolo.uf;
+
+    document.getElementById("polo_header").innerHTML = `Polo ${logradouroPolo}`;
+    
+}
+
 function editarPolo(){
 
     urlParams = new URLSearchParams(window.location.search);
