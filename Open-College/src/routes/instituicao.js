@@ -27,7 +27,7 @@ router.post("/adicionarPolo", function(req, res){
     instituicaoController.adicionarPolo(req, res);
 });
 
-router.get("/buscarDadosPolo/:params", function(req, res){
+router.get("/buscarDadosPolo/:parametros", function(req, res){
     instituicaoController.buscarDadosPolo(req, res);
 });
 

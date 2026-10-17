@@ -210,6 +210,31 @@ async function adicionarPolo(){
 
 }
 
+await function buscarDadosPolo(){
+
+    urlParams = new URLSearchParams(window.location.search);
+    
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
+
+    let parametros = {
+        idInstituicaoParam: idInstituicao,
+        idPoloParam: idPolo
+    };
+
+    let dadosPolo = fetch(`/instituicao/buscarDadosPolo/${parametros}`)
+    .then(function(resposta){
+        if(resposta.status == 404 || resposta.status == 500){
+            return null;
+        } else if(resposta.status == 200){
+            return resposta.json();
+        }
+    })
+
+    return dadosPolo;
+
+}
+
 function editarPolo(){
 
     urlParams = new URLSearchParams(window.location.search);
