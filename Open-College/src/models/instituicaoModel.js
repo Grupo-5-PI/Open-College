@@ -154,7 +154,12 @@ function buscarCursos(idInstituicao, idPolo){
     console.log("FUNÇÃO buscarCursos");
 
     var instrucaoSql = `
-        SELECT * FROM tblInstituicaoPoloCurso WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
+        SELECT 
+            ipc.*, cur.nome nomeCurso, are.nome nomeArea 
+        FROM tblInstituicaoPoloCurso ipc 
+        JOIN tblCurso cur ON cur.idCurso = ipc.idCurso 
+        JOIN tblAreaGeral are ON are.idAreaGeral = cur.idAreaGeral 
+        WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
     `;
 
     return database.executar(instrucaoSql);
