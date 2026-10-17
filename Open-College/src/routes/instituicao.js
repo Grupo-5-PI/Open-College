@@ -35,8 +35,13 @@ router.post("/editarPolo", function(req, res){
     instituicaoController.editarPolo(req, res);
 });
 
+router.delete("/excluirPolo", function(req, res){
+    instituicaoController.excluirPolo(req, res);
+});
+
 router.post("/adicionarCurso", function(req, res){
     instituicaoController.adicionarCurso(req, res);
 });
+
 
 module.exports = router;
