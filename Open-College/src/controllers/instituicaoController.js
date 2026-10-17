@@ -245,6 +245,30 @@ function cadastrar(req, res) {
         
     }
 
+    function buscarCursos(req, res){
+
+        let dadosPolo = JSON.parse(req.params.parametros);
+
+        let idInstituicao = dadosPolo.idInstituicaoParam;
+        let idPolo = dadosPolo.idPoloParam;
+
+        instituicaoModel.buscarCursos(idInstituicao, idPolo)
+        .then(function(resposta){
+            
+            if(resposta.length > 0){
+                res.status(200).json(resposta);
+            } else{
+                res.status(204).send();
+            }
+            
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
     async function adicionarCurso(req, res){
         
         let idInstituicao = req.body.idInstituicaoServer;
@@ -265,6 +289,31 @@ function cadastrar(req, res) {
         })
         
     }
+
+    function buscarDadosCurso(req, res){
+
+        let dadosCurso = JSON.parse(req.params.parametros);
+
+        let idInstituicao = dadosCurso.idInstituicaoParam;
+        let idPolo = dadosCurso.idPoloParam;
+        let idCurso = dadosCurso.idCursoParam;
+
+        instituicaoModel.buscarDadosCurso(idInstituicao, idPolo, idCurso)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                console.log(resposta);
+                res.status(200).json(resposta[0]);
+            } else{
+                console.log(resposta);
+                res.status(404).send("Polo não encontrado!");
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
     
 module.exports = {
     cadastrar,
@@ -276,5 +325,7 @@ module.exports = {
     buscarDadosPolo,
     editarPolo,
     excluirPolo,
+    buscarCursos,
     adicionarCurso,
+    buscarDadosCurso,
 };

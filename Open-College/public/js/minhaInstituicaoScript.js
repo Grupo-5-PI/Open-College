@@ -394,6 +394,102 @@ async function excluirPolo(){
     
 }
 
+async function buscarCursos(){
+
+    let dadosPolo = await buscarDadosPolo();
+
+    let idInstituicao = dadosPolo.idInstituicao;
+    let idPolo = dadosPolo.idPolo;
+
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        idPoloParam: idPolo
+    });
+
+    if(idInstituicao == undefined || idPolo == undefined){
+        console.log("Polo não encontrada!");
+        return;
+    }
+
+    let retorno = await fetch(`/instituicao/buscarCursos/${parametros}`)
+    .then(function(resposta){
+
+        if(resposta.status === 404){
+            return '404';
+        } else if(resposta.status === 204){
+            return '204';
+        } else if(resposta.status === 200){
+            return resposta.json();
+        }
+    });
+
+    console.log(retorno);
+    
+    return retorno;
+
+}
+
+async function exibirCursos(){
+
+    let containerHtmlMensagem = document.querySelector("main .sessao-polos-mensagem");
+
+    let contadorMensagemPadrao = 1;
+
+    const mensagemPadrao = setInterval(() => {
+
+        if(contadorMensagemPadrao == 1){
+            containerHtmlMensagem.innerHTML = `Buscando cursos do polo.`;
+            contadorMensagemPadrao++;
+        } else if(contadorMensagemPadrao == 2){
+            containerHtmlMensagem.innerHTML += `.`;
+            contadorMensagemPadrao++;
+        } else if(contadorMensagemPadrao == 3){
+            containerHtmlMensagem.innerHTML += `.`;
+            contadorMensagemPadrao = 1;
+        }
+
+    }, 500);
+
+    let cursos = await buscarCursos();
+    clearInterval(mensagemPadrao);
+
+    if(cursos == 404){
+        containerHtmlMensagem.innerHTML = `
+            Erro ao buscar polos!
+        `;
+    } else if(cursos == 204){
+        containerHtmlMensagem.innerHTML = `
+            Este polo ainda não tem cursos.<br>
+            <span onclick="abrirFecharPopup('popup_adicionar_curso')">Cadastre primeiro curso!</span>
+        `;
+    } else if(cursos.length > 0){
+        let containerHtmlCursos = document.querySelector("main .sessao-polos");
+        containerHtmlCursos.innerHTML = "";
+        // for(const polo in polos){
+        for(i = 0; i < cursos.length; i++){
+
+            let curso = cursos[i];
+
+            containerHtmlCursos.innerHTML += `
+                <a href="./minha_instituicao_curso.html?id_curso=${curso.idInstituicaoPoloCurso}&id_polo=${curso.idPolo}&id_instituicao=${curso.idInstituicao}" class="item-sessao-polos">
+                    <div class="item-sessao-polos-esquerda">
+                        <div class="nome-polo">${curso.nomeCurso}</div>
+                        
+                        <div class="endereco-polo">
+                            <span>${curso.nomeArea}</span>
+                            <br>
+                            <span>${curso.turno} | ${curso.tipoModalidade}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+
+        }
+        
+    }
+
+}
+
 async function adicionarCurso(){
 
     let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
@@ -465,4 +561,56 @@ async function adicionarCurso(){
 
     });
 
+}
+
+async function buscarDadosCurso(){
+
+    let urlParams = new URLSearchParams(window.location.search);
+
+    let idInstituicao = urlParams.get('id_instituicao');
+    let idPolo = urlParams.get('id_polo');
+    let idCurso = urlParams.get('id_curso');
+
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        idPoloParam: idPolo,
+        idCursoParam: idCurso
+    });
+
+    let dadosCurso = fetch(`/instituicao/buscarDadosCurso/${parametros}`)
+    .then(function(resposta){
+        if(resposta.status == 200){
+            return resposta.json();
+        } else if(resposta.status == 404){
+            return '404';
+        }
+    })
+    .catch(function(erro){
+        return '500';
+    });
+
+    console.log(dadosCurso);
+
+    return dadosCurso;
+    
+}
+
+async function exibirDadosCurso(){
+
+    let dadosCurso = await buscarDadosCurso();
+
+    let nomeCurso = dadosCurso.nomeCurso;
+    let municipioPolo = dadosCurso.municipio;
+    let turno = dadosCurso.turno;
+    let modalidade = dadosCurso.tipoModalidade;
+    let qtdVagas = dadosCurso.qtdVagas;
+    let qtdMatriculas = dadosCurso.qtdMatriculas;
+
+    document.getElementById('curso_header').innerHTML = nomeCurso;
+    document.getElementById('curso_polo').innerHTML = `Polo: ${municipioPolo}`;
+    document.getElementById('curso_turno').innerHTML = `Turno: ${turno}`;
+    document.getElementById('curso_modalidade').innerHTML = `Modalidade: ${modalidade}`;
+    document.getElementById('estatisticas_vagas').innerHTML = qtdVagas;
+    document.getElementById('estatisticas_matriculas').innerHTML = qtdMatriculas;
+    
 }
