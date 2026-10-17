@@ -210,11 +210,10 @@ async function adicionarPolo(){
 
 }
 
-async function editarPolo(){
+function editarPolo(){
 
     urlParams = new URLSearchParams(window.location.search);
     
-    // let idPolo = new URLSearchParams(window.location.search).get("id_polo");
     let idInstituicao = urlParams.get("id_instituicao");
     let idPolo = urlParams.get("id_polo");
     let logradouro = document.getElementById("input_logradouro_editar_polo").value;
