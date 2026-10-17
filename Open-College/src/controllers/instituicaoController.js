@@ -205,6 +205,27 @@ function cadastrar(req, res) {
         })
 
     }
+
+    async function adicionarCurso(req, res){
+        
+        let idInstituicaoPoloCurso = (await instituicaoModel.buscarIdParaAdicionarCurso(idInstituicao, idPolo))[0].ultimoId + 1;
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let turno = req.body.turnoServer;
+        let modalidade = req.body.modalidadeServer;
+
+        instituicaoModel.adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(201).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
     
 module.exports = {
     cadastrar,
@@ -215,4 +236,5 @@ module.exports = {
     adicionarPolo,
     buscarDadosPolo,
     editarPolo,
+    adicionarCurso,
 };
