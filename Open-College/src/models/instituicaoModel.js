@@ -128,7 +128,7 @@ function buscarIdParaAdicionarCurso(idInstituicao, idPolo){
     console.log("FUNÇÃO buscarIdParaAdicionarCurso");
 
     var instrucaoSql = `
-        SELECT COUNT(*) AS ultimoId FROM tblInstituicaoPoloCurso WHERE idInstituicao = ${idInstituicao} AND idCurso = ${idCurso};
+        SELECT COUNT(*) AS ultimoId FROM tblInstituicaoPoloCurso WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
     `;
     
     return database.executar(instrucaoSql);
