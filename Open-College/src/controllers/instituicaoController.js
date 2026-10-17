@@ -160,6 +160,29 @@ function cadastrar(req, res) {
         })
             
     }
+
+    function buscarDadosPolo(req, res){
+
+        let dadosPolo = JSON.parse(req.params.parametros);
+        
+        let idInstituicao = dadosPolo.idInstituicaoParam;
+        let idPolo = dadosPolo.idPoloParam;
+
+        instituicaoModel.buscarDadosPolo(idInstituicao, idPolo)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                console.log(resposta);
+                res.status(200).json(resposta);
+            } else{
+                res.status(404).send("Polo não encontrado!");
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
                         
     function editarPolo(req, res){
 
@@ -190,6 +213,6 @@ module.exports = {
     buscarPorIdUsuario,
     buscarPolos,
     adicionarPolo,
+    buscarDadosPolo,
     editarPolo,
-   
 };
