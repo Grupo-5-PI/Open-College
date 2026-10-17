@@ -394,6 +394,41 @@ async function excluirPolo(){
     
 }
 
+async function buscarCursos(){
+
+    let dadosPolo = await buscarDadosPolo();
+
+    let idInstituicao = dadosPolo.idInstituicao;
+    let idPolo = dadosPolo.idPolo;
+
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        idPoloParam: idPolo
+    });
+
+    if(idInstituicao == undefined || idPolo == undefined){
+        console.log("Polo não encontrada!");
+        return;
+    }
+
+    let retorno = await fetch(`/instituicao/buscarCursos/${parametros}`)
+    .then(function(resposta){
+
+        if(resposta.status === 404){
+            return '404';
+        } else if(resposta.status === 204){
+            return '204';
+        } else if(resposta.status === 200){
+            return resposta.json();
+        }
+    });
+
+    console.log(retorno);
+    
+    return retorno;
+
+}
+
 async function adicionarCurso(){
 
     let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
