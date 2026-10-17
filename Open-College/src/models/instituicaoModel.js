@@ -122,6 +122,19 @@ function editarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, id
     
 }
 
+function buscarIdParaAdicionarCurso(idInstituicao, idPolo){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarIdParaAdicionarCurso");
+
+    var instrucaoSql = `
+        SELECT COUNT(*) AS ultimoId FROM tblInstituicaoPoloCurso WHERE idInstituicao = ${idInstituicao} AND idCurso = ${idCurso};
+    `;
+    
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
     buscarPorCnpj,
     listarTodas,
@@ -133,4 +146,5 @@ module.exports = {
     adicionarPolo,
     buscarDadosPolo,
     editarPolo,
+    buscarIdParaAdicionarCurso,
 };
