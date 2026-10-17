@@ -210,18 +210,38 @@ function cadastrar(req, res) {
 
         let dadosPolo = JSON.parse(req.params.parametros);
 
-        let idInstituicao = dadosPolo.idInstituicao;
-        let idPolo = dadosPolo.idPolo;
+        let idInstituicao = dadosPolo.idInstituicaoParam;
+        let idPolo = dadosPolo.idPoloParam;
 
-        instituicaoModel.excluirPolo(idInstituicao, idPolo)
+        instituicaoModel.excluirCursosPolo(idInstituicao, idPolo)
         .then(function(resposta){
             console.log(resposta);
-            res.status(204).send();
+
+            instituicaoModel.excluirPolo(idInstituicao, idPolo)
+            .then(function(resposta){
+                console.log(resposta);
+                res.status(204).send();
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).json(erro);
+            })
+
         })
         .catch(function(erro){
             console.log(erro);
             res.status(500).json(erro);
         })
+
+        // instituicaoModel.excluirPolo(idInstituicao, idPolo)
+        // .then(function(resposta){
+        //     console.log(resposta);
+        //     res.status(204).send();
+        // })
+        // .catch(function(erro){
+        //     console.log(erro);
+        //     res.status(500).json(erro);
+        // })
         
     }
 
