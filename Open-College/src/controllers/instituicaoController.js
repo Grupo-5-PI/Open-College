@@ -208,12 +208,12 @@ function cadastrar(req, res) {
 
     async function adicionarCurso(req, res){
         
-        let idInstituicaoPoloCurso = (await instituicaoModel.buscarIdParaAdicionarCurso(idInstituicao, idPolo))[0].ultimoId + 1;
         let idInstituicao = req.body.idInstituicaoServer;
         let idPolo = req.body.idPoloServer;
         let idCurso = req.body.idCursoServer;
         let turno = req.body.turnoServer;
         let modalidade = req.body.modalidadeServer;
+        let idInstituicaoPoloCurso = (await instituicaoModel.buscarIdParaAdicionarCurso(idInstituicao, idPolo))[0].ultimoId + 1;
 
         instituicaoModel.adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade)
         .then(function(resposta){

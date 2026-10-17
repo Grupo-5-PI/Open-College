@@ -141,7 +141,7 @@ function adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, 
     console.log("FUNÇÃO adicionarCurso");
 
     instrucaoSql = `
-        INSERT INTO tblInstituicaoPoloCurso (idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade)
+        INSERT INTO tblInstituicaoPoloCurso (idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, tipoModalidade)
         VALUES (${idInstituicaoPoloCurso}, ${idInstituicao}, ${idPolo}, ${idCurso}, '${turno}', '${modalidade}');
     `;
 
