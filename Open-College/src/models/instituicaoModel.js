@@ -69,7 +69,7 @@ function buscarIdParaAdicionarPolo(idInstituicao){
     console.log("FUNÇÃO buscarIdParaAdicionarPolo");
 
     var instrucaoSql = `
-        SELECT COUNT(*) AS ultimoId FROM tblPolo WHERE idInstituicao = ${idInstituicao};
+        SELECT idPolo AS ultimoId FROM tblPolo WHERE idInstituicao = ${idInstituicao} ORDER BY idPolo DESC;
     `;
 
     return database.executar(instrucaoSql);
