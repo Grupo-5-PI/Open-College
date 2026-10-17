@@ -47,5 +47,8 @@ router.post("/adicionarCurso", function(req, res){
     instituicaoController.adicionarCurso(req, res);
 });
 
+router.get("/buscarDadosCurso/:parametros", function(req, res){
+    instituicaoController.buscarDadosCurso(req, res);
+});
 
 module.exports = router;
