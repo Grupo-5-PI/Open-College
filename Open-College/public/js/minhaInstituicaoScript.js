@@ -346,6 +346,8 @@ async function editarPolo(){
 
 async function adicionarCurso(){
 
+    let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
+    let idPolo = (await buscarDadosPolo())?.idPolo;
     let areaGeral = document.getElementById('select_area_geral_curso').value;
     let curso = document.getElementById('select_curso_curso').value;
     let turno = document.getElementById('select_turno_curso').value;
@@ -353,6 +355,13 @@ async function adicionarCurso(){
     
     let mensagemPopup = document.querySelector("#popup_adicionar_curso .popup-mensagem");
 
+    if(idInstituicao == undefined || idPolo == undefined){
+        mensagemPopup.innerHTML = 'Erro ao buscar dados do polo!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    
     if(
         areaGeral == "" ||
         curso == "" ||
@@ -371,6 +380,8 @@ async function adicionarCurso(){
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idPoloServer: idPolo,
             areaGeralServer: areaGeral,
             cursoServer: curso,
             turnoServer: turno,
