@@ -292,17 +292,17 @@ function cadastrar(req, res) {
 
     function buscarDadosCurso(req, res){
 
-        let dadosCurso = JSON.parse(req.params.parametos);
+        let dadosCurso = JSON.parse(req.params.parametros);
 
         let idInstituicao = dadosCurso.idInstituicaoParam;
         let idPolo = dadosCurso.idPoloParam;
         let idCurso = dadosCurso.idCursoParam;
 
-        instituicaoModel.buscarDadosPolo(idInstituicao, idPolo, idCurso)
+        instituicaoModel.buscarDadosCurso(idInstituicao, idPolo, idCurso)
         .then(function(resposta){
             if(resposta.length > 0){
                 console.log(resposta);
-                res.status(200).json(resposta);
+                res.status(200).json(resposta[0]);
             } else{
                 console.log(resposta);
                 res.status(404).send("Polo não encontrado!");
