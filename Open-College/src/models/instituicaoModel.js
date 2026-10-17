@@ -193,6 +193,21 @@ function adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, 
     
 }
 
+function buscarDadosCurso(idInstituicao, idPolo, idCurso){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarDadosCurso");
+
+    instrucaoSql = `
+        SELECT ipc.*, cur.nome nomeCurso FROM tblInstituicaoPoloCurso ipc 
+        JOIN curso cur ON cur.idCurso = ipc.idCurso 
+        WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo} AND idInstituicaoPoloCurso = ${idCurso};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
     buscarPorCnpj,
     listarTodas,
@@ -209,4 +224,5 @@ module.exports = {
     buscarCursos,
     buscarIdParaAdicionarCurso,
     adicionarCurso,
+    buscarDadosCurso,
 };
