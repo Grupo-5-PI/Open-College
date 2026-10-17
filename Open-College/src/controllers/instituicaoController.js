@@ -206,6 +206,25 @@ function cadastrar(req, res) {
 
     }
 
+    function excluirPolo(req, res){
+
+        let dadosPolo = JSON.parse(req.params.parametros);
+
+        let idInstituicao = dadosPolo.idInstituicao;
+        let idPolo = dadosPolo.idPolo;
+
+        instituicaoModel.excluirPolo(idInstituicao, idPolo)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(204).send();
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
     async function adicionarCurso(req, res){
         
         let idInstituicao = req.body.idInstituicaoServer;
@@ -236,5 +255,6 @@ module.exports = {
     adicionarPolo,
     buscarDadosPolo,
     editarPolo,
+    excluirPolo,
     adicionarCurso,
 };
