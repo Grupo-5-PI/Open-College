@@ -93,7 +93,7 @@ async function exibirPolos(){
             let polo = polos[i];
 
             containerHtmlPolos.innerHTML += `
-                <a href="./minha_instituicao_polo.html?id_polo=${polo.idPolo}" class="item-sessao-polos">
+                <a href="./minha_instituicao_polo.html?id_polo=${polo.idPolo}&id_instituicao=${polo.idInstituicao}" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
                         <div class="nome-polo">Polo ${polo.municipio}</div>
                         
@@ -212,13 +212,16 @@ async function adicionarPolo(){
 
 async function editarPolo(){
 
-    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
-    let idPolo = new URLSearchParams(window.location.search).get("id_polo");
+    urlParams = new URLSearchParams(window.location.search);
+    
+    // let idPolo = new URLSearchParams(window.location.search).get("id_polo");
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
     let logradouro = document.getElementById("input_logradouro_editar_polo").value;
     let numero = document.getElementById("input_numero_editar_polo").value;
     let bairro = document.getElementById("input_bairro_editar_polo").value;
     let municipio = document.getElementById("select_municipio_editar_polo").value;
-    let uf = document.getElementById("selecy_uf_editar_polo").value;
+    let uf = document.getElementById("select_uf_editar_polo").value;
 
     fetch("")
     
