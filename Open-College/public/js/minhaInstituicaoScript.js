@@ -266,17 +266,38 @@ async function exibirDadosPolo(){
     
 }
 
-function editarPolo(){
+async function editarPolo(){
 
-    urlParams = new URLSearchParams(window.location.search);
+    // urlParams = new URLSearchParams(window.location.search);
+
+    // let idInstituicao = urlParams.get("id_instituicao");
+    // let idPolo = urlParams.get("id_polo");
     
-    let idInstituicao = urlParams.get("id_instituicao");
-    let idPolo = urlParams.get("id_polo");
+    let dadosPolo = await buscarDadosPolo();
+    let idInstituicao = dadosPolo.idInstituicao;
+    let idPolo = dadosPolo.idPolo;
+
     let logradouro = document.getElementById("input_logradouro_editar_polo").value;
     let numero = document.getElementById("input_numero_editar_polo").value;
     let bairro = document.getElementById("input_bairro_editar_polo").value;
     let municipio = document.getElementById("select_municipio_editar_polo").value;
     let uf = document.getElementById("select_uf_editar_polo").value;
+
+    if(logradouro == ""){
+        logradouro = dadosPolo.logradouro;
+    }
+    if(numero == ""){
+        numero = dadosPolo.numero;
+    }
+    if(bairro == ""){
+        bairro = dadosPolo.bairro;
+    }
+    if(municipio == ""){
+        municipio = dadosPolo.municipio;
+    }
+    if(uf == ""){
+        uf = dadosPolo.uf;
+    }
 
     let mensagemPopup = document.querySelector("#popup_editar_polo .popup-mensagem");
 
