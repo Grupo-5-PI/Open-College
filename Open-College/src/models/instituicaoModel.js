@@ -148,6 +148,24 @@ function excluirPolo(idInstituicao, idPolo){
     
 }
 
+function buscarCursos(idInstituicao, idPolo){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarCursos");
+
+    var instrucaoSql = `
+        SELECT 
+            ipc.*, cur.nome nomeCurso, are.nome nomeArea 
+        FROM tblInstituicaoPoloCurso ipc 
+        JOIN tblCurso cur ON cur.idCurso = ipc.idCurso 
+        JOIN tblAreaGeral are ON are.idAreaGeral = cur.idAreaGeral 
+        WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function buscarIdParaAdicionarCurso(idInstituicao, idPolo){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -175,6 +193,22 @@ function adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, 
     
 }
 
+function buscarDadosCurso(idInstituicao, idPolo, idCurso){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarDadosCurso");
+
+    instrucaoSql = `
+        SELECT ipc.*, cur.nome nomeCurso, pol.municipio municipio FROM tblInstituicaoPoloCurso ipc 
+        JOIN tblCurso cur ON cur.idCurso = ipc.idCurso 
+        JOIN tblPolo pol ON pol.idPolo = ipc.idPolo 
+        WHERE ipc.idInstituicao = ${idInstituicao} AND ipc.idPolo = ${idPolo} AND ipc.idInstituicaoPoloCurso = ${idCurso};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
     buscarPorCnpj,
     listarTodas,
@@ -188,6 +222,8 @@ module.exports = {
     editarPolo,
     excluirCursosPolo,
     excluirPolo,
+    buscarCursos,
     buscarIdParaAdicionarCurso,
     adicionarCurso,
+    buscarDadosCurso,
 };

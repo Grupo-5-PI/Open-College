@@ -79,7 +79,7 @@
 
         <header>
             <div class="header-esquerda">
-                <span>Curso 1</span>
+                <span id="curso_header">Curso 1</span>
             </div>
             <div class="header-direita">
                 <button onclick="abrirFecharPopup('popup_editar_curso')">Editar Curso</button>
@@ -90,9 +90,9 @@
         <div class="main-conteudo">
 
             <div class="dados-curso">
-                <span>Polo: Município Exemplo</span>
-                <span>Turno: Diurno</span>
-                <span>Modalidade: Presencial</span>
+                <span id="curso_polo">Polo: Município Exemplo</span>
+                <span id="curso_turno">Turno: Diurno</span>
+                <span id="curso_modalidade">Modalidade: Presencial</span>
             </div>
 
             <div class="sessao-pag-curso">
@@ -105,8 +105,8 @@
                         <th style="border-top-right-radius: 27px;">MATRÍCULAS</th>
                     </tr>
                     <tr>
-                        <td style="border-bottom-left-radius: 27px;">999</td>
-                        <td style="border-bottom-right-radius: 27px;">999</td>
+                        <td style="border-bottom-left-radius: 27px;" id="estatisticas_vagas">999</td>
+                        <td style="border-bottom-right-radius: 27px;" id="estatisticas_matriculas">999</td>
                     </tr>
                 </table>
                 
@@ -180,6 +180,8 @@
                     EXCLUIR
                 </button>
             </div>
+
+            <span class="popup-mensagem"></span>
             
         </div>
     </div>
@@ -215,6 +217,8 @@
                 </button>
             </div>
             
+            <span class="popup-mensagem"></span>
+            
         </div>
     </div>
 
@@ -249,6 +253,8 @@
                 </button>
             </div>
             
+            <span class="popup-mensagem"></span>
+            
         </div>
     </div>
     
@@ -259,3 +265,6 @@
     imgUsuario.src = `${foto}`
 </script>
 <script src="../js/minhaInstituicaoScript.js"></script>
+<script>
+    window.onload = exibirDadosCurso();
+</script>
