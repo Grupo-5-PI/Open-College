@@ -210,17 +210,17 @@ async function adicionarPolo(){
 
 }
 
-await function buscarDadosPolo(){
+async function buscarDadosPolo(){
 
     urlParams = new URLSearchParams(window.location.search);
     
     let idInstituicao = urlParams.get("id_instituicao");
     let idPolo = urlParams.get("id_polo");
 
-    let parametros = {
+    let parametros = JSON.stringify({
         idInstituicaoParam: idInstituicao,
         idPoloParam: idPolo
-    };
+    });
 
     let dadosPolo = fetch(`/instituicao/buscarDadosPolo/${parametros}`)
     .then(function(resposta){
