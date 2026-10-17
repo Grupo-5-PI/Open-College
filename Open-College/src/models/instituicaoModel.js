@@ -135,6 +135,20 @@ function buscarIdParaAdicionarCurso(idInstituicao, idPolo){
     
 }
 
+function adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO adicionarCurso");
+
+    instrucaoSql = `
+        INSERT INTO tblInstituicaoPoloCurso (idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade)
+        VALUES (${idInstituicaoPoloCurso}, ${idInstituicao}, ${idPolo}, ${idCurso}, '${turno}', '${modalidade}');
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
     buscarPorCnpj,
     listarTodas,
@@ -147,4 +161,5 @@ module.exports = {
     buscarDadosPolo,
     editarPolo,
     buscarIdParaAdicionarCurso,
+    adicionarCurso,
 };
