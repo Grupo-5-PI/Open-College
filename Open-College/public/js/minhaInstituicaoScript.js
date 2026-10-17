@@ -7,6 +7,18 @@ function abrirFecharPopup(idPopup){
     let mensagemPopup = document.querySelector(`#${idPopup} .popup-mensagem`);
     mensagemPopup.innerHTML = '';
     mensagemPopup.style.display = 'none';
+
+    let inputsPopup = Array.from(document.getElementsByClassName('input-popup'));
+
+    for(let inputPopup of inputsPopup){
+        let input = inputPopup.querySelector('input');
+
+        if(input != null){
+            input.value = '';
+        } else{
+            inputPopup.querySelector('select').value = '';
+        }
+    }
     
     if(popupAberto){
         document.getElementById(idPopup).style.display = 'none';
@@ -93,7 +105,7 @@ async function exibirPolos(){
             let polo = polos[i];
 
             containerHtmlPolos.innerHTML += `
-                <a href="./minha_instituicao_polo.html?id_polo=${polo.idPolo}" class="item-sessao-polos">
+                <a href="./minha_instituicao_polo.html?id_polo=${polo.idPolo}&id_instituicao=${polo.idInstituicao}" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
                         <div class="nome-polo">Polo ${polo.municipio}</div>
                         
@@ -182,8 +194,6 @@ async function adicionarPolo(){
     })
     .then(function(resposta){
 
-        console.log(resposta);
-        
         if(resposta.ok){
             // console.log('oi');
             mensagemPopup.innerHTML = `Polo adicionado com sucesso!`;
@@ -210,16 +220,199 @@ async function adicionarPolo(){
 
 }
 
+async function buscarDadosPolo(){
+
+    urlParams = new URLSearchParams(window.location.search);
+    
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
+
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        idPoloParam: idPolo
+    });
+
+    let dadosPolo = await fetch(`/instituicao/buscarDadosPolo/${parametros}`)
+    .then(function(resposta){
+        if(resposta.status == 404 || resposta.status == 500){
+            return null;
+        } else if(resposta.status == 200){
+            return resposta.json();
+        }
+    })
+
+    return dadosPolo;
+
+}
+
+async function exibirDadosPolo(){
+
+    let dadosPolo = await buscarDadosPolo();
+
+    let logradouroPolo = dadosPolo.logradouro;
+    let numeroPolo = dadosPolo.numero;
+    let bairroPolo = dadosPolo.bairro;
+    let municipioPolo = dadosPolo.municipio;
+    let ufPolo = dadosPolo.uf;
+
+    document.getElementById("polo_header").innerHTML = `Polo ${municipioPolo}`;
+
+    
+    document.getElementById("input_logradouro_dados_polo").placeholder = logradouroPolo;
+    document.getElementById("input_numero_dados_polo").placeholder = numeroPolo;
+    document.getElementById("input_bairro_dados_polo").placeholder = bairroPolo;
+    document.getElementById("input_municipio_dados_polo").placeholder = municipioPolo;
+    document.getElementById("input_uf_dados_polo").placeholder = ufPolo;
+    
+}
+
 async function editarPolo(){
 
-    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
-    let idPolo = new URLSearchParams(window.location.search).get("id_polo");
+    // urlParams = new URLSearchParams(window.location.search);
+
+    // let idInstituicao = urlParams.get("id_instituicao");
+    // let idPolo = urlParams.get("id_polo");
+    
+    let dadosPolo = await buscarDadosPolo();
+    let idInstituicao = dadosPolo.idInstituicao;
+    let idPolo = dadosPolo.idPolo;
+
     let logradouro = document.getElementById("input_logradouro_editar_polo").value;
     let numero = document.getElementById("input_numero_editar_polo").value;
     let bairro = document.getElementById("input_bairro_editar_polo").value;
     let municipio = document.getElementById("select_municipio_editar_polo").value;
-    let uf = document.getElementById("selecy_uf_editar_polo").value;
+    let uf = document.getElementById("select_uf_editar_polo").value;
 
-    fetch("")
+    if(logradouro == ""){
+        logradouro = dadosPolo.logradouro;
+    }
+    if(numero == ""){
+        numero = dadosPolo.numero;
+    }
+    if(bairro == ""){
+        bairro = dadosPolo.bairro;
+    }
+    if(municipio == ""){
+        municipio = dadosPolo.municipio;
+    }
+    if(uf == ""){
+        uf = dadosPolo.uf;
+    }
+
+    let mensagemPopup = document.querySelector("#popup_editar_polo .popup-mensagem");
+
+    fetch("/instituicao/editarPolo", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idPoloServer: idPolo,
+            logradouroServer: logradouro,
+            numeroServer: numero,
+            bairroServer: bairro,
+            municipioServer: municipio,
+            ufServer: uf,
+        })
+    })
+    .then(function(resposta){
+        
+        if(resposta.ok){
+            // console.log('oi');
+            mensagemPopup.innerHTML = `Polo editado com sucesso!`;
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            mensagemPopup.style.borderColor = 'green';
+
+            document.getElementById("input_logradouro_editar_polo").value = '';
+            document.getElementById("input_numero_editar_polo").value = '';
+            document.getElementById("input_bairro_editar_polo").value = '';
+            document.getElementById("select_municipio_editar_polo").value = '';
+            document.getElementById("select_uf_editar_polo").value = '';
+ 
+            recarregarPagina();
+            
+        } else{
+            mensagemPopup.innerHTML = 'Falha ao editar polo!';
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'red';
+            mensagemPopup.style.borderColor = 'red';
+        }
+        
+    })
+
+}
+
+async function adicionarCurso(){
+
+    let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
+    let idPolo = (await buscarDadosPolo())?.idPolo;
+    // let areaGeral = document.getElementById('select_area_geral_curso').value;
+    let idCurso = document.getElementById('select_curso_curso').value;
+    let turno = document.getElementById('select_turno_curso').value;
+    let modalidade = document.getElementById('select_modalidade_curso').value;
     
+    let mensagemPopup = document.querySelector("#popup_adicionar_curso .popup-mensagem");
+
+    if(idInstituicao == undefined || idPolo == undefined){
+        mensagemPopup.innerHTML = 'Erro ao buscar dados do polo!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    
+    if(
+        // areaGeral == "" ||
+        idCurso == "" ||
+        turno == "" ||
+        modalidade == "" 
+    ){
+        mensagemPopup.innerHTML = 'Preencha todos os campos!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    fetch("/instituicao/adicionarCurso", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idPoloServer: idPolo,
+            // areaGeralServer: areaGeral,
+            idCursoServer: idCurso,
+            turnoServer: turno,
+            modalidadeServer: modalidade,
+        })
+    })
+    .then(function(resposta){
+
+        console.log(resposta);
+        
+        if(resposta.ok){
+            // console.log('oi');
+            mensagemPopup.innerHTML = `Curso adicionado com sucesso!`;
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            mensagemPopup.style.borderColor = 'green';
+
+            // document.getElementById("select_area_geral_curso").value = '';
+            document.getElementById("select_curso_curso").value = '';
+            document.getElementById("select_turno_curso").value = '';
+            document.getElementById("select_modalidade_curso").value = '';
+ 
+            recarregarPagina();
+            
+        } else{
+            mensagemPopup.innerHTML = 'Falha ao adicionar curso!';
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'red';
+            mensagemPopup.style.borderColor = 'red';
+        }
+
+    });
+
 }

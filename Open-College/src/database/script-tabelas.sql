@@ -24,8 +24,12 @@ CREATE TABLE tblCurso (
     idCurso INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
     formacao VARCHAR(20) NOT NULL,
+    idAreaGeral INT,
     CONSTRAINT CK_tblCurso_formacao 
-		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo'))
+		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo')),
+	CONSTRAINT FK_tblCurso_idAreaGeral 
+		FOREIGN KEY (idAreaGeral) 
+			REFERENCES tblAreaGeral (idAreaGeral)
 );
 
 CREATE TABLE tblUsuario (
@@ -67,13 +71,15 @@ CREATE TABLE tblPolo (
 );
 
 CREATE TABLE tblInstituicaoPoloCurso (
+	  idInstituicaoPoloCurso INT NOT NULL,
     idInstituicao INT NOT NULL,
     idPolo INT NOT NULL,
     idCurso INT NOT NULL,
-    qtdVagas INT NOT NULL,
+    qtdVagas INT NOT NULL DEFAULT 0,
     qtdMatriculas INT NOT NULL DEFAULT 0,
     tipoModalidade VARCHAR(20) NOT NULL,
-    PRIMARY KEY (idInstituicao, idPolo, idCurso),
+    turno VARCHAR(20) NOT NULL, 
+    PRIMARY KEY (idInstituicaoPoloCurso, idInstituicao, idPolo),
     CONSTRAINT FK_tblInstituicaoPoloCurso_tblInstituicao 
 		FOREIGN KEY (idInstituicao) 
 			REFERENCES tblInstituicao (idInstituicao),
@@ -88,7 +94,9 @@ CREATE TABLE tblInstituicaoPoloCurso (
     CONSTRAINT CK_tblInstituicaoPoloCurso_qtdMatriculas 
 		CHECK (qtdMatriculas >= 0),
     CONSTRAINT CK_tblInstituicaoPoloCurso_tipoModalidade 
-		CHECK (tipoModalidade IN ('Presencial', 'Semipresencial', 'EAD'))
+		CHECK (tipoModalidade IN ('Presencial', 'Semipresencial', 'EAD')),
+	CONSTRAINT CK_tblInstituicaoPoloCurso_turno
+		CHECK (turno IN ('Diurno', 'Noturno'))
 );
 
 CREATE TABLE tblAtualizacao (
