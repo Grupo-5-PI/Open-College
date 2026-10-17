@@ -194,8 +194,6 @@ async function adicionarPolo(){
     })
     .then(function(resposta){
 
-        console.log(resposta);
-        
         if(resposta.ok){
             // console.log('oi');
             mensagemPopup.innerHTML = `Polo adicionado com sucesso!`;
@@ -280,6 +278,8 @@ function editarPolo(){
     let municipio = document.getElementById("select_municipio_editar_polo").value;
     let uf = document.getElementById("select_uf_editar_polo").value;
 
+    let mensagemPopup = document.querySelector("#popup_editar_polo .popup-mensagem");
+
     fetch("/instituicao/editarPolo", {
         method: "POST",
         headers: {
@@ -295,5 +295,30 @@ function editarPolo(){
             ufServer: uf,
         })
     })
-    
+    .then(function(resposta){
+        
+        if(resposta.ok){
+            // console.log('oi');
+            mensagemPopup.innerHTML = `Polo editado com sucesso!`;
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            mensagemPopup.style.borderColor = 'green';
+
+            document.getElementById("input_logradouro_editar_polo").value = '';
+            document.getElementById("input_numero_editar_polo").value = '';
+            document.getElementById("input_bairro_editar_polo").value = '';
+            document.getElementById("select_municipio_editar_polo").value = '';
+            document.getElementById("select_uf_editar_polo").value = '';
+ 
+            recarregarPagina();
+            
+        } else{
+            mensagemPopup.innerHTML = 'Falha ao editar polo!';
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'red';
+            mensagemPopup.style.borderColor = 'red';
+        }
+        
+    })
+
 }
