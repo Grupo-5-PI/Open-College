@@ -349,7 +349,7 @@ async function adicionarCurso(){
     let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
     let idPolo = (await buscarDadosPolo())?.idPolo;
     // let areaGeral = document.getElementById('select_area_geral_curso').value;
-    let curso = document.getElementById('select_curso_curso').value;
+    let idCurso = document.getElementById('select_curso_curso').value;
     let turno = document.getElementById('select_turno_curso').value;
     let modalidade = document.getElementById('select_modalidade_curso').value;
     
@@ -364,7 +364,7 @@ async function adicionarCurso(){
     
     if(
         // areaGeral == "" ||
-        curso == "" ||
+        idCurso == "" ||
         turno == "" ||
         modalidade == "" 
     ){
@@ -383,7 +383,7 @@ async function adicionarCurso(){
             idInstituicaoServer: idInstituicao,
             idPoloServer: idPolo,
             // areaGeralServer: areaGeral,
-            cursoServer: curso,
+            idCursoServer: idCurso,
             turnoServer: turno,
             modalidadeServer: modalidade,
         })
