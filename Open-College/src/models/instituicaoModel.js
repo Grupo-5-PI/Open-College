@@ -199,8 +199,9 @@ function buscarDadosCurso(idInstituicao, idPolo, idCurso){
     console.log("FUNÇÃO buscarDadosCurso");
 
     instrucaoSql = `
-        SELECT ipc.*, cur.nome nomeCurso FROM tblInstituicaoPoloCurso ipc 
-        JOIN curso cur ON cur.idCurso = ipc.idCurso 
+        SELECT ipc.*, cur.nome nomeCurso, pol.municipio municipio FROM tblInstituicaoPoloCurso ipc 
+        JOIN tblCurso cur ON cur.idCurso = ipc.idCurso 
+        JOIN tblPolo pol ON pol.idPolo = ipc.idPolo 
         WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo} AND idInstituicaoPoloCurso = ${idCurso};
     `;
 

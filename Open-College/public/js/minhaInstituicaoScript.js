@@ -574,12 +574,23 @@ async function buscarDadosCurso(){
     let parametros = JSON.stringify({
         idInstituicaoParam: idInstituicao,
         idPoloParam: idPolo,
-        idCursoParam: idParam
+        idCursoParam: idCurso
     });
 
     let dadosCurso = fetch(`/instituicao/buscarDadosCurso/${parametros}`)
     .then(function(resposta){
-        
+        if(resposta.status == 200){
+            return resposta.json();
+        } else if(resposta.status == 404){
+            return '404';
+        }
     })
+    .catch(function(erro){
+        return '500';
+    });
+
+    console.log(dadosCurso);
+
+    return dadosCurso;
     
 }
