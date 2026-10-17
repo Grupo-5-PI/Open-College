@@ -24,8 +24,12 @@ CREATE TABLE tblCurso (
     idCurso INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
     formacao VARCHAR(20) NOT NULL,
+    idAreaGeral INT,
     CONSTRAINT CK_tblCurso_formacao 
-		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo'))
+		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo')),
+	CONSTRAINT FK_tblCurso_idAreaGeral 
+		FOREIGN KEY (idAreaGeral) 
+			REFERENCES tblAreaGeral (idAreaGeral)
 );
 
 CREATE TABLE tblUsuario (
@@ -71,7 +75,7 @@ CREATE TABLE tblInstituicaoPoloCurso (
     idInstituicao INT NOT NULL,
     idPolo INT NOT NULL,
     idCurso INT NOT NULL,
-    qtdVagas INT NOT NULL,
+    qtdVagas INT NOT NULL DEFAULT 0,
     qtdMatriculas INT NOT NULL DEFAULT 0,
     tipoModalidade VARCHAR(20) NOT NULL,
     turno VARCHAR(20) NOT NULL, 
