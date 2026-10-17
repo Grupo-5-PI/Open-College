@@ -7,6 +7,18 @@ function abrirFecharPopup(idPopup){
     let mensagemPopup = document.querySelector(`#${idPopup} .popup-mensagem`);
     mensagemPopup.innerHTML = '';
     mensagemPopup.style.display = 'none';
+
+    let inputsPopup = Array.from(document.getElementsByClassName('input-popup'));
+
+    for(let inputPopup of inputsPopup){
+        let input = inputPopup.querySelector('input');
+
+        if(input != null){
+            input.value = '';
+        } else{
+            inputPopup.querySelector('select').value = '';
+        }
+    }
     
     if(popupAberto){
         document.getElementById(idPopup).style.display = 'none';
@@ -246,6 +258,9 @@ async function exibirDadosPolo(){
     let ufPolo = dadosPolo.uf;
 
     document.getElementById("polo_header").innerHTML = `Polo ${logradouroPolo}`;
+
+    
+    document.getElementById("")
     
 }
 
