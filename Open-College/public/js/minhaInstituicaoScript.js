@@ -562,3 +562,24 @@ async function adicionarCurso(){
     });
 
 }
+
+async function buscarDadosCurso(){
+
+    let urlParams = new URLSearchParams(window.location.search);
+
+    let idInstituicao = urlParams.get('id_instituicao');
+    let idPolo = urlParams.get('id_polo');
+    let idCurso = urlParams.get('id_curso');
+
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        idPoloParam: idPolo,
+        idCursoParam: idParam
+    });
+
+    let dadosCurso = fetch(`/instituicao/buscarDadosCurso/${parametros}`)
+    .then(function(resposta){
+        
+    })
+    
+}
