@@ -35,7 +35,7 @@ router.post("/editarPolo", function(req, res){
     instituicaoController.editarPolo(req, res);
 });
 
-router.delete("/excluirPolo", function(req, res){
+router.delete("/excluirPolo/:parametros", function(req, res){
     instituicaoController.excluirPolo(req, res);
 });
 

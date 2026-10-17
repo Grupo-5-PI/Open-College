@@ -122,13 +122,25 @@ function editarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, id
     
 }
 
+function excluirCursosPolo(idInstituicao, idPolo){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO excluirCursosPolo");
+
+    var instrucaoSql = `
+        DELETE FROM tblInstituicaoPoloCurso WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
+    `;
+    
+    return database.executar(instrucaoSql);
+    
+}
+
 function excluirPolo(idInstituicao, idPolo){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
     console.log("FUNÇÃO excluirPolo");
 
     var instrucaoSql = `
-        DELETE FROM tblInstituicaoPoloCurso WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
         DELETE FROM tblPolo WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
     `;
     
@@ -174,6 +186,7 @@ module.exports = {
     adicionarPolo,
     buscarDadosPolo,
     editarPolo,
+    excluirCursosPolo,
     excluirPolo,
     buscarIdParaAdicionarCurso,
     adicionarCurso,
