@@ -344,6 +344,27 @@ async function editarPolo(){
 
 }
 
+async function excluirPolo(){
+
+    let dadosPolo = await buscarDadosPolo();
+
+    let idInstituicao = dadosPolo.idInstituicao;
+    let idPolo = dadosPolo.idPolo;
+
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        idPoloParam: idPolo
+    });
+
+    let mensagemPopup = document.querySelector("#popup_editar_polo .popup-mensagem");
+
+    fetch(`/instituicao/excluirPolo/${parametros}`)
+    .then(function(resposta){
+        
+    })
+    
+}
+
 async function adicionarCurso(){
 
     let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
