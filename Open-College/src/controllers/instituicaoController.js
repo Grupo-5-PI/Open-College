@@ -174,7 +174,7 @@ function cadastrar(req, res) {
         instituicaoModel.editarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo)
         .then(function(resposta){
             console.log(resposta);
-            res.status(201).json(resposta);
+            res.status(200).json(resposta);
         })
         .catch(function(erro){
             console.log(erro);
