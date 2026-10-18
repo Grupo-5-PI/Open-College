@@ -55,7 +55,7 @@ router.post("/editarCurso", function(req, res){
     instituicaoController.editarCurso(req, res);
 });
 
-router.delete("excluirCurso/:parametros", function(req, res){
+router.delete("/excluirCurso/:parametros", function(req, res){
     instituicaoController.excluirCurso(req, res);
 });
 

@@ -710,7 +710,7 @@ function excluirCurso(){
             mensagemPopup.style.color = "green";
             mensagemPopup.style.display = "block";
 
-            voltarPagina(`./minha_instituicao_polo?id_polo=${idPolo}&id_instituicao=${idInstituicao}.html`);
+            voltarPagina(`./minha_instituicao_polo.html?id_polo=${idPolo}&id_instituicao=${idInstituicao}`);
             
         } else{
             mensagemPopup.innerHTML = "Falha ao excluir curso!";
