@@ -51,4 +51,8 @@ router.get("/buscarDadosCurso/:parametros", function(req, res){
     instituicaoController.buscarDadosCurso(req, res);
 });
 
+router.post("/editarCurso", function(req, res){
+    instituicaoController.editarCurso(req, res);
+});
+
 module.exports = router;
