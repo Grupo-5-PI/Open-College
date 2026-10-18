@@ -227,6 +227,22 @@ function editarCurso(idInstituicao, idPolo, idCurso, turno, modalidade){
     
 }
 
+function excluirCurso(idInstituicao, idPolo, idCurso){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO excluirCurso");
+
+    var instrucaoSql = `
+        DELETE FROM tblInstituicaoPoloCurso 
+        WHERE idInstituicao = ${idInstituicao} AND 
+        idPolo = ${idPolo} AND 
+        idCurso = ${idCurso};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
     buscarPorCnpj,
     listarTodas,
@@ -245,4 +261,5 @@ module.exports = {
     adicionarCurso,
     buscarDadosCurso,
     editarCurso,
+    excluirCurso,
 };
