@@ -199,7 +199,31 @@ function buscarDadosCurso(idInstituicao, idPolo, idCurso){
     console.log("FUNÇÃO buscarDadosCurso");
 
     var instrucaoSql = `
-        SELECT ipc.*, cur.nome nomeCurso, pol.municipio municipio FROM tblInstituicaoPoloCurso ipc 
+        SELECT 
+            ipc.idInstituicaoPoloCurso, 
+            ipc.idInstituicao, 
+            ipc.idPolo, 
+            ipc.idCurso, 
+            ipc.turno, 
+            ipc.tipoModalidade, 
+            ipc.qtdVagas, 
+            ipc.qtdMatriculas, 
+            CASE 
+				WHEN dataUltimaAtualizacao IS NULL 
+                THEN 'Estatísticas não foram inseridas ainda!'
+                ELSE 
+				CONCAT(DAY(dataUltimaAtualizacao),'/',MONTH(dataUltimaAtualizacao),'/',YEAR(dataUltimaAtualizacao)) 
+			END AS ultimaAtualizacao, 
+            ipc.metaQtdMatriculas, 
+            CASE 
+				WHEN metaData IS NULL 
+				THEN 'Nenhuma meta foi definida!' 
+                ELSE 
+				CONCAT(DAY(metaData),'/',MONTH(metaData),'/',YEAR(metaData))
+			END AS meta, 
+            cur.nome nomeCurso, 
+            pol.municipio municipio 
+        FROM tblInstituicaoPoloCurso ipc 
         JOIN tblCurso cur ON cur.idCurso = ipc.idCurso 
         JOIN tblPolo pol ON pol.idPolo = ipc.idPolo 
         WHERE ipc.idInstituicao = ${idInstituicao} AND ipc.idPolo = ${idPolo} AND ipc.idInstituicaoPoloCurso = ${idCurso};
