@@ -334,6 +334,26 @@ function cadastrar(req, res) {
         })
         
     }
+
+    function excluirCurso(req, res){
+
+        let dadosCurso = JSON.parse(req.params.parametros);
+
+        let idInstituicao = dadosCurso.idInstituicaoParam;
+        let idPolo = dadosCurso.idPoloParam;
+        let idCurso = dadosCurso.idCursoParam;
+
+        instituicaoModel.excluirCurso(idInstituicao, idPolo, idCurso)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(204).send();
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        });
+        
+    }
     
 module.exports = {
     cadastrar,
@@ -349,4 +369,5 @@ module.exports = {
     adicionarCurso,
     buscarDadosCurso,
     editarCurso,
+    excluirCurso,
 };
