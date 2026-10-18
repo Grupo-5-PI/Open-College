@@ -335,7 +335,7 @@ function cadastrar(req, res) {
         
     }
 
-    function atualizarEstatisticasCurso(){
+    function atualizarEstatisticasCurso(req, res){
 
         let idInstituicao = req.body.idInstituicaoServer;
         let idPolo = req.body.idPoloServer;
