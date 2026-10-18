@@ -605,6 +605,9 @@ async function exibirDadosCurso(){
     let modalidade = dadosCurso.tipoModalidade;
     let qtdVagas = dadosCurso.qtdVagas;
     let qtdMatriculas = dadosCurso.qtdMatriculas;
+    let ultimaAtualizacao = dadosCurso.ultimaAtualizacao;
+    let metaQtdMatriculas = dadosCurso.metaQtdMatriculas;
+    let dataMeta = dadosCurso.meta;
 
     document.getElementById('curso_header').innerHTML = nomeCurso;
     document.getElementById('curso_polo').innerHTML = `Polo: ${municipioPolo}`;
@@ -612,6 +615,9 @@ async function exibirDadosCurso(){
     document.getElementById('curso_modalidade').innerHTML = `Modalidade: ${modalidade}`;
     document.getElementById('estatisticas_vagas').innerHTML = qtdVagas;
     document.getElementById('estatisticas_matriculas').innerHTML = qtdMatriculas;
+    document.getElementById('data_ultima_atualizacao').innerHTML = `Atualizado por último em: ${ultimaAtualizacao}`;
+    document.getElementById('meta_matriculas').innerHTML = metaQtdMatriculas;
+    document.getElementById('data_meta').innerHTML = `Meta para: ${dataMeta}`;
     
 }
 
@@ -674,14 +680,40 @@ async function editarCurso(){
     
 }
 
-function atualizarEstatisticasCurso(){
+async function atualizarEstatisticasCurso(){
 
-    let urlParams = new URLSearchParams(window.location.search);
-    let idInstituicao = urlParams.get('id_instituicao');
-    let idPolo = urlParams.get('id_polo');
-    let idCurso = urlParams.get('id_curso');
+    // let urlParams = new URLSearchParams(window.location.search);
+    // let idInstituicao = urlParams.get('id_instituicao');
+    // let idPolo = urlParams.get('id_polo');
+    // let idCurso = urlParams.get('id_curso');
+    let dadosCurso = await buscarDadosCurso();
+    let idInstituicao = dadosCurso.idInstituicao;
+    let idPolo = dadosCurso.idPolo;
+    let idCurso = dadosCurso.idCurso;
     let vagas = document.getElementById('input_vagas_estatisticas').value;
     let matriculas = document.getElementById('input_matriculas_estatisticas').value;
+
+    let mensagemPopup = document.querySelector('#popup_atualizar_estatisticas .popup-mensagem');
+
+    if(vagas == ''){ vagas = dadosCurso.qtdVagas }
+    if(matriculas == ''){ matriculas = dadosCurso.qtdMatriculas }
+
+    vagas = parseInt(vagas);
+    matriculas = parseInt(matriculas);
+
+    if(isNaN(vagas) || isNaN(matriculas)){
+        mensagemPopup.innerHTML = 'Insira apenas números!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+        return;
+    }
+
+    if(idInstituicao == undefined || idPolo == undefined || idCurso == undefined){
+        mensagemPopup.innerHTML = 'Falha ao buscar dados do curso!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+        return;
+    }
 
     fetch('/instituicao/atualizarEstatisticasCurso', {
         method: "POST",
@@ -697,10 +729,21 @@ function atualizarEstatisticasCurso(){
         })
     })
     .then(function(resposta){
-
+        if(resposta.status == 200){
+            mensagemPopup.innerHTML = 'Estatísticas atualizadas com sucesso!';
+            mensagemPopup.style.color = 'green';
+            mensagemPopup.style.display = 'block';
+            recarregarPagina();
+        } else{
+            mensagemPopup.innerHTML = 'Falha ao atualizar estatísticas!';
+            mensagemPopup.style.color = 'red';
+            mensagemPopup.style.display = 'block';
+        }
     })
     .catch(function(erro){
-
+        mensagemPopup.innerHTML = 'Falha ao atualizar estatísticas!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
     });
     
 }
