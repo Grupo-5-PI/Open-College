@@ -259,7 +259,8 @@ function atualizarEstatisticasCurso(idInstituicao, idPolo, idCurso, vagas, matri
     var instrucaoSql = `
         UPDATE tblInstituicaoPoloCurso SET 
         qtdVagas = ${vagas}, 
-        qtdMatriculas = ${matriculas} 
+        qtdMatriculas = ${matriculas}, 
+        dataUltimaAtualizacao = CURDATE() 
         WHERE idInstituicao = ${idInstituicao} AND 
         idPolo = ${idPolo} AND 
         idInstituicaoPoloCurso = ${idCurso};
