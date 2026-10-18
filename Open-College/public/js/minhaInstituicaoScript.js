@@ -614,3 +614,50 @@ async function exibirDadosCurso(){
     document.getElementById('estatisticas_matriculas').innerHTML = qtdMatriculas;
     
 }
+
+async function editarCurso(){
+
+    let urlParams = new URLSearchParams(window.location.search);
+
+    let idInstituicao = urlParams.get('id_instituicao');
+    let idPolo = urlParams.get('id_polo');
+    let idCurso = urlParams.get('id_curso');
+    let turno = document.getElementById('select_turno_editar_curso').value;
+    let modalidade = document.getElementById('select_modalidade_editar_curso').value;
+
+    let dadosCurso = await buscarDadosCurso();
+    let cursoTurno = dadosCurso.turno;
+    let cursoModalidade = dadosCurso.tipoModalidade;
+
+    let mensagemPopup = document.querySelector('#popup_editar_curso .popup-mensagem');
+    
+    if((turno == '' && modalidade == '') || (turno == cursoTurno && modalidade == cursoModalidade)){
+        mensagemPopup.innerHTML = 'Nenhuma edição foi feita!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+        return;
+    }
+
+    if(turno == ''){
+        turno = cursoTurno;
+    }
+    if(modalidade == ''){
+        modalidade = cursoModalidade;
+    }
+
+    fetch('/instituicao/editarCurso', {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: {
+            idInstituicaoServer: idInstituicao,
+            idPoloServer: idPolo,
+            idCursoServer: idCurso,
+            turnoServer: turno,
+            modalidadeServer: modalidade,
+        }
+    })
+    .then()
+    
+}
