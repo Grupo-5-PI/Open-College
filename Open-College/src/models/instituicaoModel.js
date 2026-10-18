@@ -227,6 +227,24 @@ function editarCurso(idInstituicao, idPolo, idCurso, turno, modalidade){
     
 }
 
+function atualizarEstatisticasCurso(idInstituicao, idPolo, idCurso, vagas, matriculas){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO atualizarEstatisticasCurso");
+
+    var instrucaoSql = `
+        UPDATE tblInstituicaoPoloCurso SET 
+        qtdVagas = ${vagas}, 
+        qtdMatriculas = ${matriculas} 
+        WHERE idInstituicao = ${idInstituicao} AND 
+        idPolo = ${idPolo} AND 
+        idInstituicaoPoloCurso = ${idCurso};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function excluirCurso(idInstituicao, idPolo, idCurso){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -261,5 +279,6 @@ module.exports = {
     adicionarCurso,
     buscarDadosCurso,
     editarCurso,
+    atualizarEstatisticasCurso,
     excluirCurso,
 };
