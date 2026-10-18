@@ -364,6 +364,26 @@ function cadastrar(req, res) {
         
     }
 
+    function atualizarMetasCurso(req, res){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let matriculas = req.body.matriculasServer;
+        let dataMeta = req.body.dataMetaServer;
+
+        instituicaoModel.atualizarMetasCurso(idInstituicao, idPolo, idCurso, matriculas, dataMeta)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
     function excluirCurso(req, res){
 
         let dadosCurso = JSON.parse(req.params.parametros);
@@ -399,5 +419,6 @@ module.exports = {
     buscarDadosCurso,
     editarCurso,
     atualizarEstatisticasCurso,
+    atualizarMetasCurso,
     excluirCurso,
 };
