@@ -674,6 +674,37 @@ async function editarCurso(){
     
 }
 
+function atualizarEstatisticasCurso(){
+
+    let urlParams = new URLSearchParams(window.location.search);
+    let idInstituicao = urlParams.get('id_instituicao');
+    let idPolo = urlParams.get('id_polo');
+    let idCurso = urlParams.get('id_curso');
+    let vagas = getElementById('input_vagas_estatisticas').value;
+    let matriculas = getElementById('input_matriculas_estatisticas').value;
+
+    fetch('/instituicao/atualizarEstatisticasCurso', {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: {
+            idInstituicaoServer: idInstituicao,
+            idPoloServer: idPolo,
+            idCursoServer: idCurso,
+            vagasServer: vagas,
+            matriculasServer: matriculas,
+        }
+    })
+    .then(function(resposta){
+
+    })
+    .catch(function(erro){
+
+    });
+    
+}
+
 function excluirCurso(){
 
     // let dadosPolo = await buscarDadosPolo();
