@@ -59,6 +59,10 @@ router.post("/atualizarEstatisticasCurso", function(req, res){
     instituicaoController.atualizarEstatisticasCurso(req, res);
 });
 
+router.post("/atualizarMetasCurso", function(req, res){
+    instituicaoController.atualizarMetasCurso(req, res);
+});
+
 router.delete("/excluirCurso/:parametros", function(req, res){
     instituicaoController.excluirCurso(req, res);
 });
