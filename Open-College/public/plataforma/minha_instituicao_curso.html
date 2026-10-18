@@ -111,7 +111,7 @@
                 </table>
                 
                 <div>
-                    <span>Atualizado por último em: DD/MM/YYYY</span>
+                    <span id="data_ultima_atualizacao">Atualizado por último em: DD/MM/YYYY</span>
                     <button onclick="abrirFecharPopup('popup_atualizar_estatisticas')">ATUALIZAR</button>
                 </div>
                 
@@ -126,12 +126,12 @@
                         <th style="border-top-left-radius: 27px; border-top-right-radius: 27px;">MATRÍCULAS</th>
                     </tr>
                     <tr>
-                        <td style="border-bottom-left-radius: 27px; border-bottom-right-radius: 27px;">999</td>
+                        <td style="border-bottom-left-radius: 27px; border-bottom-right-radius: 27px;" id="meta_matriculas">999</td>
                     </tr>
                 </table>
                 
                 <div>
-                    <span>Para: DD/MM/YYYY</span>
+                    <span id="data_meta">Para: DD/MM/YYYY</span>
                     <button onclick="abrirFecharPopup('popup_atualizar_metas')">ATUALIZAR</button>
                 </div>
                 
@@ -178,7 +178,7 @@
                     SALVAR
                 </button>
             
-                <button class="botao-excluir">
+                <button class="botao-excluir" onclick="excluirCurso()">
                     EXCLUIR
                 </button>
             </div>
@@ -203,18 +203,18 @@
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 50%">
                         <label for="vagas">VAGAS: </label>
-                        <input type="text">
+                        <input type="text" id="input_vagas_estatisticas">
                     </div>
 
                     <div class="input-popup" style="width: 50%;">
                         <label for="matriculas">MATRÍCULAS: </label>
-                        <input type="text">
+                        <input type="text" id="input_matriculas_estatisticas">
                     </div>
                 </div>
             </div>
             
             <div class="popup-interacao-botoes">
-                <button>
+                <button onclick="atualizarEstatisticasCurso()">
                     SALVAR
                 </button>
             </div>
@@ -238,19 +238,19 @@
             <div class="inputs-popup">
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 50%">
-                        <label for="matriculas">MATRÍCULAS: </label>
-                        <input type="text">
+                        <label for="input_matriculas_meta_curso">MATRÍCULAS: </label>
+                        <input type="text" id="input_matriculas_meta_curso">
                     </div>
 
                     <div class="input-popup" style="width: 50%;">
-                        <label for="data_meta">METAS PARA: </label>
-                        <input type="text">
+                        <label for="input_data_meta_curso">METAS PARA: </label>
+                        <input type="date" id="input_data_meta_curso">
                     </div>
                 </div>
             </div>
             
             <div class="popup-interacao-botoes">
-                <button>
+                <button onclick="atualizarMetasCurso()">
                     SALVAR
                 </button>
             </div>

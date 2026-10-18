@@ -605,6 +605,9 @@ async function exibirDadosCurso(){
     let modalidade = dadosCurso.tipoModalidade;
     let qtdVagas = dadosCurso.qtdVagas;
     let qtdMatriculas = dadosCurso.qtdMatriculas;
+    let ultimaAtualizacao = dadosCurso.ultimaAtualizacao;
+    let metaQtdMatriculas = dadosCurso.metaQtdMatriculas;
+    let dataMeta = dadosCurso.meta;
 
     document.getElementById('curso_header').innerHTML = nomeCurso;
     document.getElementById('curso_polo').innerHTML = `Polo: ${municipioPolo}`;
@@ -612,6 +615,9 @@ async function exibirDadosCurso(){
     document.getElementById('curso_modalidade').innerHTML = `Modalidade: ${modalidade}`;
     document.getElementById('estatisticas_vagas').innerHTML = qtdVagas;
     document.getElementById('estatisticas_matriculas').innerHTML = qtdMatriculas;
+    document.getElementById('data_ultima_atualizacao').innerHTML = `Atualizado por último em: ${ultimaAtualizacao}`;
+    document.getElementById('meta_matriculas').innerHTML = metaQtdMatriculas;
+    document.getElementById('data_meta').innerHTML = `Meta para: ${dataMeta}`;
     
 }
 
@@ -670,6 +676,194 @@ async function editarCurso(){
         mensagemPopup.innerHTML = 'Falha ao editar curso!';
         mensagemPopup.style.color = 'red';
         mensagemPopup.style.display = 'block';
+    });
+    
+}
+
+async function atualizarEstatisticasCurso(){
+
+    // let urlParams = new URLSearchParams(window.location.search);
+    // let idInstituicao = urlParams.get('id_instituicao');
+    // let idPolo = urlParams.get('id_polo');
+    // let idCurso = urlParams.get('id_curso');
+    let dadosCurso = await buscarDadosCurso();
+    let idInstituicao = dadosCurso.idInstituicao;
+    let idPolo = dadosCurso.idPolo;
+    let idCurso = dadosCurso.idCurso;
+    let vagas = document.getElementById('input_vagas_estatisticas').value;
+    let matriculas = document.getElementById('input_matriculas_estatisticas').value;
+
+    let mensagemPopup = document.querySelector('#popup_atualizar_estatisticas .popup-mensagem');
+
+    if(vagas == ''){ vagas = dadosCurso.qtdVagas }
+    if(matriculas == ''){ matriculas = dadosCurso.qtdMatriculas }
+
+    vagas = parseInt(vagas);
+    matriculas = parseInt(matriculas);
+
+    if(isNaN(vagas) || isNaN(matriculas)){
+        mensagemPopup.innerHTML = 'Insira apenas números!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+        return;
+    }
+
+    if(idInstituicao == undefined || idPolo == undefined || idCurso == undefined){
+        mensagemPopup.innerHTML = 'Falha ao buscar dados do curso!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+        return;
+    }
+
+    fetch('/instituicao/atualizarEstatisticasCurso', {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idPoloServer: idPolo,
+            idCursoServer: idCurso,
+            vagasServer: vagas,
+            matriculasServer: matriculas,
+        })
+    })
+    .then(function(resposta){
+        if(resposta.status == 200){
+            mensagemPopup.innerHTML = 'Estatísticas atualizadas com sucesso!';
+            mensagemPopup.style.color = 'green';
+            mensagemPopup.style.display = 'block';
+            recarregarPagina();
+        } else{
+            mensagemPopup.innerHTML = 'Falha ao atualizar estatísticas!';
+            mensagemPopup.style.color = 'red';
+            mensagemPopup.style.display = 'block';
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = 'Falha ao atualizar estatísticas!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+    });
+    
+}
+
+async function atualizarMetasCurso(){
+
+    // let urlParams = new URLSearchParams(window.location.search);
+    // let idInstituicao = urlParams.get('id_instituicao');
+    // let idPolo = urlParams.get('id_polo');
+    // let idCurso = urlParams.get('id_curso');
+    let dadosCurso = await buscarDadosCurso();
+    let idInstituicao = dadosCurso.idInstituicao;
+    let idPolo = dadosCurso.idPolo;
+    let idCurso = dadosCurso.idCurso;
+    let matriculas = document.getElementById('input_matriculas_meta_curso').value;
+    let dataMeta = document.getElementById('input_data_meta_curso').value;
+
+    let mensagemPopup = document.querySelector('#popup_atualizar_metas .popup-mensagem');
+
+    if(matriculas == ''){ matriculas = dadosCurso.metaqtdMatriculas }
+    if(dataMeta == ''){ vagas = dadosCurso.meta }
+
+    // vagas = parseInt(vagas);
+    matriculas = parseInt(matriculas);
+
+    if(isNaN(matriculas)){
+        mensagemPopup.innerHTML = 'Insira apenas números no campo MATRÍCULAS!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+        return;
+    }
+
+    if(idInstituicao == undefined || idPolo == undefined || idCurso == undefined){
+        mensagemPopup.innerHTML = 'Falha ao buscar dados do curso!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+        return;
+    }
+
+    fetch('/instituicao/atualizarMetasCurso', {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idPoloServer: idPolo,
+            idCursoServer: idCurso,
+            matriculasServer: matriculas,
+            dataMetaServer: dataMeta,
+        })
+    })
+    .then(function(resposta){
+        if(resposta.status == 200){
+            mensagemPopup.innerHTML = 'Metas atualizadas com sucesso!';
+            mensagemPopup.style.color = 'green';
+            mensagemPopup.style.display = 'block';
+            recarregarPagina();
+        } else{
+            mensagemPopup.innerHTML = 'Falha ao atualizar metas!';
+            mensagemPopup.style.color = 'red';
+            mensagemPopup.style.display = 'block';
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = 'Falha ao atualizar metas!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+    });
+    
+}
+
+function excluirCurso(){
+
+    // let dadosPolo = await buscarDadosPolo();
+
+    let urlParams = new URLSearchParams(window.location.search);
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
+    let idCurso = urlParams.get("id_curso");
+
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        idPoloParam: idPolo,
+        idCursoParam: idCurso,
+    });
+
+    let mensagemPopup = document.querySelector("#popup_editar_curso .popup-mensagem");
+
+    if(idInstituicao == undefined || idPolo == undefined || idCurso == undefined){
+        mensagemPopup.innerHTML = "Falha ao buscar dados do curso!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+    }
+
+    fetch(`/instituicao/excluirCurso/${parametros}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(function(resposta){
+        if(resposta.status == 204){
+            
+            mensagemPopup.innerHTML = "Curso excluído com sucesso!";
+            mensagemPopup.style.color = "green";
+            mensagemPopup.style.display = "block";
+
+            voltarPagina(`./minha_instituicao_polo.html?id_polo=${idPolo}&id_instituicao=${idInstituicao}`);
+            
+        } else{
+            mensagemPopup.innerHTML = "Falha ao excluir curso!";
+            mensagemPopup.style.color = "red";
+            mensagemPopup.style.display = "block";
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Falha ao excluir curso!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
     });
     
 }
