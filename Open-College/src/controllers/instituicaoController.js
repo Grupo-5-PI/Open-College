@@ -335,6 +335,26 @@ function cadastrar(req, res) {
         
     }
 
+    function atualizarEstatisticasCurso(){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let vagas = req.body.vagasServer;
+        let matriculas = req.body.matriculasServer;
+
+        instituicaoModel.atualizarEstatisticasCurso(idInstituicao, idPolo, idCurso, vagas, matriculas)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
     function excluirCurso(req, res){
 
         let dadosCurso = JSON.parse(req.params.parametros);
@@ -369,5 +389,6 @@ module.exports = {
     adicionarCurso,
     buscarDadosCurso,
     editarCurso,
+    atualizarEstatisticasCurso,
     excluirCurso,
 };
