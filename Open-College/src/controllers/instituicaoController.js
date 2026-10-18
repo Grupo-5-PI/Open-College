@@ -144,7 +144,12 @@ function cadastrar(req, res) {
         let municipio = req.body.municipioServer;
         let uf = req.body.ufServer;
         let idInstituicao = req.body.idInstituicaoServer;
-        let idPolo = (await instituicaoModel.buscarIdParaAdicionarPolo(idInstituicao))[0].ultimoId + 1;
+        let idPolo = (await instituicaoModel.buscarIdParaAdicionarPolo(idInstituicao))[0]?.ultimoId + 1;
+        
+        if(isNaN(idPolo) || idPolo == undefined){
+            idPolo = 1;
+        }
+        
         console.log("idPolo: ", idPolo);
             
         instituicaoModel.adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo)
@@ -276,8 +281,12 @@ function cadastrar(req, res) {
         let idCurso = req.body.idCursoServer;
         let turno = req.body.turnoServer;
         let modalidade = req.body.modalidadeServer;
-        let idInstituicaoPoloCurso = (await instituicaoModel.buscarIdParaAdicionarCurso(idInstituicao, idPolo))[0].ultimoId + 1;
+        let idInstituicaoPoloCurso = (await instituicaoModel.buscarIdParaAdicionarCurso(idInstituicao, idPolo))[0]?.ultimoId + 1;
 
+        if(isNaN(idInstituicaoPoloCurso) || idInstituicaoPoloCurso == undefined){
+            idInstituicaoPoloCurso = 1;
+        }
+        
         instituicaoModel.adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade)
         .then(function(resposta){
             console.log(resposta);
