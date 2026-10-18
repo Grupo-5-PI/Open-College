@@ -650,13 +650,13 @@ async function editarCurso(){
         headers: {
             "Content-Type":"application/json",
         },
-        body: {
+        body: JSON.stringify({
             idInstituicaoServer: idInstituicao,
             idPoloServer: idPolo,
             idCursoServer: idCurso,
             turnoServer: turno,
             modalidadeServer: modalidade,
-        }
+        })
     })
     .then()
     
