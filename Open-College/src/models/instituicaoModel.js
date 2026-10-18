@@ -184,7 +184,7 @@ function adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
     console.log("FUNÇÃO adicionarCurso");
 
-    instrucaoSql = `
+    var instrucaoSql = `
         INSERT INTO tblInstituicaoPoloCurso (idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, tipoModalidade)
         VALUES (${idInstituicaoPoloCurso}, ${idInstituicao}, ${idPolo}, ${idCurso}, '${turno}', '${modalidade}');
     `;
@@ -198,11 +198,29 @@ function buscarDadosCurso(idInstituicao, idPolo, idCurso){
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
     console.log("FUNÇÃO buscarDadosCurso");
 
-    instrucaoSql = `
+    var instrucaoSql = `
         SELECT ipc.*, cur.nome nomeCurso, pol.municipio municipio FROM tblInstituicaoPoloCurso ipc 
         JOIN tblCurso cur ON cur.idCurso = ipc.idCurso 
         JOIN tblPolo pol ON pol.idPolo = ipc.idPolo 
         WHERE ipc.idInstituicao = ${idInstituicao} AND ipc.idPolo = ${idPolo} AND ipc.idInstituicaoPoloCurso = ${idCurso};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function editarCurso(idInstituicao, idPolo, idCurso, turno, modalidade){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO editarCurso");
+
+    var instrucaoSql = `
+        UPDATE tblInstituicaoPoloCurso SET 
+        turno = '${turno}', 
+        tipoModalidade = '${modalidade}' 
+        WHERE idInstituicao = ${idInstituicao} AND 
+        idPolo = ${idPolo} AND 
+        idInstituicaoPoloCurso = ${idCurso};
     `;
 
     return database.executar(instrucaoSql);
@@ -226,4 +244,5 @@ module.exports = {
     buscarIdParaAdicionarCurso,
     adicionarCurso,
     buscarDadosCurso,
+    editarCurso,
 };
