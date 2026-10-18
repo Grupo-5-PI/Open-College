@@ -238,19 +238,19 @@
             <div class="inputs-popup">
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 50%">
-                        <label for="matriculas">MATRÍCULAS: </label>
-                        <input type="text">
+                        <label for="input_matriculas_meta_curso">MATRÍCULAS: </label>
+                        <input type="text" id="input_matriculas_meta_curso">
                     </div>
 
                     <div class="input-popup" style="width: 50%;">
-                        <label for="data_meta">METAS PARA: </label>
-                        <input type="text">
+                        <label for="input_data_meta_curso">METAS PARA: </label>
+                        <input type="date" id="input_data_meta_curso">
                     </div>
                 </div>
             </div>
             
             <div class="popup-interacao-botoes">
-                <button>
+                <button onclick="atualizarMetasCurso()">
                     SALVAR
                 </button>
             </div>
