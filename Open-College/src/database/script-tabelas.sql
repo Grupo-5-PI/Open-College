@@ -80,7 +80,7 @@ CREATE TABLE tblInstituicaoPoloCurso (
     tipoModalidade VARCHAR(20) NOT NULL,
     turno VARCHAR(20) NOT NULL, 
     dataUltimaAtualizacao DATE, 
-    metaQtdMatriculas INT,
+    metaQtdMatriculas INT NOT NULL DEFAULT 0,
     metaData DATE, 
     PRIMARY KEY (idInstituicaoPoloCurso, idInstituicao, idPolo),
     CONSTRAINT FK_tblInstituicaoPoloCurso_tblInstituicao 
