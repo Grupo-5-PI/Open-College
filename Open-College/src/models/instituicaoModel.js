@@ -199,7 +199,31 @@ function buscarDadosCurso(idInstituicao, idPolo, idCurso){
     console.log("FUNÇÃO buscarDadosCurso");
 
     var instrucaoSql = `
-        SELECT ipc.*, cur.nome nomeCurso, pol.municipio municipio FROM tblInstituicaoPoloCurso ipc 
+        SELECT 
+            ipc.idInstituicaoPoloCurso, 
+            ipc.idInstituicao, 
+            ipc.idPolo, 
+            ipc.idCurso, 
+            ipc.turno, 
+            ipc.tipoModalidade, 
+            ipc.qtdVagas, 
+            ipc.qtdMatriculas, 
+            CASE 
+				WHEN dataUltimaAtualizacao IS NULL 
+                THEN 'Estatísticas não foram inseridas ainda!'
+                ELSE 
+				CONCAT(DAY(dataUltimaAtualizacao),'/',MONTH(dataUltimaAtualizacao),'/',YEAR(dataUltimaAtualizacao)) 
+			END AS ultimaAtualizacao, 
+            ipc.metaQtdMatriculas, 
+            CASE 
+				WHEN metaData IS NULL 
+				THEN 'Nenhuma meta foi definida!' 
+                ELSE 
+				CONCAT(DAY(metaData),'/',MONTH(metaData),'/',YEAR(metaData))
+			END AS meta, 
+            cur.nome nomeCurso, 
+            pol.municipio municipio 
+        FROM tblInstituicaoPoloCurso ipc 
         JOIN tblCurso cur ON cur.idCurso = ipc.idCurso 
         JOIN tblPolo pol ON pol.idPolo = ipc.idPolo 
         WHERE ipc.idInstituicao = ${idInstituicao} AND ipc.idPolo = ${idPolo} AND ipc.idInstituicaoPoloCurso = ${idCurso};
@@ -227,6 +251,59 @@ function editarCurso(idInstituicao, idPolo, idCurso, turno, modalidade){
     
 }
 
+function atualizarEstatisticasCurso(idInstituicao, idPolo, idCurso, vagas, matriculas){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO atualizarEstatisticasCurso");
+
+    var instrucaoSql = `
+        UPDATE tblInstituicaoPoloCurso SET 
+        qtdVagas = ${vagas}, 
+        qtdMatriculas = ${matriculas}, 
+        dataUltimaAtualizacao = CURDATE() 
+        WHERE idInstituicao = ${idInstituicao} AND 
+        idPolo = ${idPolo} AND 
+        idInstituicaoPoloCurso = ${idCurso};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function atualizarMetasCurso(idInstituicao, idPolo, idCurso, matriculas, dataMeta){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO atualizarMetasCurso");
+
+    var instrucaoSql = `
+        UPDATE tblInstituicaoPoloCurso SET 
+        metaQtdMatriculas = ${matriculas}, 
+        metaData = '${dataMeta}' 
+        WHERE idInstituicao = ${idInstituicao} AND 
+        idPolo = ${idPolo} AND 
+        idInstituicaoPoloCurso = ${idCurso};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function excluirCurso(idInstituicao, idPolo, idCurso){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO excluirCurso");
+
+    var instrucaoSql = `
+        DELETE FROM tblInstituicaoPoloCurso 
+        WHERE idInstituicao = ${idInstituicao} AND 
+        idPolo = ${idPolo} AND 
+        idCurso = ${idCurso};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
     buscarPorCnpj,
     listarTodas,
@@ -245,4 +322,7 @@ module.exports = {
     adicionarCurso,
     buscarDadosCurso,
     editarCurso,
+    atualizarEstatisticasCurso,
+    atualizarMetasCurso,
+    excluirCurso,
 };

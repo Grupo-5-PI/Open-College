@@ -144,7 +144,12 @@ function cadastrar(req, res) {
         let municipio = req.body.municipioServer;
         let uf = req.body.ufServer;
         let idInstituicao = req.body.idInstituicaoServer;
-        let idPolo = (await instituicaoModel.buscarIdParaAdicionarPolo(idInstituicao))[0].ultimoId + 1;
+        let idPolo = (await instituicaoModel.buscarIdParaAdicionarPolo(idInstituicao))[0]?.ultimoId + 1;
+        
+        if(isNaN(idPolo) || idPolo == undefined){
+            idPolo = 1;
+        }
+        
         console.log("idPolo: ", idPolo);
             
         instituicaoModel.adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo)
@@ -276,8 +281,12 @@ function cadastrar(req, res) {
         let idCurso = req.body.idCursoServer;
         let turno = req.body.turnoServer;
         let modalidade = req.body.modalidadeServer;
-        let idInstituicaoPoloCurso = (await instituicaoModel.buscarIdParaAdicionarCurso(idInstituicao, idPolo))[0].ultimoId + 1;
+        let idInstituicaoPoloCurso = (await instituicaoModel.buscarIdParaAdicionarCurso(idInstituicao, idPolo))[0]?.ultimoId + 1;
 
+        if(isNaN(idInstituicaoPoloCurso) || idInstituicaoPoloCurso == undefined){
+            idInstituicaoPoloCurso = 1;
+        }
+        
         instituicaoModel.adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade)
         .then(function(resposta){
             console.log(resposta);
@@ -334,6 +343,66 @@ function cadastrar(req, res) {
         })
         
     }
+
+    function atualizarEstatisticasCurso(req, res){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let vagas = req.body.vagasServer;
+        let matriculas = req.body.matriculasServer;
+
+        instituicaoModel.atualizarEstatisticasCurso(idInstituicao, idPolo, idCurso, vagas, matriculas)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    function atualizarMetasCurso(req, res){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let matriculas = req.body.matriculasServer;
+        let dataMeta = req.body.dataMetaServer;
+
+        instituicaoModel.atualizarMetasCurso(idInstituicao, idPolo, idCurso, matriculas, dataMeta)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    function excluirCurso(req, res){
+
+        let dadosCurso = JSON.parse(req.params.parametros);
+
+        let idInstituicao = dadosCurso.idInstituicaoParam;
+        let idPolo = dadosCurso.idPoloParam;
+        let idCurso = dadosCurso.idCursoParam;
+
+        instituicaoModel.excluirCurso(idInstituicao, idPolo, idCurso)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(204).send();
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        });
+        
+    }
     
 module.exports = {
     cadastrar,
@@ -349,4 +418,7 @@ module.exports = {
     adicionarCurso,
     buscarDadosCurso,
     editarCurso,
+    atualizarEstatisticasCurso,
+    atualizarMetasCurso,
+    excluirCurso,
 };
