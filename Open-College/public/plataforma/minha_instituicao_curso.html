@@ -203,18 +203,18 @@
                 <div class="separacao-inputs-popup">
                     <div class="input-popup" style="width: 50%">
                         <label for="vagas">VAGAS: </label>
-                        <input type="text">
+                        <input type="text" id="input_vagas_estatisticas">
                     </div>
 
                     <div class="input-popup" style="width: 50%;">
                         <label for="matriculas">MATRÍCULAS: </label>
-                        <input type="text">
+                        <input type="text" id="input_matriculas_estatisticas">
                     </div>
                 </div>
             </div>
             
             <div class="popup-interacao-botoes">
-                <button>
+                <button onclick="atualizarEstatisticasCurso()">
                     SALVAR
                 </button>
             </div>
