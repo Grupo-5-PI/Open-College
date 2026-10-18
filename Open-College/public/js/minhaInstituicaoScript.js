@@ -673,3 +673,55 @@ async function editarCurso(){
     });
     
 }
+
+function excluirCurso(){
+
+    // let dadosPolo = await buscarDadosPolo();
+
+    let urlParams = new URLSearchParams(window.location.search);
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
+    let idCurso = urlParams.get("id_curso");
+
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        idPoloParam: idPolo,
+        idCursoParam: idCurso,
+    });
+
+    let mensagemPopup = document.querySelector("#popup_editar_curso .popup-mensagem");
+
+    if(idInstituicao == undefined || idPolo == undefined || idCurso == undefined){
+        mensagemPopup.innerHTML = "Falha ao buscar dados do curso!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+    }
+
+    fetch(`/instituicao/excluirCurso/${parametros}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(function(resposta){
+        if(resposta.status == 204){
+            
+            mensagemPopup.innerHTML = "Curso excluído com sucesso!";
+            mensagemPopup.style.color = "green";
+            mensagemPopup.style.display = "block";
+
+            voltarPagina(`./minha_instituicao_polo?id_polo=${idPolo}&id_instituicao=${idInstituicao}.html`);
+            
+        } else{
+            mensagemPopup.innerHTML = "Falha ao excluir curso!";
+            mensagemPopup.style.color = "red";
+            mensagemPopup.style.display = "block";
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Falha ao excluir curso!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+    });
+    
+}
