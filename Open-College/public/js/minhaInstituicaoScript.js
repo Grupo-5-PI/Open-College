@@ -658,6 +658,18 @@ async function editarCurso(){
             modalidadeServer: modalidade,
         })
     })
-    .then()
+    .then(function(resposta){
+        if(resposta.status == 200){
+            mensagemPopup.innerHTML = 'Curso editado com sucesso!';
+            mensagemPopup.style.color = 'green';
+            mensagemPopup.style.display = 'block';
+            recarregarPagina();
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = 'Falha ao editar curso!';
+        mensagemPopup.style.color = 'red';
+        mensagemPopup.style.display = 'block';
+    });
     
 }
