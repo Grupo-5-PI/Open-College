@@ -270,6 +270,24 @@ function atualizarEstatisticasCurso(idInstituicao, idPolo, idCurso, vagas, matri
     
 }
 
+function atualizarMetasCurso(idInstituicao, idPolo, idCurso, matriculas, dataMeta){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO atualizarMetasCurso");
+
+    var instrucaoSql = `
+        UPDATE tblInstituicaoPoloCurso SET 
+        metaQtdMatriculas = ${matriculas}, 
+        metaData = '${dataMeta}' 
+        WHERE idInstituicao = ${idInstituicao} AND 
+        idPolo = ${idPolo} AND 
+        idInstituicaoPoloCurso = ${idCurso};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function excluirCurso(idInstituicao, idPolo, idCurso){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -305,5 +323,6 @@ module.exports = {
     buscarDadosCurso,
     editarCurso,
     atualizarEstatisticasCurso,
+    atualizarMetasCurso,
     excluirCurso,
 };
