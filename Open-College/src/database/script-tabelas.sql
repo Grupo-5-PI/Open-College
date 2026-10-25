@@ -28,23 +28,23 @@ CREATE TABLE tblCurso (
 		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo'))
 );
 
-CREATE TABLE tblUsuario (
-    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    cpf CHAR(11) UNIQUE NOT NULL,
-    telefone VARCHAR(20),
-    email VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL,
-    foto VARCHAR(255),
-    tipo VARCHAR(30) NOT NULL,
-    idInstituicao INT,
-    administrador BIT NOT NULL,
-    CONSTRAINT FK_tblUsuario_tblInstituicao 
-		FOREIGN KEY (idInstituicao) 
-			REFERENCES tblInstituicao (idInstituicao),
-    CONSTRAINT CK_tblUsuario_tipo 
-		CHECK (tipo IN ('Gerente de Marketing', 'Analista de Marketing', 'Investidor'))
-);
+  CREATE TABLE tblUsuario (
+      idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+      nome VARCHAR(100) NOT NULL,
+      cpf CHAR(11) UNIQUE NOT NULL,
+      telefone VARCHAR(20),
+      email VARCHAR(100) UNIQUE NOT NULL,
+      senha VARCHAR(255) NOT NULL,
+      foto VARCHAR(255),
+      tipo VARCHAR(30) NOT NULL,
+      idInstituicao INT,
+      administrador BIT NOT NULL,
+      CONSTRAINT FK_tblUsuario_tblInstituicao 
+      FOREIGN KEY (idInstituicao) 
+        REFERENCES tblInstituicao (idInstituicao),
+      CONSTRAINT CK_tblUsuario_tipo 
+      CHECK (tipo IN ('Gerente de Marketing', 'Analista de Marketing', 'Investidor'))
+  );
 
 CREATE TABLE tblPolo (
     idPolo INT,
@@ -197,7 +197,17 @@ CREATE TABLE tblNoticia (
     REFERENCES tblUsuario (idUsuario)
 );
 
-
+CREATE TABLE tblDashboardPersonalizado (
+    idUsuario INT PRIMARY KEY,
+    kpi VARCHAR(50) NULL,
+    grafico VARCHAR(50) NULL,
+    atualizadoEm TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT FK_tblDashboardPersonalizado_tblUsuario
+        FOREIGN KEY (idUsuario)
+        REFERENCES tblUsuario (idUsuario)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
 
 
 
