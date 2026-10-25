@@ -393,7 +393,8 @@ main {
  .grafico-demanda:nth-child(3) {
     grid-column: 1/ 3;
     height: 300px;
-} 
+}
+
 /* ====================================== DASH PERSONALIZADA ======================================*/
 
 .grid-cards-personalizado {
@@ -444,6 +445,192 @@ main {
     justify-content: center;
 }
 
+/* pop-up(modal) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    
+    /* Começa invisível */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Classe que o JS adiciona para mostrar o popup */
+.modal-overlay.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Caixa branca */
+.modal-card {
+    background-color: var(--cor1);
+    width: 90%;
+    max-width: 450px;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+    
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+/* Efeito de subir quando abre */
+.modal-overlay.ativo .modal-card {
+    transform: translateY(0);
+}
+
+.modal-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 18px;
+    text-align: center;
+}
+
+.modal-lista-opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Botões de opção do popup */
+.btn-opcao-modal {
+    padding: 14px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.btn-opcao-modal:hover {
+    background-color: #eaf2fa;
+    border-color: #4a90e2;
+    color: #4a90e2;
+}
+
+.modal-acoes {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-cancelar {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-cancelar:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.widget-inner {
+    width: 100%; 
+    height: 100%; 
+    padding: 16px; 
+    box-sizing: border-box;
+    display: flex; 
+    flex-direction: column; 
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    border-radius: 20px;       
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.widget-inner .widget-titulo {
+    font-size: 20px; 
+    font-weight: 600; 
+    color: #000; 
+    margin-bottom: 10px;
+    padding-right: 28px;
+}
+
+/* Botão "X" para remover o card */
+.widget-inner .widget-remover {
+    position: absolute; 
+    top: 12px; 
+    right: 12px;
+    width: 26px; 
+    height: 26px; 
+    border-radius: 50%;
+    border: none; 
+    background: #f0f0f0; 
+    color: #666;
+    cursor: pointer; 
+    font-size: 18px; 
+    line-height: 1;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    transition: 0.2s;
+    z-index: 10; /* Garante que o X fique acima do gráfico */
+}
+
+.widget-inner .widget-remover:hover { 
+    background: #ffe0e0; 
+    color: #c00; 
+}
+
+.widget-inner .widget-body {
+    flex: 1; 
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    position: relative;
+}
+
+.widget-inner .widget-body canvas { 
+    width: 100% !important; 
+    height: 100% !important;
+}
+
+.widget-inner .kpi-valor { 
+    font-size: 55px; 
+    font-weight: 700; 
+    color: #333; 
+    line-height: 1;
+}
+
+.widget-inner .kpi-valor.destaque { 
+    color: #e74c3c; 
+}
+
+.widget-inner .kpi-label {
+    font-size: 14px; 
+    color: #888; 
+    margin-top: 8px; 
+    text-align: center;
+}
 /* ====================================== DASH TENDÊNCIA ======================================*/
 
 .graficosLadoaLado {
