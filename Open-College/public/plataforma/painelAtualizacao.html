@@ -1,34 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/painelAtualizacao.css">
+
+    <title>OpenLetter | OpenCollege</title>
+
     <link rel="stylesheet" href="../style/global.css">
-    <title>Painel de atualizações</title>
+    <link rel="stylesheet" href="../style/painelAtualizacao.css">
 </head>
+
 <body>
+
+    <!-- MENU LATERAL -->
+
     <nav class="menu-lateral">
+
         <header class="menu-lateral-logo">
             <span class="logo">
-                <img src="../img/logo/logo.png" alt="">
+                <img src="../img/logo/logo.png" alt="OpenCollege">
             </span>
         </header>
+
         <nav class="content">
             <ul id="nav-item">
-                <li class="nav-item active">
+
+                <li class="nav-item">
                     <a href="dashGeral.html">
-                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <img src="../img/icones/iconHome.png"
+                             alt=""
+                             class="icone-menu-lateral">
+
                         <span class="titulo-menu-lateral">
                             Dashboard
                         </span>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="minha_instituicao.html">
-                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
-                            class="icone-menu-lateral">
+                <li class="nav-item active">
+                    <a href="painelAtualizacao.html">
+                        <img src="../img/icones/iconNotificacao.png"
+                             alt=""
+                             class="icone-menu-lateral">
+
                         <span class="titulo-menu-lateral">
                             Painel de Atualização
                         </span>
@@ -36,8 +51,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="">
-                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconInstituicao.png"
+                             alt=""
+                             class="icone-menu-lateral">
+
                         <span class="titulo-menu-lateral">
                             Minha Instituição
                         </span>
@@ -45,78 +63,402 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="">
-                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                    <a href="#">
+                        <img src="../img/icones/iconPerfil.png"
+                             alt=""
+                             class="icone-menu-lateral">
+
                         <span class="titulo-menu-lateral">
                             Minha conta
                         </span>
                     </a>
                 </li>
+
             </ul>
         </nav>
 
         <div class="sair">
             <div class="btn-sair">
-                <button>
-                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                <button type="button">
+                    <img src="../img/icones/iconSair.png"
+                         alt=""
+                         class="icone-menu-lateral">
                     <span>Sair</span>
                 </button>
             </div>
         </div>
+
     </nav>
 
-    <h1 class="titulo-pagina">Painel de Atualizações</h1>
 
-    <div class="fundoNoti">
+    <!-- CONTEÚDO PRINCIPAL -->
 
-    <div class="notificacao">
-        <div class="notificacao-topo">
-            <span class="notificacao-titulo">Área Geral - Tecnologia</span>
-            <button class="notificacao-menu" aria-label="Opções">⋮</button>
+    <main>
+
+        <div class="main-conteudo">
+
+            <!-- TÍTULO -->
+
+            <div class="titulo-pagina">
+
+                <h1>
+                    NOTÍCIAS SOBRE
+                    <span>EMPREGABILIDADE</span>
+                </h1>
+
+                <p>
+                    Acompanhe tendências, dados e oportunidades
+                    para tomar decisões estratégicas na abertura
+                    de novos cursos.
+                </p>
+
+            </div>
+
+
+            <!-- SELEÇÃO DE INTERESSES -->
+
+            <form class="sessao-interesses">
+
+                <label for="interesses">
+                    Escolha seus interesses:
+                </label>
+
+                <select id="interesses" name="interesses" required>
+
+                    <option value="" disabled selected>
+                        Selecione uma área de interesse
+                    </option>
+
+                    <option value="tecnologia">
+                        Tecnologia da Informação
+                    </option>
+
+                    <option value="saude">
+                        Saúde
+                    </option>
+
+                    <option value="engenharia">
+                        Engenharia
+                    </option>
+
+                    <option value="administracao">
+                        Administração e Negócios
+                    </option>
+
+                    <option value="educacao">
+                        Educação
+                    </option>
+
+                    <option value="direito">
+                        Direito
+                    </option>
+
+                    <option value="comunicacao">
+                        Comunicação e Marketing
+                    </option>
+
+                    <option value="design">
+                        Design
+                    </option>
+
+                </select>
+
+                <button type="submit">
+                    Enviar
+                </button>
+
+            </form>
+
+
+            <!-- NOTÍCIAS E NOTIFICAÇÕES -->
+
+            <div class="conteudo-openletter">
+
+                <!-- NOTÍCIAS -->
+
+                <section class="sessao-noticias">
+
+                    <!-- NOTÍCIA 1 -->
+
+                    <article class="card-noticia">
+
+                        <img
+                            src="../img/noticia1.png"
+                            alt="Profissionais trabalhando com tecnologia"
+                            class="imagem-noticia"
+                        >
+
+                        <div class="conteudo-noticia">
+
+                            <h2>
+                                Empregabilidade na área de TI cresce
+                                em 28% com o avanço das IAs
+                            </h2>
+
+                            <p>
+                                Dados do INEP indicam que pessoas com
+                                graduação na área de TI passam por
+                                menos dificuldades em encontrar emprego,
+                                principalmente na área de machine learning
+                                e dados.
+                            </p>
+
+                            <p>
+                                No ano de 2026 foi percebido um aumento
+                                de quase 30% no nível de empregabilidade
+                                em graduados em ciência da computação,
+                                20% para graduados em sistemas de informação
+                                e 12% para graduados em Análise e
+                                Desenvolvimento de Sistemas.
+                            </p>
+
+                            <div class="rodape-noticia">
+
+                                <a href="#">
+                                    Ver notícia completa
+                                </a>
+
+                                <div class="avaliacao-noticia">
+                                    <button type="button">
+                                        ▲ Gostei
+                                    </button>
+
+                                    <button type="button">
+                                        ▼ Não Gostei
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- NOTÍCIA 2 -->
+
+                    <article class="card-noticia">
+
+                        <img
+                            src="../img/noticia2.png"
+                            alt="Tecnologia e inteligência artificial"
+                            class="imagem-noticia"
+                        >
+
+                        <div class="conteudo-noticia">
+
+                            <h2>
+                                Inteligência artificial impulsiona
+                                novas oportunidades no mercado de TI
+                            </h2>
+
+                            <p>
+                                O crescimento da inteligência artificial
+                                tem transformado o mercado de trabalho
+                                e aumentado a procura por profissionais
+                                especializados em tecnologia.
+                            </p>
+
+                            <p>
+                                Áreas como ciência de dados, desenvolvimento
+                                de software e segurança da informação
+                                apresentam novas oportunidades,
+                                influenciando a demanda por cursos
+                                de ensino superior.
+                            </p>
+
+                            <div class="rodape-noticia">
+
+                                <a href="#">
+                                    Ver notícia completa
+                                </a>
+
+                                <div class="avaliacao-noticia">
+                                    <button type="button">
+                                        ▲ Gostei
+                                    </button>
+
+                                    <button type="button">
+                                        ▼ Não Gostei
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- PAINEL DE NOTIFICAÇÕES -->
+
+                <aside class="sessao-atualizacoes">
+
+                    <div class="titulo-atualizacoes">
+                        <h2>NOTIFICAÇÕES</h2>
+                    </div>
+
+                    <div class="lista-atualizacoes">
+
+                        <!-- NOTIFICAÇÃO 1 -->
+
+                        <div class="item-atualizacao">
+
+                            <div class="dados-atualizacao">
+
+                                <h3>ÁREA GERAL - TECNOLOGIA</h3>
+
+                                <p>
+                                    Nova pesquisa aponta alta demanda
+                                    por profissionais de TI nos
+                                    próximos anos.
+                                </p>
+
+                            </div>
+
+                            <div class="detalhes-atualizacao">
+                                <button type="button">⋮</button>
+                                <span>35 min</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- NOTIFICAÇÃO 2 -->
+
+                        <div class="item-atualizacao">
+
+                            <div class="dados-atualizacao">
+
+                                <h3>CURSO - CIÊNCIAS DA COMPUTAÇÃO</h3>
+
+                                <p>
+                                    Empregabilidade de graduados cresce
+                                    28% com o avanço das IAs.
+                                </p>
+
+                            </div>
+
+                            <div class="detalhes-atualizacao">
+                                <button type="button">⋮</button>
+                                <span>35 min</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- NOTIFICAÇÃO 3 -->
+
+                        <div class="item-atualizacao">
+
+                            <div class="dados-atualizacao">
+
+                                <h3>MODALIDADE - PRESENCIAL</h3>
+
+                                <p>
+                                    Mercado valoriza experiências
+                                    práticas e presenciais.
+                                </p>
+
+                            </div>
+
+                            <div class="detalhes-atualizacao">
+                                <button type="button">⋮</button>
+                                <span>35 min</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- NOTIFICAÇÃO 4 -->
+
+                        <div class="item-atualizacao">
+
+                            <div class="dados-atualizacao">
+
+                                <h3>TURNO - MATUTINO</h3>
+
+                                <p>
+                                    Maior índice de procura por cursos
+                                    de TI no período da manhã.
+                                </p>
+
+                            </div>
+
+                            <div class="detalhes-atualizacao">
+                                <button type="button">⋮</button>
+                                <span>35 min</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- NOTIFICAÇÃO 5 -->
+
+                        <div class="item-atualizacao">
+
+                            <div class="dados-atualizacao">
+
+                                <h3>UF - SP</h3>
+
+                                <p>
+                                    São Paulo lidera vagas na área
+                                    de tecnologia no Brasil.
+                                </p>
+
+                            </div>
+
+                            <div class="detalhes-atualizacao">
+                                <button type="button">⋮</button>
+                                <span>35 min</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- NOTIFICAÇÃO 6 -->
+
+                        <div class="item-atualizacao">
+
+                            <div class="dados-atualizacao">
+
+                                <h3>MUNICÍPIO - SÃO CAETANO</h3>
+
+                                <p>
+                                    Crescimento de oportunidades
+                                    na região do ABC Paulista.
+                                </p>
+
+                            </div>
+
+                            <div class="detalhes-atualizacao">
+                                <button type="button">⋮</button>
+                                <span>35 min</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
         </div>
-        <span class="notificacao-tempo">35 min</span>
-    </div> <!-- fecha a notificação -->
 
-    <div class="notificacao">
-        <div class="notificacao-topo">
-            <span class="notificacao-titulo">curso - ciências da computação</span>
-            <button class="notificacao-menu" aria-label="Opções">⋮</button>
-        </div>
-        <span class="notificacao-tempo">35 min</span>
-    </div>
 
-    <div class="notificacao">
-        <div class="notificacao-topo">
-            <span class="notificacao-titulo">Modalidade - presencial</span>
-            <button class="notificacao-menu" aria-label="Opções">⋮</button>
-        </div>
-        <span class="notificacao-tempo">35 min</span>
-    </div>
+        <!-- RODAPÉ -->
 
-    <div class="notificacao">
-        <div class="notificacao-topo">
-            <span class="notificacao-titulo">turno - matutino</span>
-            <button class="notificacao-menu" aria-label="Opções">⋮</button>
-        </div>
-        <span class="notificacao-tempo">35 min</span>
-    </div>
+        <footer>
+            <span>
+                COPYRIGHT © 2026 - OPENCOLLEGE.
+                TODOS OS DIREITOS RESERVADOS.
+            </span>
+        </footer>
 
-     <div class="notificacao">
-        <div class="notificacao-topo">
-            <span class="notificacao-titulo">uf - SP</span>
-            <button class="notificacao-menu" aria-label="Opções">⋮</button>
-        </div>
-        <span class="notificacao-tempo">35 min</span>
-    </div>
+    </main>
 
-     <div class="notificacao">
-        <div class="notificacao-topo">
-            <span class="notificacao-titulo">município - São Caetano</span>
-            <button class="notificacao-menu" aria-label="Opções">⋮</button>
-        </div>
-        <span class="notificacao-tempo">35 min</span>
-    </div>
-
-</div> 
 </body>
 </html>
