@@ -127,6 +127,7 @@
                 <span>Minha Instituição</span>
             </div>
             <div class="header-direita">
+                <button onclick="abrirFecharPopup('popup_membros_instituicao')">Membros da Instituição</button>
                 <button onclick="abrirFecharPopup('popup_adicionar_polo')">Adicionar Polo</button>
             </div>
         </header>
@@ -241,6 +242,86 @@
                     ADICIONAR
                 </button>
             </div>
+
+            <span class="popup-mensagem">oieee</span>
+            
+        </div>
+    </div>
+
+    <div class="container-popup" id="popup_membros_instituicao">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_membros_instituicao')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_membros_instituicao')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Membros da Instituição</span>
+            </div>
+
+            <div class="lista-popup">
+
+                <div class="item-lista-popup">
+                    <div class="item-lista-esquerda">
+                        <img src="" alt="" class="foto-usuario-lista">
+                        <div>
+                            <span class="nome-usuario-lista">
+                                Nome do Usuário
+                            </span>
+                            <span class="perfil-usuario-lista">Perfil do Usuário</span>
+                        </div>
+                    </div>
+
+                    <div class="item-lista-direita">
+                        <button>
+                            REMOVER
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 70%">
+                        <label for="logradouro">LOGRADOURO: </label>
+                        <input type="text" name="logradouro" id="input_logradouro_polo">
+                    </div>
+                    
+                    <div class="input-popup" style="width: 30%">
+                        <label for="numero">NÚMERO: </label>
+                        <input type="text" name="numero" id="input_numero_polo">
+                    </div>
+                </div>
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 35%;">
+                        <label for="bairro">BAIRRO: </label>
+                        <input type="text" name="bairro" id="input_bairro_polo">
+                    </div>
+                    
+                    <div class="input-popup" style="width: 55%">
+                        <label for="municipio">MUNICÍPIO: </label><br>
+                        <select name="municipio" id="select_municipio_polo">
+                            <option value="são caetano">são caetano</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-popup" style="width: 10%">
+                        <label for="uf">UF: </label><br>
+                        <select name="uf" id="select_uf_polo">
+                            <option value="sp">sp</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="popup-interacao-botoes">
+                <button onclick="adicionarPolo()">
+                    ADICIONAR
+                </button>
+            </div> -->
 
             <span class="popup-mensagem">oieee</span>
             
