@@ -418,3 +418,15 @@ main header button:hover{
     font-weight: bold;
 }
 
+.item-lista-direita button{
+    box-sizing: border-box;
+    width: fit-content;
+    padding: 0 20px 0 20px;
+    background-color: rgb(175, 37, 37);
+}
+
+.item-lista-direita button:hover{
+    /* box-sizing: border-box; */
+    /* border: 3px solid rgb(175, 37, 37); */
+    background-color: rgb(214, 62, 62);
+}
