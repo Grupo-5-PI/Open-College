@@ -166,6 +166,59 @@ function cadastrar(req, res) {
             
     }
 
+    function buscarMembrosInstituicao(req, res){
+
+        let idInstituicao = req.params.idInstituicao;
+
+        instituicaoModel.buscarMembrosInstituicao(idInstituicao)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                console.log(resposta);
+                res.status(200).json(resposta);
+            } else{
+                res.status(204).send("Nenhum membro na instituição!");
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    async function removerUsuarioDaInstituicao(req, res){
+
+        let idUsuarios = req.body.idUsuarios;
+
+        let deuErroNaRequisicao;
+
+        // console.log(idUsuarios);
+
+        for(let i = 0; i < idUsuarios.length; i++){
+            let idUsuario = idUsuarios[i];
+            deuErroNaRequisicao = await instituicaoModel.removerUsuarioDaInstituicao(idUsuario).
+                then(function(resposta){
+                    console.log(resposta);
+                    return false;
+                })
+                .catch(function(erro){
+                    console.log(erro);
+                    return true;
+                })
+
+                if(deuErroNaRequisicao){
+                    break;
+                }
+        }
+
+        if(deuErroNaRequisicao){
+            res.status(500).send("Erro ao remover usuários!");
+        }
+
+        res.status(204).send("Usuários removidos com sucesso!");
+        
+    }
+
     function buscarDadosPolo(req, res){
 
         let dadosPolo = JSON.parse(req.params.parametros);
@@ -411,6 +464,8 @@ module.exports = {
     buscarPorIdUsuario,
     buscarPolos,
     adicionarPolo,
+    buscarMembrosInstituicao,
+    removerUsuarioDaInstituicao,
     buscarDadosPolo,
     editarPolo,
     excluirPolo,
