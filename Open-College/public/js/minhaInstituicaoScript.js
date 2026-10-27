@@ -48,7 +48,7 @@ async function buscarPolos(){
 
     if(idInstituicao == null){
         console.log("Instituição não encontrada!");
-        return;
+        return null;
     }
 
     let retorno = await fetch(`/instituicao/buscarPolos/${idInstituicao}`)
@@ -93,7 +93,12 @@ async function exibirPolos(){
     let polos = await buscarPolos();
     clearInterval(mensagemPadrao);
 
-    if(polos == 404){
+    if(polos == null){
+        containerHtmlMensagem.innerHTML = `
+            Você não está vinculado a nenhuma instituição!<br>
+            <a href="../cadastroInstituicao.html">Crie ou solicite entrada à uma instituição!</a>
+        `;
+    } else if(polos == 404){
         containerHtmlMensagem.innerHTML = `
             Erro ao buscar polos!
         `;
@@ -277,9 +282,11 @@ async function exibirMembrosInstituicao(){
     for(let i = 0; i < membrosInstituicao.length; i++){
 
         let membro = membrosInstituicao[i];
+        let membroEhAdministrador = membro.administrador.data[0] == 1 ? "Administrador" : "Membro Comum";
+
 
         if(sessionStorage.USUARIO_ADMINISTRADOR == 'true'){
-            console.log("admin")
+            // console.log("admin")
             containerHTML.innerHTML += `
             <div class="item-lista-popup">
                 <div class="item-lista-esquerda">
@@ -290,6 +297,9 @@ async function exibirMembrosInstituicao(){
                         </span>
                         <span class="perfil-usuario-lista">
                         ${membro.tipo}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membroEhAdministrador}
                         </span>
                     </div>
                 </div>
@@ -349,10 +359,6 @@ function removerUsuarioDaInstituicao(){
         valoresSelecionados.push(selecionados[i].value);
     }
 
-    // console.log(valoresSelecionados)
-    
-    mensagemPopup.style.display = "none"
-
     fetch("/instituicao/removerUsuarioDaInstituicao", {
         method: "POST",
         headers: {
@@ -376,6 +382,133 @@ function removerUsuarioDaInstituicao(){
         mensagemPopup.style.color = 'red';
     })
 
+}
+
+function promoverUsuario(){
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(sessionStorage.USUARIO_ADMINISTRADOR == 'false'){
+        mensagemPopup.innerHTML = "Permissão de administrador necessária para essa ação!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    const selecionados = document.querySelectorAll('input[name=checkbox-usuario]:checked');
+
+    if(selecionados.length == 0){
+        mensagemPopup.innerHTML = "Selecione um ou mais usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    
+    let valoresSelecionados = [];
+
+    for(let i = 0; i < selecionados.length; i++){
+        valoresSelecionados.push(selecionados[i].value);
+    }
+
+    fetch("/instituicao/promoverUsuario", {
+        method: "POST", 
+        headers: {
+            "Content-Type":"application/json", 
+        },
+        body: JSON.stringify({
+            idUsuarios: valoresSelecionados,
+        })
+    })
+    .then(function(resposta){
+        if(resposta.status == 200){
+            mensagemPopup.innerHTML = "Usuários promovidos com sucesso!";
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            recarregarPagina();
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao promover usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+    })
+    
+} 
+
+async function buscarSolicitacoesEntrada(){
+
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == null || idInstituicao == undefined){
+        return null;
+    }    
+    
+    let solicitacoes = await fetch(`/instituicao/buscarSolicitacoesEntrada/${idInstituicao}`)
+    .then(function(resposta){
+        if(resposta.status == 200){
+            return resposta.json();
+        } else{
+            return 204;
+        }
+    })
+    .catch(function(erro){
+        return 500;
+    })
+
+    return solicitacoes;
+    
+}
+
+async function exibirSolicitacoesEntrada(){
+
+    let solicitacoes = await buscarSolicitacoesEntrada();
+
+    if(solicitacoes == null){
+        return;
+    }
+
+    let containerHTML = document.getElementById("lista_solicitacoes_entrada");
+    containerHTML.innerHTML = "";
+
+    if(solicitacoes == 500){
+        containerHTML.innerHTML = "<span>Erro ao buscar solicitações de entrada!</span>";
+        return;
+    }
+    else if(solicitacoes == 204){
+        containerHTML.innerHTML = "<span>Nenhuma solicitação de entrada para a instituição!</span>";
+        return;
+    }
+
+    for(let i = 0; i < solicitacoes.length; i++){
+        let solicitacao = solicitacoes[i];
+
+        let cpf = solicitacao.cpf.replace(/\D/g, '') 
+        .replace(/^(\d{3})(\d)/, '$1.$2') 
+        .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') 
+        .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4') 
+        .slice(0, 14);
+
+        containerHTML.innerHTML += `
+            <div class="item-lista-popup">
+                <div class="item-lista-esquerda">
+                    <img src="${solicitacao.foto}" class="foto-usuario-lista">
+                    <div>
+                        <span class="nome-usuario-lista">${solicitacao.nome}</span>
+                        <span class="perfil-usuario-lista">CPF: ${cpf}</span>
+                        <span class="perfil-usuario-lista">Data da Solicitação: ${solicitacao.dataSolicitacao}</span>
+                    </div>
+                </div>
+
+                <div class="item-lista-direita-solicitacoes">
+                    <button class="aceitar" onclick="aceitarSolicitacao(${solicitacao.idUsuario})"><img src="../img/icones/icon_correto.png" alt=""></button>
+                    <button class="recusar" onclick="recusarSolicitacao(${solicitacao})"><img src="../img/icones/icon_x_branco.png" alt=""></button>
+                </div>
+            </div>
+        `;
+    }
+    
+
+    
 }
 
 async function buscarDadosPolo(){
