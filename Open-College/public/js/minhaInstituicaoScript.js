@@ -278,26 +278,46 @@ async function exibirMembrosInstituicao(){
 
         let membro = membrosInstituicao[i];
 
-        containerHTML.innerHTML += `
+        if(sessionStorage.USUARIO_ADMINISTRADOR == 'true'){
+            console.log("admin")
+            containerHTML.innerHTML += `
             <div class="item-lista-popup">
                 <div class="item-lista-esquerda">
                     <img src="${membro.foto}" class="foto-usuario-lista">
                     <div>
                         <span class="nome-usuario-lista">
-                            ${membro.nome}
+                        ${membro.nome}
                         </span>
                         <span class="perfil-usuario-lista">
-                            ${membro.tipo}
+                        ${membro.tipo}
                         </span>
                     </div>
                 </div>
-
+                    
                 <div class="item-lista-direita">
                     <input type="checkbox" name="checkbox-usuario" id="checkbox_usuario_${membro.idUsuario}">
                     <label for="checkbox_usuario_${membro.idUsuario}" class="checkbox-usuario-lista"></label>
                 </div>
             </div>
-        `;
+            `;
+        } else{
+            console.log("nao admin")
+            containerHTML.innerHTML += `
+            <div class="item-lista-popup">
+                <div class="item-lista-esquerda">
+                    <img src="${membro.foto}" class="foto-usuario-lista">
+                    <div>
+                        <span class="nome-usuario-lista">
+                        ${membro.nome}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membro.tipo}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
         
     }
     
