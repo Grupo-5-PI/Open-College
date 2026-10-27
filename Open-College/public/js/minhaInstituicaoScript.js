@@ -230,15 +230,22 @@ async function buscarMembrosInstituicao(){
 
     let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
 
-    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
-
     if(idInstituicao == undefined){
         return;
     }
 
     let membrosInstituicao = await fetch(`/instituicao/buscarMembrosInstituicao/${idInstituicao}`)
     .then(function(resposta){
-        
+        if(resposta.status == 200){
+            console.log(resposta);
+            console.log("funcionou hein");
+            return resposta.json();
+        } else{
+            return 204;
+        }
+    })
+    .catch(function(erro){
+        return 500;
     })
     
 }
