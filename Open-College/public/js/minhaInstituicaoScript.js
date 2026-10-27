@@ -410,7 +410,17 @@ function promoverUsuario(){
         })
     })
     .then(function(resposta){
-        
+        if(resposta.status == 200){
+            mensagemPopup.innerHTML = "Usuários promovidos com sucesso!";
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            recarregarPagina();
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao promover usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
     })
     
 } 
