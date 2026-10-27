@@ -7,6 +7,14 @@ router.post("/cadastrar", function (req, res) {
     instituicaoController.cadastrar(req, res);
 });
 
+router.post("/criarSolicitacaoEntrada", function(req, res){
+    instituicaoController.criarSolicitacaoEntrada(req, res);
+});
+
+router.get("/buscarSolicitacoesEntrada/:idInstituicao", function(req, res){
+    instituicaoController.buscarSolicitacoesEntrada(req, res);
+});
+
 router.get("/listarTodas", function (req, res) {
     instituicaoController.listarTodas(req, res);
 });
@@ -33,6 +41,10 @@ router.get("/buscarMembrosInstituicao/:idInstituicao", function(req, res){
 
 router.post("/removerUsuarioDaInstituicao", function(req, res){
     instituicaoController.removerUsuarioDaInstituicao(req, res);
+});
+
+router.post("/promoverUsuario", function(req, res){
+    instituicaoController.promoverUsuario(req, res);
 });
 
 router.get("/buscarDadosPolo/:parametros", function(req, res){

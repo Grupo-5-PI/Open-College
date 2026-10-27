@@ -149,6 +149,11 @@ main header button:hover{
     justify-self: center;
 }
 
+.sessao-polos-mensagem a{
+    text-decoration: none; 
+    color: var(--cor1);
+}
+
 .item-sessao-polos{
     font-family: 'Bebas Neue';
     border-radius: 15px;
@@ -463,4 +468,32 @@ main header button:hover{
 
 input[type="checkbox"]:checked + .checkbox-usuario-lista{
     background-color: var(--cor9);
+}
+
+.item-lista-direita-solicitacoes{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.item-lista-direita-solicitacoes button{
+    /* border: 1px solid red; */
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button.aceitar{
+    background-color: green;
+}
+
+button.recusar{
+    background-color: red;
+}
+
+.item-lista-direita-solicitacoes button img{
+    width: 30px;
 }

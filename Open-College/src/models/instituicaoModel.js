@@ -27,6 +27,41 @@ function cadastrar(nome, cnpj) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
+function criarSolicitacaoEntrada(idUsuario, idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO criarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        INSERT INTO tblSolicitacaoEntrada (idUsuario, idInstituicao) VALUES (${idUsuario}, ${idInstituicao});
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function buscarSolicitacoesEntrada(idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarSolicitacoesEntrada");
+
+    var instrucaoSql = `
+        SELECT 
+        se.idUsuario, 
+        usu.nome nome, 
+        usu.cpf cpf, 
+        usu.foto foto, 
+        CONCAT(DAY(se.dataSolicitacao),'/',MONTH(se.dataSolicitacao),'/',YEAR(se.dataSolicitacao)) AS dataSolicitacao 
+        FROM tblSolicitacaoEntrada se 
+        JOIN tblUsuario usu ON usu.idUsuario = se.idUsuario 
+        WHERE se.idInstituicao = ${idInstituicao} AND se.solicitacaoAceita = 0; 
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function vincularUsuario(idUsuario, idInstituicao){
     var instrucaoSql = `
        UPDATE tblUsuario set idInstituicao = ${idInstituicao} WHERE idUsuario = ${idUsuario};
@@ -96,7 +131,7 @@ function buscarMembrosInstituicao(idInstituicao){
     console.log("FUNÇÃO buscarMembrosInstituicao");
 
     var instrucaoSql = `
-        SELECT * FROM tblUsuario WHERE idInstituicao = ${idInstituicao};
+        SELECT * FROM tblUsuario WHERE idInstituicao = ${idInstituicao} ORDER BY administrador DESC, nome ASC;
     `;
 
     return database.executar(instrucaoSql);
@@ -110,6 +145,19 @@ function removerUsuarioDaInstituicao(idUsuario){
 
     var instrucaoSql = `
         UPDATE tblUsuario SET idInstituicao = null WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function promoverUsuario(idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO promoverUsuario");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET administrador = 1 WHERE idUsuario = ${idUsuario};
     `;
 
     return database.executar(instrucaoSql);
@@ -334,6 +382,8 @@ module.exports = {
     buscarPorCnpj,
     listarTodas,
     cadastrar,
+    criarSolicitacaoEntrada,
+    buscarSolicitacoesEntrada,
     vincularUsuario,
     buscarPorIdUsuario,
     buscarPolos,
@@ -341,6 +391,7 @@ module.exports = {
     adicionarPolo,
     buscarMembrosInstituicao,
     removerUsuarioDaInstituicao,
+    promoverUsuario,
     buscarDadosPolo,
     editarPolo,
     excluirCursosPolo,
