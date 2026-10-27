@@ -1,3 +1,4 @@
+const { criarSolicitacaoEntrada } = require("../controllers/instituicaoController");
 var database = require("../database/config")
 
 function buscarPorCnpj(cnpj) {
@@ -27,6 +28,20 @@ function cadastrar(nome, cnpj) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
+function criarSolicitacaoEntrada(idUsuario, idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO editarCurso");
+
+    var instrucaoSql = `
+        INSERT INTO tblSolicitacaoEntrada (idUsuario, idInstituicao) VALUES (${idUsuario}, ${idInstituicao});
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function vincularUsuario(idUsuario, idInstituicao){
     var instrucaoSql = `
        UPDATE tblUsuario set idInstituicao = ${idInstituicao} WHERE idUsuario = ${idUsuario};
@@ -347,6 +362,7 @@ module.exports = {
     buscarPorCnpj,
     listarTodas,
     cadastrar,
+    criarSolicitacaoEntrada,
     vincularUsuario,
     buscarPorIdUsuario,
     buscarPolos,
