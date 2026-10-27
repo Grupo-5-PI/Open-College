@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Demanda </title>
+    <link rel="stylesheet" href="../style/global.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+    <link rel="stylesheet" href="../style/menuLateral.css">
+    <link rel="icon" href="../img/logo/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="../js/sessao.js"></script>
+</head>
+
+<!-- onload="validarSessao()" -->
+<body>
+    <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <a href="" class="perfil-link">
+                <div class="foto-wrapper">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
+                </div>
+                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+            </a>
+        </header>
+    </nav>
+    <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <span class="logo">
+                <img src="../img/logo/logo.png" alt="">
+            </span>
+        </header>
+        <nav class="content">
+            <ul id="nav-item">
+                <li class="nav-item active">
+                    <a href="dashGeral.html">
+                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="painelAtualizacao.html">
+                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                            class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Painel de Atualização
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha Instituição
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="EditarPerfil.html">
+                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha conta
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sair">
+            <div class="btn-sair">
+                <button onclick="limparSessao()">
+                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="painel-fundo">
+            <header class="header-dash">
+                <a href="dashGeral.html" class="buttons-header">Geral</a>
+                <a href="dashPerfil.html" class="buttons-header">Perfil</a>
+                <a href="dashDemanda.html" class="buttons-header active">Demanda</a>
+                <a href="dashRegiao.html" class="buttons-header">Região</a>
+                <a href="dashTendencia.html" class="buttons-header">Tendência</a>
+                <a href="dashPersonalizada.html" class="buttons-header btn-add">+</a>
+
+                <nav class="nav-dash">
+                    <p>Dashboard - Visão Geral (ANO)</p>
+                    <select class="filtro-ano">
+                        <option>2025</option>
+                        <option>2024</option>
+                        <option>2023</option>
+                        <option>2022</option>
+                        <option>2021</option>
+                        <option>2022</option>
+                        <option>2020</option>
+                        <option>2019</option>
+                    </select>
+                </nav>
+            </header>
+
+            <section class="grid-cards-demanda">
+                <div class="card-kpi-demanda">
+                     <div class="card-kpi">
+                        <span class="card-titulo">Cursos Mais Procurados</span>
+                        <strong class="card-valor">Culinária</strong>
+                        <strong class="card-valor">Psicologia</strong>
+                        <strong class="card-valor">Medicina</strong>
+                        <strong class="card-valor">ADS</strong>
+                        <strong class="card-valor">Computação</strong>
+                        <span class="card-rodape">No ano de ANO</span>
+                    </div>
+                </div>
+
+                <div class="card-kpi-demanda">
+                    <div class="card-kpi">
+                        <span class="card-titulo">Cursos Menos Procurados</span>
+                        <strong class="card-valor">História</strong>
+                        <strong class="card-valor">Letras</strong>
+                        <strong class="card-valor">Matemática</strong>
+                        <strong class="card-valor">Fisíca</strong>
+                        <strong class="card-valor">Literatura</strong>
+                        <span class="card-rodape">No ano de ANO</span>
+                    </div>
+                </div>
+
+                <div class="card-kpi-demanda">
+                    <div class="card-kpi">
+                        <span class="card-titulo">Taxa de Ocupação</span>
+                        <strong class="card-valor">((Vagas/matriculas) * 100)</strong>
+                        <span class="card-rodape">No ano de ANO</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="container-graficos-demanda">
+                <div class="grafico-demanda">
+                    <canvas id="grafico-matriculas-por-area"></canvas>
+                </div>
+                <div class="grafico-demanda">
+                    <canvas id="grafico-taxa-ocupacao"></canvas>
+                </div>
+                <div class="grafico-demanda">
+                    <canvas id="grafico-periodo-mais-procurado"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="footer">
+        <p>COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.</p>
+    </div>
+</body>
+
+</html>
+<script>
+    
+
+    let foto = sessionStorage.FOTO_USUARIO;
+    imgUsuario.src = `${foto}`
+
+    Chart.register(ChartDataLabels);
+
+    let tituloDash = document.querySelector('.nav-dash p')
+    let filtroAno = document.querySelector('.filtro-ano')
+    let cardKPI = document.querySelectorAll('.card-rodape')
+
+    function atualizarAno() {
+        let anoSelecionado = filtroAno.value;
+        tituloDash.textContent = `Dashboard - Demanda (${anoSelecionado})`
+
+        for (let i = 0; i < cardKPI.length; i++) {
+            cardKPI[i].textContent = `No ano de ${anoSelecionado}`;
+        }
+    }
+
+    filtroAno.addEventListener('change', atualizarAno)
+
+    atualizarAno();
+
+    function carregarGraficoMatriculasPorArea() {
+        let areaMatricula = document.getElementById('grafico-matriculas-por-area');
+
+        new Chart(areaMatricula, {
+            type: 'bar',
+            data: {
+                labels: ['Medicina', 'Direito', 'Pedagogia', 'Administração'],
+                datasets: [{
+                    data: [55, 25, 15, 5],
+                    backgroundColor: ['#4a7ff7', '#ae8df5', '#f3b86b', '#3cc027'],
+                    borderWidth: 0,
+                    borderRadius: 3,
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        right: 50
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Matrículas Dos Cursos Por Área',
+                        color: '#ffffff',
+                        align: 'center',
+                        font: {
+                            size: 23,
+                            family: 'Telegraf',
+                            weight: 'bold'
+                        },
+                    },
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        color: '#ffffff',
+                        anchor: 'end',
+                        align: 'end',
+                        font: {
+                            size: 15,
+                            weight: 'bold',
+                            family: 'Telegraf'
+                        },
+                        formatter: (valor) => `${valor}%`
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                family: 'Telegraf'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.15)'
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        afterFit: (scale) => {
+                            scale.width = 120;
+                        },
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 14,
+                                family: 'Telegraf',
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+   
+
+    function carregarGraficoTaxaOcupacao() {
+        let taxaOcupacao = document.getElementById('grafico-taxa-ocupacao');
+
+        new Chart(taxaOcupacao, {
+            type: 'bar',
+            data: {
+                labels: ['MEDICINA', 'DIREITO', 'TI', 'PEDAGOGIA'],
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Meta Mínima',
+                        data: [80, 80, 80, 80],
+                        borderColor: '#ff5555',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                        datalabels: {
+                            display: false
+                        }
+                    },
+                    {
+                        data: [90, 55, 60, 75],
+                        backgroundColor: '#3cc027',
+                        borderWidth: 0,
+                        borderRadius: 3,
+                        categoryPercentage: 0.9,
+                        barPercentage: 0.9
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Taxa De Ocupação Por Área',
+                        color: '#ffffff',
+                        font: {
+                            size: 23,
+                            family: 'Telegraf',
+                            weight: 'bold'
+                        }
+                    },
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        color: '#ffffff',
+                        font: {
+                            weight: 'bold',
+                            size: 15
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                family: 'Telegraf',
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                family: 'Telegraf'
+                            },
+                            stepSize: 20
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.15)'
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    function carregarGraficoPeriodoProcurado() {
+        let periodoMaisPeriodo = document.getElementById('grafico-periodo-mais-procurado');
+
+        new Chart(periodoMaisPeriodo, {
+            type: 'bar',
+            data: {
+                labels: ['2020', '2021', '2022', '2023', '2024'],
+                datasets: [
+                    {
+                        label: 'Matutino',
+                        data: [120, 165, 140, 210, 195],
+                        backgroundColor: '#4a7ff7',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Vespertino',
+                        data: [100, 120, 140, 160, 170],
+                        backgroundColor: '#ae8df5',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Noturno',
+                        data: [80, 120, 100, 110, 130],
+                        backgroundColor: '#f3b86b',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Integral',
+                        data: [60, 70, 80, 90, 100],
+                        backgroundColor: '#3cc027',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Período Mais Procurada Por Curso',
+                        color: '#ffffff',
+                        font: {
+                            size: 23,
+                            family: 'Telegraf',
+                            weight: 'bold'
+                        },
+
+                    },
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#ffffff',
+                            boxWidth: 14,
+                            boxHeight: 14,
+                            font: {
+                                size: 13,
+                                family: 'Telegraf',
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                   datalabels: {
+                        anchor: 'center',
+                        align: 'center',
+                        color: '#ffffff',
+                        font: {
+                            weight: 'bold',
+                            size: 15
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 13,
+                                family: 'Telegraf',
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                family: 'Telegraf'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.15)'
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    carregarGraficoMatriculasPorArea();
+    carregarGraficoTaxaOcupacao();
+    carregarGraficoPeriodoProcurado();
+</script>

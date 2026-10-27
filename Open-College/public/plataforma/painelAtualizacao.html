@@ -461,4 +461,22 @@
     </main>
 
 </body>
+
+<script>
+
+    let foto = sessionStorage.FOTO_USUARIO;
+    imgUsuario.src = `${foto}`
+
+    const popup = document.getElementById('popup');
+    const btnAbrir = document.getElementById('btn-popup');
+    const btnFechar = document.getElementById('btn-fechar');
+
+    btnAbrir.addEventListener('click', () => popup.showModal());
+    btnFechar.addEventListener('click', () => popup.close());
+
+    // fecha ao clicar fora (no fundo escuro)
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) popup.close();
+    });
+</script>
 </html>

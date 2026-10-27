@@ -88,11 +88,337 @@ function cadastrar(req, res) {
         }
     }
 
-                
+    function buscarPorIdUsuario(req, res){
+
+        let idUsuario = req.params.idUsuario;
+
+        if(idUsuario == undefined){
+            res.status(400).send("ID Usuário está undefined!");
+        } else{
+
+            instituicaoModel.buscarPorIdUsuario(idUsuario)
+            .then(function (resposta){
+
+                if(resposta.length > 0){
+                    res.json(resposta[0]);    
+                } else{
+                    res.status(404).send("Instituição não encontrada!");
+                }
+
+            })
+            .catch(function(erro){
+                console.log(erro);
+                // console.log("\nHouve um erro ao buscar a instituição! Erro: ", erro.sqlMessage);
+                // res.status(500).erro.sqlMessage;
+            })
+
+        }
+
+    }
+
+    function buscarPolos(req, res){
+
+        let idInstituicao = req.params.idInstituicao;
+
+        instituicaoModel.buscarPolos(idInstituicao)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                // res.json(resposta);
+                res.status(200).json(resposta);
+            } else{
+                res.status(204).send();
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+
+    }
+
+    async function adicionarPolo(req, res){
+
+        let logradouro = req.body.logradouroServer;
+        let numero = req.body.numeroServer;
+        let bairro = req.body.bairroServer;
+        let municipio = req.body.municipioServer;
+        let uf = req.body.ufServer;
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = (await instituicaoModel.buscarIdParaAdicionarPolo(idInstituicao))[0]?.ultimoId + 1;
+        
+        if(isNaN(idPolo) || idPolo == undefined){
+            idPolo = 1;
+        }
+        
+        console.log("idPolo: ", idPolo);
+            
+        instituicaoModel.adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo)
+        .then(function(resposta){
+            res.status(201);
+            res.json(resposta);
+            // res.body(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            // console.log("\nHouve um erro ao adicionar o polo! Erro : ", erro.sqlMessage);
+            // res.status(500).erro.sqlMessage;
+        })
+            
+    }
+
+    function buscarDadosPolo(req, res){
+
+        let dadosPolo = JSON.parse(req.params.parametros);
+        
+        let idInstituicao = dadosPolo.idInstituicaoParam;
+        let idPolo = dadosPolo.idPoloParam;
+
+        instituicaoModel.buscarDadosPolo(idInstituicao, idPolo)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                console.log(resposta);
+                res.status(200).json(resposta[0]);
+            } else{
+                res.status(404).send("Polo não encontrado!");
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
                         
+    function editarPolo(req, res){
+
+        let logradouro = req.body.logradouroServer;
+        let numero = req.body.numeroServer;
+        let bairro = req.body.bairroServer;
+        let municipio = req.body.municipioServer;
+        let uf = req.body.ufServer;
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+
+        instituicaoModel.editarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao, idPolo)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+
+    }
+
+    function excluirPolo(req, res){
+
+        let dadosPolo = JSON.parse(req.params.parametros);
+
+        let idInstituicao = dadosPolo.idInstituicaoParam;
+        let idPolo = dadosPolo.idPoloParam;
+
+        instituicaoModel.excluirCursosPolo(idInstituicao, idPolo)
+        .then(function(resposta){
+            console.log(resposta);
+
+            instituicaoModel.excluirPolo(idInstituicao, idPolo)
+            .then(function(resposta){
+                console.log(resposta);
+                res.status(204).send();
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).json(erro);
+            })
+
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+
+        // instituicaoModel.excluirPolo(idInstituicao, idPolo)
+        // .then(function(resposta){
+        //     console.log(resposta);
+        //     res.status(204).send();
+        // })
+        // .catch(function(erro){
+        //     console.log(erro);
+        //     res.status(500).json(erro);
+        // })
+        
+    }
+
+    function buscarCursos(req, res){
+
+        let dadosPolo = JSON.parse(req.params.parametros);
+
+        let idInstituicao = dadosPolo.idInstituicaoParam;
+        let idPolo = dadosPolo.idPoloParam;
+
+        instituicaoModel.buscarCursos(idInstituicao, idPolo)
+        .then(function(resposta){
+            
+            if(resposta.length > 0){
+                res.status(200).json(resposta);
+            } else{
+                res.status(204).send();
+            }
+            
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    async function adicionarCurso(req, res){
+        
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let turno = req.body.turnoServer;
+        let modalidade = req.body.modalidadeServer;
+        let idInstituicaoPoloCurso = (await instituicaoModel.buscarIdParaAdicionarCurso(idInstituicao, idPolo))[0]?.ultimoId + 1;
+
+        if(isNaN(idInstituicaoPoloCurso) || idInstituicaoPoloCurso == undefined){
+            idInstituicaoPoloCurso = 1;
+        }
+        
+        instituicaoModel.adicionarCurso(idInstituicaoPoloCurso, idInstituicao, idPolo, idCurso, turno, modalidade)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(201).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    function buscarDadosCurso(req, res){
+
+        let dadosCurso = JSON.parse(req.params.parametros);
+
+        let idInstituicao = dadosCurso.idInstituicaoParam;
+        let idPolo = dadosCurso.idPoloParam;
+        let idCurso = dadosCurso.idCursoParam;
+
+        instituicaoModel.buscarDadosCurso(idInstituicao, idPolo, idCurso)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                console.log(resposta);
+                res.status(200).json(resposta[0]);
+            } else{
+                console.log(resposta);
+                res.status(404).send("Polo não encontrado!");
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    function editarCurso(req, res){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let turno = req.body.turnoServer;
+        let modalidade = req.body.modalidadeServer;
+
+        instituicaoModel.editarCurso(idInstituicao, idPolo, idCurso, turno, modalidade)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    function atualizarEstatisticasCurso(req, res){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let vagas = req.body.vagasServer;
+        let matriculas = req.body.matriculasServer;
+
+        instituicaoModel.atualizarEstatisticasCurso(idInstituicao, idPolo, idCurso, vagas, matriculas)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    function atualizarMetasCurso(req, res){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idPolo = req.body.idPoloServer;
+        let idCurso = req.body.idCursoServer;
+        let matriculas = req.body.matriculasServer;
+        let dataMeta = req.body.dataMetaServer;
+
+        instituicaoModel.atualizarMetasCurso(idInstituicao, idPolo, idCurso, matriculas, dataMeta)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    function excluirCurso(req, res){
+
+        let dadosCurso = JSON.parse(req.params.parametros);
+
+        let idInstituicao = dadosCurso.idInstituicaoParam;
+        let idPolo = dadosCurso.idPoloParam;
+        let idCurso = dadosCurso.idCursoParam;
+
+        instituicaoModel.excluirCurso(idInstituicao, idPolo, idCurso)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(204).send();
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        });
+        
+    }
+    
 module.exports = {
     cadastrar,
     listarTodas,
-    buscarPorCnpj
-   
+    buscarPorCnpj,
+    buscarPorIdUsuario,
+    buscarPolos,
+    adicionarPolo,
+    buscarDadosPolo,
+    editarPolo,
+    excluirPolo,
+    buscarCursos,
+    adicionarCurso,
+    buscarDadosCurso,
+    editarCurso,
+    atualizarEstatisticasCurso,
+    atualizarMetasCurso,
+    excluirCurso,
 };

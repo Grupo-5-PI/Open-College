@@ -4,39 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Instituição - Polo</title>
+    <link rel="icon" href="../img/logo/logo.png">
     <link rel="stylesheet" href="../style/global.css">
     <!-- <link rel="stylesheet" href="../style/plataforma_global_style.css"> -->
+     <link rel="stylesheet" href="../style/menuLateral.css">
     <link rel="stylesheet" href="../style/minha_instituicao_style.css">
 </head>
 <body>
+        <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <a href="" class="perfil-link">
+                <div class="foto-wrapper">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
+                </div>
+                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+            </a>
+        </header>
+        <nav class="content">
+            <ul id="nav-item">
+                <li class="nav-item active">
+                    <a href="dashGeral.html">
+                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="painelAtualizacao.html">
+                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                            class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Painel de Atualização
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha Instituição
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="EditarPerfil.html">
+                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha conta
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sair">
+            <div class="btn-sair">
+                <button onclick="limparSessao()">
+                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </nav>
     
     <main>
         <header>
             <div class="header-esquerda">
-                <span>Polo Município 1</span>
+                <span id="polo_header">Polo Município 1</span>
             </div>
             <div class="header-direita">
-                <button>Adicionar Curso</button>
-                <button>Editar Polo</button>
+                <button onclick="abrirFecharPopup('popup_adicionar_curso')">Adicionar Curso</button>
+                <button onclick="abrirFecharPopup('popup_editar_polo')">Editar Polo</button>
+                <button onclick="abrirFecharPopup('popup_dados_polo')">Dados do Polo</button>
             </div>
         </header>
         
         <div class="main-conteudo">
 
             <div class="sessao-filtros">
-                <select name="filtro-cursos-area" id="filtro-cursos-area" class="selecao-filtro">
+                <select name="filtro-cursos-area" id="filtro_cursos_area" class="selecao-filtro">
                     <option value="0" selected disabled>Área</option>
                 </select>
 
-                <select name="filtro-cursos-curso" id="filtro_cursos-curso" class="selecao-filtro">
+                <select name="filtro-cursos-curso" id="filtro_cursos_curso" class="selecao-filtro">
                     <option value="0" selected disabled>Curso</option>
                 </select>
 
-                <select name="filtro-cursos-modalidade" id="filtro_cursos-modalidade" class="selecao-filtro">
+                <select name="filtro-cursos-modalidade" id="filtro_cursos_modalidade" class="selecao-filtro">
                     <option value="0" selected disabled>Modalidade</option>
                 </select>
 
-                <select name="filtro-cursos-turno" id="filtro_cursos-turno" class="selecao-filtro">
+                <select name="filtro-cursos-turno" id="filtro_cursos_turno" class="selecao-filtro">
                     <option value="0" selected disabled>Turno</option>
                 </select>
 
@@ -47,9 +109,11 @@
             
             <div class="sessao-polos">
 
-                <div class="item-sessao-polos">
+                <span class="sessao-polos-mensagem">Buscando cursos do polo.</span>
+                
+                <!-- <a href="./minha_instituicao_curso.html" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
-                        <a href="./minha_instituicao_curso.html" class="nome-polo">Curso 1</a>
+                        <div class="nome-polo">Curso 1</div>
                         
                         <div class="endereco-polo">
                             <span>Área</span>
@@ -57,11 +121,11 @@
                             <span>Turno | Modalidade</span>
                         </div>
                     </div>
-                </div>
+                </a>
 
-                <div class="item-sessao-polos">
+                <a href="./minha_instituicao_curso.html" class="item-sessao-polos">
                     <div class="item-sessao-polos-esquerda">
-                        <a href="./minha_instituicao_curso.html" class="nome-polo">Curso 2</a>
+                        <div class="nome-polo">Curso 2</div>
                         
                         <div class="endereco-polo">
                             <span>Área</span>
@@ -69,12 +133,199 @@
                             <span>Turno | Modalidade</span>
                         </div>
                     </div>
-                </div>
+                </a>
 
-            </div>
+            </div> -->
             
         </div>
     </main>
 
+    <div class="container-popup" id="popup_adicionar_curso">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_adicionar_curso')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_adicionar_curso')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Adicionar Curso</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <!-- <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 100%">
+                        <label for="area_geral">ÁREA GERAL: </label>
+                        <select name="area_geral" id="select_area_geral_curso">
+                            <option value="0" selected></option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 100%">
+                        <label for="curso">CURSO: </label>
+                        <select name="curso" id="select_curso_curso">
+                            <option value="1">Análise e Desenvolvimento de Sistemas</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 50%;">
+                        <label for="turno">TURNO: </label>
+                        <select name="turno" id="select_turno_curso">
+                            <option value="Noturno" selected>Noturno</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-popup" style="width: 50%">
+                        <label for="modalidade">MODALIDADE: </label><br>
+                        <select name="modalidade" id="select_modalidade_curso">
+                            <option value="Presencial">Presencial</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button onclick="adicionarCurso()">
+                    ADICIONAR
+                </button>
+            </div>
+
+            <span class="popup-mensagem"></span>
+            
+        </div>
+    </div>
+
+    <div class="container-popup" id="popup_editar_polo">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_editar_polo')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_editar_polo')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Editar Polo</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 70%">
+                        <label for="logradouro">LOGRADOURO: </label>
+                        <input type="text" name="logradouro" id="input_logradouro_editar_polo">
+                    </div>
+                    
+                    <div class="input-popup" style="width: 30%">
+                        <label for="numero">NÚMERO: </label>
+                        <input type="text" name="numero" id="input_numero_editar_polo">
+                    </div>
+                </div>
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 35%;">
+                        <label for="bairro">BAIRRO: </label>
+                        <input type="text" name="bairro" id="input_bairro_editar_polo">
+                    </div>
+                    
+                    <div class="input-popup" style="width: 55%">
+                        <label for="municipio">MUNICÍPIO: </label><br>
+                        <select name="municipio" id="select_municipio_editar_polo">
+                            <option value="Senador Firmino">Senador Firmino</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-popup" style="width: 10%">
+                        <label for="uf">UF: </label><br>
+                        <select name="uf" id="select_uf_editar_polo">
+                            <option value="MG">MG</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button onclick="editarPolo()">
+                    SALVAR
+                </button>
+            
+                <button class="botao-excluir" onclick="excluirPolo()">
+                    EXCLUIR
+                </button>
+            </div>
+
+            <span class="popup-mensagem"></span>
+            
+        </div>
+    </div>
+
+    <div class="container-popup" id="popup_dados_polo">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_dados_polo')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_dados_polo')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Dados do Polo</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup-travado" style="width: 70%">
+                        <label for="logradouro">LOGRADOURO: </label>
+                        <input disabled type="text" name="logradouro" id="input_logradouro_dados_polo">
+                    </div>
+                    
+                    <div class="input-popup-travado" style="width: 30%">
+                        <label for="numero">NÚMERO: </label>
+                        <input disabled type="text" name="numero" id="input_numero_dados_polo">
+                    </div>
+                </div>
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup-travado" style="width: 35%;">
+                        <label for="bairro">BAIRRO: </label>
+                        <input disabled type="text" name="bairro" id="input_bairro_dados_polo">
+                    </div>
+                    
+                    <div class="input-popup-travado" style="width: 55%">
+                        <label for="municipio">MUNICÍPIO: </label><br>
+                        <input disabled name="municipio" id="input_municipio_dados_polo">
+                    </div>
+                    
+                    <div class="input-popup-travado" style="width: 10%">
+                        <label for="uf">UF: </label><br>
+                        <input disabled name="uf" id="input_uf_dados_polo">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- <div class="popup-interacao-botoes">
+                <button onclick="editarPolo()">
+                    SALVAR
+                </button>
+            
+                <button class="botao-excluir">
+                    EXCLUIR
+                </button>
+            </div> -->
+
+            <span class="popup-mensagem"></span>
+            
+        </div>
+    </div>
+
 </body>
 </html>
+<script>
+    let foto = sessionStorage.FOTO_USUARIO;
+    imgUsuario.src = `${foto}`
+</script>
+
+<script src="../js/minhaInstituicaoScript.js"></script>
+
+<script>
+    window.onload = exibirDadosPolo();
+    window.onload = exibirCursos();
+</script>
