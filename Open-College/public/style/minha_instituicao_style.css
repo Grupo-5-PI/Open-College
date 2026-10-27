@@ -376,6 +376,23 @@ main header button:hover{
     height: 60vh;
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    background-color: var(--corNavBar);
+    padding-right: 5px;
+    overflow-y: auto;
+}
+
+.lista-popup::-webkit-scrollbar{
+    width: 4px;
+}
+
+.lista-popup::-webkit-scrollbar-track{
+    background: rgba(0,0,0,0);
+}
+
+.lista-popup::-webkit-scrollbar-thumb{
+    background: var(--cor1);
+    border-radius: 15px;
 }
 
 .item-lista-popup{
