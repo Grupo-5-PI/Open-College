@@ -96,7 +96,7 @@ function buscarMembrosInstituicao(idInstituicao){
     console.log("FUNÇÃO buscarMembrosInstituicao");
 
     var instrucaoSql = `
-        SELECT * FROM tblUsuario WHERE idInstituicao = ${idInstituicao};
+        SELECT * FROM tblUsuario WHERE idInstituicao = ${idInstituicao} ORDER BY administrador DESC, nome ASC;
     `;
 
     return database.executar(instrucaoSql);
