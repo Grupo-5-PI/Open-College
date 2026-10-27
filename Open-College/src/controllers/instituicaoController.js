@@ -89,6 +89,23 @@ function cadastrar(req, res) {
         }
     }
 
+    function criarSolicitacaoEntrada(req, res){
+
+        let idUsuario = req.body.idUsuarioServer;
+        let idInstituicao = req.body.idInstituicaoServer;
+
+        instituicaoModel.criarSolicitacaoEntrada(idUsuario, idInstituicao)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).send(erro);
+        })
+
+    }
+
     function buscarPorIdUsuario(req, res){
 
         let idUsuario = req.params.idUsuario;
@@ -490,6 +507,7 @@ module.exports = {
     cadastrar,
     listarTodas,
     buscarPorCnpj,
+    criarSolicitacaoEntrada,
     buscarPorIdUsuario,
     buscarPolos,
     adicionarPolo,
