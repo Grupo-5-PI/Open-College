@@ -349,10 +349,6 @@ function removerUsuarioDaInstituicao(){
         valoresSelecionados.push(selecionados[i].value);
     }
 
-    // console.log(valoresSelecionados)
-    
-    mensagemPopup.style.display = "none"
-
     fetch("/instituicao/removerUsuarioDaInstituicao", {
         method: "POST",
         headers: {
@@ -377,6 +373,47 @@ function removerUsuarioDaInstituicao(){
     })
 
 }
+
+function promoverUsuario(){
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(sessionStorage.USUARIO_ADMINISTRADOR == 'false'){
+        mensagemPopup.innerHTML = "Permissão de administrador necessária para essa ação!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    const selecionados = document.querySelectorAll('input[name=checkbox-usuario]:checked');
+
+    if(selecionados.length == 0){
+        mensagemPopup.innerHTML = "Selecione um ou mais usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    
+    let valoresSelecionados = [];
+
+    for(let i = 0; i < selecionados.length; i++){
+        valoresSelecionados.push(selecionados[i].value);
+    }
+
+    fetch("/instituicao/promoverUsuario", {
+        method: "POST", 
+        headers: {
+            "Content-Type":"application/json", 
+        },
+        body: JSON.stringify({
+            idUsuarios: valoresSelecionados,
+        })
+    })
+    .then(function(resposta){
+        
+    })
+    
+} 
 
 async function buscarDadosPolo(){
 
