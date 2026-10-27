@@ -166,6 +166,26 @@ function cadastrar(req, res) {
             
     }
 
+    function buscarMembrosInstituicao(req, res){
+
+        let idInstituicao = req.params.idInstituicao;
+
+        instituicaoModel.buscarMembrosInstituicao(idInstituicao)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                console.log(resposta);
+                res.status(200).json(resposta);
+            } else{
+                res.status(204).send("Nenhum membro na instituição!");
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
     function buscarDadosPolo(req, res){
 
         let dadosPolo = JSON.parse(req.params.parametros);
@@ -411,6 +431,7 @@ module.exports = {
     buscarPorIdUsuario,
     buscarPolos,
     adicionarPolo,
+    buscarMembrosInstituicao,
     buscarDadosPolo,
     editarPolo,
     excluirPolo,
