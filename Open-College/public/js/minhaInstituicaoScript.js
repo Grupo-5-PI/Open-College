@@ -277,9 +277,11 @@ async function exibirMembrosInstituicao(){
     for(let i = 0; i < membrosInstituicao.length; i++){
 
         let membro = membrosInstituicao[i];
+        let membroEhAdministrador = membro.administrador.data[0] == 1 ? "Administrador" : "Membro Comum";
+
 
         if(sessionStorage.USUARIO_ADMINISTRADOR == 'true'){
-            console.log("admin")
+            // console.log("admin")
             containerHTML.innerHTML += `
             <div class="item-lista-popup">
                 <div class="item-lista-esquerda">
@@ -290,6 +292,9 @@ async function exibirMembrosInstituicao(){
                         </span>
                         <span class="perfil-usuario-lista">
                         ${membro.tipo}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membroEhAdministrador}
                         </span>
                     </div>
                 </div>
