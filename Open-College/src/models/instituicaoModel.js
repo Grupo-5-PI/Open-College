@@ -90,6 +90,19 @@ function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao,
 
 }
 
+function buscarMembrosInstituicao(idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarMembrosInstituicao");
+
+    var instrucaoSql = `
+        SELECT * FROM tblUsuario WHERE idInstituicao = ${idInstituicao};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function buscarDadosPolo(idInstituicao, idPolo){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -313,6 +326,7 @@ module.exports = {
     buscarPolos,
     buscarIdParaAdicionarPolo,
     adicionarPolo,
+    buscarMembrosInstituicao,
     buscarDadosPolo,
     editarPolo,
     excluirCursosPolo,
