@@ -15,6 +15,7 @@
 </head>
 
 <!-- onload="validarSessao()" -->
+
 <body>
     <nav class="menu-lateral">
         <header class="menu-lateral-logo">
@@ -22,7 +23,7 @@
                 <div class="foto-wrapper">
                     <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
                 </div>
-                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+                <span class="nome-usuario" id="b_usuario">Carregando...</span>
             </a>
         </header>
         <nav class="content">
@@ -168,7 +169,7 @@
 
 </html>
 <script>
-    
+
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
 
@@ -285,94 +286,100 @@
     carregarGraficoMaisProcurado();
 
     function carregarGraficoAreaGeralMatricula() {
-        let areaGeral = document.getElementById('grafico-area-geral-matricula');
+    let areaGeral = document.getElementById('grafico-area-geral-matricula');
 
-        new Chart(areaGeral, {
-            type: 'bar',
-            data: {
-                labels: ['MEDICINA', 'DIREITO', 'TI', 'PEDAGOGIA'],
-                datasets: [
-                    {
-                        type: 'line',
-                        label: 'Meta Mínima',
-                        data: [80, 80, 80, 80],
-                        borderColor: '#ff5555',
-                        borderWidth: 2,
-                        pointRadius: 0,
-                        fill: false,
-                        datalabels: {
-                            display: false
-                        }
-                    },
-                    {
-                        data: [100, 55, 60, 75],
-                        backgroundColor: '#3cc027',
-                        borderWidth: 0,
-                        borderRadius: 3,
-                        categoryPercentage: 0.9,
-                        barPercentage: 0.9
+    new Chart(areaGeral, {
+        type: 'bar',
+        data: {
+            labels: ['MEDICINA', 'DIREITO', 'TI', 'PEDAGOGIA'],
+            datasets: [
+                {
+                    type: 'line',
+                    label: 'Meta Mínima',
+                    data: [80, 80, 80, 80],
+                    borderColor: '#ff5555',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false,
+                    datalabels: {
+                        display: false 
                     }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Área geral Por Matrículas',
+                },
+                {
+                    data: [95, 55, 60, 75],
+                    backgroundColor: '#3cc027',
+                    borderWidth: 0,
+                    borderRadius: 3,
+                    categoryPercentage: 0.9,
+                    barPercentage: 0.9
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Área geral Por Matrículas',
+                    color: '#ffffff',
+                    font: {
+                        size: 23,
+                        family: 'Telegraf',
+                        weight: 'bold'
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                datalabels: {
+                        anchor: 'end',
+                        align: 'top',
                         color: '#ffffff',
                         font: {
-                            size: 23,
+                            weight: 'bold',
+                            size: 15
+                        }
+                }
+            }, 
+            scales: {
+                x: {
+                    ticks: {
+                        color: '#ffffff',
+                        font: {
+                            size: 12,
                             family: 'Telegraf',
                             weight: 'bold'
                         }
                     },
-                    legend: {
+                    grid: {
                         display: false
                     },
-                    datalabels: {
+                    border: {
                         display: false
                     }
                 },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: '#ffffff',
-                            font: {
-                                size: 12,
-                                family: 'Telegraf',
-                                weight: 'bold'
-                            }
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#ffffff',
+                        font: {
+                            size: 12,
+                            family: 'Telegraf'
                         },
-                        grid: {
-                            display: false
-                        },
-                        border: {
-                            display: false
-                        }
+                        stepSize: 20
                     },
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: '#ffffff',
-                            font: {
-                                size: 12,
-                                family: 'Telegraf'
-                            },
-                            stepSize: 20
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.15)'
-                        },
-                        border: {
-                            display: false
-                        }
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.15)'
+                    },
+                    border: {
+                        display: false
                     }
                 }
             }
-        });
-    }
+        }
+    }); 
+}
     carregarGraficoAreaGeralMatricula();
 
     function carregarGraficoModalidadeProcurada() {
@@ -385,25 +392,25 @@
                 datasets: [
                     {
                         label: 'Medicina',
-                        data: [120, 150, 180, 200, 220],
+                        data: [120, 165, 140, 210, 195],
                         backgroundColor: '#4a7ff7',
                         borderRadius: 4
                     },
                     {
                         label: 'Direito',
-                        data: [100, 120, 140, 160, 170],
+                        data: [100, 110, 135, 150, 145],
                         backgroundColor: '#ae8df5',
                         borderRadius: 4
                     },
                     {
                         label: 'Pedagogia',
-                        data: [80, 90, 100, 110, 120],
+                        data: [80, 85, 115, 90, 130],
                         backgroundColor: '#f3b86b',
                         borderRadius: 4
                     },
                     {
                         label: 'Administração',
-                        data: [60, 70, 80, 90, 100],
+                        data: [60, 95, 70, 85, 110],
                         backgroundColor: '#3cc027',
                         borderRadius: 4
                     }
@@ -437,8 +444,14 @@
                             }
                         }
                     },
-                    datalabels: {
-                        display: false
+                   datalabels: {
+                        anchor: 'center',
+                        align: 'center',
+                        color: '#ffffff',
+                        font: {
+                            weight: 'bold',
+                            size: 15
+                        }
                     }
                 },
                 scales: {
