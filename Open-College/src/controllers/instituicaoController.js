@@ -3,7 +3,7 @@ var instituicaoModel = require("../models/instituicaoModel");
 
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
-    var modo = req.body.modoServer;
+    // var modo = req.body.modoServer;
     var idUsuario = req.body.idUsuarioServer;
     var nome = req.body.nomeServer;
     var cnpj = req.body.cnpjServer;
@@ -14,7 +14,7 @@ function cadastrar(req, res) {
     if (idUsuario == undefined) {
         res.status(400).send("O usuario está undefined!");
     }
-    else if(modo == "novaInstituicao"){
+    // else if(modo == "novaInstituicao"){
      if(nome == undefined || cnpj == undefined){
         res.status(400).send("Nome e CNPJ sao obrigatorios!");
         
@@ -32,23 +32,24 @@ function cadastrar(req, res) {
             res.status(500).json(erro.sqlMessage);
         });
      }
-    }else if(modo == "vincularInstituicao"){
-        if(idInstituicao == undefined || idInstituicao == ""){
-            res.status(400).send("Selecione uma instituicao!");
-        }else{
-            instituicaoModel.vincularUsuario(idUsuario, idInstituicao)
-            .then(function () {
-                res.json({idInstituicao: idInstituicao});
-            })
-            .catch(function (erro){
-                console.log(erro);
-                console.log("\m Houve um erro ao vincular a instituicao! ERRO: ", erro.sqlMessage);
-                res.status(500).json(erro.sqlMessage);
-            });
-        }
-    }else{
-        res.status(400).send("Modo inválido");
-    }
+    // }
+    // else if(modo == "vincularInstituicao"){
+    //     if(idInstituicao == undefined || idInstituicao == ""){
+    //         res.status(400).send("Selecione uma instituicao!");
+    //     }else{
+    //         instituicaoModel.vincularUsuario(idUsuario, idInstituicao)
+    //         .then(function () {
+    //             res.json({idInstituicao: idInstituicao});
+    //         })
+    //         .catch(function (erro){
+    //             console.log(erro);
+    //             console.log("\m Houve um erro ao vincular a instituicao! ERRO: ", erro.sqlMessage);
+    //             res.status(500).json(erro.sqlMessage);
+    //         });
+    //     }
+    // }else{
+    //     res.status(400).send("Modo inválido");
+    // }
 }
     function listarTodas(req,res){
         instituicaoModel.listarTodas()
