@@ -47,7 +47,15 @@ function buscarSolicitacoesEntrada(idInstituicao){
     console.log("FUNÇÃO editarCurso");
 
     var instrucaoSql = `
-        SELECT * FROM tblSolicitacaoEntrada WHERE idInstituicao = ${idInstituicao} AND solicitacaoAceita = 0;
+        SELECT 
+        se.idUsuario, 
+        usu.nome nome, 
+        usu.cpf cpf, 
+        usu.foto foto, 
+        CONCAT(DAY(se.dataSolicitacao),'/',MONTH(se.dataSolicitacao),'/',YEAR(se.dataSolicitacao)) AS dataSolicitacao 
+        FROM tblSolicitacaoEntrada se 
+        JOIN tblUsuario usu ON usu.idUsuario = se.idUsuario 
+        WHERE idInstituicao = ${idInstituicao} AND solicitacaoAceita = 0; 
     `;
 
     return database.executar(instrucaoSql);
