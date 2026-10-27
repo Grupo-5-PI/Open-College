@@ -7,8 +7,12 @@ router.post("/cadastrar", function (req, res) {
     instituicaoController.cadastrar(req, res);
 });
 
-router.post("/criarSolicitacaoEntrada", function (req, res){
+router.post("/criarSolicitacaoEntrada", function(req, res){
     instituicaoController.criarSolicitacaoEntrada(req, res);
+});
+
+router.get("/buscarSolicitacoesEntrada/:idInstituicao", function(req, res){
+    instituicaoController.buscarSolicitacoesEntrada(req, res);
 });
 
 router.get("/listarTodas", function (req, res) {
