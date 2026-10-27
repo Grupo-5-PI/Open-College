@@ -192,8 +192,6 @@ function cadastrar(req, res) {
 
         let deuErroNaRequisicao;
 
-        // console.log(idUsuarios);
-
         for(let i = 0; i < idUsuarios.length; i++){
             let idUsuario = idUsuarios[i];
             deuErroNaRequisicao = await instituicaoModel.removerUsuarioDaInstituicao(idUsuario).
@@ -217,6 +215,36 @@ function cadastrar(req, res) {
 
         res.status(204).send("Usuários removidos com sucesso!");
         
+    }
+
+    async function promoverUsuario(req, res){
+
+        let idUsuarios = req.body.idUsuarios;
+
+        let deuErroNaRequisicao;
+
+        for(let i = 0; i < idUsuarios.length; i++){
+            let idUsuario = idUsuarios[i];
+            deuErroNaRequisicao = await instituicaoModel.promoverUsuario(idUsuario).
+                then(function(resposta){
+                    console.log(resposta);
+                    return false;
+                })
+                .catch(function(erro){
+                    console.log(erro);
+                    return true;
+                })
+
+                if(deuErroNaRequisicao){
+                    break;
+                }
+        }
+
+        if(deuErroNaRequisicao){
+            res.status(500).send("Erro ao promover usuários!");
+        }
+
+        res.status(200).send("Usuários promovidos com sucesso!");
     }
 
     function buscarDadosPolo(req, res){
@@ -466,6 +494,7 @@ module.exports = {
     adicionarPolo,
     buscarMembrosInstituicao,
     removerUsuarioDaInstituicao,
+    promoverUsuario,
     buscarDadosPolo,
     editarPolo,
     excluirPolo,
