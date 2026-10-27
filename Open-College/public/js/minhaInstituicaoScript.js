@@ -237,8 +237,6 @@ async function buscarMembrosInstituicao(){
     let membrosInstituicao = await fetch(`/instituicao/buscarMembrosInstituicao/${idInstituicao}`)
     .then(function(resposta){
         if(resposta.status == 200){
-            console.log(resposta);
-            console.log("funcionou hein");
             return resposta.json();
         } else{
             return 204;
@@ -247,6 +245,61 @@ async function buscarMembrosInstituicao(){
     .catch(function(erro){
         return 500;
     })
+
+    return membrosInstituicao;
+    
+}
+
+async function exibirMembrosInstituicao(){
+
+    let membrosInstituicao = await buscarMembrosInstituicao();
+
+    console.log(membrosInstituicao);
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(membrosInstituicao == 204){
+        mensagemPopup.innerHTML = 'Nenhum usuário encontrado!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    if(membrosInstituicao == 500){
+        mensagemPopup.innerHTML = 'Falha ao buscar membros da instituição!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    let containerHTML = document.getElementById("lista_membros_instituicao");
+    containerHTML.innerHTML = "";
+    
+    for(let i = 0; i < membrosInstituicao.length; i++){
+
+        let membro = membrosInstituicao[i];
+
+        containerHTML.innerHTML += `
+            <div class="item-lista-popup">
+                <div class="item-lista-esquerda">
+                    <img src="${membro.foto}" class="foto-usuario-lista">
+                    <div>
+                        <span class="nome-usuario-lista">
+                            ${membro.nome}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                            ${membro.tipo}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="item-lista-direita">
+                    <input type="checkbox" name="checkbox-usuario" id="checkbox_usuario_${membro.idUsuario}">
+                    <label for="checkbox_usuario_${membro.idUsuario}" class="checkbox-usuario-lista"></label>
+                </div>
+            </div>
+        `;
+        
+    }
     
 }
 
