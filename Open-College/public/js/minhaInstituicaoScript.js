@@ -440,13 +440,74 @@ async function buscarSolicitacoesEntrada(){
     let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
 
     if(idInstituicao == null || idInstituicao == undefined){
+        return null;
+    }    
+    
+    let solicitacoes = await fetch(`/instituicao/buscarSolicitacoesEntrada/${idInstituicao}`)
+    .then(function(resposta){
+        if(resposta.status == 200){
+            return resposta.json();
+        } else{
+            return 204;
+        }
+    })
+    .catch(function(erro){
+        return 500;
+    })
+
+    return solicitacoes;
+    
+}
+
+async function exibirSolicitacoesEntrada(){
+
+    let solicitacoes = await buscarSolicitacoesEntrada();
+
+    if(solicitacoes == null){
         return;
     }
 
-    let solicitacoes = await fetch(`/instituicao/buscarSolicitacoesEntrada/${idInstituicao}`)
-    .then(function(resposta){
-        
-    })
+    let containerHTML = document.getElementById("lista_solicitacoes_entrada");
+    containerHTML.innerHTML = "";
+
+    if(solicitacoes == 500){
+        containerHTML.innerHTML = "<span>Erro ao buscar solicitações de entrada!</span>";
+        return;
+    }
+    else if(solicitacoes == 204){
+        containerHTML.innerHTML = "<span>Nenhuma solicitação de entrada para a instituição!</span>";
+        return;
+    }
+
+    for(let i = 0; i < solicitacoes.length; i++){
+        let solicitacao = solicitacoes[i];
+
+        let cpf = solicitacao.cpf.replace(/\D/g, '') 
+        .replace(/^(\d{3})(\d)/, '$1.$2') 
+        .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') 
+        .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4') 
+        .slice(0, 14);
+
+        containerHTML.innerHTML += `
+            <div class="item-lista-popup">
+                <div class="item-lista-esquerda">
+                    <img src="${solicitacao.foto}" class="foto-usuario-lista">
+                    <div>
+                        <span class="nome-usuario-lista">${solicitacao.nome}</span>
+                        <span class="perfil-usuario-lista">CPF: ${cpf}</span>
+                        <span class="perfil-usuario-lista">Data da Solicitação: ${solicitacao.dataSolicitacao}</span>
+                    </div>
+                </div>
+
+                <div class="item-lista-direita-solicitacoes">
+                    <button class="aceitar" onclick="aceitarSolicitacao(${solicitacao.idUsuario})"><img src="../img/icones/icon_correto.png" alt=""></button>
+                    <button class="recusar" onclick="recusarSolicitacao(${solicitacao})"><img src="../img/icones/icon_x_branco.png" alt=""></button>
+                </div>
+            </div>
+        `;
+    }
+    
+
     
 }
 

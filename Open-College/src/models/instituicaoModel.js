@@ -31,7 +31,7 @@ function cadastrar(nome, cnpj) {
 function criarSolicitacaoEntrada(idUsuario, idInstituicao){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
-    console.log("FUNÇÃO editarCurso");
+    console.log("FUNÇÃO criarSolicitacaoEntrada");
 
     var instrucaoSql = `
         INSERT INTO tblSolicitacaoEntrada (idUsuario, idInstituicao) VALUES (${idUsuario}, ${idInstituicao});
@@ -44,7 +44,7 @@ function criarSolicitacaoEntrada(idUsuario, idInstituicao){
 function buscarSolicitacoesEntrada(idInstituicao){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
-    console.log("FUNÇÃO editarCurso");
+    console.log("FUNÇÃO buscarSolicitacoesEntrada");
 
     var instrucaoSql = `
         SELECT 
@@ -55,7 +55,7 @@ function buscarSolicitacoesEntrada(idInstituicao){
         CONCAT(DAY(se.dataSolicitacao),'/',MONTH(se.dataSolicitacao),'/',YEAR(se.dataSolicitacao)) AS dataSolicitacao 
         FROM tblSolicitacaoEntrada se 
         JOIN tblUsuario usu ON usu.idUsuario = se.idUsuario 
-        WHERE idInstituicao = ${idInstituicao} AND solicitacaoAceita = 0; 
+        WHERE se.idInstituicao = ${idInstituicao} AND se.solicitacaoAceita = 0; 
     `;
 
     return database.executar(instrucaoSql);
