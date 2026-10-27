@@ -348,20 +348,32 @@ function removerUsuarioDaInstituicao(){
     for(let i = 0; i < selecionados.length; i++){
         valoresSelecionados.push(selecionados[i].value);
     }
+
+    // console.log(valoresSelecionados)
     
     mensagemPopup.style.display = "none"
 
     fetch("/instituicao/removerUsuarioDaInstituicao", {
         method: "POST",
         headers: {
-            "Content-Type":"appplication/json",
+            "Content-Type":"application/json",
         }, 
         body: JSON.stringify({
             idUsuarios: valoresSelecionados,
         }),
     })
     .then(function(resposta){
-
+        if(resposta.status == 204){
+            mensagemPopup.innerHTML = "Usuários removidos com sucesso!";
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            recarregarPagina();
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao remover usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
     })
 
 }

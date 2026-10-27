@@ -192,6 +192,8 @@ function cadastrar(req, res) {
 
         let deuErroNaRequisicao;
 
+        // console.log(idUsuarios);
+
         for(let i = 0; i < idUsuarios.length; i++){
             let idUsuario = idUsuarios[i];
             deuErroNaRequisicao = await instituicaoModel.removerUsuarioDaInstituicao(idUsuario).
