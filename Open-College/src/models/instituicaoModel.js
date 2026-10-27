@@ -41,6 +41,19 @@ function criarSolicitacaoEntrada(idUsuario, idInstituicao){
     
 }
 
+function buscarSolicitacoesEntrada(idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO editarCurso");
+
+    var instrucaoSql = `
+        SELECT * FROM tblSolicitacaoEntrada WHERE idInstituicao = ${idInstituicao} AND solicitacaoAceita = 0;
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function vincularUsuario(idUsuario, idInstituicao){
     var instrucaoSql = `
        UPDATE tblUsuario set idInstituicao = ${idInstituicao} WHERE idUsuario = ${idUsuario};
@@ -362,6 +375,7 @@ module.exports = {
     listarTodas,
     cadastrar,
     criarSolicitacaoEntrada,
+    buscarSolicitacoesEntrada,
     vincularUsuario,
     buscarPorIdUsuario,
     buscarPolos,
