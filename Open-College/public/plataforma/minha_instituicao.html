@@ -252,11 +252,23 @@
         <div class="sombra-popup"   onclick="abrirFecharPopup('popup_membros_instituicao')"></div>
 
         <div class="popup-interacao">
-            <div class="header-popup">
+            <div class="header-popup" style="margin-bottom: 10px;">
                 <span onclick="abrirFecharPopup('popup_membros_instituicao')">
                     <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
                 </span>
                 <span class="titulo-popup">Membros da Instituição</span>
+            </div>
+
+            <div class="popup-interacao-botoes" style="margin-top: 0; margin-bottom: 30px;">
+                <button>
+                    SOLICITAÇÕES DE ENTRADA
+                </button>
+                <button onclick="promoverUsuario()">
+                    PROMOVER
+                </button>
+                <button onclick="removerUsuarioDaInstituiao()" class="botao-excluir">
+                    REMOVER
+                </button>
             </div>
 
             <div class="lista-popup" id="lista_membros_instituicao">
