@@ -226,6 +226,158 @@ async function adicionarPolo(){
 
 }
 
+async function buscarMembrosInstituicao(){
+
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == undefined){
+        return;
+    }
+
+    let membrosInstituicao = await fetch(`/instituicao/buscarMembrosInstituicao/${idInstituicao}`)
+    .then(function(resposta){
+        if(resposta.status == 200){
+            return resposta.json();
+        } else{
+            return 204;
+        }
+    })
+    .catch(function(erro){
+        return 500;
+    })
+
+    return membrosInstituicao;
+    
+}
+
+async function exibirMembrosInstituicao(){
+
+    let membrosInstituicao = await buscarMembrosInstituicao();
+
+    console.log(membrosInstituicao);
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(membrosInstituicao == 204){
+        mensagemPopup.innerHTML = 'Nenhum usuário encontrado!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    if(membrosInstituicao == 500){
+        mensagemPopup.innerHTML = 'Falha ao buscar membros da instituição!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    let containerHTML = document.getElementById("lista_membros_instituicao");
+    containerHTML.innerHTML = "";
+    
+    for(let i = 0; i < membrosInstituicao.length; i++){
+
+        let membro = membrosInstituicao[i];
+
+        if(sessionStorage.USUARIO_ADMINISTRADOR == 'true'){
+            console.log("admin")
+            containerHTML.innerHTML += `
+            <div class="item-lista-popup">
+                <div class="item-lista-esquerda">
+                    <img src="${membro.foto}" class="foto-usuario-lista">
+                    <div>
+                        <span class="nome-usuario-lista">
+                        ${membro.nome}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membro.tipo}
+                        </span>
+                    </div>
+                </div>
+                    
+                <div class="item-lista-direita">
+                    <input value="${membro.idUsuario}" type="checkbox" name="checkbox-usuario" id="checkbox_usuario_${membro.idUsuario}">
+                    <label for="checkbox_usuario_${membro.idUsuario}" class="checkbox-usuario-lista"></label>
+                </div>
+            </div>
+            `;
+        } else{
+            console.log("nao admin")
+            containerHTML.innerHTML += `
+            <div class="item-lista-popup">
+                <div class="item-lista-esquerda">
+                    <img src="${membro.foto}" class="foto-usuario-lista">
+                    <div>
+                        <span class="nome-usuario-lista">
+                        ${membro.nome}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membro.tipo}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+        
+    }
+    
+}
+
+function removerUsuarioDaInstituicao(){
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(sessionStorage.USUARIO_ADMINISTRADOR == 'false'){
+        mensagemPopup.innerHTML = "Permissão de administrador necessária para essa ação!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    const selecionados = document.querySelectorAll('input[name=checkbox-usuario]:checked');
+
+    if(selecionados.length == 0){
+        mensagemPopup.innerHTML = "Selecione um ou mais usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    
+    let valoresSelecionados = [];
+
+    for(let i = 0; i < selecionados.length; i++){
+        valoresSelecionados.push(selecionados[i].value);
+    }
+
+    // console.log(valoresSelecionados)
+    
+    mensagemPopup.style.display = "none"
+
+    fetch("/instituicao/removerUsuarioDaInstituicao", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        }, 
+        body: JSON.stringify({
+            idUsuarios: valoresSelecionados,
+        }),
+    })
+    .then(function(resposta){
+        if(resposta.status == 204){
+            mensagemPopup.innerHTML = "Usuários removidos com sucesso!";
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            recarregarPagina();
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao remover usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+    })
+
+}
+
 async function buscarDadosPolo(){
 
     urlParams = new URLSearchParams(window.location.search);
