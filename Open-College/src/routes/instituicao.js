@@ -35,6 +35,10 @@ router.post("/removerUsuarioDaInstituicao", function(req, res){
     instituicaoController.removerUsuarioDaInstituicao(req, res);
 });
 
+router.post("/promoverUsuario", function(req, res){
+    instituicaoController.promoverUsuario(req, res);
+});
+
 router.get("/buscarDadosPolo/:parametros", function(req, res){
     instituicaoController.buscarDadosPolo(req, res);
 });
