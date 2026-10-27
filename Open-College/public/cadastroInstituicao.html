@@ -272,7 +272,19 @@
                 }),
             })
             .then(function(resposta){
-                
+                if(resposta.status == 200){
+                    cardErro.style.display = "none";
+                    alert("Solicitação de entrada em instituição criada com sucesso!\nRedirecionando para página de login.");
+                    
+                    setTimeout(() => {
+                        window.location = "login.html";
+                    }, 2000);
+
+                    limparFormulario();
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
             })
 
         }

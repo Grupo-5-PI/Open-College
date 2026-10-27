@@ -1,4 +1,3 @@
-const { criarSolicitacaoEntrada } = require("../controllers/instituicaoController");
 var database = require("../database/config")
 
 function buscarPorCnpj(cnpj) {
