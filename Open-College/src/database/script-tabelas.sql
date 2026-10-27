@@ -102,6 +102,20 @@ CREATE TABLE tblInstituicaoPoloCurso (
 		CHECK (turno IN ('Diurno', 'Noturno'))
 );
 
+CREATE TABLE tblSolicitacaoEntrada(
+	idInstituicao INT NOT NULL, 
+    idUsuario INT NOT NULL, 
+    dataSolicitacao DATE DEFAULT (CURRENT_DATE) NOT NULL,
+    solicitacaoAceita BIT DEFAULT 0,
+    PRIMARY KEY (idInstituicao, idUsuario), 
+    CONSTRAINT FK_tblSolicitacaoEntrada_tblInstituicao 
+		FOREIGN KEY (idInstituicao)
+			REFERENCES tblInstituicao (idInstituicao),
+	CONSTRAINT FK_tblSolicitacaoEntrada_tblUsuario 
+		FOREIGN KEY (idUsuario) 
+			REFERENCES tblUsuario (idUsuario)
+);
+
 CREATE TABLE tblAtualizacao (
     idAtualizacao INT PRIMARY KEY AUTO_INCREMENT,
     idUsuario INT NOT NULL,
