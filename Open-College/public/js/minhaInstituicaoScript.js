@@ -351,7 +351,7 @@ function removerUsuarioDaInstituicao(){
     
     mensagemPopup.style.display = "none"
 
-    fetch("/removerUsuarioDaInstituicao", {
+    fetch("/instituicao/removerUsuarioDaInstituicao", {
         method: "POST",
         headers: {
             "Content-Type":"appplication/json",
@@ -361,7 +361,7 @@ function removerUsuarioDaInstituicao(){
         }),
     })
     .then(function(resposta){
-        
+
     })
 
 }
