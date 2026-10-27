@@ -435,6 +435,21 @@ function promoverUsuario(){
     
 } 
 
+async function buscarSolicitacoesEntrada(){
+
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == null || idInstituicao == undefined){
+        return;
+    }
+
+    let solicitacoes = await fetch(`/instituicao/buscarSolicitacoesEntrada/${idInstituicao}`)
+    .then(function(resposta){
+        
+    })
+    
+}
+
 async function buscarDadosPolo(){
 
     urlParams = new URLSearchParams(window.location.search);
