@@ -48,7 +48,7 @@ async function buscarPolos(){
 
     if(idInstituicao == null){
         console.log("Instituição não encontrada!");
-        return;
+        return null;
     }
 
     let retorno = await fetch(`/instituicao/buscarPolos/${idInstituicao}`)
@@ -93,7 +93,12 @@ async function exibirPolos(){
     let polos = await buscarPolos();
     clearInterval(mensagemPadrao);
 
-    if(polos == 404){
+    if(polos == null){
+        containerHtmlMensagem.innerHTML = `
+            Você não está vinculado a nenhuma instituição!<br>
+            <a href="../cadastroInstituicao.html">Crie ou solicite entrada à uma instituição!</a>
+        `;
+    } else if(polos == 404){
         containerHtmlMensagem.innerHTML = `
             Erro ao buscar polos!
         `;

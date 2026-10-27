@@ -149,6 +149,11 @@ main header button:hover{
     justify-self: center;
 }
 
+.sessao-polos-mensagem a{
+    text-decoration: none; 
+    color: var(--cor1);
+}
+
 .item-sessao-polos{
     font-family: 'Bebas Neue';
     border-radius: 15px;
