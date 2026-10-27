@@ -226,6 +226,23 @@ async function adicionarPolo(){
 
 }
 
+async function buscarMembrosInstituicao(){
+
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+
+    if(idInstituicao == undefined){
+        return;
+    }
+
+    let membrosInstituicao = await fetch(`/instituicao/buscarMembrosInstituicao/${idInstituicao}`)
+    .then(function(resposta){
+        
+    })
+    
+}
+
 async function buscarDadosPolo(){
 
     urlParams = new URLSearchParams(window.location.search);
