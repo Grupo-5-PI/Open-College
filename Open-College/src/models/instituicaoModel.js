@@ -103,6 +103,19 @@ function buscarMembrosInstituicao(idInstituicao){
     
 }
 
+function removerUsuarioDaInstituicao(idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO removerUsuarioDaInstituicao");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET idInstituicao = null WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function buscarDadosPolo(idInstituicao, idPolo){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -327,6 +340,7 @@ module.exports = {
     buscarIdParaAdicionarPolo,
     adicionarPolo,
     buscarMembrosInstituicao,
+    removerUsuarioDaInstituicao,
     buscarDadosPolo,
     editarPolo,
     excluirCursosPolo,
