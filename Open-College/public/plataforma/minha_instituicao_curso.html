@@ -4,20 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Instituição - Curso</title>
+    <link rel="icon" href="../img/logo/logo.png">
     <link rel="stylesheet" href="../style/global.css">
     <!-- <link rel="stylesheet" href="../style/plataforma_global_style.css"> -->
     <link rel="stylesheet" href="../style/minha_instituicao_style.css">
+
+    <link rel="stylesheet" href="../style/menuLateral.css">
 </head>
+
+<!-- onload="validarSessao()" -->
 <body>
     
+        <nav class="menu-lateral">
+        <header class="menu-lateral-logo">
+            <a href="" class="perfil-link">
+                <div class="foto-wrapper">
+                    <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
+                </div>
+                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+            </a>
+        </header>
+        <nav class="content">
+            <ul id="nav-item">
+                <li class="nav-item active">
+                    <a href="dashGeral.html">
+                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="painelAtualizacao.html">
+                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                            class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Painel de Atualização
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="minha_instituicao.html">
+                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha Instituição
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="EditarPerfil.html">
+                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                        <span class="titulo-menu-lateral">
+                            Minha conta
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sair">
+            <div class="btn-sair">
+                <button onclick="limparSessao()">
+                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
     <main>
 
         <header>
             <div class="header-esquerda">
-                <span>Curso 1</span>
+                <span id="curso_header">Curso 1</span>
             </div>
             <div class="header-direita">
-                <button>Editar Curso</button>
+                <button onclick="abrirFecharPopup('popup_editar_curso')">Editar Curso</button>
                 <button>Adicionar ao Feed de Atualizações</button>
             </div>
         </header>
@@ -25,9 +90,9 @@
         <div class="main-conteudo">
 
             <div class="dados-curso">
-                <span>Polo: Município Exemplo</span>
-                <span>Turno: Diurno</span>
-                <span>Modalidade: Presencial</span>
+                <span id="curso_polo">Polo: Município Exemplo</span>
+                <span id="curso_turno">Turno: Diurno</span>
+                <span id="curso_modalidade">Modalidade: Presencial</span>
             </div>
 
             <div class="sessao-pag-curso">
@@ -35,19 +100,19 @@
                 <span class="titulo-sessao-pag-curso">Estatísticas</span>
                 
                 <table>
-                    <tr>
-                        <th>VAGAS</th>
-                        <th>MATRÍCULAS</th>
+                    <tr class="topo-tabela">
+                        <th style="border-top-left-radius: 27px;">VAGAS</th>
+                        <th style="border-top-right-radius: 27px;">MATRÍCULAS</th>
                     </tr>
                     <tr>
-                        <td>999</td>
-                        <td>999</td>
+                        <td style="border-bottom-left-radius: 27px;" id="estatisticas_vagas">999</td>
+                        <td style="border-bottom-right-radius: 27px;" id="estatisticas_matriculas">999</td>
                     </tr>
                 </table>
                 
                 <div>
-                    <span>Atualizado por último em: DD/MM/YYYY</span>
-                    <button>Atualizar</button>
+                    <span id="data_ultima_atualizacao">Atualizado por último em: DD/MM/YYYY</span>
+                    <button onclick="abrirFecharPopup('popup_atualizar_estatisticas')">ATUALIZAR</button>
                 </div>
                 
             </div>
@@ -58,16 +123,16 @@
                 
                 <table>
                     <tr>
-                        <th>MATRÍCULAS</th>
+                        <th style="border-top-left-radius: 27px; border-top-right-radius: 27px;">MATRÍCULAS</th>
                     </tr>
                     <tr>
-                        <td>999</td>
+                        <td style="border-bottom-left-radius: 27px; border-bottom-right-radius: 27px;" id="meta_matriculas">999</td>
                     </tr>
                 </table>
                 
                 <div>
-                    <span>Para: DD/MM/YYYY</span>
-                    <button>Atualizar</button>
+                    <span id="data_meta">Para: DD/MM/YYYY</span>
+                    <button onclick="abrirFecharPopup('popup_atualizar_metas')">ATUALIZAR</button>
                 </div>
                 
             </div>
@@ -75,6 +140,133 @@
         </div>
 
     </main>
+
+    <div class="container-popup" id="popup_editar_curso">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_editar_curso')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_editar_curso')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Editar Curso</span>
+            </div>
+            
+            <div class="inputs-popup">
+                
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 50%">
+                        <label for="turno">TURNO: </label><br>
+                        <select name="turno" id="select_turno_editar_curso">
+                            <option value="Diurno">Diurno</option>
+                            <option value="Noturno">Noturno</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-popup" style="width: 50%">
+                        <label for="modalidade">MODALIDADE: </label><br>
+                        <select name="modalidade" id="select_modalidade_editar_curso">
+                            <option value="Presencial">Presencial</option>
+                            <option value="EAD">EAD</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button onclick="editarCurso()">
+                    SALVAR
+                </button>
+            
+                <button class="botao-excluir" onclick="excluirCurso()">
+                    EXCLUIR
+                </button>
+            </div>
+
+            <span class="popup-mensagem"></span>
+            
+        </div>
+    </div>
+
+     <div class="container-popup" id="popup_atualizar_estatisticas">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_atualizar_estatisticas')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_atualizar_estatisticas')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Atualizar Estatísticas</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 50%">
+                        <label for="vagas">VAGAS: </label>
+                        <input type="text" id="input_vagas_estatisticas">
+                    </div>
+
+                    <div class="input-popup" style="width: 50%;">
+                        <label for="matriculas">MATRÍCULAS: </label>
+                        <input type="text" id="input_matriculas_estatisticas">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button onclick="atualizarEstatisticasCurso()">
+                    SALVAR
+                </button>
+            </div>
+            
+            <span class="popup-mensagem"></span>
+            
+        </div>
+    </div>
+
+    <div class="container-popup" id="popup_atualizar_metas">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_atualizar_metas')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_atualizar_metas')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Atualizar Metas</span>
+            </div>
+            
+            <div class="inputs-popup">
+                <div class="separacao-inputs-popup">
+                    <div class="input-popup" style="width: 50%">
+                        <label for="input_matriculas_meta_curso">MATRÍCULAS: </label>
+                        <input type="text" id="input_matriculas_meta_curso">
+                    </div>
+
+                    <div class="input-popup" style="width: 50%;">
+                        <label for="input_data_meta_curso">METAS PARA: </label>
+                        <input type="date" id="input_data_meta_curso">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popup-interacao-botoes">
+                <button onclick="atualizarMetasCurso()">
+                    SALVAR
+                </button>
+            </div>
+            
+            <span class="popup-mensagem"></span>
+            
+        </div>
+    </div>
     
 </body>
 </html>
+<script>
+    let foto = sessionStorage.FOTO_USUARIO;
+    imgUsuario.src = `${foto}`
+</script>
+<script src="../js/minhaInstituicaoScript.js"></script>
+<script>
+    window.onload = exibirDadosCurso();
+</script>

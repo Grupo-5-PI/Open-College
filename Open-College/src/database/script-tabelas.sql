@@ -5,8 +5,7 @@
 /*
 comandos para mysql server
 */
-
-CREATE DATABASE opencollege;
+CREATE DATABASE IF NOT EXISTS opencollege;
 USE opencollege;
 
 CREATE TABLE tblInstituicao (
@@ -21,55 +20,46 @@ CREATE TABLE tblAreaGeral (
     descricao VARCHAR(500)
 );
 
-CREATE TABLE tblAreaEspecifica (
-    idAreaEspecifica INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(150) UNIQUE NOT NULL,
-    descricao VARCHAR(500),
-    idAreaGeral INT NOT NULL,
-    CONSTRAINT FK_tblAreaEspecifica_tblAreaGeral 
-		FOREIGN KEY (idAreaGeral) 
-			REFERENCES tblAreaGeral (idAreaGeral)
-);
-
 CREATE TABLE tblCurso (
     idCurso INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
     formacao VARCHAR(20) NOT NULL,
-    idAreaEspecifica INT NOT NULL,
-    CONSTRAINT FK_tblCurso_tblAreaEspecifica 
-		FOREIGN KEY (idAreaEspecifica) 
-			REFERENCES tblAreaEspecifica (idAreaEspecifica),
+    idAreaGeral INT,
     CONSTRAINT CK_tblCurso_formacao 
-		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo'))
+		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo')),
+	CONSTRAINT FK_tblCurso_idAreaGeral 
+		FOREIGN KEY (idAreaGeral) 
+			REFERENCES tblAreaGeral (idAreaGeral)
 );
 
-CREATE TABLE tblUsuario (
-    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    cpf CHAR(11) UNIQUE NOT NULL,
-    telefone VARCHAR(20),
-    email VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL,
-    foto VARCHAR(255),
-    tipo VARCHAR(30) NOT NULL,
-    idInstituicao INT,
-    administrador BIT NOT NULL,
-    CONSTRAINT FK_tblUsuario_tblInstituicao 
-		FOREIGN KEY (idInstituicao) 
-			REFERENCES tblInstituicao (idInstituicao),
-    CONSTRAINT CK_tblUsuario_tipo 
-		CHECK (tipo IN ('Gerente de Marketing', 'Analista de Marketing', 'Investidor'))
-);
+  CREATE TABLE tblUsuario (
+      idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+      nome VARCHAR(100) NOT NULL,
+      cpf CHAR(11) UNIQUE NOT NULL,
+      telefone VARCHAR(20),
+      email VARCHAR(100) UNIQUE NOT NULL,
+      senha VARCHAR(255) NOT NULL,
+      foto VARCHAR(255),
+      tipo VARCHAR(30) NOT NULL,
+      idInstituicao INT,
+      administrador BIT NOT NULL,
+      CONSTRAINT FK_tblUsuario_tblInstituicao 
+      FOREIGN KEY (idInstituicao) 
+        REFERENCES tblInstituicao (idInstituicao),
+      CONSTRAINT CK_tblUsuario_tipo 
+      CHECK (tipo IN ('Gerente de Marketing', 'Analista de Marketing', 'Investidor'))
+  );
 
 CREATE TABLE tblPolo (
-    idPolo INT PRIMARY KEY AUTO_INCREMENT,
-    idInstituicao INT NOT NULL,
-    cep CHAR(8) NOT NULL,
+    idPolo INT,
+    idInstituicao INT,
     uf CHAR(2) NOT NULL,
-    cidade VARCHAR(100) NOT NULL,
+    municipio VARCHAR(100) NOT NULL,
     bairro VARCHAR(100) NOT NULL,
-    rua VARCHAR(150) NOT NULL,
+    logradouro VARCHAR(150) NOT NULL,
     numero VARCHAR(10) NOT NULL,
+    CONSTRAINT PK_tblPolo
+		PRIMARY KEY (idPolo, idInstituicao),
     CONSTRAINT FK_tblPolo_tblInstituicao 
 		FOREIGN KEY (idInstituicao) 
 			REFERENCES tblInstituicao (idInstituicao),
@@ -81,13 +71,18 @@ CREATE TABLE tblPolo (
 );
 
 CREATE TABLE tblInstituicaoPoloCurso (
+	  idInstituicaoPoloCurso INT NOT NULL,
     idInstituicao INT NOT NULL,
     idPolo INT NOT NULL,
     idCurso INT NOT NULL,
-    qtdVagas INT NOT NULL,
+    qtdVagas INT NOT NULL DEFAULT 0,
     qtdMatriculas INT NOT NULL DEFAULT 0,
     tipoModalidade VARCHAR(20) NOT NULL,
-    PRIMARY KEY (idInstituicao, idPolo, idCurso),
+    turno VARCHAR(20) NOT NULL, 
+    dataUltimaAtualizacao DATE, 
+    metaQtdMatriculas INT NOT NULL DEFAULT 0,
+    metaData DATE, 
+    PRIMARY KEY (idInstituicaoPoloCurso, idInstituicao, idPolo),
     CONSTRAINT FK_tblInstituicaoPoloCurso_tblInstituicao 
 		FOREIGN KEY (idInstituicao) 
 			REFERENCES tblInstituicao (idInstituicao),
@@ -102,7 +97,9 @@ CREATE TABLE tblInstituicaoPoloCurso (
     CONSTRAINT CK_tblInstituicaoPoloCurso_qtdMatriculas 
 		CHECK (qtdMatriculas >= 0),
     CONSTRAINT CK_tblInstituicaoPoloCurso_tipoModalidade 
-		CHECK (tipoModalidade IN ('Presencial', 'Semipresencial', 'EAD'))
+		CHECK (tipoModalidade IN ('Presencial', 'Semipresencial', 'EAD')),
+	CONSTRAINT CK_tblInstituicaoPoloCurso_turno
+		CHECK (turno IN ('Diurno', 'Noturno'))
 );
 
 CREATE TABLE tblAtualizacao (
@@ -110,7 +107,6 @@ CREATE TABLE tblAtualizacao (
     idUsuario INT NOT NULL,
     idCurso INT,
     idAreaGeral INT,
-    idAreaEspecifica INT,
     tipo VARCHAR(50) NOT NULL,
     conteudo VARCHAR(500) NOT NULL,
     dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -123,10 +119,7 @@ CREATE TABLE tblAtualizacao (
 			REFERENCES tblCurso (idCurso),
     CONSTRAINT FK_tblAtualizacao_tblAreaGeral 
 		FOREIGN KEY (idAreaGeral) 
-			REFERENCES tblAreaGeral (idAreaGeral),
-    CONSTRAINT FK_tblAtualizacao_tblAreaEspecifica 
-		FOREIGN KEY (idAreaEspecifica) 
-			REFERENCES tblAreaEspecifica (idAreaEspecifica)
+			REFERENCES tblAreaGeral (idAreaGeral)
 );
 
 CREATE TABLE tblCenso (
@@ -201,6 +194,32 @@ CREATE TABLE tblCenso (
 		FOREIGN KEY (idCurso) 
 			REFERENCES tblCurso (idCurso)
 );
+
+CREATE TABLE tblNoticia (
+    idNoticia INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(150) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    dtNoticia DATETIME,
+    setor VARCHAR(50),
+    nota INT,
+    fkUsuario INT,
+    CONSTRAINT chUsuario
+    FOREIGN KEY(fkUsuario)
+    REFERENCES tblUsuario (idUsuario)
+);
+
+CREATE TABLE tblDashboardPersonalizado (
+    idUsuario INT PRIMARY KEY,
+    kpi VARCHAR(50) NULL,
+    grafico VARCHAR(50) NULL,
+    atualizadoEm TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT FK_tblDashboardPersonalizado_tblUsuario
+        FOREIGN KEY (idUsuario)
+        REFERENCES tblUsuario (idUsuario)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
 
 
 
