@@ -55,7 +55,48 @@ function buscarSolicitacoesEntrada(idInstituicao){
         CONCAT(DAY(se.dataSolicitacao),'/',MONTH(se.dataSolicitacao),'/',YEAR(se.dataSolicitacao)) AS dataSolicitacao 
         FROM tblSolicitacaoEntrada se 
         JOIN tblUsuario usu ON usu.idUsuario = se.idUsuario 
-        WHERE se.idInstituicao = ${idInstituicao} AND se.solicitacaoAceita = 0; 
+        WHERE se.idInstituicao = ${idInstituicao} AND se.solicitacaoAceita IS NULL; 
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function aceitarSolicitacaoEntrada(idInstituicao, idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO aceitarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET idInstituicao = ${idInstituicao} WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function recusarSolicitacaoEntrada(idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO recusarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET idInstituicao = NULL WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function atualizarSolicitacaoEntrada(idInstituicao, idUsuario, solicitacaoAceita){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO atualizarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        UPDATE tblSolicitacaoEntrada 
+        SET solicitacaoAceita = ${solicitacaoAceita}, dataAtualizacaoSolicitacao = CURRENT_DATE 
+        WHERE idInstituicao = ${idInstituicao} AND idUsuario = ${idUsuario};
     `;
 
     return database.executar(instrucaoSql);
@@ -384,6 +425,9 @@ module.exports = {
     cadastrar,
     criarSolicitacaoEntrada,
     buscarSolicitacoesEntrada,
+    aceitarSolicitacaoEntrada, 
+    recusarSolicitacaoEntrada,
+    atualizarSolicitacaoEntrada, 
     vincularUsuario,
     buscarPorIdUsuario,
     buscarPolos,
