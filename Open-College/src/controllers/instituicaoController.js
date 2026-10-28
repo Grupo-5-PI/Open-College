@@ -3,7 +3,7 @@ var instituicaoModel = require("../models/instituicaoModel");
 
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
-    var modo = req.body.modoServer;
+    // var modo = req.body.modoServer;
     var idUsuario = req.body.idUsuarioServer;
     var nome = req.body.nomeServer;
     var cnpj = req.body.cnpjServer;
@@ -14,7 +14,7 @@ function cadastrar(req, res) {
     if (idUsuario == undefined) {
         res.status(400).send("O usuario está undefined!");
     }
-    else if(modo == "novaInstituicao"){
+    // else if(modo == "novaInstituicao"){
      if(nome == undefined || cnpj == undefined){
         res.status(400).send("Nome e CNPJ sao obrigatorios!");
         
@@ -32,23 +32,24 @@ function cadastrar(req, res) {
             res.status(500).json(erro.sqlMessage);
         });
      }
-    }else if(modo == "vincularInstituicao"){
-        if(idInstituicao == undefined || idInstituicao == ""){
-            res.status(400).send("Selecione uma instituicao!");
-        }else{
-            instituicaoModel.vincularUsuario(idUsuario, idInstituicao)
-            .then(function () {
-                res.json({idInstituicao: idInstituicao});
-            })
-            .catch(function (erro){
-                console.log(erro);
-                console.log("\m Houve um erro ao vincular a instituicao! ERRO: ", erro.sqlMessage);
-                res.status(500).json(erro.sqlMessage);
-            });
-        }
-    }else{
-        res.status(400).send("Modo inválido");
-    }
+    // }
+    // else if(modo == "vincularInstituicao"){
+    //     if(idInstituicao == undefined || idInstituicao == ""){
+    //         res.status(400).send("Selecione uma instituicao!");
+    //     }else{
+    //         instituicaoModel.vincularUsuario(idUsuario, idInstituicao)
+    //         .then(function () {
+    //             res.json({idInstituicao: idInstituicao});
+    //         })
+    //         .catch(function (erro){
+    //             console.log(erro);
+    //             console.log("\m Houve um erro ao vincular a instituicao! ERRO: ", erro.sqlMessage);
+    //             res.status(500).json(erro.sqlMessage);
+    //         });
+    //     }
+    // }else{
+    //     res.status(400).send("Modo inválido");
+    // }
 }
     function listarTodas(req,res){
         instituicaoModel.listarTodas()
@@ -86,6 +87,93 @@ function cadastrar(req, res) {
                 }
             );
         }
+    }
+
+    function criarSolicitacaoEntrada(req, res){
+
+        let idUsuario = req.body.idUsuarioServer;
+        let idInstituicao = req.body.idInstituicaoServer;
+
+        instituicaoModel.criarSolicitacaoEntrada(idUsuario, idInstituicao)
+        .then(function(resposta){
+            console.log(resposta);
+            res.status(200).json(resposta);
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).send(erro);
+        })
+
+    }
+
+    function buscarSolicitacoesEntrada(req, res){
+
+        let idInstituicao = req.params.idInstituicao;
+
+        instituicaoModel.buscarSolicitacoesEntrada(idInstituicao)
+        .then(function(resposta){
+            console.log(resposta);
+            if(resposta.length > 0){
+                res.status(200).json(resposta);
+            } else{
+                res.status(204).send();
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    function aceitarSolicitacaoEntrada(req, res){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idUsuario = req.body.idUsuarioServer;
+
+        instituicaoModel.aceitarSolicitacaoEntrada(idInstituicao, idUsuario)
+        .then(function(resposta){
+            console.log(resposta);
+            instituicaoModel.atualizarSolicitacaoEntrada(idInstituicao, idUsuario, 1)
+            .then(function(resposta){
+                console.log(resposta);
+                res.status(200).json(resposta);
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).json(erro);
+            })
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    function recusarSolicitacaoEntrada(req, res){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idUsuario = req.body.idUsuarioServer;
+
+        instituicaoModel.recusarSolicitacaoEntrada(idUsuario)
+        .then(function(resposta){
+            console.log(resposta);
+            instituicaoModel.atualizarSolicitacaoEntrada(idInstituicao, idUsuario, 0)
+            .then(function(resposta){
+                console.log(resposta);
+                res.status(200).json(resposta);
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).json(erro);
+            })
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
     }
 
     function buscarPorIdUsuario(req, res){
@@ -164,6 +252,117 @@ function cadastrar(req, res) {
             // res.status(500).erro.sqlMessage;
         })
             
+    }
+
+    function buscarMembrosInstituicao(req, res){
+
+        let idInstituicao = req.params.idInstituicao;
+
+        instituicaoModel.buscarMembrosInstituicao(idInstituicao)
+        .then(function(resposta){
+            if(resposta.length > 0){
+                console.log(resposta);
+                res.status(200).json(resposta);
+            } else{
+                res.status(204).send("Nenhum membro na instituição!");
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
+    async function removerUsuarioDaInstituicao(req, res){
+
+        let idUsuarios = req.body.idUsuarios;
+
+        let deuErroNaRequisicao;
+
+        for(let i = 0; i < idUsuarios.length; i++){
+            let idUsuario = idUsuarios[i];
+            deuErroNaRequisicao = await instituicaoModel.removerUsuarioDaInstituicao(idUsuario).
+                then(function(resposta){
+                    console.log(resposta);
+                    return false;
+                })
+                .catch(function(erro){
+                    console.log(erro);
+                    return true;
+                })
+
+                if(deuErroNaRequisicao){
+                    break;
+                }
+        }
+
+        if(deuErroNaRequisicao){
+            res.status(500).send("Erro ao remover usuários!");
+        }
+
+        res.status(204).send("Usuários removidos com sucesso!");
+        
+    }
+
+    async function promoverUsuario(req, res){
+
+        let idUsuarios = req.body.idUsuarios;
+
+        let deuErroNaRequisicao;
+
+        for(let i = 0; i < idUsuarios.length; i++){
+            let idUsuario = idUsuarios[i];
+            deuErroNaRequisicao = await instituicaoModel.promoverUsuario(idUsuario).
+                then(function(resposta){
+                    console.log(resposta);
+                    return false;
+                })
+                .catch(function(erro){
+                    console.log(erro);
+                    return true;
+                })
+
+                if(deuErroNaRequisicao){
+                    break;
+                }
+        }
+
+        if(deuErroNaRequisicao){
+            res.status(500).send("Erro ao promover usuários!");
+        }
+
+        res.status(200).send("Usuários promovidos com sucesso!");
+    }
+
+    async function rebaixarUsuario(req, res){
+
+        let idUsuarios = req.body.idUsuarios;
+
+        let deuErroNaRequisicao;
+
+        for(let i = 0; i < idUsuarios.length; i++){
+            let idUsuario = idUsuarios[i];
+            deuErroNaRequisicao = await instituicaoModel.rebaixarUsuario(idUsuario).
+                then(function(resposta){
+                    console.log(resposta);
+                    return false;
+                })
+                .catch(function(erro){
+                    console.log(erro);
+                    return true;
+                })
+
+                if(deuErroNaRequisicao){
+                    break;
+                }
+        }
+
+        if(deuErroNaRequisicao){
+            res.status(500).send("Erro ao rebaixar usuários!");
+        }
+
+        res.status(200).send("Usuários rebaixados com sucesso!");
     }
 
     function buscarDadosPolo(req, res){
@@ -408,9 +607,17 @@ module.exports = {
     cadastrar,
     listarTodas,
     buscarPorCnpj,
+    criarSolicitacaoEntrada,
+    buscarSolicitacoesEntrada,
+    aceitarSolicitacaoEntrada,
+    recusarSolicitacaoEntrada,
     buscarPorIdUsuario,
     buscarPolos,
     adicionarPolo,
+    buscarMembrosInstituicao,
+    removerUsuarioDaInstituicao,
+    promoverUsuario,
+    rebaixarUsuario,
     buscarDadosPolo,
     editarPolo,
     excluirPolo,

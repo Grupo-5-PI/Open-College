@@ -27,6 +27,7 @@ function autenticar(req, res) {
                                         nome: resultadoAutenticar[0].nome,
                                         senha: resultadoAutenticar[0].senha,
                                         foto: resultadoAutenticar[0].foto,
+                                        administrador: resultadoAutenticar[0].administrador,
                                     });
                         
                          

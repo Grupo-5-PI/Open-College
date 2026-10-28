@@ -100,6 +100,12 @@
                     sessionStorage.ID_USUARIO = json.id;
                     sessionStorage.FOTO_USUARIO = json.foto;
 
+                    // console.log(json.administrador)
+                    let ehAdministrador = json.administrador.data[0] === 1;
+
+                    
+                    sessionStorage.USUARIO_ADMINISTRADOR = ehAdministrador;
+
                     alert("Login feito com sucesso!")
 
                     setTimeout(function () {

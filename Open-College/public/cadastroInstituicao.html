@@ -58,7 +58,7 @@
 
 
         <div class="container-btn-etapa">
-            <button type="button" class="btn-proxima-etapa" onclick="cadastrar()">CADASTRAR</button>
+            <button type="button" class="btn-proxima-etapa" onclick="cadastrar()" id="botao_finalizar">CADASTRAR</button>
         </div>
 
         <div class="card_erro" id="cardErro">
@@ -86,10 +86,12 @@
         if (modo == "vincularInstituicao") {
             novaInstituicao.style.display = "none";
             vincularInstituicao.style.display = "block";
+            document.getElementById('botao_finalizar').innerHTML = "SOLICITAR ENTRADA";
             carregarInstituicaoSelect();
         } else {
             novaInstituicao.style.display = "block";
             vincularInstituicao.style.display = "none";
+            document.getElementById('botao_finalizar').innerHTML = 'CADASTRAR';
         }
     }
     function carregarInstituicaoSelect() {
@@ -168,12 +170,6 @@
             nomeVar = ipt_nome.value;
             cnpjVar = ipt_cnpj.value.replace(/\D/g, '');
 
-
-
-
-
-
-
             if (
                 nomeVar == "" ||
                 cnpjVar == ""
@@ -226,48 +222,72 @@
             }
         }
 
+        if(modo == "novaInstituicao"){
 
-        fetch("/instituicao/cadastrar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                modoServer: modo,
-                nomeServer: nomeVar,
-                cnpjServer: cnpjVar,
-                idInstituicaoServer: idInstituicao,
-                idUsuarioServer: idUsuario
+            fetch("/instituicao/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    // modoServer: modo,
+                    nomeServer: nomeVar,
+                    cnpjServer: cnpjVar,
+                    idInstituicaoServer: idInstituicao,
+                    idUsuarioServer: idUsuario
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
 
+                    if (resposta.ok) {
 
+                        cardErro.style.display = "none";
+                        alert("Cadastro de instituicao realizado com sucesso! Redirecionando para a página de login")
 
-            }),
-        })
-            .then(function (resposta) {
-                console.log("resposta: ", resposta);
+                        setTimeout(() => {
+                            window.location = "login.html";
+                        }, 2000);
 
-                if (resposta.ok) {
+                        limparFormulario();
 
+                    } else {
+                        throw "Houve um erro ao tentar realizar o cadastro!";
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
 
+        } else{
+
+            fetch("/instituicao/criarSolicitacaoEntrada", {
+                method: "POST",
+                headers: {
+                    "Content-Type":"application/json",
+                },
+                body: JSON.stringify({
+                    idUsuarioServer: idUsuario, 
+                    idInstituicaoServer: idInstituicao,
+                }),
+            })
+            .then(function(resposta){
+                if(resposta.status == 200){
                     cardErro.style.display = "none";
-                    alert("Cadastro de instituicao realizado com sucesso! Redirecionando para a página de login")
-
+                    alert("Solicitação de entrada em instituição criada com sucesso!\nRedirecionando para página de login.");
+                    
                     setTimeout(() => {
                         window.location = "login.html";
                     }, 2000);
 
                     limparFormulario();
-
-                } else {
-                    throw "Houve um erro ao tentar realizar o cadastro!";
                 }
             })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
+            .catch(function(erro){
+                console.log(erro);
+            })
 
-
-
-            });
+        }
 
         return false;
 
