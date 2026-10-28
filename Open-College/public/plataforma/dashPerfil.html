@@ -15,6 +15,7 @@
 </head>
 
 <!-- onload="validarSessao()" -->
+
 <body>
     <nav class="menu-lateral">
         <header class="menu-lateral-logo">
@@ -22,7 +23,7 @@
                 <div class="foto-wrapper">
                     <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
                 </div>
-                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+                <span class="nome-usuario" id="b_usuario">Carregando...</span>
             </a>
         </header>
         <nav class="content">
@@ -182,7 +183,7 @@
                         display: true,
                         text: 'Gráfico de distribuição por faixa etária',
                         color: '#ffffff',
-                        font: { size: 20, family: 'Telegraf' },
+                        font: { size: 23, family: 'Telegraf' },
                         padding: { bottom: 20 }
                     },
                     datalabels: {
@@ -191,7 +192,7 @@
                         color: '#ffffff',
                         font: {
                             weight: 'bold',
-                            size: 12
+                            size: 15
                         }
                     }
                 },
@@ -234,7 +235,7 @@
                         text: 'Distribuição por gênero',
                         color: '#ffffff',
                         font: {
-                            size: 20,
+                            size: 23,
                             family: 'Telegraf'
                         },
                         padding: {
@@ -245,7 +246,7 @@
                         color: '#ffffff',
                         font: {
                             weight: 'bold',
-                            size: 12
+                            size: 15
                         },
                         formatter: (valor) => `${valor}%`
                     },
@@ -254,7 +255,7 @@
                         labels: {
                             color: '#ffffff',
                             boxWidth: 12,
-                            padding: 15
+                            padding:15,
                         }
                     }
                 }
@@ -284,7 +285,7 @@
                         text: 'Ingressantes da rede pública x rede privada',
                         color: '#ffffff',
                         font: {
-                            size: 20,
+                            size: 23,
                             family: 'Telegraf'
                         },
                         padding: {
@@ -295,7 +296,7 @@
                         color: '#000',
                         font: {
                             weight: 'bold',
-                            size: 12
+                            size: 15
                         },
                         formatter: (valor) => `${valor}%`
                     },
@@ -303,8 +304,13 @@
                         position: 'left',
                         labels: {
                             color: '#ffffff',
-                            boxWidth: 12,
-                            padding: 15
+                            boxWidth: 16,
+                            boxHeight: 16,
+                            padding: 15,
+                            font: {
+                                size: 15,
+                                family: 'Telegraf'
+                            }
                         }
                     }
                 }

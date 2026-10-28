@@ -7,6 +7,22 @@ router.post("/cadastrar", function (req, res) {
     instituicaoController.cadastrar(req, res);
 });
 
+router.post("/criarSolicitacaoEntrada", function(req, res){
+    instituicaoController.criarSolicitacaoEntrada(req, res);
+});
+
+router.get("/buscarSolicitacoesEntrada/:idInstituicao", function(req, res){
+    instituicaoController.buscarSolicitacoesEntrada(req, res);
+});
+
+router.post("/aceitarSolicitacaoEntrada", function(req, res){
+    instituicaoController.aceitarSolicitacaoEntrada(req, res);
+});
+
+router.post("/recusarSolicitacaoEntrada", function(req, res){
+    instituicaoController.recusarSolicitacaoEntrada(req, res);
+});
+
 router.get("/listarTodas", function (req, res) {
     instituicaoController.listarTodas(req, res);
 });
@@ -25,6 +41,22 @@ router.get("/buscarPolos/:idInstituicao", function(req, res){
 
 router.post("/adicionarPolo", function(req, res){
     instituicaoController.adicionarPolo(req, res);
+});
+
+router.get("/buscarMembrosInstituicao/:idInstituicao", function(req, res){
+    instituicaoController.buscarMembrosInstituicao(req, res);
+});
+
+router.post("/removerUsuarioDaInstituicao", function(req, res){
+    instituicaoController.removerUsuarioDaInstituicao(req, res);
+});
+
+router.post("/promoverUsuario", function(req, res){
+    instituicaoController.promoverUsuario(req, res);
+});
+
+router.post("/rebaixarUsuario", function(req, res){
+    instituicaoController.rebaixarUsuario(req, res);
 });
 
 router.get("/buscarDadosPolo/:parametros", function(req, res){

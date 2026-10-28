@@ -72,7 +72,7 @@
         </header>
         <nav class="content">
             <ul id="nav-item">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="dashGeral.html">
                         <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
                         <span class="titulo-menu-lateral">
@@ -91,7 +91,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a href="minha_instituicao.html">
                         <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
                         <span class="titulo-menu-lateral">
@@ -127,6 +127,8 @@
                 <span>Minha Instituição</span>
             </div>
             <div class="header-direita">
+                <button onclick="abrirFecharPopup('popup_solicitacoes_entrada')">Solicitações de Entrada</button>
+                <button onclick="abrirFecharPopup('popup_membros_instituicao')">Membros da Instituição</button>
                 <button onclick="abrirFecharPopup('popup_adicionar_polo')">Adicionar Polo</button>
             </div>
         </header>
@@ -247,6 +249,93 @@
         </div>
     </div>
 
+    <div class="container-popup" id="popup_membros_instituicao">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_membros_instituicao')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup" style="margin-bottom: 10px;">
+                <span onclick="abrirFecharPopup('popup_membros_instituicao')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Membros da Instituição</span>
+            </div>
+
+            <div class="popup-interacao-botoes" style="margin-top: 0; margin-bottom: 30px;">
+                <button onclick="promoverUsuario()">
+                    PROMOVER
+                </button>
+                <button onclick="rebaixarUsuario()">
+                    REBAIXAR
+                </button>
+                <button onclick="removerUsuarioDaInstituicao()" class="botao-excluir">
+                    REMOVER
+                </button>
+            </div>
+
+            <div class="lista-popup" id="lista_membros_instituicao">
+
+                <!-- <div class="item-lista-popup">
+                    <div class="item-lista-esquerda">
+                        <img src="" alt="" class="foto-usuario-lista">
+                        <div>
+                            <span class="nome-usuario-lista">
+                                Nome do Usuário
+                            </span>
+                            <span class="perfil-usuario-lista">Perfil do Usuário</span>
+                        </div>
+                    </div>
+
+                    <div class="item-lista-direita">
+                        <input type="checkbox" name="checkbox-usuario" id="checkbox_usuario">
+                        <label for="checkbox_usuario" class="checkbox-usuario-lista"></label>
+                    </div>
+                </div> -->
+
+            </div>
+            
+            <span class="popup-mensagem">oieee</span>
+            
+        </div>
+    </div>
+
+    <div class="container-popup" id="popup_solicitacoes_entrada">
+        <div class="sombra-popup"   onclick="abrirFecharPopup('popup_solicitacoes_entrada')"></div>
+
+        <div class="popup-interacao">
+            <div class="header-popup">
+                <span onclick="abrirFecharPopup('popup_solicitacoes_entrada')">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                </span>
+                <span class="titulo-popup">Solicitações de Entrada</span>
+            </div>
+
+            <div class="lista-popup" id="lista_solicitacoes_entrada">
+
+                <!-- <div class="item-lista-popup">
+                    <div class="item-lista-esquerda">
+                        <img src="" alt="" class="foto-usuario-lista">
+                        <div>
+                            <span class="nome-usuario-lista">
+                                Nome do Usuário
+                            </span>
+                            <span class="perfil-usuario-lista">CPF: 123.456.789-01</span>
+                            <span class="perfil-usuario-lista">Data da Solicitação: dd/mm/yyyy</span>
+                        </div>
+                    </div>
+
+                    <div class="item-lista-direita-solicitacoes">
+                        <button class="aceitar"><img src="../img/icones/icon_correto.png" alt=""></button>
+                        <button class="recusar"><img src="../img/icones/icon_x_branco.png" alt=""></button>
+                    </div>
+                </div> -->
+
+            </div>
+            
+            <span class="popup-mensagem">oieee</span>
+            
+        </div>
+    </div>
+
 </body>
 </html>
 <script>
@@ -257,4 +346,6 @@
 <script src="../js/minhaInstituicaoScript.js"></script>
 <script>
     window.onload = exibirPolos();
+    window.onload = exibirMembrosInstituicao();
+    window.onload = exibirSolicitacoesEntrada();
 </script>

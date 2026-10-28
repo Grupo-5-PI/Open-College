@@ -4,6 +4,7 @@ function validarSessao() {
     var nome = sessionStorage.NOME_USUARIO;
     var idUsuario = sessionStorage.ID_USUARIO;
     var foto = sessionStorage.FOTO_USUARIO;
+    var administrador = sessionStorage.USUARIO_ADMINISTRADOR;
     
   
     var b_usuario = document.getElementById("b_usuario");

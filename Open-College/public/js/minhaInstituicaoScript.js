@@ -48,7 +48,7 @@ async function buscarPolos(){
 
     if(idInstituicao == null){
         console.log("Instituição não encontrada!");
-        return;
+        return null;
     }
 
     let retorno = await fetch(`/instituicao/buscarPolos/${idInstituicao}`)
@@ -93,7 +93,12 @@ async function exibirPolos(){
     let polos = await buscarPolos();
     clearInterval(mensagemPadrao);
 
-    if(polos == 404){
+    if(polos == null){
+        containerHtmlMensagem.innerHTML = `
+            Você não está vinculado a nenhuma instituição!<br>
+            <a href="../cadastroInstituicao.html">Crie ou solicite entrada à uma instituição!</a>
+        `;
+    } else if(polos == 404){
         containerHtmlMensagem.innerHTML = `
             Erro ao buscar polos!
         `;
@@ -224,6 +229,428 @@ async function adicionarPolo(){
 
     });
 
+}
+
+async function buscarMembrosInstituicao(){
+
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == undefined){
+        return;
+    }
+
+    let membrosInstituicao = await fetch(`/instituicao/buscarMembrosInstituicao/${idInstituicao}`)
+    .then(function(resposta){
+        if(resposta.status == 200){
+            return resposta.json();
+        } else{
+            return 204;
+        }
+    })
+    .catch(function(erro){
+        return 500;
+    })
+
+    return membrosInstituicao;
+    
+}
+
+async function exibirMembrosInstituicao(){
+
+    let membrosInstituicao = await buscarMembrosInstituicao();
+
+    console.log(membrosInstituicao);
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(membrosInstituicao == 204){
+        mensagemPopup.innerHTML = 'Nenhum usuário encontrado!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    if(membrosInstituicao == 500){
+        mensagemPopup.innerHTML = 'Falha ao buscar membros da instituição!';
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    let containerHTML = document.getElementById("lista_membros_instituicao");
+    containerHTML.innerHTML = "";
+    
+    for(let i = 0; i < membrosInstituicao.length; i++){
+
+        let membro = membrosInstituicao[i];
+        let membroEhAdministrador = membro.administrador.data[0] == 1 ? "Administrador" : "Membro Comum";
+
+
+        if(sessionStorage.USUARIO_ADMINISTRADOR == 'true' && membro.idUsuario != sessionStorage.ID_USUARIO){
+            // console.log("admin")
+            containerHTML.innerHTML += `
+            <div class="item-lista-popup">
+                <div class="item-lista-esquerda">
+                    <img src="${membro.foto}" class="foto-usuario-lista">
+                    <div>
+                        <span class="nome-usuario-lista">
+                        ${membro.nome}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membro.tipo}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membroEhAdministrador}
+                        </span>
+                    </div>
+                </div>
+                    
+                <div class="item-lista-direita">
+                    <input value="${membro.idUsuario}" type="checkbox" name="checkbox-usuario" id="checkbox_usuario_${membro.idUsuario}">
+                    <label for="checkbox_usuario_${membro.idUsuario}" class="checkbox-usuario-lista"></label>
+                </div>
+            </div>
+            `;
+        } else{
+            // console.log("nao admin")
+            containerHTML.innerHTML += `
+            <div class="item-lista-popup">
+                <div class="item-lista-esquerda">
+                    <img src="${membro.foto}" class="foto-usuario-lista">
+                    <div>
+                        <span class="nome-usuario-lista">
+                        ${membro.nome}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membro.tipo}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membroEhAdministrador}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+        
+    }
+    
+}
+
+function removerUsuarioDaInstituicao(){
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(sessionStorage.USUARIO_ADMINISTRADOR == 'false'){
+        mensagemPopup.innerHTML = "Permissão de administrador necessária para essa ação!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    const selecionados = document.querySelectorAll('input[name=checkbox-usuario]:checked');
+
+    if(selecionados.length == 0){
+        mensagemPopup.innerHTML = "Selecione um ou mais usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    
+    let valoresSelecionados = [];
+
+    for(let i = 0; i < selecionados.length; i++){
+        valoresSelecionados.push(selecionados[i].value);
+    }
+
+    fetch("/instituicao/removerUsuarioDaInstituicao", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        }, 
+        body: JSON.stringify({
+            idUsuarios: valoresSelecionados,
+        }),
+    })
+    .then(function(resposta){
+        if(resposta.status == 204){
+            mensagemPopup.innerHTML = "Usuários removidos com sucesso!";
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            recarregarPagina();
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao remover usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+    })
+
+}
+
+function promoverUsuario(){
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(sessionStorage.USUARIO_ADMINISTRADOR == 'false'){
+        mensagemPopup.innerHTML = "Permissão de administrador necessária para essa ação!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    const selecionados = document.querySelectorAll('input[name=checkbox-usuario]:checked');
+
+    if(selecionados.length == 0){
+        mensagemPopup.innerHTML = "Selecione um ou mais usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    
+    let valoresSelecionados = [];
+
+    for(let i = 0; i < selecionados.length; i++){
+        valoresSelecionados.push(selecionados[i].value);
+    }
+
+    fetch("/instituicao/promoverUsuario", {
+        method: "POST", 
+        headers: {
+            "Content-Type":"application/json", 
+        },
+        body: JSON.stringify({
+            idUsuarios: valoresSelecionados,
+        })
+    })
+    .then(function(resposta){
+        if(resposta.status == 200){
+            mensagemPopup.innerHTML = "Usuários promovidos com sucesso!";
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            recarregarPagina();
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao promover usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+    })
+    
+} 
+
+function rebaixarUsuario(){
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(sessionStorage.USUARIO_ADMINISTRADOR == 'false'){
+        mensagemPopup.innerHTML = "Permissão de administrador necessária para essa ação!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    const selecionados = document.querySelectorAll('input[name=checkbox-usuario]:checked');
+
+    if(selecionados.length == 0){
+        mensagemPopup.innerHTML = "Selecione um ou mais usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    
+    let valoresSelecionados = [];
+
+    for(let i = 0; i < selecionados.length; i++){
+        valoresSelecionados.push(selecionados[i].value);
+    }
+
+    fetch("/instituicao/rebaixarUsuario", {
+        method: "POST", 
+        headers: {
+            "Content-Type":"application/json", 
+        },
+        body: JSON.stringify({
+            idUsuarios: valoresSelecionados,
+        })
+    })
+    .then(function(resposta){
+        if(resposta.status == 200){
+            mensagemPopup.innerHTML = "Usuários rebaixados com sucesso!";
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            recarregarPagina();
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao rebaixar usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+    })
+    
+} 
+
+async function buscarSolicitacoesEntrada(){
+
+    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == null || idInstituicao == undefined){
+        return null;
+    }    
+    
+    let solicitacoes = await fetch(`/instituicao/buscarSolicitacoesEntrada/${idInstituicao}`)
+    .then(function(resposta){
+        if(resposta.status == 200){
+            return resposta.json();
+        } else{
+            return 204;
+        }
+    })
+    .catch(function(erro){
+        return 500;
+    })
+
+    return solicitacoes;
+    
+}
+
+async function exibirSolicitacoesEntrada(){
+
+    let solicitacoes = await buscarSolicitacoesEntrada();
+
+    if(solicitacoes == null){
+        return;
+    }
+
+    let containerHTML = document.getElementById("lista_solicitacoes_entrada");
+    containerHTML.innerHTML = "";
+
+    if(solicitacoes == 500){
+        containerHTML.innerHTML = "<span>Erro ao buscar solicitações de entrada!</span>";
+        return;
+    }
+    else if(solicitacoes == 204){
+        containerHTML.innerHTML = "<span>Nenhuma solicitação de entrada para a instituição!</span>";
+        return;
+    }
+
+    for(let i = 0; i < solicitacoes.length; i++){
+        let solicitacao = solicitacoes[i];
+
+        let cpf = solicitacao.cpf.replace(/\D/g, '') 
+        .replace(/^(\d{3})(\d)/, '$1.$2') 
+        .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') 
+        .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4') 
+        .slice(0, 14);
+
+        containerHTML.innerHTML += `
+            <div class="item-lista-popup">
+                <div class="item-lista-esquerda">
+                    <img src="${solicitacao.foto}" class="foto-usuario-lista">
+                    <div>
+                        <span class="nome-usuario-lista">${solicitacao.nome}</span>
+                        <span class="perfil-usuario-lista">CPF: ${cpf}</span>
+                        <span class="perfil-usuario-lista">Data da Solicitação: ${solicitacao.dataSolicitacao}</span>
+                    </div>
+                </div>
+
+                <div class="item-lista-direita-solicitacoes">
+                    <button class="aceitar" onclick="aceitarSolicitacaoEntrada(${solicitacao.idUsuario})"><img src="../img/icones/icon_correto.png" alt=""></button>
+                    <button class="recusar" onclick="recusarSolicitacaoEntrada(${solicitacao.idUsuario})"><img src="../img/icones/icon_x_branco.png" alt=""></button>
+                </div>
+            </div>
+        `;
+    }
+    
+
+    
+}
+
+async function aceitarSolicitacaoEntrada(idUsuario){
+
+    let mensagemPopup = document.querySelector("#popup_solicitacoes_entrada .popup-mensagem");
+    
+    if(idUsuario == undefined || idUsuario == null){
+        mensagemPopup.innerHTML = "Usuário solicitante não encontrado!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+        return;
+    }
+
+    idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == undefined || idInstituicao == null){
+        mensagemPopup.innerHTML = "Instituição não encontrada!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+        return;
+    }
+
+    fetch("/instituicao/aceitarSolicitacaoEntrada", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idUsuarioServer: idUsuario,
+        }),
+    })
+    .then(function(resposta){
+        mensagemPopup.innerHTML = "Solicitação de entrada aceita!";
+        mensagemPopup.style.color = "green";
+        mensagemPopup.style.display = "block";
+        recarregarPagina();
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao aceitar solicitação de entrada!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+    })
+    
+}
+
+async function recusarSolicitacaoEntrada(idUsuario){
+
+    let mensagemPopup = document.querySelector("#popup_solicitacoes_entrada .popup-mensagem");
+    
+    if(idUsuario == undefined || idUsuario == null){
+        mensagemPopup.innerHTML = "Usuário solicitante não encontrado!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+        return;
+    }
+
+    idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == undefined || idInstituicao == null){
+        mensagemPopup.innerHTML = "Instituição não encontrada!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+        return;
+    }
+
+    fetch("/instituicao/recusarSolicitacaoEntrada", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idUsuarioServer: idUsuario,
+        }),
+    })
+    .then(function(resposta){
+        mensagemPopup.innerHTML = "Solicitação de entrada recusada!";
+        mensagemPopup.style.color = "green";
+        mensagemPopup.style.display = "block";
+        recarregarPagina();
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao recusar solicitação de entrada!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+    })
+    
 }
 
 async function buscarDadosPolo(){

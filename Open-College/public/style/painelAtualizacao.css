@@ -1,36 +1,99 @@
 @import url('https://fonts.cdnfonts.com/css/bebas-neue');
 @import url('https://fonts.cdnfonts.com/css/telegraf');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-* {
+
+/* ================= CONFIGURAÇÕES GERAIS ================= */
+
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    min-height: 100%;
     margin: 0;
     padding: 0;
 }
 
-body {
-    min-height: 100vh;
+html{
+    overflow-x: hidden;
+}
+
+body{
     background-color: var(--corNavBar);
+    display: flex;
+    flex-direction: row;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: var(--cor7);
+    overflow-x: hidden;
+}
+
+main{
+    min-height: 100vh;
+    width: calc(100% - 70px);
+    min-width: 0;
+    margin-left: 70px;
     display: flex;
     flex-direction: column;
 }
 
-main {
-    box-sizing: border-box;
-    flex: 1;
+
+/* ================= MENU LATERAL ================= */
+
+.menu-lateral{
+    position: fixed;
+    top: 0;
+    left: 0;
     height: 100vh;
-    background-color: var(--corNavBar);
+    width: 70px;
+    background-color: var(--cor1);
+    transition: width 0.5s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.menu-lateral:hover{
+    width: 250px;
 }
 
 
-/* =============== Título ====================*/
-.topo-pagina {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr; /* esquerda | título | direita */
+/* ================= LOGO ================= */
+
+.menu-lateral-logo{
+    display: flex;
     align-items: center;
-    margin: 30px 80px 0 150px; /* mesmas margens laterais do .fundoNoti */
+    justify-content: center;
+    height: 80px;
+    padding-top: 40px;
 }
 
-.titulo-pagina {
-    grid-column: 2; /* mantém o título no meio */
+.menu-lateral-logo img{
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+    transition: height 0.5s ease;
+}
+
+.menu-lateral:hover .menu-lateral-logo img{
+    height: 60px;
+}
+
+
+/* ================= ÁREA DE ITENS ================= */
+
+.menu-lateral .content{
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.menu-lateral ul{
+    list-style: none;
+    padding: 0;
     margin: 0;
     text-align: center;
     font-family: 'Bebas Neue', sans-serif;
@@ -40,226 +103,656 @@ main {
     color: var(--cor1);
 }
 
-.icone-topo {
-    grid-column: 3;
-    justify-self: end;
-    background: none;
-    border: none;
-    padding: 6px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
 
-.icone-topo:hover {
-    background-color: rgba(0, 0, 0, 0.08);
-}
+/* ================= LINKS DO MENU ================= */
 
-.icone-topo:active {
-    transform: scale(0.92);
-}
-
-.icone-topo:focus-visible {
-    outline: 2px solid var(--cor1);
-    outline-offset: 2px;
-}
-
-.icone-topo img {
-    display: block;
-    width: clamp(32px, 3.5vw, 44px);
-    height: auto;
-}
-
-
-/* ================= AREA NOTIFICAÇÃO ================= */
-.fundoNoti {
-    background-color: var(--cor1);
-    border-radius: 30px;
+.nav-item a,
+.btn-sair button{
     display: flex;
-    flex-direction: column;
-    align-items: stretch; 
+    align-items: center;
     gap: 16px;
-    padding: 30px;
-    box-sizing: border-box;
-    margin: 30px 80px 50px 150px;
-   
-}
-
-/* ============================ NOTIFICAÇÃO ============================*/
-
-.lista-notificacoes {
+    height: 55px;
+    padding-left: 15px;
+    color: black;
+    font-size: 15px;
+    font-family: 'Telegraf', sans-serif;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
     width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 8px; 
-    box-sizing: border-box;
 }
 
-.notificacao {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    min-height: clamp(90px, 14vw, 140px);
-    padding: clamp(10px, 2vw, 20px) clamp(14px, 3vw, 28px);
-    background-color: var(--cor2);
-    border: 2px solid #1b5e1b;
-    border-radius: clamp(8px, 1.5vw, 14px);
-    box-shadow: 0 0 0 clamp(4px, 0.8vw, 8px) #b9f0b0;
-    box-sizing: border-box;
+.nav-item.active{
+    background-color: var(--cor9);
 }
 
-.notificacao-topo {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 12px;
+.nav-item:hover:not(.active),
+.btn-sair:hover{
+    background-color: #e3e9f7;
 }
 
-.notificacao-titulo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(18px, 2.5vw, 28px);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #000;
-    overflow-wrap: anywhere;
-}
 
-.notificacao-menu {
+/* ================= ÍCONES DO MENU ================= */
+
+.icone-menu-lateral{
+    display: block;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
     flex-shrink: 0;
-    background: none;
+    object-fit: contain;
+    padding: 3px;
+}
+
+
+/* ================= TEXTO DO MENU ================= */
+
+.titulo-menu-lateral{
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s ease 0.1s, max-width 0.4s ease;
+}
+
+.menu-lateral:hover .titulo-menu-lateral{
+    opacity: 1;
+    max-width: 200px;
+}
+
+
+/* ================= BOTÃO SAIR ================= */
+
+.sair{
+    padding-bottom: 20px;
+}
+
+.btn-sair button{
+    background: transparent;
     border: none;
-    padding: 0 4px;
-    font-size: clamp(24px, 3vw, 34px);
-    line-height: 1;
-    font-weight: bold;
     cursor: pointer;
-    color: #000;
+    text-align: start;
 }
 
-.notificacao-tempo {
-    align-self: flex-end;
-    font-family: Arial, sans-serif;
-    font-size: clamp(14px, 1.8vw, 20px);
-    color: #000;
-}
 
-/* ============== MODAL PREFERÊNCIAS =============*/
-.popup {
-    position: fixed;
-    inset: 0;
-    margin: auto;
-    width: min(92%, 560px);
-    height: fit-content;
-    max-height: 90vh;
-    padding: 0;
-    background-color: var(--cor7);
-    border: 4px solid #82d17a;
-    border-radius: 30px;
-    box-shadow: 0 0 30px rgba(130, 209, 122, 0.45);
-    overflow-y: auto;
-    box-sizing: border-box;
-}
+/* ================= FONTES DOS TÍTULOS ================= */
 
-.popup::backdrop {
-    background: rgba(0, 0, 0, 0.65);
-}
-
-.popup[open] {
-    animation: popup-entrada 0.25s ease;
-}
-
-@keyframes popup-entrada {
-    from { opacity: 0; transform: translateY(-20px) scale(0.96); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.form-atualizacao {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: clamp(18px, 4vw, 30px);
-}
-
-.popup-titulo {
-    margin: 0 0 4px;
-    text-align: center;
+.titulo-pagina h1,
+.conteudo-noticia h2,
+.titulo-atualizacoes h2,
+.dados-atualizacao h3{
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(22px, 3vw, 28px);
-    font-weight: normal;
+    font-weight: 400;
     letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #82d17a;
 }
 
 
-.campo {
+/* ================= CONTEÚDO PRINCIPAL ================= */
+
+.main-conteudo{
+    margin: 3vh 3vw;
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    min-width: 0; 
-}
-
-.campo label {
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-    font-weight: bold;
-    color: #82d17a;
-}
-
-.popup select,
-.popup input {
-    width: 100%;
-    height: 38px;
-    padding: 0 12px;
-    box-sizing: border-box;
-    background-color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    color: #000;
-    cursor: pointer;
-}
-
-.popup select:focus,
-.popup input:focus {
-    outline: 2px solid #82d17a;
-    outline-offset: 2px;
-}
-
-.linha-uf-municipio {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
     gap: 20px;
 }
 
-.btn-enviar {
-    align-self: center;
-    width: 130px;
-    height: 38px;
-    margin-top: 6px;
-    background-color: #3cc428;
-    border: none;
-    border-radius: 6px;
-    font-size: 20px;
-    color: #fff;
+
+/* ================= TÍTULO DA PÁGINA ================= */
+
+.titulo-pagina{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.titulo-pagina h1{
+    color: var(--cor1);
+    font-size: 3em;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.titulo-pagina h1 span{
+    color: var(--cor2);
+}
+
+.titulo-pagina p{
+    color: var(--cor1);
+    font-size: 1.1em;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 700px;
+}
+
+
+/* ================= SELEÇÃO DE INTERESSES ================= */
+
+.sessao-interesses{
+    background-color: var(--cor1);
+    width: 100%;
+    min-height: 70px;
+    padding: 15px 25px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.sessao-interesses label{
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--cor7);
+}
+
+.sessao-interesses select{
+    height: 40px;
+    flex: 1;
+    min-width: 0;
+    padding: 0 15px;
+    border: 1px solid var(--cor5);
+    border-radius: 5px;
+    background-color: white;
+    color: var(--cor7);
+    font-family: 'Inter', sans-serif;
+    font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.btn-enviar:hover {
-    background-color: #32a821;
+.sessao-interesses select:focus{
+    outline: 2px solid var(--cor3);
+    outline-offset: 1px;
 }
 
-.btn-enviar:active {
-    transform: scale(0.96);
+.sessao-interesses button{
+    background-color: var(--cor9);
+    color: white;
+    height: 40px;
+    padding: 0 25px;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-/* ================= MOBILE ================= */
-@media (max-width: 480px) {
-    .linha-uf-municipio {
-        grid-template-columns: 1fr;
-        gap: 14px;
+.sessao-interesses button:hover{
+    background-color: var(--cor8);
+}
+
+
+/* ================= DIVISÃO DO CONTEÚDO ================= */
+
+.conteudo-openletter{
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 25px;
+}
+
+
+/* ================= SESSÃO DE NOTÍCIAS ================= */
+
+.sessao-noticias{
+    flex: 1.5;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* ================= CARD DE NOTÍCIA ================= */
+
+.card-noticia{
+    background-color: var(--cor1);
+    width: 100%;
+    min-width: 0;
+    padding: 25px;
+    border-radius: 35px;
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+}
+
+.imagem-noticia{
+    width: 30%;
+    min-width: 150px;
+    max-width: 250px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.conteudo-noticia{
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* ================= TÍTULO DA NOTÍCIA ================= */
+
+.conteudo-noticia h2{
+    font-size: 1.8em;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--cor7);
+}
+
+
+/* ================= TEXTO DA NOTÍCIA ================= */
+
+.conteudo-noticia p{
+    font-size: 1em;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--cor7);
+}
+
+
+/* ================= RODAPÉ DA NOTÍCIA ================= */
+
+.rodape-noticia{
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rodape-noticia a{
+    color: var(--cor7);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.rodape-noticia a:hover{
+    text-decoration: underline;
+    color: var(--cor3);
+}
+
+
+/* ================= AVALIAÇÃO DAS NOTÍCIAS ================= */
+
+.avaliacao-noticia{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.avaliacao-noticia button{
+    background-color: transparent;
+    border: none;
+    color: var(--cor7);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.avaliacao-noticia button:hover{
+    color: var(--cor3);
+}
+
+
+/* ================= PAINEL DE NOTIFICAÇÕES ================= */
+
+.sessao-atualizacoes{
+    background-color: var(--cor1);
+    flex: 1;
+    min-width: 0;
+    padding: 20px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* ================= TÍTULO DO PAINEL ================= */
+
+.titulo-atualizacoes{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.titulo-atualizacoes h2{
+    font-size: 2em;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--corNavBar);
+}
+
+
+/* ================= LISTA DE ATUALIZAÇÕES ================= */
+
+.lista-atualizacoes{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+/* ================= CARD DE ATUALIZAÇÃO ================= */
+
+.item-atualizacao{
+    background-color: var(--cor2);
+    width: 100%;
+    min-height: 110px;
+    padding: 15px;
+    border: 3px solid #3b9d32;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    transition: background-color 0.2s;
+}
+
+.item-atualizacao:hover{
+    background-color: #92dc84;
+}
+
+
+/* ================= INFORMAÇÕES DA ATUALIZAÇÃO ================= */
+
+.dados-atualizacao{
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dados-atualizacao h3{
+    font-size: 1.3em;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--cor7);
+}
+
+.dados-atualizacao p{
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin: 0;
+    color: var(--cor7);
+}
+
+
+/* ================= DETALHES DA ATUALIZAÇÃO ================= */
+
+.detalhes-atualizacao{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    white-space: nowrap;
+}
+
+.detalhes-atualizacao button{
+    background-color: transparent;
+    border: none;
+    color: var(--cor7);
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.detalhes-atualizacao button:hover{
+    color: var(--cor3);
+}
+
+.detalhes-atualizacao span{
+    font-size: 0.9em;
+    color: var(--cor7);
+}
+
+
+/* ================= FOOTER ================= */
+
+footer{
+    background-color: var(--cor1);
+    width: 100%;
+    margin-top: auto;
+    padding: 15px;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2em;
+    color: var(--corNavBar);
+    flex-shrink: 0;
+}
+
+
+/* ================= RESPONSIVIDADE ================= */
+
+
+/* NOTEBOOKS E MONITORES MENORES */
+
+@media (max-width: 1400px){
+
+    .main-conteudo{
+        margin: 3vh 3vw;
+        gap: 20px;
     }
+
+    .conteudo-openletter{
+        gap: 20px;
+    }
+
+    .card-noticia{
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .imagem-noticia{
+        min-width: 130px;
+    }
+
+    .conteudo-noticia h2{
+        font-size: 1.6em;
+    }
+
+    .conteudo-noticia p{
+        font-size: 0.9em;
+    }
+
+    .sessao-atualizacoes{
+        padding: 15px;
+    }
+
+    .item-atualizacao{
+        padding: 12px;
+    }
+
+    .dados-atualizacao h3{
+        font-size: 1.2em;
+    }
+
+    .dados-atualizacao p{
+        font-size: 0.85em;
+    }
+
+}
+
+
+/* TABLETS */
+
+@media (max-width: 1100px){
+
+    .conteudo-openletter{
+        flex-direction: column;
+    }
+
+    .sessao-noticias,
+    .sessao-atualizacoes{
+        width: 100%;
+        flex: none;
+    }
+
+    .card-noticia{
+        padding: 20px;
+    }
+
+    .imagem-noticia{
+        width: 30%;
+        min-width: 180px;
+        max-width: 250px;
+    }
+
+    .sessao-interesses{
+        flex-wrap: wrap;
+    }
+
+    .sessao-interesses label{
+        width: 100%;
+    }
+
+    .sessao-interesses select{
+        flex: 1;
+    }
+
+}
+
+
+/* CELULARES */
+
+@media (max-width: 650px){
+
+    .menu-lateral{
+        width: 55px;
+    }
+
+    .menu-lateral:hover{
+        width: 200px;
+    }
+
+    .icone-menu-lateral{
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+    }
+
+    .nav-item a,
+    .btn-sair button{
+        padding-left: 10px;
+        gap: 12px;
+    }
+
+    .menu-lateral-logo img{
+        height: 25px;
+    }
+
+    .menu-lateral:hover .menu-lateral-logo img{
+        height: 45px;
+    }
+
+    main{
+        width: calc(100% - 55px);
+        margin-left: 55px;
+    }
+
+    .main-conteudo{
+        margin: 15px;
+        gap: 15px;
+    }
+
+    .titulo-pagina h1{
+        font-size: 2.2em;
+    }
+
+    .titulo-pagina p{
+        font-size: 0.9em;
+    }
+
+    .sessao-interesses{
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .sessao-interesses label{
+        width: 100%;
+        font-size: 1em;
+    }
+
+    .sessao-interesses select{
+        width: 100%;
+        flex: none;
+        font-size: 0.9em;
+    }
+
+    .sessao-interesses button{
+        width: 100%;
+    }
+
+    .conteudo-openletter{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .card-noticia{
+        flex-direction: column;
+        padding: 15px;
+        border-radius: 20px;
+    }
+
+    .imagem-noticia{
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .conteudo-noticia h2{
+        font-size: 1.5em;
+    }
+
+    .conteudo-noticia p{
+        font-size: 0.85em;
+    }
+
+    .rodape-noticia{
+        gap: 10px;
+    }
+
+    .avaliacao-noticia{
+        justify-content: flex-start;
+    }
+
+    .sessao-atualizacoes{
+        padding: 15px;
+        border-radius: 20px;
+    }
+
+    .titulo-atualizacoes h2{
+        font-size: 1.6em;
+    }
+
+    .item-atualizacao{
+        min-height: 90px;
+        padding: 10px;
+    }
+
+    .dados-atualizacao h3{
+        font-size: 1.1em;
+    }
+
+    .dados-atualizacao p{
+        font-size: 0.8em;
+    }
+
+    footer{
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
 }

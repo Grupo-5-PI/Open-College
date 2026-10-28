@@ -27,6 +27,82 @@ function cadastrar(nome, cnpj) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
+function criarSolicitacaoEntrada(idUsuario, idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO criarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        INSERT INTO tblSolicitacaoEntrada (idUsuario, idInstituicao) VALUES (${idUsuario}, ${idInstituicao});
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function buscarSolicitacoesEntrada(idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarSolicitacoesEntrada");
+
+    var instrucaoSql = `
+        SELECT 
+        se.idUsuario, 
+        usu.nome nome, 
+        usu.cpf cpf, 
+        usu.foto foto, 
+        CONCAT(DAY(se.dataSolicitacao),'/',MONTH(se.dataSolicitacao),'/',YEAR(se.dataSolicitacao)) AS dataSolicitacao 
+        FROM tblSolicitacaoEntrada se 
+        JOIN tblUsuario usu ON usu.idUsuario = se.idUsuario 
+        WHERE se.idInstituicao = ${idInstituicao} AND se.solicitacaoAceita IS NULL; 
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function aceitarSolicitacaoEntrada(idInstituicao, idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO aceitarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET idInstituicao = ${idInstituicao} WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function recusarSolicitacaoEntrada(idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO recusarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET idInstituicao = NULL WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function atualizarSolicitacaoEntrada(idInstituicao, idUsuario, solicitacaoAceita){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO atualizarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        UPDATE tblSolicitacaoEntrada 
+        SET solicitacaoAceita = ${solicitacaoAceita}, dataAtualizacaoSolicitacao = CURRENT_DATE 
+        WHERE idInstituicao = ${idInstituicao} AND idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function vincularUsuario(idUsuario, idInstituicao){
     var instrucaoSql = `
        UPDATE tblUsuario set idInstituicao = ${idInstituicao} WHERE idUsuario = ${idUsuario};
@@ -88,6 +164,58 @@ function adicionarPolo(logradouro, numero, bairro, municipio, uf, idInstituicao,
 
     return database.executar(instrucaoSql);
 
+}
+
+function buscarMembrosInstituicao(idInstituicao){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO buscarMembrosInstituicao");
+
+    var instrucaoSql = `
+        SELECT * FROM tblUsuario WHERE idInstituicao = ${idInstituicao} ORDER BY administrador DESC, nome ASC;
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function removerUsuarioDaInstituicao(idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO removerUsuarioDaInstituicao");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET idInstituicao = null WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function promoverUsuario(idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO promoverUsuario");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET administrador = 1 WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function rebaixarUsuario(idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO promoverUsuario");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET administrador = 0 WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
 }
 
 function buscarDadosPolo(idInstituicao, idPolo){
@@ -308,11 +436,20 @@ module.exports = {
     buscarPorCnpj,
     listarTodas,
     cadastrar,
+    criarSolicitacaoEntrada,
+    buscarSolicitacoesEntrada,
+    aceitarSolicitacaoEntrada, 
+    recusarSolicitacaoEntrada,
+    atualizarSolicitacaoEntrada, 
     vincularUsuario,
     buscarPorIdUsuario,
     buscarPolos,
     buscarIdParaAdicionarPolo,
     adicionarPolo,
+    buscarMembrosInstituicao,
+    removerUsuarioDaInstituicao,
+    promoverUsuario,
+    rebaixarUsuario,
     buscarDadosPolo,
     editarPolo,
     excluirCursosPolo,
