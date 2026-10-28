@@ -75,6 +75,21 @@ function aceitarSolicitacaoEntrada(idInstituicao, idUsuario){
     
 }
 
+function atualizarSolicitacaoEntrada(idInstituicao, idUsuario, solicitacaoAceita){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO atualizarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        UPDATE tblSolicitacaoEntrada 
+        SET solicitacaoAceita = ${solicitacaoAceita}, dataAtualizacaoSolicitacao = CURRENT_DATE 
+        WHERE idInstituicao = ${idInstituicao} AND idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function vincularUsuario(idUsuario, idInstituicao){
     var instrucaoSql = `
        UPDATE tblUsuario set idInstituicao = ${idInstituicao} WHERE idUsuario = ${idUsuario};
@@ -398,6 +413,7 @@ module.exports = {
     criarSolicitacaoEntrada,
     buscarSolicitacoesEntrada,
     aceitarSolicitacaoEntrada, 
+    atualizarSolicitacaoEntrada, 
     vincularUsuario,
     buscarPorIdUsuario,
     buscarPolos,

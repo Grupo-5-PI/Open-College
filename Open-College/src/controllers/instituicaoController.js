@@ -134,7 +134,15 @@ function cadastrar(req, res) {
         instituicaoModel.aceitarSolicitacaoEntrada(idInstituicao, idUsuario)
         .then(function(resposta){
             console.log(resposta);
-            res.status(200).json(resposta);
+            instituicaoModel.atualizarSolicitacaoEntrada(idInstituicao, idUsuario, 1)
+            .then(function(resposta){
+                console.log(resposta);
+                res.status(200).json(resposta);
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).json(erro);
+            })
         })
         .catch(function(erro){
             console.log(erro);
