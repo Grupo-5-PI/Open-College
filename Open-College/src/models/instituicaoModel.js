@@ -205,6 +205,19 @@ function promoverUsuario(idUsuario){
     
 }
 
+function rebaixarUsuario(idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO promoverUsuario");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET administrador = 0 WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function buscarDadosPolo(idInstituicao, idPolo){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -436,6 +449,7 @@ module.exports = {
     buscarMembrosInstituicao,
     removerUsuarioDaInstituicao,
     promoverUsuario,
+    rebaixarUsuario,
     buscarDadosPolo,
     editarPolo,
     excluirCursosPolo,

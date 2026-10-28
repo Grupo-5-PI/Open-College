@@ -55,6 +55,10 @@ router.post("/promoverUsuario", function(req, res){
     instituicaoController.promoverUsuario(req, res);
 });
 
+router.post("/rebaixarUsuario", function(req, res){
+    instituicaoController.rebaixarUsuario(req, res);
+});
+
 router.get("/buscarDadosPolo/:parametros", function(req, res){
     instituicaoController.buscarDadosPolo(req, res);
 });
