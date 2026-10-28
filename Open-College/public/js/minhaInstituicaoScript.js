@@ -285,7 +285,7 @@ async function exibirMembrosInstituicao(){
         let membroEhAdministrador = membro.administrador.data[0] == 1 ? "Administrador" : "Membro Comum";
 
 
-        if(sessionStorage.USUARIO_ADMINISTRADOR == 'true'){
+        if(sessionStorage.USUARIO_ADMINISTRADOR == 'true' && membro.idUsuario != sessionStorage.ID_USUARIO){
             // console.log("admin")
             containerHTML.innerHTML += `
             <div class="item-lista-popup">
@@ -311,7 +311,7 @@ async function exibirMembrosInstituicao(){
             </div>
             `;
         } else{
-            console.log("nao admin")
+            // console.log("nao admin")
             containerHTML.innerHTML += `
             <div class="item-lista-popup">
                 <div class="item-lista-esquerda">
@@ -322,6 +322,9 @@ async function exibirMembrosInstituicao(){
                         </span>
                         <span class="perfil-usuario-lista">
                         ${membro.tipo}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membroEhAdministrador}
                         </span>
                     </div>
                 </div>
