@@ -536,13 +536,21 @@ async function aceitarSolicitacaoEntrada(idUsuario){
         headers: {
             "Content-Type":"application/json",
         },
-        body: {
+        body: JSON.stringify({
             idInstituicaoServer: idInstituicao,
             idUsuarioServer: idUsuario,
-        },
+        }),
     })
     .then(function(resposta){
-
+        mensagemPopup.innerHTML = "Solicitação de entrada aceita!";
+        mensagemPopup.style.color = "green";
+        mensagemPopup.style.display = "block";
+        recarregarPagina();
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao aceitar solicitação de entrada!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
     })
     
 }
