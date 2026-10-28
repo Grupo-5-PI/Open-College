@@ -285,7 +285,7 @@ async function exibirMembrosInstituicao(){
         let membroEhAdministrador = membro.administrador.data[0] == 1 ? "Administrador" : "Membro Comum";
 
 
-        if(sessionStorage.USUARIO_ADMINISTRADOR == 'true'){
+        if(sessionStorage.USUARIO_ADMINISTRADOR == 'true' && membro.idUsuario != sessionStorage.ID_USUARIO){
             // console.log("admin")
             containerHTML.innerHTML += `
             <div class="item-lista-popup">
@@ -311,7 +311,7 @@ async function exibirMembrosInstituicao(){
             </div>
             `;
         } else{
-            console.log("nao admin")
+            // console.log("nao admin")
             containerHTML.innerHTML += `
             <div class="item-lista-popup">
                 <div class="item-lista-esquerda">
@@ -322,6 +322,9 @@ async function exibirMembrosInstituicao(){
                         </span>
                         <span class="perfil-usuario-lista">
                         ${membro.tipo}
+                        </span>
+                        <span class="perfil-usuario-lista">
+                        ${membroEhAdministrador}
                         </span>
                     </div>
                 </div>
@@ -429,6 +432,57 @@ function promoverUsuario(){
     })
     .catch(function(erro){
         mensagemPopup.innerHTML = "Erro ao promover usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+    })
+    
+} 
+
+function rebaixarUsuario(){
+
+    let mensagemPopup = document.querySelector("#popup_membros_instituicao .popup-mensagem");
+    
+    if(sessionStorage.USUARIO_ADMINISTRADOR == 'false'){
+        mensagemPopup.innerHTML = "Permissão de administrador necessária para essa ação!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+
+    const selecionados = document.querySelectorAll('input[name=checkbox-usuario]:checked');
+
+    if(selecionados.length == 0){
+        mensagemPopup.innerHTML = "Selecione um ou mais usuários!";
+        mensagemPopup.style.display = 'block';
+        mensagemPopup.style.color = 'red';
+        return;
+    }
+    
+    let valoresSelecionados = [];
+
+    for(let i = 0; i < selecionados.length; i++){
+        valoresSelecionados.push(selecionados[i].value);
+    }
+
+    fetch("/instituicao/rebaixarUsuario", {
+        method: "POST", 
+        headers: {
+            "Content-Type":"application/json", 
+        },
+        body: JSON.stringify({
+            idUsuarios: valoresSelecionados,
+        })
+    })
+    .then(function(resposta){
+        if(resposta.status == 200){
+            mensagemPopup.innerHTML = "Usuários rebaixados com sucesso!";
+            mensagemPopup.style.display = 'block';
+            mensagemPopup.style.color = 'green';
+            recarregarPagina();
+        }
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao rebaixar usuários!";
         mensagemPopup.style.display = 'block';
         mensagemPopup.style.color = 'red';
     })
