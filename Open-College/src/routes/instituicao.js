@@ -19,6 +19,10 @@ router.post("/aceitarSolicitacaoEntrada", function(req, res){
     instituicaoController.aceitarSolicitacaoEntrada(req, res);
 });
 
+router.post("/recusarSolicitacaoEntrada", function(req, res){
+    instituicaoController.recusarSolicitacaoEntrada(req, res);
+});
+
 router.get("/listarTodas", function (req, res) {
     instituicaoController.listarTodas(req, res);
 });

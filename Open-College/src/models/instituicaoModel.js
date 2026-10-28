@@ -75,6 +75,19 @@ function aceitarSolicitacaoEntrada(idInstituicao, idUsuario){
     
 }
 
+function recusarSolicitacaoEntrada(idUsuario){
+
+    console.log("\nACESSEI O INSTITUIÇÃO MODEL");
+    console.log("FUNÇÃO recusarSolicitacaoEntrada");
+
+    var instrucaoSql = `
+        UPDATE tblUsuario SET idInstituicao = NULL WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 function atualizarSolicitacaoEntrada(idInstituicao, idUsuario, solicitacaoAceita){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
@@ -413,6 +426,7 @@ module.exports = {
     criarSolicitacaoEntrada,
     buscarSolicitacoesEntrada,
     aceitarSolicitacaoEntrada, 
+    recusarSolicitacaoEntrada,
     atualizarSolicitacaoEntrada, 
     vincularUsuario,
     buscarPorIdUsuario,
