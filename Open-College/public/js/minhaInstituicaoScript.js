@@ -500,14 +500,50 @@ async function exibirSolicitacoesEntrada(){
                 </div>
 
                 <div class="item-lista-direita-solicitacoes">
-                    <button class="aceitar" onclick="aceitarSolicitacao(${solicitacao.idUsuario})"><img src="../img/icones/icon_correto.png" alt=""></button>
-                    <button class="recusar" onclick="recusarSolicitacao(${solicitacao})"><img src="../img/icones/icon_x_branco.png" alt=""></button>
+                    <button class="aceitar" onclick="aceitarSolicitacaoEntrada(${solicitacao.idUsuario})"><img src="../img/icones/icon_correto.png" alt=""></button>
+                    <button class="recusar" onclick="recusarSolicitacaoEntrada(${solicitacao})"><img src="../img/icones/icon_x_branco.png" alt=""></button>
                 </div>
             </div>
         `;
     }
     
 
+    
+}
+
+async function aceitarSolicitacaoEntrada(idUsuario){
+
+    let mensagemPopup = document.querySelector("#popup_solicitacoes_entrada .popup-mensagem");
+    
+    if(idUsuario == undefined || idUsuario == null){
+        mensagemPopup.innerHTML = "Usuário solicitante não encontrado!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+        return;
+    }
+
+    idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == undefined || idInstituicao == null){
+        mensagemPopup.innerHTML = "Instituição não encontrada!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+        return;
+    }
+
+    fetch("/instituicao/aceitarSolicitacaoEntrada", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: {
+            idInstituicaoServer: idInstituicao,
+            idUsuarioServer: idUsuario,
+        },
+    })
+    .then(function(resposta){
+
+    })
     
 }
 
