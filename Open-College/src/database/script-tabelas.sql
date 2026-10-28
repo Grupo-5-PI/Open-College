@@ -106,7 +106,8 @@ CREATE TABLE tblSolicitacaoEntrada(
 	idInstituicao INT NOT NULL, 
     idUsuario INT NOT NULL, 
     dataSolicitacao DATE DEFAULT (CURRENT_DATE) NOT NULL,
-    solicitacaoAceita BIT DEFAULT 0,
+    dataAtualizacaoSolicitacao DATE, 
+    solicitacaoAceita BIT,
     PRIMARY KEY (idInstituicao, idUsuario), 
     CONSTRAINT FK_tblSolicitacaoEntrada_tblInstituicao 
 		FOREIGN KEY (idInstituicao)
