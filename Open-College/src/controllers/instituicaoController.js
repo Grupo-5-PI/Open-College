@@ -151,6 +151,31 @@ function cadastrar(req, res) {
         
     }
 
+    function recusarSolicitacaoEntrada(req, res){
+
+        let idInstituicao = req.body.idInstituicaoServer;
+        let idUsuario = req.body.idUsuarioServer;
+
+        instituicaoModel.recusarSolicitacaoEntrada(idUsuario)
+        .then(function(resposta){
+            console.log(resposta);
+            instituicaoModel.atualizarSolicitacaoEntrada(idInstituicao, idUsuario, 0)
+            .then(function(resposta){
+                console.log(resposta);
+                res.status(200).json(resposta);
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).json(erro);
+            })
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).json(erro);
+        })
+        
+    }
+
     function buscarPorIdUsuario(req, res){
 
         let idUsuario = req.params.idUsuario;
@@ -555,6 +580,7 @@ module.exports = {
     criarSolicitacaoEntrada,
     buscarSolicitacoesEntrada,
     aceitarSolicitacaoEntrada,
+    recusarSolicitacaoEntrada,
     buscarPorIdUsuario,
     buscarPolos,
     adicionarPolo,

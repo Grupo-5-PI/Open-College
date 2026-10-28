@@ -501,7 +501,7 @@ async function exibirSolicitacoesEntrada(){
 
                 <div class="item-lista-direita-solicitacoes">
                     <button class="aceitar" onclick="aceitarSolicitacaoEntrada(${solicitacao.idUsuario})"><img src="../img/icones/icon_correto.png" alt=""></button>
-                    <button class="recusar" onclick="recusarSolicitacaoEntrada(${solicitacao})"><img src="../img/icones/icon_x_branco.png" alt=""></button>
+                    <button class="recusar" onclick="recusarSolicitacaoEntrada(${solicitacao.idUsuario})"><img src="../img/icones/icon_x_branco.png" alt=""></button>
                 </div>
             </div>
         `;
@@ -549,6 +549,50 @@ async function aceitarSolicitacaoEntrada(idUsuario){
     })
     .catch(function(erro){
         mensagemPopup.innerHTML = "Erro ao aceitar solicitação de entrada!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+    })
+    
+}
+
+async function recusarSolicitacaoEntrada(idUsuario){
+
+    let mensagemPopup = document.querySelector("#popup_solicitacoes_entrada .popup-mensagem");
+    
+    if(idUsuario == undefined || idUsuario == null){
+        mensagemPopup.innerHTML = "Usuário solicitante não encontrado!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+        return;
+    }
+
+    idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+
+    if(idInstituicao == undefined || idInstituicao == null){
+        mensagemPopup.innerHTML = "Instituição não encontrada!";
+        mensagemPopup.style.color = "red";
+        mensagemPopup.style.display = "block";
+        return;
+    }
+
+    fetch("/instituicao/recusarSolicitacaoEntrada", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idUsuarioServer: idUsuario,
+        }),
+    })
+    .then(function(resposta){
+        mensagemPopup.innerHTML = "Solicitação de entrada recusada!";
+        mensagemPopup.style.color = "green";
+        mensagemPopup.style.display = "block";
+        recarregarPagina();
+    })
+    .catch(function(erro){
+        mensagemPopup.innerHTML = "Erro ao recusar solicitação de entrada!";
         mensagemPopup.style.color = "red";
         mensagemPopup.style.display = "block";
     })
