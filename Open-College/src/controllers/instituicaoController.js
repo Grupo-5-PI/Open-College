@@ -335,6 +335,36 @@ function cadastrar(req, res) {
         res.status(200).send("Usuários promovidos com sucesso!");
     }
 
+    async function rebaixarUsuario(req, res){
+
+        let idUsuarios = req.body.idUsuarios;
+
+        let deuErroNaRequisicao;
+
+        for(let i = 0; i < idUsuarios.length; i++){
+            let idUsuario = idUsuarios[i];
+            deuErroNaRequisicao = await instituicaoModel.rebaixarUsuario(idUsuario).
+                then(function(resposta){
+                    console.log(resposta);
+                    return false;
+                })
+                .catch(function(erro){
+                    console.log(erro);
+                    return true;
+                })
+
+                if(deuErroNaRequisicao){
+                    break;
+                }
+        }
+
+        if(deuErroNaRequisicao){
+            res.status(500).send("Erro ao rebaixar usuários!");
+        }
+
+        res.status(200).send("Usuários rebaixados com sucesso!");
+    }
+
     function buscarDadosPolo(req, res){
 
         let dadosPolo = JSON.parse(req.params.parametros);
@@ -587,6 +617,7 @@ module.exports = {
     buscarMembrosInstituicao,
     removerUsuarioDaInstituicao,
     promoverUsuario,
+    rebaixarUsuario,
     buscarDadosPolo,
     editarPolo,
     excluirPolo,
