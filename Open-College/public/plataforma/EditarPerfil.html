@@ -9,269 +9,434 @@
 
     <link rel="stylesheet" href="../style/global.css">
     <link rel="stylesheet" href="../style/EditarPerfil.css">
-
+    <link rel="stylesheet" href="../style/menuLateral.css">
     <link rel="icon" href="../img/logo/logo.png">
 </head>
 
-<body>
+<body onload="carregar()">
 
     <!-- ================= MENU LATERAL ================= -->
 
-    <nav class="menu-lateral">
+    <body>
+        <nav class="menu-lateral">
+            <header class="menu-lateral-logo">
+                <a href="" class="perfil-link">
+                    <div class="foto-wrapper">
+                        <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
+                    </div>
+                    <span class="nome-usuario" id="b_usuario">Carregando...</span>
+                </a>
+            </header>
+            <nav class="content">
+                <ul id="nav-item">
+                    <li class="nav-item">
+                        <a href="dashGeral.html">
+                            <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
+                            <span class="titulo-menu-lateral">
+                                Dashboard
+                            </span>
+                        </a>
+                    </li>
 
-        <header class="menu-lateral-logo">
-            <span class="logo">
-                <img src="../img/logo/logo.png" alt="">
-            </span>
-        </header>
+                    <li class="nav-item">
+                        <a href="painelAtualizacao.html">
+                            <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
+                                class="icone-menu-lateral">
+                            <span class="titulo-menu-lateral">
+                                Painel de Atualização
+                            </span>
+                        </a>
+                    </li>
 
-        <nav class="content">
+                    <li class="nav-item">
+                        <a href="minha_instituicao.html">
+                            <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição"
+                                class="icone-menu-lateral">
+                            <span class="titulo-menu-lateral">
+                                Minha Instituição
+                            </span>
+                        </a>
+                    </li>
 
-            <ul id="nav-item">
+                    <li class="nav-item active">
+                        <a href="EditarPerfil.html">
+                            <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
+                            <span class="titulo-menu-lateral">
+                                Minha conta
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-                <li class="nav-item">
-                    <a href="dashGeral.html">
-                        <img src="../img/icones/iconHome.png" alt="Dashboard" class="icone-menu-lateral">
-                        <span class="titulo-menu-lateral">
-                            Dashboard
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="painelAtualizacao.html">
-
-                        <img src="../img/icones/iconNotificacao.png" alt="Painel de Atualização"
-                            class="icone-menu-lateral">
-
-                        <span class="titulo-menu-lateral">
-                            Painel de Atualização
-                        </span>
-
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="minha_instituicao.html">
-
-                        <img src="../img/icones/iconInstituicao.png" alt="Minha Instituição" class="icone-menu-lateral">
-
-                        <span class="titulo-menu-lateral">
-                            Minha Instituição
-                        </span>
-
-                    </a>
-                </li>
-
-                <li class="nav-item active">
-                    <a href="EditarPerfil.html">
-
-                        <img src="../img/icones/iconPerfil.png" alt="Minha conta" class="icone-menu-lateral">
-
-                        <span class="titulo-menu-lateral">
-                            Minha conta
-                        </span>
-
-                    </a>
-                </li>
-
-            </ul>
-
+            <div class="sair">
+                <div class="btn-sair">
+                    <button>
+                        <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                        <span>Sair</span>
+                    </button>
+                </div>
+            </div>
         </nav>
+        <main>
 
-        <div class="sair">
+            <!-- ================= CONTEÚDO ================= -->
 
-            <div class="btn-sair">
+            <main>
 
-                <button onclick="limparSessao()">
+                <section class="perfil-container">
 
-                    <img src="../img/icones/iconSair.png" alt="Sair" class="icone-menu-lateral">
+                    <!-- ================= PERFIL ================= -->
 
-                    <span>Sair</span>
+                      
 
-                </button>
+                    <div class="perfil-resumo">
 
-            </div>
-
-        </div>
-
-    </nav>
-
-
-    <!-- ================= CONTEÚDO ================= -->
-
-    <main>
-
-        <section class="perfil-container">
-
-            <!-- ================= PERFIL ================= -->
-
-            <div class="perfil-resumo">
-
-                <div onclick="mudarFotoPerfil()" id="perfilIcone"" class=" perfil-icone">
-                </div>
-
-                <div class="perfil-informacoes">
-
-                    <h1 id="nomePerfil">JOÃO SILVA</h1>
-
-                    <span id="cargoPerfil" class="perfil-cargo">
-                        Analista de Marketing
-                    </span>
-
-                    <div class="cadastro-verificado">
-
-                        <span class="icone-verificado">✓</span>
-
-                        <span>
-                            Cadastro Verificado
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ================= DADOS CADASTRAIS ================= -->
-
-            <div class="dados-cadastrais">
-
-                <h2>Meus Dados Cadastrais</h2>
-
-
-                <form>
-
-                    <div class="formulario">
-
-
-                        <!-- NOME -->
-
-                        <div class="campo">
-
-                            <label for="nome">
-                                <img src="../img/icones/iconUsuario.png" alt="Email" class="icone-campo">
-
-                                NOME
-                            </label>
-
-                            <input type="text" id="nome" name="nome" placeholder="João Silva">
-
+                        <div onclick="mudarFotoPerfil()" id="perfilIcone"" class="perfil-icone">
                         </div>
 
+                        <div class="perfil-informacoes">
 
-                        <!-- CPF -->
+                            <h1 id="nomePerfil"></h1>
 
-                        <div class="campo">
+                            <span id="cargoPerfil" class="perfil-cargo">
+                            </span>
 
-                            <label for="cpf">
-                                <img src="../img/icones/iconCPF.png" alt="CPF" class="icone-campo">
-                                CPF
-                            </label>
+                            <div class="cadastro-verificado">
 
-                            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00">
+                                <span class="icone-verificado">✓</span>
 
-                        </div>
+                                <span>
+                                    Cadastro Verificado
+                                </span>
 
-
-                        <!-- TELEFONE -->
-
-                        <div class="campo">
-
-                            <label for="telefone">
-                                <img src="../img/icones/iconTelefone.png" alt="Email" class="icone-campo">
-
-                                TELEFONE
-                            </label>
-
-                            <input type="tel" id="telefone" name="telefone" placeholder="(XX) X XXXX-XXXX">
-
-                        </div>
-
-
-                        <!-- EMAIL -->
-
-                        <div class="campo">
-
-                            <label for="email">
-                                <img src="../img/icones/iconEmail.png" alt="Email" class="icone-campo">
-
-                                EMAIL
-                            </label>
-
-                            <input type="email" id="email" name="email" placeholder="joaosilva@gmail.com">
-
-                        </div>
-
-
-                        <!-- SENHA -->
-
-                        <div class="campo">
-
-                            <label for="senha">
-                                <img src="../img/icones/iconSenha.png" alt="Email" class="icone-campo">
-
-                                SENHA
-                            </label>
-
-                            <input type="password" id="senha" name="senha" placeholder="........">
-
-                        </div>
-
-
-                        <!-- CONFIRMAR SENHA -->
-
-                        <div class="campo">
-
-                            <label for="confirmarSenha">
-                                <img src="../img/icones/iconSenha.png" alt="Email" class="icone-campo">
-
-                                CONFIRME SUA SENHA
-                            </label>
-
-                            <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="........">
+                            </div>
 
                         </div>
 
                     </div>
 
 
-                    <!-- BOTÃO -->
+                    <!-- ================= DADOS CADASTRAIS ================= -->
 
-                    <div class="area-botao">
+                    <div class="dados-cadastrais">
 
-                        <button type="submit" class="btn-atualizar">
-                            ATUALIZAR
-                        </button>
+                        <h2>Atualizar Meus Dados Cadastrais</h2>
+
+
+                        <form>
+
+                            <div class="formulario">
+
+
+                                <!-- NOME -->
+
+                                <div class="campo">
+
+                                    <label for="nome">
+                                        <img src="../img/icones/iconPerfil.png" alt="Email" class="icone-campo">
+
+                                        NOME
+                                    </label>
+
+                                    <input type="text" id="campo_nome" name="nome" placeholder="João Silva">
+
+                                </div>
+
+
+                                <!-- CPF -->
+
+                                <div class="campo">
+
+                                    <label for="cpf">
+                                        <img src="../img/icones/iconCPF3.png" alt="CPF" class="icone-campo">
+                                        CPF
+                                    </label>
+
+                                    <input type="text" id="campo_cpf" oninput="this.value = mascaraCpf(this.value)" name="cpf" placeholder="000.000.000-00">
+
+                                </div>
+
+
+                                <!-- TELEFONE -->
+
+                                <div class="campo">
+
+                                    <label for="telefone">
+                                        <img src="../img/icones/iconTelefone3.png" alt="Email" class="icone-campo">
+
+                                        TELEFONE
+                                    </label>
+
+                                    <input type="tel" id="campo_telefone" maxlength="15"  oninput="this.value= mascaraTelefone(this.value)" name="telefone"
+                                        placeholder="(XX) X XXXX-XXXX">
+
+                                </div>
+
+
+                                <!-- EMAIL -->
+
+                                <div class="campo">
+
+                                    <label for="email">
+                                        <img src="../img/icones/iconEmail3.png" alt="Email" class="icone-campo">
+
+                                        EMAIL
+                                    </label>
+
+                                    <input type="email" id="campo_email" name="email" placeholder="joaosilva@gmail.com">
+
+                                </div>
+
+
+                                <!-- SENHA -->
+
+                                <div class="campo">
+
+                                    <label for="senha">
+                                        <img src="../img/icones/iconSenha3.png" alt="Email" class="icone-campo">
+
+                                        SENHA
+                                    </label>
+
+                                    <input type="password" id="campo_senha" name="senha" placeholder="........">
+
+                                </div>
+
+
+                                <!-- CONFIRMAR SENHA -->
+
+                                <div class="campo">
+
+                                    <label for="confirmarSenha">
+                                        <img src="../img/icones/iconSenha3.png" alt="Email" class="icone-campo">
+
+                                        CONFIRME SUA SENHA
+                                    </label>
+
+                                    <input type="password" id="campo_confirmar_senha" name="confirmarSenha"
+                                        placeholder="........">
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- BOTÃO -->
+
+                            <div class="area-botao">
+
+                                <button type="button" class="btn-atualizar" onclick="atualizar_perfil()">
+                                    ATUALIZAR
+                                </button>
+
+                            </div>
+
+                        </form>
 
                     </div>
 
-                </form>
+                </section>
 
-            </div>
-
-        </section>
-
-    </main>
+            </main>
 
 
-    <!-- ================= FOOTER ================= -->
+            <!-- ================= FOOTER ================= -->
 
-    <footer class="footer">
+            <footer class="footer">
 
-        <p>
-            COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.
-        </p>
+                <p>
+                    COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.
+                </p>
 
-    </footer>
+            </footer>
 
-</body>
+    </body>
 
 </html>
 
 <script>
 
+    function carregar(){
+
+        let nomeUsuario = sessionStorage.NOME_USUARIO
+        let tipoUsuario = sessionStorage.TIPO_USUARIO
+
+        nomePerfil.innerHTML = nomeUsuario.toUpperCase();
+        cargoPerfil.innerHTML = tipoUsuario;
+
+
+    }
+
+    
+    function mascaraCpf(limpo) {
+
+        return limpo.replace(/\D/g, '') // aqui remove tudo que nao e numero
+            .replace(/^(\d{3})(\d)/, '$1.$2') // coloca os ponto dos 3 primeiros digitos
+            .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // ponto dps do 6 digito
+            .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4') // ponto e o hifen             
+            .slice(0, 14); // deixa o tamanho maximo em 14
+    }
+
+    function mascaraTelefone(limpo){
+        return limpo.replace(/\D/g,'') // remove tudo que nao e numero
+        .replace(/^(\d{2})(\d)/g, '($1) $2') // parenteses no DDD
+        .replace(/(\d{5})(\d)/, '$1-$2') // coloca o hifen pos o 5 digito
+        .slice(0,15); // limita o tamanho em 15
+    }
+
+    function atualizar_perfil() {
+
+        let nome = campo_nome.value
+        let cpf = campo_cpf.value.replace(/\D/g, '')
+        let telefone = campo_telefone.value.replace(/\D/g, '')
+        let email = campo_email.value
+        let senha = campo_senha.value
+        let confirmar_senha = document.getElementById('campo_confirmar_senha').value.trim()
+        let id = sessionStorage.getItem("ID_USUARIO")
+
+        if (
+            nome == "" ||
+            cpf == "" ||
+            telefone == "" ||
+            email == "" ||
+            senha == "" ||
+            confirmar_senha == ""
+        ) { // verificar os campos em branco
+
+            alert("Existem campos em branco, preencha todos os dados para continuar.")
+            return
+
+        }
+        if (nome !== '') {
+            if (nome.length <= 1) { // verificar se o tamanho do nome é maior que 1
+                alert("Nome inválido!")
+                return
+            }
+
+            for (let i = 0; i < nome.length; i++) {
+
+                if (nome[i] == ' ') {
+                    continue; // para se o nome tiver espaço, caso contrario nao da para cadastrar nomes como Vitor Henrique
+                }
+
+                if (nome[i].toLowerCase() == nome[i].toUpperCase()) { // se o caractere digitado nao tiver como ser transformado para letra maiuscula ent é numero ou simbolo
+                    alert(`Nome inválido`)
+                    return
+                }
+
+            }
+
+        } if (cpf.length !== 11) {
+            alert("CPF inválido")
+            return
+        }
+        if (telefone.length !== 11) {
+            alert("Número de telefone inválido")
+            return
+        }
+        if (!email.includes('@') || !email.endsWith('.com')) {
+            alert("Insira um email válido, email deve conter @ e .com")
+            return
+        }
+        if (senha.length <= 6) {
+            alert("Senha inválida, insira mais de 6 caracteres")
+            return
+        }
+        if (senha != confirmar_senha || confirmar_senha != senha) {
+            alert("Confirmação de senha negada. Senhas diferentes")
+            return
+        }
+
+        fetch('/usuarios/atualizar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nome: nome,
+                cpf: cpf,
+                telefone: telefone,
+                email: email,
+                senha: senha,
+                confirmar_senha: confirmar_senha,
+                id: id
+            })
+        })
+            .then(resposta => {
+                if (!resposta.ok) {
+                    throw new Error("Erro ao atualizar os dados.");
+                }
+
+                return resposta.json();
+            })
+            .then(resultado => {
+
+                sessionStorage.clear
+
+                fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: email,
+                senhaServer: senha,
+
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO logar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.FOTO_USUARIO = json.foto;
+                    sessionStorage.TIPO_USUARIO = json.tipo;
+
+                    // console.log(json.administrador)
+                    let ehAdministrador = json.administrador.data[0] === 1;
+
+                    
+                    sessionStorage.USUARIO_ADMINISTRADOR = ehAdministrador;
+
+                    
+                    alert("Perfil atualizado com sucesso!");
+
+                    setTimeout(function () {
+                        
+                window.location.reload();
+
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+                alert("Email ou senha invalidos")
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+                
+            })
+            .catch(erro => {
+                console.error('Erro ao atualizar perfil:', erro);
+                alert("Erro ao atualizar o perfil. Tente novamente.");
+            });
+    }
 
 
 </script>

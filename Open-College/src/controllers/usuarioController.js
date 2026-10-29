@@ -28,6 +28,7 @@ function autenticar(req, res) {
                                         senha: resultadoAutenticar[0].senha,
                                         foto: resultadoAutenticar[0].foto,
                                         administrador: resultadoAutenticar[0].administrador,
+                                        tipo: resultadoAutenticar[0].tipo,
                                     });
                         
                          
@@ -97,10 +98,29 @@ function cadastrar(req, res) {
             );
     }
 }
+
+function atualizar(req, res) {
+    var nome = req.body.nome;
+    var cpf = req.body.cpf;
+    var telefone = req.body.telefone;
+    var email = req.body.email;
+    var senha = req.body.senha;
+    var id = req.body.id;
+
+    usuarioModel.atualizar(nome, cpf, telefone, email, senha, id)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
  
 
 module.exports = {
     autenticar,
     cadastrar,
+    atualizar
    
 }
