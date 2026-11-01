@@ -286,14 +286,22 @@ main header button:hover{
     margin-bottom: 10vh;
 }
 
-.icone-sair{
+.popup-icone{
     width: 2em;
     position: absolute;
+
+}
+
+.popup-icone:hover{
+    cursor: pointer;
+}
+
+.icone-sair{
     left: 2vw;
 }
 
-.icone-sair:hover{
-    cursor: pointer;
+.icone-recarregar{
+    right: 2vw;
 }
 
 .titulo-popup{
