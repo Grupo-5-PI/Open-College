@@ -127,7 +127,7 @@
                 <span id="titulo-pagina">Minha Instituição</span>
             </div>
             <div class="header-direita">
-                <button onclick="abrirFecharPopup('popup_solicitacoes_entrada')">Solicitações de Entrada</button>
+                <button id="botao_popup_solicitacoes_entrada" onclick="abrirFecharPopup('popup_solicitacoes_entrada')">Solicitações de Entrada</button>
                 <button id="botao_popup_membros_instituicao" onclick="abrirFecharPopup('popup_membros_instituicao')">Membros da Instituição</button>
                 <button onclick="abrirFecharPopup('popup_adicionar_polo')">Adicionar Polo</button>
             </div>
@@ -310,6 +310,9 @@
                     <img src="../img/icones/icon_x_branco.png" alt="" class="popup-icone icone-sair">
                 </span>
                 <span class="titulo-popup">Solicitações de Entrada</span>
+                <span onclick="exibirSolicitacoesEntrada()">
+                    <img src="../img/icones/icon_reload_branco.png" class="popup-icone icone-recarregar">
+                </span>
             </div>
 
             <div class="lista-popup" id="lista_solicitacoes_entrada">
