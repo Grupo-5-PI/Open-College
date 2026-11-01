@@ -246,12 +246,7 @@ let membrosForamBuscados = false;
 
 document.getElementById("botao_popup_membros_instituicao").addEventListener("click", function(){
     if(!membrosForamBuscados){
-        console.log("Buscando membros da instituição!!!");
         membrosForamBuscados = exibirMembrosInstituicao();
-        console.log("membrosForamBuscados: ", membrosForamBuscados);
-    } else{
-        console.log("Membros da instituição já buscados antes!");
-        console.log("membrosForamBuscados: ", membrosForamBuscados);
     }
 });
 
