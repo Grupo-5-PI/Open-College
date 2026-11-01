@@ -44,9 +44,10 @@ function voltarPagina(pagina){
 
 async function buscarPolos(){
 
-    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    // let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    let idInstituicao = sessionStorage?.ID_INSTITUICAO;
 
-    if(idInstituicao == null){
+    if(idInstituicao == undefined || idInstituicao == null){
         console.log("Instituição não encontrada!");
         return null;
     }
@@ -63,7 +64,7 @@ async function buscarPolos(){
         }
     });
 
-    console.log(retorno);
+    // console.log(retorno);
     
     return retorno;
 
@@ -156,7 +157,14 @@ async function buscarInstituicaoPorIdUsuario(){
         return resposta.json();
     });
 
-    return instituicao;
+    // return instituicao;
+
+    
+    sessionStorage.ID_INSTITUICAO = instituicao?.idInstituicao;
+    sessionStorage.NOME_INSTITUICAO = instituicao?.nome;
+    sessionStorage.CNPJ_INSTITUICAO = instituicao?.cnpj;
+
+    exibirPolos();
 
 }
 
@@ -167,7 +175,8 @@ async function adicionarPolo(){
     let bairro = document.getElementById("input_bairro_polo").value;
     let municipio = document.getElementById("select_municipio_polo").value;
     let uf = document.getElementById("select_uf_polo").value;
-    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    // let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    let idInstituicao = sessionStorage?.ID_INSTITUICAO;
     
     let mensagemPopup = document.querySelector("#popup_adicionar_polo .popup-mensagem");
 
@@ -231,9 +240,20 @@ async function adicionarPolo(){
 
 }
 
+// EVENTO PARA BUSCAR OS MEMBROS DA INSTITUIÇÃO
+
+let membrosForamBuscados = false;
+
+document.getElementById("botao_popup_membros_instituicao").addEventListener("click", function(){
+    if(!membrosForamBuscados){
+        membrosForamBuscados = exibirMembrosInstituicao();
+    }
+});
+
 async function buscarMembrosInstituicao(){
 
-    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    // let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    let idInstituicao = sessionStorage?.ID_INSTITUICAO;
 
     if(idInstituicao == undefined){
         return;
@@ -243,7 +263,7 @@ async function buscarMembrosInstituicao(){
     .then(function(resposta){
         if(resposta.status == 200){
             return resposta.json();
-        } else{
+        } else if(resposta.status == 204){
             return 204;
         }
     })
@@ -267,13 +287,13 @@ async function exibirMembrosInstituicao(){
         mensagemPopup.innerHTML = 'Nenhum usuário encontrado!';
         mensagemPopup.style.display = 'block';
         mensagemPopup.style.color = 'red';
-        return;
+        return false;
     }
     if(membrosInstituicao == 500){
         mensagemPopup.innerHTML = 'Falha ao buscar membros da instituição!';
         mensagemPopup.style.display = 'block';
         mensagemPopup.style.color = 'red';
-        return;
+        return false;
     }
 
     let containerHTML = document.getElementById("lista_membros_instituicao");
@@ -333,6 +353,8 @@ async function exibirMembrosInstituicao(){
         }
         
     }
+
+    return true;
     
 }
 
@@ -489,9 +511,18 @@ function rebaixarUsuario(){
     
 } 
 
+let solicitacoesForamBuscadas = false;
+
+document.getElementById("botao_popup_solicitacoes_entrada").addEventListener("click", function(){
+    if(!solicitacoesForamBuscadas){
+        solicitacoesForamBuscadas = exibirSolicitacoesEntrada();
+    }
+});
+
 async function buscarSolicitacoesEntrada(){
 
-    let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    // let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    let idInstituicao = sessionStorage?.ID_INSTITUICAO;
 
     if(idInstituicao == null || idInstituicao == undefined){
         return null;
@@ -517,8 +548,8 @@ async function exibirSolicitacoesEntrada(){
 
     let solicitacoes = await buscarSolicitacoesEntrada();
 
-    if(solicitacoes == null){
-        return;
+    if(solicitacoes == undefined || solicitacoes == null){
+        return false;
     }
 
     let containerHTML = document.getElementById("lista_solicitacoes_entrada");
@@ -526,11 +557,11 @@ async function exibirSolicitacoesEntrada(){
 
     if(solicitacoes == 500){
         containerHTML.innerHTML = "<span>Erro ao buscar solicitações de entrada!</span>";
-        return;
+        return false;
     }
     else if(solicitacoes == 204){
         containerHTML.innerHTML = "<span>Nenhuma solicitação de entrada para a instituição!</span>";
-        return;
+        return false;
     }
 
     for(let i = 0; i < solicitacoes.length; i++){
@@ -561,7 +592,7 @@ async function exibirSolicitacoesEntrada(){
         `;
     }
     
-
+    return true;
     
 }
 
@@ -576,7 +607,8 @@ async function aceitarSolicitacaoEntrada(idUsuario){
         return;
     }
 
-    idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    // idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    let idInstituicao = sessionStorage?.ID_INSTITUICAO;
 
     if(idInstituicao == undefined || idInstituicao == null){
         mensagemPopup.innerHTML = "Instituição não encontrada!";
@@ -620,7 +652,8 @@ async function recusarSolicitacaoEntrada(idUsuario){
         return;
     }
 
-    idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    // idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
+    let idInstituicao = sessionStorage?.ID_INSTITUICAO;
 
     if(idInstituicao == undefined || idInstituicao == null){
         mensagemPopup.innerHTML = "Instituição não encontrada!";
