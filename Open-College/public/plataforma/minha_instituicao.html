@@ -124,11 +124,11 @@
     <main>
         <header>
             <div class="header-esquerda">
-                <span>Minha Instituição</span>
+                <span id="titulo-pagina">Minha Instituição</span>
             </div>
             <div class="header-direita">
                 <button onclick="abrirFecharPopup('popup_solicitacoes_entrada')">Solicitações de Entrada</button>
-                <button onclick="abrirFecharPopup('popup_membros_instituicao')">Membros da Instituição</button>
+                <button id="botao_popup_membros_instituicao" onclick="abrirFecharPopup('popup_membros_instituicao')">Membros da Instituição</button>
                 <button onclick="abrirFecharPopup('popup_adicionar_polo')">Adicionar Polo</button>
             </div>
         </header>
@@ -345,7 +345,8 @@
 
 <script src="../js/minhaInstituicaoScript.js"></script>
 <script>
-    window.onload = exibirPolos();
-    window.onload = exibirMembrosInstituicao();
-    window.onload = exibirSolicitacoesEntrada();
+    window.onload = buscarInstituicaoPorIdUsuario();
+    // window.onload = exibirPolos();
+    // window.onload = exibirMembrosInstituicao();
+    // window.onload = exibirSolicitacoesEntrada();
 </script>
