@@ -511,6 +511,14 @@ function rebaixarUsuario(){
     
 } 
 
+let solicitacoesForamBuscadas = false;
+
+document.getElementById("botao_popup_solicitacoes_entrada").addEventListener("click", function(){
+    if(!solicitacoesForamBuscadas){
+        solicitacoesForamBuscadas = exibirSolicitacoesEntrada();
+    }
+});
+
 async function buscarSolicitacoesEntrada(){
 
     // let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
@@ -540,8 +548,8 @@ async function exibirSolicitacoesEntrada(){
 
     let solicitacoes = await buscarSolicitacoesEntrada();
 
-    if(solicitacoes == null){
-        return;
+    if(solicitacoes == undefined || solicitacoes == null){
+        return false;
     }
 
     let containerHTML = document.getElementById("lista_solicitacoes_entrada");
@@ -549,11 +557,11 @@ async function exibirSolicitacoesEntrada(){
 
     if(solicitacoes == 500){
         containerHTML.innerHTML = "<span>Erro ao buscar solicitações de entrada!</span>";
-        return;
+        return false;
     }
     else if(solicitacoes == 204){
         containerHTML.innerHTML = "<span>Nenhuma solicitação de entrada para a instituição!</span>";
-        return;
+        return false;
     }
 
     for(let i = 0; i < solicitacoes.length; i++){
@@ -584,7 +592,7 @@ async function exibirSolicitacoesEntrada(){
         `;
     }
     
-
+    return true;
     
 }
 
