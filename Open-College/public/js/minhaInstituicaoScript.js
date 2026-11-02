@@ -42,6 +42,17 @@ function voltarPagina(pagina){
     }, 1500);
 }
 
+function limparFiltros(modo){
+
+    if(modo == "polos"){
+        document.getElementById("filtro_polos_uf").value = '';
+        document.getElementById("filtro_polos_municipio").value = '';
+        document.getElementById("polos_barra_de_pesquisa").value = '';
+        exibirPolos();
+    }
+    
+}
+
 async function buscarPolos(){
 
     // let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
