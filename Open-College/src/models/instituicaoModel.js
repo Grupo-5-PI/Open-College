@@ -126,7 +126,7 @@ function buscarPorIdUsuario(idUsuario){
 
 }
 
-function buscarPolos(idInstituicao, pesquisa){
+function buscarPolos(idInstituicao, pesquisa, filtroUf, filtroMunicipio){
 
     console.log("\ACESSEI O INSTITUIÇÃO MODEL");
     console.log("FUNÇÃO buscarPolos");
@@ -140,7 +140,9 @@ function buscarPolos(idInstituicao, pesquisa){
             bairro LIKE '%${pesquisa}%' OR 
             logradouro LIKE '%${pesquisa}%' OR 
             numero LIKE '%${pesquisa}%' 
-        ) 
+        ) AND 
+        uf LIKE '%${filtroUf}%' AND 
+        municipio LIKE '%${filtroMunicipio}%' 
         ORDER BY idPolo ASC;
     `;
 

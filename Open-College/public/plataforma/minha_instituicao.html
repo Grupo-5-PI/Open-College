@@ -92,13 +92,13 @@
         <div class="main-conteudo">
 
             <div class="sessao-filtros">
-                <select name="filtro-polos" id="filtro_polos_uf" class="selecao-filtro">
+                <select name="filtro-polos" id="filtro_polos_uf" class="selecao-filtro" onchange="exibirPolos()">
                     <option value="" selected disabled hidden>UF</option>
                     <option value="SP">SP</option>
                     <option value="PE">PE</option>
                 </select>
 
-                <select name="filtro-polos" id="filtro_polos_municipio" class="selecao-filtro">
+                <select name="filtro-polos" id="filtro_polos_municipio" class="selecao-filtro" onchange="exibirPolos()">
                     <option value="" selected disabled hidden>Município</option>
                     <option value="Santo André">Santo André</option>
                     <option value="São Bernardo do Campo">São Bernardo do Campo</option>
