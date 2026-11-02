@@ -49,6 +49,13 @@ function limparFiltros(modo){
         document.getElementById("filtro_polos_municipio").value = '';
         document.getElementById("polos_barra_de_pesquisa").value = '';
         exibirPolos();
+    } else if(modo == "cursos"){
+        document.getElementById("filtro_cursos_area").value = '';
+        document.getElementById("filtro_cursos_curso").value = '';
+        document.getElementById("filtro_cursos_modalidade").value = '';
+        document.getElementById("filtro_cursos_turno").value = '';
+        document.getElementById("cursos_barra_de_pesquisa").value = '';
+        exibirCursos();
     }
     
 }
@@ -167,13 +174,6 @@ async function exibirPolos(){
     }
 
 }
-
-document.getElementById("polos_barra_de_pesquisa").addEventListener("keydown", function(evento){
-    if(evento.code === "Enter"){
-        console.log("eita")
-        exibirPolos();
-    }
-})
 
 async function buscarInstituicaoPorIdUsuario(){
 
@@ -900,20 +900,28 @@ async function buscarCursos(){
     let idInstituicao = urlParams.get("id_instituicao");
     let idPolo = urlParams.get("id_polo");
     let pesquisa = document.getElementById("cursos_barra_de_pesquisa").value;
+    let area = document.getElementById("filtro_cursos_area").value;
+    let curso = document.getElementById("filtro_cursos_curso").value;
+    let modalidade = document.getElementById("filtro_cursos_modalidade").value;
+    let turno = document.getElementById("filtro_cursos_turno").value;
 
     let parametros = JSON.stringify({
         idInstituicaoParam: idInstituicao,
-        idPoloParam: idPolo
+        idPoloParam: idPolo, 
+        pesquisaParam: pesquisa, 
+        areaParam: area, 
+        cursoParam: curso, 
+        modalidadeParam: modalidade, 
+        turnoParam: turno, 
     });
 
     if(idInstituicao == undefined || idPolo == undefined){
-        console.log("Polo não encontrada!");
+        console.log("Polo não encontrado!");
         return;
     }
 
     let retorno = await fetch(`/instituicao/buscarCursos/${parametros}`)
     .then(function(resposta){
-
         if(resposta.status === 404){
             return '404';
         } else if(resposta.status === 204){
@@ -921,6 +929,9 @@ async function buscarCursos(){
         } else if(resposta.status === 200){
             return resposta.json();
         }
+    })
+    .catch(function(erro){
+        return '500';
     });
 
     console.log(retorno);
@@ -931,6 +942,7 @@ async function buscarCursos(){
 
 async function exibirCursos(){
 
+    let containerHtmlCursos = document.querySelector("main .sessao-polos");
     let containerHtmlMensagem = document.querySelector("main .sessao-polos-mensagem");
 
     let contadorMensagemPadrao = 1;
@@ -954,13 +966,17 @@ async function exibirCursos(){
     clearInterval(mensagemPadrao);
 
     if(cursos == 404){
-        containerHtmlMensagem.innerHTML = `
+        containerHtmlCursos.innerHTML = `
+        <span class="sessao-polos-mensagem">
             Erro ao buscar polos!
+        </span>
         `;
     } else if(cursos == 204){
-        containerHtmlMensagem.innerHTML = `
+        containerHtmlCursos.innerHTML = `
+        <span class="sessao-polos-mensagem">
             Este polo ainda não tem cursos.<br>
             <span onclick="abrirFecharPopup('popup_adicionar_curso')">Cadastre primeiro curso!</span>
+        </span>
         `;
     } else if(cursos.length > 0){
         let containerHtmlCursos = document.querySelector("main .sessao-polos");

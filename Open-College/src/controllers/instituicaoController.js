@@ -460,8 +460,13 @@ function cadastrar(req, res) {
 
         let idInstituicao = dadosPolo.idInstituicaoParam;
         let idPolo = dadosPolo.idPoloParam;
+        let pesquisa = dadosPolo.pesquisaParam;
+        let area = dadosPolo.areaParam;
+        let curso = dadosPolo.cursoParam;
+        let modalidade = dadosPolo.modalidadeParam;
+        let turno = dadosPolo.turnoParam;
 
-        instituicaoModel.buscarCursos(idInstituicao, idPolo)
+        instituicaoModel.buscarCursos(idInstituicao, idPolo, pesquisa, area, curso, modalidade, turno)
         .then(function(resposta){
             
             if(resposta.length > 0){

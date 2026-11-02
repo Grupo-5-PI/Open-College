@@ -322,4 +322,12 @@
     // window.onload = exibirPolos();
     // window.onload = exibirMembrosInstituicao();
     // window.onload = exibirSolicitacoesEntrada();
+
+    
+    document.getElementById("polos_barra_de_pesquisa").addEventListener("keydown", function(evento){
+        if(evento.code === "Enter"){
+            exibirPolos();
+        }
+    })
+    
 </script>
