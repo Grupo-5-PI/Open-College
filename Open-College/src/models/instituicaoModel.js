@@ -126,13 +126,22 @@ function buscarPorIdUsuario(idUsuario){
 
 }
 
-function buscarPolos(idInstituicao){
+function buscarPolos(idInstituicao, pesquisa){
 
     console.log("\ACESSEI O INSTITUIÇÃO MODEL");
     console.log("FUNÇÃO buscarPolos");
 
     var instrucaoSql = `
-        SELECT * FROM tblPolo WHERE idInstituicao = ${idInstituicao} ORDER BY idPolo ASC;
+        SELECT * FROM tblPolo 
+        WHERE idInstituicao = ${idInstituicao} AND 
+        ( 
+            uf LIKE '%${pesquisa}%' OR 
+            municipio LIKE '%${pesquisa}%' OR 
+            bairro LIKE '%${pesquisa}%' OR 
+            logradouro LIKE '%${pesquisa}%' OR 
+            numero LIKE '%${pesquisa}%' 
+        ) 
+        ORDER BY idPolo ASC;
     `;
 
     return database.executar(instrucaoSql);

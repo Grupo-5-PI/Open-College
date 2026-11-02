@@ -35,7 +35,7 @@ router.get("/buscarPorIdUsuario/:idUsuario", function(req, res){
     instituicaoController.buscarPorIdUsuario(req, res);
 });
 
-router.get("/buscarPolos/:idInstituicao", function(req, res){
+router.get("/buscarPolos/:parametros", function(req, res){
     instituicaoController.buscarPolos(req, res);
 });
 
