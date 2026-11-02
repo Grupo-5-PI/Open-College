@@ -847,10 +847,12 @@ async function editarPolo(){
 
 async function excluirPolo(){
 
-    let dadosPolo = await buscarDadosPolo();
+    // let dadosPolo = await buscarDadosPolo();
 
-    let idInstituicao = dadosPolo.idInstituicao;
-    let idPolo = dadosPolo.idPolo;
+    let urlParams = new URLSearchParams(window.location.search);
+    
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
 
     let parametros = JSON.stringify({
         idInstituicaoParam: idInstituicao,
@@ -891,10 +893,13 @@ async function excluirPolo(){
 
 async function buscarCursos(){
 
-    let dadosPolo = await buscarDadosPolo();
+    // let dadosPolo = await buscarDadosPolo();
 
-    let idInstituicao = dadosPolo.idInstituicao;
-    let idPolo = dadosPolo.idPolo;
+    let urlParams = new URLSearchParams(window.location.search);
+    
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
+    let pesquisa = document.getElementById("cursos_barra_de_pesquisa").value;
 
     let parametros = JSON.stringify({
         idInstituicaoParam: idInstituicao,
@@ -987,9 +992,15 @@ async function exibirCursos(){
 
 async function adicionarCurso(){
 
-    let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
-    let idPolo = (await buscarDadosPolo())?.idPolo;
+    // let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
+    // let idPolo = (await buscarDadosPolo())?.idPolo;
     // let areaGeral = document.getElementById('select_area_geral_curso').value;
+
+    let urlParams = new URLSearchParams(window.location.search);
+    
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
+    
     let idCurso = document.getElementById('select_curso_curso').value;
     let turno = document.getElementById('select_turno_curso').value;
     let modalidade = document.getElementById('select_modalidade_curso').value;
