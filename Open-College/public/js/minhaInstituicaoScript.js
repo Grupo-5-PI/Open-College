@@ -47,6 +47,8 @@ async function buscarPolos(){
     // let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
     let idInstituicao = sessionStorage?.ID_INSTITUICAO;
     let pesquisa = document.getElementById("polos_barra_de_pesquisa").value;
+    let filtroUf = document.getElementById("filtro_polos_uf").value;
+    let filtroMunicipio = document.getElementById("filtro_polos_municipio").value;
 
     if(idInstituicao == undefined || idInstituicao == null){
         console.log("Instituição não encontrada!");
@@ -56,6 +58,8 @@ async function buscarPolos(){
     let parametros = JSON.stringify({
         idInstituicaoParam: idInstituicao,
         pesquisaParam: pesquisa,
+        filtroUfParam: filtroUf,
+        filtroMunicipioParam: filtroMunicipio,
     });
 
     let retorno = await fetch(`/instituicao/buscarPolos/${parametros}`)
@@ -79,6 +83,7 @@ async function buscarPolos(){
 async function exibirPolos(){
 
     let containerHtmlMensagem = document.querySelector("main .sessao-polos-mensagem");
+    let containerHtmlPolos = document.querySelector("main .sessao-polos");
 
     let contadorMensagemPadrao = 1;
 
@@ -101,18 +106,24 @@ async function exibirPolos(){
     clearInterval(mensagemPadrao);
 
     if(polos == null){
-        containerHtmlMensagem.innerHTML = `
+        containerHtmlPolos.innerHTML = `
+        <span class="sessao-polos-mensagem">
             Você não está vinculado a nenhuma instituição!<br>
-            <a href="../cadastroInstituicao.html">Crie ou solicite entrada à uma instituição!</a>
+            <a href="../cadastroInstituicao.html" style="text-decoration: underline">Crie ou solicite entrada à uma instituição!</a>
+        </span>
         `;
     } else if(polos == 404){
-        containerHtmlMensagem.innerHTML = `
+        containerHtmlPolos.innerHTML = `
+        <span class="sessao-polos-mensagem">
             Erro ao buscar polos!
+        </span>
         `;
     } else if(polos == 204){
-        containerHtmlMensagem.innerHTML = `
-            Sua instituição ainda não tem polos.<br>
-            <span onclick="abrirFecharPopup('popup_adicionar_polo')">Cadastre o seu primeiro polo!</span>
+        containerHtmlPolos.innerHTML = `
+        <span class="sessao-polos-mensagem">
+            Nenhum polo encontrado!<br>
+            <span onclick="abrirFecharPopup('popup_adicionar_polo')" style="text-decoration: underline;">Cadastre um novo polo!</span>
+        </span>
         `;
     } else if(polos.length > 0){
         let containerHtmlPolos = document.querySelector("main .sessao-polos");

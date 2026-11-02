@@ -211,11 +211,12 @@ function cadastrar(req, res) {
         
         let idInstituicao = parametros.idInstituicaoParam;
         let pesquisa = parametros.pesquisaParam;
+        let filtroUf = parametros.filtroUfParam;
+        let filtroMunicipio = parametros.filtroMunicipioParam;
 
-        instituicaoModel.buscarPolos(idInstituicao, pesquisa)
+        instituicaoModel.buscarPolos(idInstituicao, pesquisa, filtroUf, filtroMunicipio)
         .then(function(resposta){
             if(resposta.length > 0){
-                // res.json(resposta);
                 res.status(200).json(resposta);
             } else{
                 res.status(204).send();
