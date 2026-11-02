@@ -42,17 +42,45 @@ function voltarPagina(pagina){
     }, 1500);
 }
 
+function limparFiltros(modo){
+
+    if(modo == "polos"){
+        document.getElementById("filtro_polos_uf").value = '';
+        document.getElementById("filtro_polos_municipio").value = '';
+        document.getElementById("polos_barra_de_pesquisa").value = '';
+        exibirPolos();
+    } else if(modo == "cursos"){
+        document.getElementById("filtro_cursos_area").value = '';
+        document.getElementById("filtro_cursos_curso").value = '';
+        document.getElementById("filtro_cursos_modalidade").value = '';
+        document.getElementById("filtro_cursos_turno").value = '';
+        document.getElementById("cursos_barra_de_pesquisa").value = '';
+        exibirCursos();
+    }
+    
+}
+
 async function buscarPolos(){
 
     // let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
     let idInstituicao = sessionStorage?.ID_INSTITUICAO;
+    let pesquisa = document.getElementById("polos_barra_de_pesquisa").value;
+    let filtroUf = document.getElementById("filtro_polos_uf").value;
+    let filtroMunicipio = document.getElementById("filtro_polos_municipio").value;
 
     if(idInstituicao == undefined || idInstituicao == null){
         console.log("Instituição não encontrada!");
         return null;
     }
 
-    let retorno = await fetch(`/instituicao/buscarPolos/${idInstituicao}`)
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        pesquisaParam: pesquisa,
+        filtroUfParam: filtroUf,
+        filtroMunicipioParam: filtroMunicipio,
+    });
+
+    let retorno = await fetch(`/instituicao/buscarPolos/${parametros}`)
     .then(function(resposta){
 
         if(resposta.status === 404){
@@ -73,6 +101,7 @@ async function buscarPolos(){
 async function exibirPolos(){
 
     let containerHtmlMensagem = document.querySelector("main .sessao-polos-mensagem");
+    let containerHtmlPolos = document.querySelector("main .sessao-polos");
 
     let contadorMensagemPadrao = 1;
 
@@ -95,18 +124,24 @@ async function exibirPolos(){
     clearInterval(mensagemPadrao);
 
     if(polos == null){
-        containerHtmlMensagem.innerHTML = `
+        containerHtmlPolos.innerHTML = `
+        <span class="sessao-polos-mensagem">
             Você não está vinculado a nenhuma instituição!<br>
-            <a href="../cadastroInstituicao.html">Crie ou solicite entrada à uma instituição!</a>
+            <a href="../cadastroInstituicao.html" style="text-decoration: underline">Crie ou solicite entrada à uma instituição!</a>
+        </span>
         `;
     } else if(polos == 404){
-        containerHtmlMensagem.innerHTML = `
+        containerHtmlPolos.innerHTML = `
+        <span class="sessao-polos-mensagem">
             Erro ao buscar polos!
+        </span>
         `;
     } else if(polos == 204){
-        containerHtmlMensagem.innerHTML = `
-            Sua instituição ainda não tem polos.<br>
-            <span onclick="abrirFecharPopup('popup_adicionar_polo')">Cadastre o seu primeiro polo!</span>
+        containerHtmlPolos.innerHTML = `
+        <span class="sessao-polos-mensagem">
+            Nenhum polo encontrado!<br>
+            <span onclick="abrirFecharPopup('popup_adicionar_polo')" style="text-decoration: underline;">Cadastre um novo polo!</span>
+        </span>
         `;
     } else if(polos.length > 0){
         let containerHtmlPolos = document.querySelector("main .sessao-polos");
@@ -812,10 +847,12 @@ async function editarPolo(){
 
 async function excluirPolo(){
 
-    let dadosPolo = await buscarDadosPolo();
+    // let dadosPolo = await buscarDadosPolo();
 
-    let idInstituicao = dadosPolo.idInstituicao;
-    let idPolo = dadosPolo.idPolo;
+    let urlParams = new URLSearchParams(window.location.search);
+    
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
 
     let parametros = JSON.stringify({
         idInstituicaoParam: idInstituicao,
@@ -856,24 +893,35 @@ async function excluirPolo(){
 
 async function buscarCursos(){
 
-    let dadosPolo = await buscarDadosPolo();
+    // let dadosPolo = await buscarDadosPolo();
 
-    let idInstituicao = dadosPolo.idInstituicao;
-    let idPolo = dadosPolo.idPolo;
+    let urlParams = new URLSearchParams(window.location.search);
+    
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
+    let pesquisa = document.getElementById("cursos_barra_de_pesquisa").value;
+    let area = document.getElementById("filtro_cursos_area").value;
+    let curso = document.getElementById("filtro_cursos_curso").value;
+    let modalidade = document.getElementById("filtro_cursos_modalidade").value;
+    let turno = document.getElementById("filtro_cursos_turno").value;
 
     let parametros = JSON.stringify({
         idInstituicaoParam: idInstituicao,
-        idPoloParam: idPolo
+        idPoloParam: idPolo, 
+        pesquisaParam: pesquisa, 
+        areaParam: area, 
+        cursoParam: curso, 
+        modalidadeParam: modalidade, 
+        turnoParam: turno, 
     });
 
     if(idInstituicao == undefined || idPolo == undefined){
-        console.log("Polo não encontrada!");
+        console.log("Polo não encontrado!");
         return;
     }
 
     let retorno = await fetch(`/instituicao/buscarCursos/${parametros}`)
     .then(function(resposta){
-
         if(resposta.status === 404){
             return '404';
         } else if(resposta.status === 204){
@@ -881,6 +929,9 @@ async function buscarCursos(){
         } else if(resposta.status === 200){
             return resposta.json();
         }
+    })
+    .catch(function(erro){
+        return '500';
     });
 
     console.log(retorno);
@@ -891,6 +942,7 @@ async function buscarCursos(){
 
 async function exibirCursos(){
 
+    let containerHtmlCursos = document.querySelector("main .sessao-polos");
     let containerHtmlMensagem = document.querySelector("main .sessao-polos-mensagem");
 
     let contadorMensagemPadrao = 1;
@@ -914,13 +966,17 @@ async function exibirCursos(){
     clearInterval(mensagemPadrao);
 
     if(cursos == 404){
-        containerHtmlMensagem.innerHTML = `
+        containerHtmlCursos.innerHTML = `
+        <span class="sessao-polos-mensagem">
             Erro ao buscar polos!
+        </span>
         `;
     } else if(cursos == 204){
-        containerHtmlMensagem.innerHTML = `
+        containerHtmlCursos.innerHTML = `
+        <span class="sessao-polos-mensagem">
             Este polo ainda não tem cursos.<br>
             <span onclick="abrirFecharPopup('popup_adicionar_curso')">Cadastre primeiro curso!</span>
+        </span>
         `;
     } else if(cursos.length > 0){
         let containerHtmlCursos = document.querySelector("main .sessao-polos");
@@ -952,9 +1008,15 @@ async function exibirCursos(){
 
 async function adicionarCurso(){
 
-    let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
-    let idPolo = (await buscarDadosPolo())?.idPolo;
+    // let idInstituicao = (await buscarDadosPolo())?.idInstituicao;
+    // let idPolo = (await buscarDadosPolo())?.idPolo;
     // let areaGeral = document.getElementById('select_area_geral_curso').value;
+
+    let urlParams = new URLSearchParams(window.location.search);
+    
+    let idInstituicao = urlParams.get("id_instituicao");
+    let idPolo = urlParams.get("id_polo");
+    
     let idCurso = document.getElementById('select_curso_curso').value;
     let turno = document.getElementById('select_turno_curso').value;
     let modalidade = document.getElementById('select_modalidade_curso').value;
