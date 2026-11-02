@@ -1,4 +1,5 @@
 var instituicaoModel = require("../models/instituicaoModel");
+const { param } = require("../routes/instituicao");
 
 
 function cadastrar(req, res) {
@@ -206,9 +207,12 @@ function cadastrar(req, res) {
 
     function buscarPolos(req, res){
 
-        let idInstituicao = req.params.idInstituicao;
+        let parametros = JSON.parse(req.params.parametros);
+        
+        let idInstituicao = parametros.idInstituicaoParam;
+        let pesquisa = parametros.pesquisaParam;
 
-        instituicaoModel.buscarPolos(idInstituicao)
+        instituicaoModel.buscarPolos(idInstituicao, pesquisa)
         .then(function(resposta){
             if(resposta.length > 0){
                 // res.json(resposta);

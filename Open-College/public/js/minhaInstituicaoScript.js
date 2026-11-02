@@ -46,13 +46,19 @@ async function buscarPolos(){
 
     // let idInstituicao = (await buscarInstituicaoPorIdUsuario())?.idInstituicao;
     let idInstituicao = sessionStorage?.ID_INSTITUICAO;
+    let pesquisa = document.getElementById("polos_barra_de_pesquisa").value;
 
     if(idInstituicao == undefined || idInstituicao == null){
         console.log("Instituição não encontrada!");
         return null;
     }
 
-    let retorno = await fetch(`/instituicao/buscarPolos/${idInstituicao}`)
+    let parametros = JSON.stringify({
+        idInstituicaoParam: idInstituicao,
+        pesquisaParam: pesquisa,
+    });
+
+    let retorno = await fetch(`/instituicao/buscarPolos/${parametros}`)
     .then(function(resposta){
 
         if(resposta.status === 404){
@@ -139,6 +145,13 @@ async function exibirPolos(){
     }
 
 }
+
+document.getElementById("polos_barra_de_pesquisa").addEventListener("keydown", function(evento){
+    if(evento.code === "Enter"){
+        console.log("eita")
+        exibirPolos();
+    }
+})
 
 async function buscarInstituicaoPorIdUsuario(){
 

@@ -117,15 +117,44 @@ main header button:hover{
     background-color: var(--cor10);
     height: 40px;
     width: 100%;
+    padding: 0 15px;
     border-radius: 15px;
     border: none;
-    padding: 0 0 0 25px;
     font-family: 'telegraf';
-    font-size: 1.1em;
+    display: flex;
+    align-items: center;
 }
 
-.barra-de-pesquisa::placeholder{
+.barra-de-pesquisa input{
+    box-sizing: border-box;
+    border: none;
+    font-size: 1.1em;
+    height: 100%;
+    width: 80%;
+    background-color: var(--cor10);
+    padding: 0 0 0 10px;
+}
+
+.barra-de-pesquisa input::placeholder{
     font-family: 'telegraf';
+}
+
+.barra-de-pesquisa input:focus{
+    outline: none;
+    /* border: none; */
+}
+
+.barra-de-pesquisa:has(input:focus){
+    border: 2px solid var(--cor7);
+}
+
+.icone-barra-de-pesquisa{
+    left: 15px;
+    height: 35px;
+}
+
+.icone-barra-de-pesquisa:hover{
+    cursor: pointer;
 }
 
 .sessao-polos{
