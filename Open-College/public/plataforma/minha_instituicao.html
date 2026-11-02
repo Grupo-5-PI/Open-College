@@ -17,50 +17,6 @@
 <!-- onload="validarSessao()" -->
 <body>
     
-    <!-- <div class="menu-lateral">
-        <div class="menu-lateral-logo">
-            <img src="">
-             <span>COLOCAR IMG AQUI DEPOIS</span>
-        </div>
-        <nav>
-            <a href="" class="item-menu-lateral">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Dashboard" class="icone-menu-lateral">
-                <span class="titulo-menu-lateral">
-                    Dashboard
-                </span>
-            </a>
-
-            <a href="" class="item-menu-lateral">
-                <img src="" alt="Painel de Atualização" class="icone-menu-lateral">
-                <span class="titulo-menu-lateral">
-                    Painel de Atualização
-                </span>
-            </a>
-
-            <a href="" class="item-menu-lateral">
-                <img src="" alt="Minha Instituição" class="icone-menu-lateral">
-                <span class="titulo-menu-lateral">
-                    Minha Instituição
-                </span>
-            </a>
-
-            <a href="" class="item-menu-lateral">
-                <img src="" alt="Configuração" class="icone-menu-lateral">
-                <span class="titulo-menu-lateral">
-                    Configuração
-                </span>
-            </a>
-        </nav>
-
-        <div class="item-menu-lateral">
-            <button>
-                <img src="" alt="Sair" class="icone-menu-lateral">
-                <span>Sair</span>
-            </button>
-        </div>
-    </div> -->
-
-    
         <nav class="menu-lateral">
         <header class="menu-lateral-logo">
             <a href="" class="perfil-link">
@@ -136,18 +92,26 @@
         <div class="main-conteudo">
 
             <div class="sessao-filtros">
-                <select name="filtro-polos-uf" id="filtro_polos_uf" class="selecao-filtro">
-                    <option value="0" selected disabled>UF</option>
+                <select name="filtro-polos" id="filtro_polos_uf" class="selecao-filtro" onchange="exibirPolos()">
+                    <option value="" selected disabled hidden>UF</option>
+                    <option value="SP">SP</option>
+                    <option value="PE">PE</option>
                 </select>
 
-                <select name="filtro-polos-municipio" id="filtro_polos_municipio" class="selecao-filtro">
-                    <option value="0" selected disabled>Município</option>
+                <select name="filtro-polos" id="filtro_polos_municipio" class="selecao-filtro" onchange="exibirPolos()">
+                    <option value="" selected disabled hidden>Município</option>
+                    <option value="Santo André">Santo André</option>
+                    <option value="São Bernardo do Campo">São Bernardo do Campo</option>
+                    <option value="São Caetano do Sul">São Caetano do Sul</option>
                 </select>
 
-                <button>Limpar Filtros</button>
+                <button onclick="limparFiltros('polos')">Limpar Filtros</button>
             </div>
             
-            <input type="text" id="polos_barra_de_pesquisa" placeholder="Pesquisar" class="barra-de-pesquisa">
+            <div class="barra-de-pesquisa">
+                <img src="../img/icones/icon_lupa_preto.png" class="icone-barra-de-pesquisa" onclick="exibirPolos()">
+                <input type="text" id="polos_barra_de_pesquisa" placeholder="Pesquisar">
+            </div>
             
             <div class="sessao-polos">
 
@@ -224,14 +188,17 @@
                     <div class="input-popup" style="width: 55%">
                         <label for="municipio">MUNICÍPIO: </label><br>
                         <select name="municipio" id="select_municipio_polo">
-                            <option value="são caetano">são caetano</option>
+                            <option value="Santo André">Santo André</option>
+                            <option value="São Bernardo do Campo">São Bernardo do Campo</option>
+                            <option value="São Caetano do Sul">São Caetano do Sul</option>
                         </select>
                     </div>
                     
                     <div class="input-popup" style="width: 10%">
                         <label for="uf">UF: </label><br>
                         <select name="uf" id="select_uf_polo">
-                            <option value="sp">sp</option>
+                            <option value="SP">SP</option>
+                            <option value="PE">PE</option>
                         </select>
                     </div>
                 </div>
@@ -244,7 +211,7 @@
                 </button>
             </div>
 
-            <span class="popup-mensagem">oieee</span>
+            <span class="popup-mensagem"></span>
             
         </div>
     </div>
@@ -355,4 +322,12 @@
     // window.onload = exibirPolos();
     // window.onload = exibirMembrosInstituicao();
     // window.onload = exibirSolicitacoesEntrada();
+
+    
+    document.getElementById("polos_barra_de_pesquisa").addEventListener("keydown", function(evento){
+        if(evento.code === "Enter"){
+            exibirPolos();
+        }
+    })
+    
 </script>

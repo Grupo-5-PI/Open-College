@@ -86,26 +86,39 @@
         <div class="main-conteudo">
 
             <div class="sessao-filtros">
-                <select name="filtro-cursos-area" id="filtro_cursos_area" class="selecao-filtro">
-                    <option value="0" selected disabled>Área</option>
+                <select name="filtro-cursos" id="filtro_cursos_area" class="selecao-filtro" onchange="exibirCursos()">
+                    <option value="" selected disabled hidden>Área</option>
+                    <option value="Tecnologia">Tecnologia</option>
+                    <option value="Saúde">Saúde</option>
                 </select>
 
-                <select name="filtro-cursos-curso" id="filtro_cursos_curso" class="selecao-filtro">
-                    <option value="0" selected disabled>Curso</option>
+                <select name="filtro-cursos" id="filtro_cursos_curso" class="selecao-filtro" onchange="exibirCursos()">
+                    <option value="" selected disabled hidden>Curso</option>
+                    <option value="Análise e Desenvolvimento de Sistemas">Análise e Desenvolvimento de Sistemas</option>
+                    <option value="Medicina">Medicina</option>
                 </select>
 
-                <select name="filtro-cursos-modalidade" id="filtro_cursos_modalidade" class="selecao-filtro">
-                    <option value="0" selected disabled>Modalidade</option>
+                <select name="filtro-cursos" id="filtro_cursos_modalidade" class="selecao-filtro" onchange="exibirCursos()">
+                    <option value="" selected disabled hidden>Modalidade</option>
+                    <option value="Presencial">Presencial</option>
+                    <option value="Semipresencial">Semipresencial</option>
+                    <option value="EAD">EAD</option>
                 </select>
 
-                <select name="filtro-cursos-turno" id="filtro_cursos_turno" class="selecao-filtro">
-                    <option value="0" selected disabled>Turno</option>
+                <select name="filtro-cursos" id="filtro_cursos_turno" class="selecao-filtro" onchange="exibirCursos()">
+                    <option value="" selected disabled hidden>Turno</option>
+                    <option value="Diurno">Diurno</option>
+                    <option value="Noturno">Noturno</option>
                 </select>
 
-                <button>Limpar Filtros</button>
+                <button onclick="limparFiltros('cursos')">Limpar Filtros</button>
             </div>
             
-            <input type="text" id="polos_barra_de_pesquisa" placeholder="Pesquisar" class="barra-de-pesquisa">
+            <!-- <input type="text" id="polos_barra_de_pesquisa" placeholder="Pesquisar" class="barra-de-pesquisa"> -->
+             <div class="barra-de-pesquisa">
+                <img src="../img/icones/icon_lupa_preto.png" class="icone-barra-de-pesquisa" onclick="exibirCursos()">
+                <input type="text" id="cursos_barra_de_pesquisa" placeholder="Pesquisar">
+            </div>
             
             <div class="sessao-polos">
 
@@ -146,7 +159,7 @@
         <div class="popup-interacao">
             <div class="header-popup">
                 <span onclick="abrirFecharPopup('popup_adicionar_curso')">
-                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="popup-icone icone-sair">
                 </span>
                 <span class="titulo-popup">Adicionar Curso</span>
             </div>
@@ -204,7 +217,7 @@
         <div class="popup-interacao">
             <div class="header-popup">
                 <span onclick="abrirFecharPopup('popup_editar_polo')">
-                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="popup-icone icone-sair">
                 </span>
                 <span class="titulo-popup">Editar Polo</span>
             </div>
@@ -265,7 +278,7 @@
         <div class="popup-interacao">
             <div class="header-popup">
                 <span onclick="abrirFecharPopup('popup_dados_polo')">
-                    <img src="../img/icones/icon_x_branco.png" alt="" class="icone-sair">
+                    <img src="../img/icones/icon_x_branco.png" alt="" class="popup-icone icone-sair">
                 </span>
                 <span class="titulo-popup">Dados do Polo</span>
             </div>
@@ -328,4 +341,11 @@
 <script>
     window.onload = exibirDadosPolo();
     window.onload = exibirCursos();
+
+    document.getElementById("cursos_barra_de_pesquisa").addEventListener("keydown", function(evento){
+        if(evento.code === "Enter"){
+            exibirCursos();
+        }
+    });
+    
 </script>

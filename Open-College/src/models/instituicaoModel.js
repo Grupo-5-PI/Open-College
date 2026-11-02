@@ -126,13 +126,24 @@ function buscarPorIdUsuario(idUsuario){
 
 }
 
-function buscarPolos(idInstituicao){
+function buscarPolos(idInstituicao, pesquisa, filtroUf, filtroMunicipio){
 
     console.log("\ACESSEI O INSTITUIÇÃO MODEL");
     console.log("FUNÇÃO buscarPolos");
 
     var instrucaoSql = `
-        SELECT * FROM tblPolo WHERE idInstituicao = ${idInstituicao} ORDER BY idPolo ASC;
+        SELECT * FROM tblPolo 
+        WHERE idInstituicao = ${idInstituicao} AND 
+        ( 
+            uf LIKE '%${pesquisa}%' OR 
+            municipio LIKE '%${pesquisa}%' OR 
+            bairro LIKE '%${pesquisa}%' OR 
+            logradouro LIKE '%${pesquisa}%' OR 
+            numero LIKE '%${pesquisa}%' 
+        ) AND 
+        uf LIKE '%${filtroUf}%' AND 
+        municipio LIKE '%${filtroMunicipio}%' 
+        ORDER BY idPolo ASC;
     `;
 
     return database.executar(instrucaoSql);
@@ -276,7 +287,7 @@ function excluirPolo(idInstituicao, idPolo){
     
 }
 
-function buscarCursos(idInstituicao, idPolo){
+function buscarCursos(idInstituicao, idPolo, pesquisa, area, curso, modalidade, turno){
 
     console.log("\nACESSEI O INSTITUIÇÃO MODEL");
     console.log("FUNÇÃO buscarCursos");
@@ -287,7 +298,18 @@ function buscarCursos(idInstituicao, idPolo){
         FROM tblInstituicaoPoloCurso ipc 
         JOIN tblCurso cur ON cur.idCurso = ipc.idCurso 
         JOIN tblAreaGeral are ON are.idAreaGeral = cur.idAreaGeral 
-        WHERE idInstituicao = ${idInstituicao} AND idPolo = ${idPolo};
+        WHERE ipc.idInstituicao = ${idInstituicao} AND 
+        ipc.idPolo = ${idPolo} AND 
+        (
+            cur.nome LIKE '%${pesquisa}%' OR 
+            ipc.turno LIKE '%${pesquisa}%' OR 
+            are.nome LIKE '%${pesquisa}%' OR 
+            ipc.tipoModalidade LIKE '%${pesquisa}%'
+        ) AND 
+        are.nome LIKE '%${area}%' AND 
+        cur.nome LIKE '%${curso}%' AND 
+        ipc.tipoModalidade LIKE '%${modalidade}%' AND 
+        ipc.turno LIKE '%${turno}%';
     `;
 
     return database.executar(instrucaoSql);

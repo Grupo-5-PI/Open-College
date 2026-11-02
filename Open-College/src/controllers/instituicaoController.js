@@ -1,4 +1,5 @@
 var instituicaoModel = require("../models/instituicaoModel");
+const { param } = require("../routes/instituicao");
 
 
 function cadastrar(req, res) {
@@ -206,12 +207,16 @@ function cadastrar(req, res) {
 
     function buscarPolos(req, res){
 
-        let idInstituicao = req.params.idInstituicao;
+        let parametros = JSON.parse(req.params.parametros);
+        
+        let idInstituicao = parametros.idInstituicaoParam;
+        let pesquisa = parametros.pesquisaParam;
+        let filtroUf = parametros.filtroUfParam;
+        let filtroMunicipio = parametros.filtroMunicipioParam;
 
-        instituicaoModel.buscarPolos(idInstituicao)
+        instituicaoModel.buscarPolos(idInstituicao, pesquisa, filtroUf, filtroMunicipio)
         .then(function(resposta){
             if(resposta.length > 0){
-                // res.json(resposta);
                 res.status(200).json(resposta);
             } else{
                 res.status(204).send();
@@ -455,8 +460,13 @@ function cadastrar(req, res) {
 
         let idInstituicao = dadosPolo.idInstituicaoParam;
         let idPolo = dadosPolo.idPoloParam;
+        let pesquisa = dadosPolo.pesquisaParam;
+        let area = dadosPolo.areaParam;
+        let curso = dadosPolo.cursoParam;
+        let modalidade = dadosPolo.modalidadeParam;
+        let turno = dadosPolo.turnoParam;
 
-        instituicaoModel.buscarCursos(idInstituicao, idPolo)
+        instituicaoModel.buscarCursos(idInstituicao, idPolo, pesquisa, area, curso, modalidade, turno)
         .then(function(resposta){
             
             if(resposta.length > 0){
