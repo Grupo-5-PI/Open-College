@@ -37,6 +37,10 @@
             <button type="button" class="btn-proxima-etapa" onclick="logar()">ENTRAR</button>
         </div>
 
+        <div class="esqueceu-senha">
+            <p>Esqueceu a senha? <a href="./redefinicaoSenha.html">Clique aqui!</a></p>
+        </div>
+
         <div class="card_erro" id="cardErro">
             <span id="mensagem_erro"></span>
         </div>
@@ -104,7 +108,7 @@
                     // console.log(json.administrador)
                     let ehAdministrador = json.administrador.data[0] === 1;
 
-                    
+
                     sessionStorage.USUARIO_ADMINISTRADOR = ehAdministrador;
 
                     alert("Login feito com sucesso!")
