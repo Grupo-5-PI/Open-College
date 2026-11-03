@@ -16,4 +16,12 @@ router.post("/atualizar", function (req, res) {
     usuarioController.atualizar(req, res);
 });
 
+router.post("/verificar", function (req, res) {
+    usuarioController.verificar(req, res);
+});
+
+router.post("/redefinirSenha", function (req, res) {
+    usuarioController.redefinirSenha(req, res);
+});
+
 module.exports = router;
