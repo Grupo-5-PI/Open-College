@@ -6,4 +6,5 @@ package-lock.json
 .env
 *.CSV
 *.xlsx
+.idea/  
 

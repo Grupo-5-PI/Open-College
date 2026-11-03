@@ -41,10 +41,33 @@ function atualizar(nome, cpf, telefone, email, senha, id) {
     return database.executar(instrucaoSql);
 }
 
+function verificar(email){
+
+    var instrucaoSql = `
+        SELECT * FROM tblUsuario WHERE email = '${email}'
+    `;
+
+    return database.executar(instrucaoSql)
+}
+
+function redefinirSenha(senha,id){
+
+    var instrucaoSql = `
+        UPDATE tblUsuario 
+        SET senha = SHA2('${senha}', 256)
+        WHERE idUsuario = '${id}';
+    `;
+
+    return database.executar(instrucaoSql)
+}
+
+
 
 
 module.exports = {
     autenticar,
     cadastrar,
-    atualizar
+    atualizar,
+    verificar,
+    redefinirSenha
 };
