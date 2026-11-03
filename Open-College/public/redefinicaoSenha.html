@@ -70,7 +70,7 @@
 <script>
 
     let emailUsuario = "";
-    let idUsuarioGlobal = 0   ;
+    let idUsuarioGlobal = 0;
 
     let codigoAtual = ""
     let tempoCriacaoCodigo;
@@ -135,7 +135,7 @@
                         return;
                     }
 
-                    sumirMensagem() ;
+                    sumirMensagem();
 
                     emailUsuario = emailVar;
                     idUsuarioGlobal = json[0].idUsuario;
@@ -150,6 +150,7 @@
                     cardErro.style.display = "none";
                     inputEmail.disabled = true;
 
+                    alert("Email verificado! O código foi enviado para o seu email")
                     exibir_instrucao.innerHTML = "Verifique o código na sua caixa de email";
 
                     iniciarRecuperacao();
@@ -231,6 +232,38 @@
         let codigoAtual = gerarCodigo();
 
         tempoCriacaoCodigo = Date.now();
+
+        // Na EC2 o localhost seria o ip publico
+        // É necessario liberar a porta de seguranca 8081 
+
+        fetch("http://localhost:8081/api/senha/recuperar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+
+                email: emailUsuario,
+                codigo: codigoAtual
+
+            })
+        }).then(function (resposta) {
+
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+            } else {
+
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
 
     }
 
