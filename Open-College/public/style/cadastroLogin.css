@@ -42,7 +42,8 @@ body {
     width: auto;
     margin-right: 20px;
 }
-.navbar-logo img:hover{
+
+.navbar-logo img:hover {
     transform: scale(1.1);
     transition: all 0.2s;
 }
@@ -179,6 +180,20 @@ body {
 .campo-grupo input::placeholder {
     color: #556666;
     font-weight: 800;
+}
+
+.esqueceu-senha {
+
+    text-align: center;
+    color: var(--cor6);
+
+    margin-top: 20px;
+}
+
+.esqueceu-senha a {
+
+    color: var(--cor6);
+
 }
 
 /* ====================================== ANEXO DE FOTO ====================================== */
