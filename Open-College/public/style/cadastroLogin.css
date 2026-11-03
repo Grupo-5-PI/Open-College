@@ -157,6 +157,18 @@ body {
     letter-spacing: 1.2px;
 }
 
+.campo-grupo-codigo label{
+
+    justify-content: space-between;
+
+}
+
+.campo-grupo-codigo .label-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
 .campo-grupo label img {
     width: 18px;
     height: 18px;
