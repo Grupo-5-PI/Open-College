@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="./js/sessao.js"></script>
+    <link rel="icon" href="img/logo/logo.png">
+    <link rel="stylesheet" href="./style/global.css">
+    <link rel="stylesheet" href="./style/cadastroLogin.css">
+
+</head>
+
+<body onload="carregar()">
+    <header class="navbar">
+        <div class="navbar-logo">
+            <a href="index.html"><img src="./img/logo/logo.png" alt="Open College"></a>
+        </div>
+    </header>
+
+    <h1 class="cadastro-titulo">REDEFINIR SENHA</h1>
+    <a class="cadastro-link-login" id="exibir_instrucao">Insira o seu email para recuperar a senha</a>
+
+    <div class="formulario-caixa">
+        <div class="campo-grupo">
+            <label><img src="./img/icones/iconEmail.png" alt=""> EMAIL</label>
+            <input type="text" placeholder="joaosilva@gmail.com" id="ipt_login">
+        </div>
+
+        <div class="campo-grupo" id="codigo">
+            <label><img src="./img/icones/iconEmail.png" alt=""> Código de Recuperacao</label>
+            <input type="text" placeholder="••••••••" id="ipt_codigo">
+        </div>
+
+        <div class="campo-grupo" id="redefinir_senha">
+            <label><img src="./img/icones/iconSenha.png" alt=""> Insira a nova senha</label>
+            <input type="password" placeholder="••••••••" id="ipt_senha">
+        </div>
+
+        <div class="campo-grupo" id="redefinir_senha_novamente">
+            <label><img src="./img/icones/iconSenha.png" alt=""> Insira novamente a nova senha</label>
+            <input type="password" placeholder="••••••••" id="ipt_senhaConfirmar">
+        </div>
+
+        <div class="container-btn-etapa">
+            <button type="button" class="btn-proxima-etapa" onclick="verificarEmail()" id="verificarEmail">Verificar
+                Email</button>
+            <button type="button" class="btn-proxima-etapa" onclick="validarCodigo()" id="validarCodigo">Validar
+                Código</button>
+            <button type="button" class="btn-proxima-etapa" onclick="redefinirSenha()" id="redefinicao">Redefinir
+                Senha</button>
+        </div>
+
+        <div class="card_erro" id="cardErro">
+            <span id="mensagem_erro"></span>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>COPYRIGHT © 2026 - OPENCOLLEGE. TODOS OS DIREITOS RESERVADOS.</p>
+    </footer>
+
+
+
+
+</body>
+
+</html>
+<script>
+
+    let emailUsuario = "";
+    let idUsuarioGlobal = 0   ;
+
+    let codigoAtual = ""
+    let tempoCriacaoCodigo;
+
+    let div1 = document.getElementById("redefinir_senha");
+    let div2 = document.getElementById("redefinir_senha_novamente");
+    let botaoVerificar = document.getElementById("verificarEmail");
+    let botaoRedefinir = document.getElementById("redefinicao");
+    let botaoValidarCodigo = document.getElementById("validarCodigo");
+    let codigo = document.getElementById("codigo");
+
+    function carregar() {
+
+        div1.style.display = "none";
+        div2.style.display = "none";
+        botaoRedefinir.style.display = "none";
+        botaoValidarCodigo.style.display = "none";
+        codigo.style.display = "none";
+
+    }
+
+    function verificarEmail() {
+
+
+        let emailVar = ipt_login.value;
+
+        if (emailVar == "") {
+
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML = "Por favor, preencha o campo de e-mail.";
+            return false;
+        }
+
+        fetch("/usuarios/verificar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+
+                emailServer: emailVar,
+
+            })
+        }).then(function (resposta) {
+
+
+            if (resposta.ok) {
+
+
+                console.log(resposta);
+
+                resposta.json().then(json => {
+
+                    if (json.length == 0) {
+
+
+                        alert("Este e-mail não está cadastrado!");
+
+                        cardErro.style.display = "block";
+                        mensagem_erro.innerHTML = "Este e-mail não está cadastrado!";
+
+                        return;
+                    }
+
+                    sumirMensagem() ;
+
+                    emailUsuario = emailVar;
+                    idUsuarioGlobal = json[0].idUsuario;
+
+                    let botaoVerificar = document.getElementById("verificarEmail");
+                    let botaoValidarCodigo = document.getElementById("validarCodigo");
+                    let inputEmail = document.getElementById("ipt_login");
+
+                    botaoValidarCodigo.style.display = "block";
+                    codigo.style.display = "block";
+                    botaoVerificar.style.display = "none";
+                    cardErro.style.display = "none";
+                    inputEmail.disabled = true;
+
+                    exibir_instrucao.innerHTML = "Verifique o código na sua caixa de email";
+
+                    iniciarRecuperacao();
+
+
+
+                });
+
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+    function sumirMensagem() {
+        cardErro.style.display = "none";
+        mensagem_erro.innerHTML = "";
+
+    }
+
+    function gerar1ou2() {
+
+        return Math.floor(Math.random() * (3 - 1 + 1)) + 1;
+    }
+
+    function gerarCodigo() {
+
+        codigoAtual = "";
+
+        let letras = [
+            "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+            "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
+            "u", "v", "w", "x", "y", "z"
+        ];
+
+        let numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        for (let i = 0; i < 8; i++) {
+
+            let letraOuNumero = gerar1ou2();
+
+            if (letraOuNumero == 1) {
+
+                let indiceLetra = Math.floor(Math.random() * letras.length);
+                let letraAleatoria = letras[indiceLetra];
+
+                let maiusculaOuMinuscula = gerar1ou2();
+
+                if (maiusculaOuMinuscula == 1) {
+
+                    letraAleatoria = letraAleatoria.toUpperCase();
+
+                }
+
+                codigoAtual += letraAleatoria;
+
+            }
+            else {
+
+                let indiceNumero = Math.floor(Math.random() * numeros.length);
+                let numeroAleatorio = numeros[indiceNumero];
+
+                codigoAtual += numeroAleatorio
+
+            }
+        }
+
+        console.log("CODIGO:" + codigoAtual);
+
+        return codigoAtual;
+
+    }
+
+    function iniciarRecuperacao() {
+
+        let codigoAtual = gerarCodigo();
+
+        tempoCriacaoCodigo = Date.now();
+
+    }
+
+    function validarCodigo() {
+
+        let codigoInserido = ipt_codigo.value;
+
+        let tempoAtual = Date.now;
+        let diferencaMilissegundos = tempoAtual - tempoCriacaoCodigo
+        let minutosPassados = diferencaMilissegundos / (1000 * 60);
+
+        if (minutosPassados > 15) {
+
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML = "O código expirou! Peça um novo código";
+
+            return;
+        }
+
+        if (codigoInserido == codigoAtual) {
+
+            alert("Código verificado com sucesso!")
+
+            sumirMensagem();
+
+            codigo.disabled = true;
+            botaoValidarCodigo.style.display = "none";
+
+            div1.style.display = "block";
+            div2.style.display = "block";
+            botaoRedefinir.style.display = "block";
+
+        } else {
+
+            alert("Código Inválido! Digite novamente")
+
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML = "Código Inválido! Digite novamente";
+        }
+
+    }
+
+    function redefinirSenha() {
+
+        let senhaVar = ipt_senha.value;
+        let confirmacaoSenhaVar = ipt_senhaConfirmar.value;
+
+        if (senhaVar.length <= 6) {
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "Senha inválida, insira mais de 6 caracteres";
+            setTimeout(sumirMensagem, 3000);
+
+            return false;
+        } if (senhaVar != confirmacaoSenhaVar || confirmacaoSenhaVar != senhaVar) {
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "Confirmação de senha negada. Senhas diferentes";
+
+            setTimeout(sumirMensagem, 3000);
+
+            return false;
+        }
+
+
+        fetch("/usuarios/redefinirSenha", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+
+                senhaServer: senhaVar,
+                id: idUsuarioGlobal
+
+            })
+        }).then(function (resposta) {
+
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+
+                    alert("Senha redefinida! Redirecionando para a página de login...")
+
+                    setTimeout(function () {
+                        window.location = "login.html";
+                    }, 1000);
+
+                });
+
+            } else {
+
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+
+    }
+
+
+</script>
