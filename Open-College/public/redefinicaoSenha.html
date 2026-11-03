@@ -28,8 +28,11 @@
             <input type="text" placeholder="joaosilva@gmail.com" id="ipt_login">
         </div>
 
-        <div class="campo-grupo" id="codigo">
-            <label><img src="./img/icones/iconEmail.png" alt=""> Código de Recuperacao</label>
+        <div class="campo-grupo campo-grupo-codigo" id="codigo">
+            <label>
+                <span class="label-esquerda"><img src="./img/icones/iconEmail.png" alt=""> Código de Recuperacao</span>
+                <span id="exibir_contador">15:00</span>
+            </label>
             <input type="text" placeholder="••••••••" id="ipt_codigo">
         </div>
 
@@ -50,6 +53,8 @@
                 Código</button>
             <button type="button" class="btn-proxima-etapa" onclick="redefinirSenha()" id="redefinicao">Redefinir
                 Senha</button>
+            <button type="button" class="btn-proxima-etapa" onclick="iniciarRecuperacao()" id="pedirNovoCodigo">Reenviar
+                Código</button>
         </div>
 
         <div class="card_erro" id="cardErro">
@@ -73,13 +78,16 @@
     let idUsuarioGlobal = 0;
 
     let codigoAtual = ""
-    let tempoCriacaoCodigo;
+    let minutos = 15;
+    let segundos = 0;
+    let intervaloCronometro = null;
 
     let div1 = document.getElementById("redefinir_senha");
     let div2 = document.getElementById("redefinir_senha_novamente");
     let botaoVerificar = document.getElementById("verificarEmail");
     let botaoRedefinir = document.getElementById("redefinicao");
     let botaoValidarCodigo = document.getElementById("validarCodigo");
+    let botaoPedirNovoCodigo = document.getElementById("pedirNovoCodigo");
     let codigo = document.getElementById("codigo");
 
     function carregar() {
@@ -88,6 +96,7 @@
         div2.style.display = "none";
         botaoRedefinir.style.display = "none";
         botaoValidarCodigo.style.display = "none";
+        botaoPedirNovoCodigo.style.display = "none";
         codigo.style.display = "none";
 
     }
@@ -229,9 +238,17 @@
 
     function iniciarRecuperacao() {
 
-        let codigoAtual = gerarCodigo();
+        clearInterval(intervaloCronometro);
+        sumirMensagem();
 
-        tempoCriacaoCodigo = Date.now();
+        minutos = 15;
+        segundos = 0;
+
+        document.getElementById("ipt_codigo").disabled = false;
+        botaoValidarCodigo.style.display = "block";
+        botaoPedirNovoCodigo.style.display = "none";
+
+        let codigoAtual = gerarCodigo();
 
         // Na EC2 o localhost seria o ip publico
         // É necessario liberar a porta de seguranca 8081 
@@ -265,23 +282,60 @@
             console.log(erro);
         })
 
+        if (intervaloCronometro) {
+
+            clearInterval(intervaloCronometro)
+        }
+
+        intervaloCronometro = setInterval(atualizarContador, 1000);
+
+    }
+
+    function atualizarContador() {
+
+        if (minutos == 0 && segundos == 0) {
+
+            clearInterval(intervaloCronometro);
+            document.getElementById("exibir_contador").innerHTML = "00:00";
+
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML = "O código expirou! Peça um novo código.";
+
+            document.getElementById("ipt_codigo").disabled = true;
+            botaoValidarCodigo.style.display = "none";
+            botaoPedirNovoCodigo.style.display = "block";
+            return;
+        }
+
+        if (segundos > 0) {
+
+            segundos--;
+        } else {
+
+            minutos--;
+            segundos = 59;
+        }
+
+        let minFormatado = minutos;
+        let segFormatado = segundos;
+
+        if (minutos < 10) {
+
+            minFormatado = "0" + minutos;
+        }
+
+        if (segundos < 10) {
+
+            segFormatado = "0" + segundos;
+        }
+
+        document.getElementById("exibir_contador").innerHTML = minFormatado + ":" + segFormatado;
+
     }
 
     function validarCodigo() {
 
         let codigoInserido = ipt_codigo.value;
-
-        let tempoAtual = Date.now;
-        let diferencaMilissegundos = tempoAtual - tempoCriacaoCodigo
-        let minutosPassados = diferencaMilissegundos / (1000 * 60);
-
-        if (minutosPassados > 15) {
-
-            cardErro.style.display = "block";
-            mensagem_erro.innerHTML = "O código expirou! Peça um novo código";
-
-            return;
-        }
 
         if (codigoInserido == codigoAtual) {
 
