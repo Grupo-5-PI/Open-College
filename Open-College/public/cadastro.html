@@ -253,7 +253,8 @@
                 if (resposta.ok) {
                     return resposta.json().then(function (resultado){
                         sessionStorage.setItem("idUsuario", resultado.insertId);
-                    
+                        sessionStorage.setItem("emailUsuario", emailVar);
+                        sessionStorage.setItem("nomeUsuario", nomeVar);
 
                     cardErro.style.display = "none";
                     
