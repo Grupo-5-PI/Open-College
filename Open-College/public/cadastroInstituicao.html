@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="./style/global.css">
     <link rel="stylesheet" href="./style/cadastroLogin.css">
 
-
-
 </head>
 
 <body>
@@ -25,9 +23,6 @@
 
     <h1 class="cadastro-titulo">CADASTRE SUA INSTITUIÇAO</h1>
     <a class="cadastro-link-login">COMO DESEJA PROSSEGUIR?</a>
-
-
-
 
     <div class="formulario-caixa">
         <div class="campo-grupo">
@@ -55,10 +50,9 @@
             </div>
         </div>
 
-
-
         <div class="container-btn-etapa">
-            <button type="button" class="btn-proxima-etapa" onclick="cadastrar()" id="botao_finalizar">CADASTRAR</button>
+            <button type="button" class="btn-proxima-etapa" onclick="cadastrar()"
+                id="botao_finalizar">CADASTRAR</button>
         </div>
 
         <div class="card_erro" id="cardErro">
@@ -80,20 +74,20 @@
         alert("Voce precisa se cadastrar antes de continuar.")
         window.location = "cadastro.html";
     }
+
     function alternarModo() {
         let modo = selectModo.value;
 
         if (modo == "vincularInstituicao") {
             novaInstituicao.style.display = "none";
             vincularInstituicao.style.display = "block";
-            document.getElementById('botao_finalizar').innerHTML = "SOLICITAR ENTRADA";
             carregarInstituicaoSelect();
         } else {
             novaInstituicao.style.display = "block";
             vincularInstituicao.style.display = "none";
-            document.getElementById('botao_finalizar').innerHTML = 'CADASTRAR';
         }
     }
+
     function carregarInstituicaoSelect() {
         fetch("/instituicao/listarTodas")
             .then(function (resposta) {
@@ -111,6 +105,7 @@
                 console.log("#ERRO: ", erro);
             });
     }
+
     function mascaraCnpj(limpo) {
 
         return limpo.replace(/\D/g, '') // aqui remove tudo que nao e numero
@@ -121,12 +116,9 @@
             .slice(0, 18); // deixa o tamanho maximo em 18
     }
 
-
     function verificarCnpj() {
         let modo = selectModo.value;
         let cnpj = ipt_cnpj.value.replace(/\D/g, '');
-
-
 
         if (cnpj.length != 14) {
             return;
@@ -158,13 +150,27 @@
 
     }
 
+    // Chama o projeto Java (porta 8082 = server.port do application.properties)
+    function enviarEmailConfirmacao(nomeInstituicao, solicitacao) {
+        fetch("http://localhost:8082/email/confirmar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                emailServer: sessionStorage.getItem("emailUsuario"),
+                nomeServer: sessionStorage.getItem("nomeUsuario"),
+                nomeInstituicaoServer: nomeInstituicao,
+                solicitacaoServer: solicitacao
+            })
+        }).catch(function (erro) {
+            console.log("#ERRO e-mail: ", erro);
+        });
+    }
+
     function cadastrar() {
         let modo = selectModo.value;
         let nomeVar = null;
         let cnpjVar = null;
         let idInstituicao = null;
-
-        let msg = '';
 
         if (modo == "novaInstituicao") {
             nomeVar = ipt_nome.value;
@@ -181,10 +187,7 @@
                 setTimeout(sumirMensagem, 3000);
 
                 return false;
-
-
             }
-
 
             if (nomeVar !== '') {
                 if (nomeVar.length <= 1) { // verificar se o tamanho do nome é maior que 1
@@ -201,11 +204,10 @@
                         continue; // para se o nome tiver espaço, caso contrario nao da para cadastrar nomes como Vitor Henrique
                     }
 
-
                 }
 
             } if (cnpjVar.length !== 14) {
-              
+
                 cardErro.style.display = "block";
                 mensagem_erro.innerHTML =
                     "Cnpj inválido";
@@ -222,7 +224,7 @@
             }
         }
 
-        if(modo == "novaInstituicao"){
+        if (modo == "novaInstituicao") {
 
             fetch("/instituicao/cadastrar", {
                 method: "POST",
@@ -230,7 +232,7 @@
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    // modoServer: modo,
+                    modoServer: modo,
                     nomeServer: nomeVar,
                     cnpjServer: cnpjVar,
                     idInstituicaoServer: idInstituicao,
@@ -242,14 +244,14 @@
 
                     if (resposta.ok) {
 
+                        enviarEmailConfirmacao(nomeVar, false);
+
                         cardErro.style.display = "none";
                         alert("Cadastro de instituicao realizado com sucesso! Redirecionando para a página de login")
 
                         setTimeout(() => {
                             window.location = "login.html";
                         }, 2000);
-
-                        limparFormulario();
 
                     } else {
                         throw "Houve um erro ao tentar realizar o cadastro!";
@@ -259,33 +261,37 @@
                     console.log(`#ERRO: ${resposta}`);
                 });
 
-        } else{
+        } else {
 
             fetch("/instituicao/criarSolicitacaoEntrada", {
                 method: "POST",
                 headers: {
-                    "Content-Type":"application/json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    idUsuarioServer: idUsuario, 
+                    idUsuarioServer: idUsuario,
                     idInstituicaoServer: idInstituicao,
                 }),
             })
-            .then(function(resposta){
-                if(resposta.status == 200){
-                    cardErro.style.display = "none";
-                    alert("Solicitação de entrada em instituição criada com sucesso!\nRedirecionando para página de login.");
-                    
-                    setTimeout(() => {
-                        window.location = "login.html";
-                    }, 2000);
+                .then(function (resposta) {
+                    if (resposta.status == 200) {
 
-                    limparFormulario();
-                }
-            })
-            .catch(function(erro){
-                console.log(erro);
-            })
+                        enviarEmailConfirmacao(
+                            selectInstituicao.options[selectInstituicao.selectedIndex].text,
+                            true
+                        );
+
+                        cardErro.style.display = "none";
+                        alert("Solicitação de entrada em instituição criada com sucesso!\nRedirecionando para página de login.");
+
+                        setTimeout(() => {
+                            window.location = "login.html";
+                        }, 2000);
+                    }
+                })
+                .catch(function (erro) {
+                    console.log(erro);
+                });
 
         }
 
@@ -294,7 +300,6 @@
         function sumirMensagem() {
             cardErro.style.display = "none";
             mensagem_erro.innerHTML = "";
-
         }
     }
 
