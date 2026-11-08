@@ -32,29 +32,48 @@ CREATE TABLE tblCurso (
 			REFERENCES tblAreaGeral (idAreaGeral)
 );
 
-  CREATE TABLE tblUsuario (
-      idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-      nome VARCHAR(100) NOT NULL,
-      cpf CHAR(11) UNIQUE NOT NULL,
-      telefone VARCHAR(20),
-      email VARCHAR(100) UNIQUE NOT NULL,
-      senha VARCHAR(255) NOT NULL,
-      foto VARCHAR(255),
-      tipo VARCHAR(30) NOT NULL,
-      idInstituicao INT,
-      administrador BIT NOT NULL,
-      CONSTRAINT FK_tblUsuario_tblInstituicao 
-      FOREIGN KEY (idInstituicao) 
-        REFERENCES tblInstituicao (idInstituicao),
-      CONSTRAINT CK_tblUsuario_tipo 
-      CHECK (tipo IN ('Gerente de Marketing', 'Analista de Marketing', 'Investidor'))
-  );
+CREATE TABLE tblUf(
+  idUf INT PRIMARY KEY AUTO_INCREMENT,
+  sigla CHAR(2) NOT NULL,
+  nome VARCHAR(30) NOT NULL,
+  CONSTRAINT CK_tblUf_sigla 
+    CHECK (uf IN (
+          'AC','AL','AP','AM','BA','CE','DF','ES','GO',
+          'MA','MT','MS','MG','PA','PB','PR','PE','PI',
+          'RJ','RN','RS','RO','RR','SC','SP','SE','TO'))
+);
+
+CREATE TABLE tblMunicipio(
+  idMunicipio INT PRIMARY KEY AUTO_INCREMENT,
+  idUf INT NOT NULL,
+  nome VARCHAR(60) NOT NULL,
+  CONSTRAINT FK_tblMunicipio_tblUf 
+    FOREIGN KEY (idUf) 
+      REFERENCES tblUf (idUf)
+);
+
+CREATE TABLE tblUsuario (
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    cpf CHAR(11) UNIQUE NOT NULL,
+    telefone VARCHAR(20),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    foto VARCHAR(255),
+    tipo VARCHAR(30) NOT NULL,
+    idInstituicao INT,
+    administrador BIT NOT NULL,
+    CONSTRAINT FK_tblUsuario_tblInstituicao 
+    FOREIGN KEY (idInstituicao) 
+      REFERENCES tblInstituicao (idInstituicao),
+    CONSTRAINT CK_tblUsuario_tipo 
+    CHECK (tipo IN ('Gerente de Marketing', 'Analista de Marketing', 'Investidor'))
+);
 
 CREATE TABLE tblPolo (
     idPolo INT,
     idInstituicao INT,
-    uf CHAR(2) NOT NULL,
-    municipio VARCHAR(100) NOT NULL,
+    idMunicipio INT, 
     bairro VARCHAR(100) NOT NULL,
     logradouro VARCHAR(150) NOT NULL,
     numero VARCHAR(10) NOT NULL,
@@ -63,11 +82,9 @@ CREATE TABLE tblPolo (
     CONSTRAINT FK_tblPolo_tblInstituicao 
 		FOREIGN KEY (idInstituicao) 
 			REFERENCES tblInstituicao (idInstituicao),
-    CONSTRAINT CK_tblPolo_uf 
-		CHECK (uf IN (
-        'AC','AL','AP','AM','BA','CE','DF','ES','GO',
-        'MA','MT','MS','MG','PA','PB','PR','PE','PI',
-        'RJ','RN','RS','RO','RR','SC','SP','SE','TO'))
+    CONSTRAINT FK_tblPolo_tblMunicipio 
+      FOREIGN KEY (idMunicipio) 
+        REFERENCES tblMunicipio (idMunicipio)
 );
 
 CREATE TABLE tblInstituicaoPoloCurso (
