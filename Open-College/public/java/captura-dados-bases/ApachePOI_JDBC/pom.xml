@@ -5,7 +5,7 @@
              https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>school.sptech</groupId>
+    <groupId>opencollege.capturabases</groupId>
     <artifactId>censo-etl</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
@@ -18,6 +18,12 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>opencollege.capturabases</groupId>
+            <artifactId>captura-bases-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <!--
             Apache POI: biblioteca para leitura e escrita de arquivos Microsoft Office.
