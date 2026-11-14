@@ -1,4 +1,4 @@
-package school.sptech.modelo;
+package opencollege.capturabases.baseinep.modelo;
 
 public class Censo {
 
