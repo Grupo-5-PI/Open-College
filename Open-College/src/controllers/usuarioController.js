@@ -56,7 +56,7 @@ function cadastrar(req, res) {
     var telefone = req.body.telefoneServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
-    var foto = req.body.fotoServer;
+    var foto = null
     var tipo = req.body.perfilServer;
     var admin = req.body.adminServer;
 
@@ -81,7 +81,7 @@ function cadastrar(req, res) {
     else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, cpf, telefone, email, senha, foto, tipo, admin)
+        usuarioModel.cadastrar(nome, cpf, telefone, email, senha,tipo, admin)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -149,6 +149,40 @@ function redefinirSenha(req, res) {
         });
 
 }
+function uploadFoto(req,res){
+    if(!req.file){
+        return res.status(400).json({
+            mensagem: "Nada foi enviado"
+        });
+    }
+  
+    
+    const id = req.body.idUsuario;
+
+if(!id){
+    return res.status(400).json({
+        mensagem: "Nao foi encontado nenhum id"
+    });
+}
+
+    const foto = `/uploads/usuarios/${req.file.filename}`;
+    
+
+    usuarioModel.atualizarFoto(foto, id)
+    .then(function (resultado){
+        res.status(200).json({
+            mensagem: "Foto enviada",
+            foto: foto
+        });
+    })
+    .catch(function (erro){
+        console.log(erro);
+
+        res.status(500).json({
+            mensagem: "Erro ao atualizar foto"
+        });
+    });
+}
 
 
 module.exports = {
@@ -156,6 +190,7 @@ module.exports = {
     cadastrar,
     atualizar,
     verificar,
-    redefinirSenha
+    redefinirSenha,
+    uploadFoto
 
 }

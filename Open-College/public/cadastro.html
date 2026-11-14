@@ -77,8 +77,8 @@
         </div>
 
         <div class="campo-grupo campo-foto">
-            <label><img src="./img/icones/iconAnexo_img.png" alt=""> LINK SUA FOTO (OPCIONAL)</label>
-            <input id="ipt_foto" type="url" placeholder="https://exemplo.com" maxlength="1000">
+            <label><img src="./img/icones/iconAnexo_img.png" alt=""> ANEXE SUA FOTO (OPCIONAL)</label>
+            <input id="ipt_foto" type="file" placeholder="Imagem em formato: JPEG, PNG, WEBP" maxlength="1000">
         </div>
 
         <div class="container-btn-etapa">
@@ -127,7 +127,7 @@
         let senhaVar = ipt_senha.value;
         let confirmacaoSenhaVar = ipt_senhaConfirmar.value;
         let perfilVar = select_perfil.value;
-        let fotoVar = ipt_foto.value;
+        let fotoVar = ipt_foto.files[0];
         let msg = '';
 
 
@@ -241,7 +241,6 @@
                 emailServer: emailVar,
                 senhaServer: senhaVar,
                 perfilServer: perfilVar,
-                fotoServer: fotoVar,
                 adminServer: admin,
 
 
@@ -252,20 +251,40 @@
 
                 if (resposta.ok) {
                     return resposta.json().then(function (resultado){
-                        sessionStorage.setItem("idUsuario", resultado.insertId);
+
+                        const idUsuario = resultado.insertId;
+
+                        sessionStorage.setItem("idUsuario", idUsuario);
                         sessionStorage.setItem("emailUsuario", emailVar);
                         sessionStorage.setItem("nomeUsuario", nomeVar);
 
-                    cardErro.style.display = "none";
-                    
+                        if(fotoVar){
+                            const formData = new FormData();
 
-                    setTimeout(() => {
+                            formData.append("foto", fotoVar);
+                            formData.append("idUsuario", idUsuario);
+
+                            return fetch("/usuarios/uploadFoto",{
+                                method: "POST",
+                                body: formData
+                            });
+                        }
+
+                    }).then(function (repostaFoto){
+                        
+                        if(repostaFoto && !repostaFoto.ok){
+                            throw new Error("erro ao enviar a foto");
+                        }
+                        cardErro.style.display = "none";
+
+                        setTimeout(() => {
                         window.location = "cadastroInstituicao.html";
                     }, 2000);
-
+                    
                     limparFormulario();
-                });
-                }else {
+                    })                
+                        
+                    }else {
                     throw "Houve um erro ao tentar realizar o cadastro!";
                 }
             })

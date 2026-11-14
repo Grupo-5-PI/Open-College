@@ -1,7 +1,9 @@
 var express = require("express");
 var router = express.Router();
 
+
 var usuarioController = require("../controllers/usuarioController");
+var upload = require("../uploadImagem")
 
 //Recebendo os dados do html e direcionando para a função cadastrar de usuarioController.js
 router.post("/cadastrar", function (req, res) {
@@ -22,6 +24,10 @@ router.post("/verificar", function (req, res) {
 
 router.post("/redefinirSenha", function (req, res) {
     usuarioController.redefinirSenha(req, res);
+});
+
+router.post("/uploadFoto", upload.single("foto"), function(req, res){
+  usuarioController.uploadFoto(req, res);
 });
 
 module.exports = router;

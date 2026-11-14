@@ -37,7 +37,7 @@ CREATE TABLE tblUf(
   sigla CHAR(2) NOT NULL,
   nome VARCHAR(30) NOT NULL,
   CONSTRAINT CK_tblUf_sigla 
-    CHECK (uf IN (
+    CHECK (sigla IN (
           'AC','AL','AP','AM','BA','CE','DF','ES','GO',
           'MA','MT','MS','MG','PA','PB','PR','PE','PI',
           'RJ','RN','RS','RO','RR','SC','SP','SE','TO'))
