@@ -1,11 +1,11 @@
-package school.sptech;
+package opencollege.captura.inep;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import school.sptech.excel.LeituraExcel;
-import school.sptech.modelo.Censo;
-import school.sptech.jdbc.CensoJdbc;
-import school.sptech.jdbc.LogJdbc;
+import opencollege.captura.inep.excel.LeituraExcel;
+import opencollege.captura.inep.modelo.Censo;
+import opencollege.captura.inep.jdbc.CensoJdbc;
+import opencollege.captura.inep.jdbc.LogJdbc;
 
 import java.util.List;
 import java.util.Map;

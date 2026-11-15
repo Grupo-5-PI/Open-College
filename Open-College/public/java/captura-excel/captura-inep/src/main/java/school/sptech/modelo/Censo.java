@@ -1,4 +1,4 @@
-package school.sptech.modelo;
+package opencollege.captura.inep.modelo;
 
 public class Censo {
 

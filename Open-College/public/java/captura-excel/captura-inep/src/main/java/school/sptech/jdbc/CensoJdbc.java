@@ -1,7 +1,7 @@
-package school.sptech.jdbc;
+package opencollege.captura.inep.jdbc;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import school.sptech.modelo.Censo;
+import opencollege.captura.inep.modelo.Censo;
 
 public class CensoJdbc {
 

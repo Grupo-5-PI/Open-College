@@ -1,4 +1,4 @@
-package school.sptech.excel;
+package opencollege.captura.inep.excel;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
@@ -10,7 +10,7 @@ import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler.SheetContentsHandl
 import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFComment;
-import school.sptech.modelo.Censo;
+import opencollege.captura.inep.modelo.Censo;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;

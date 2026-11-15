@@ -1,4 +1,4 @@
-package school.sptech.jdbc;
+package opencollege.captura.inep.jdbc;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
