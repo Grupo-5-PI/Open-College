@@ -6,7 +6,7 @@ import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler.SheetContentsHandl
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ProcessadorLinha implements SheetContentsHandler {
+public abstract class ProcessadorDeLinha implements SheetContentsHandler {
 
 	protected final Map<Integer, String> mapeamentoColunas = new HashMap<>();
 	protected int numeroLinha = 0;
