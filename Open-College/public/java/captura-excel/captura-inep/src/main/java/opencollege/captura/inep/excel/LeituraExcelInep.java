@@ -11,6 +11,8 @@ import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 import opencollege.captura.inep.modelo.Censo;
+import opencollege.captura.inep.modelo.AreaGeral;
+import opencollege.captura.inep.modelo.Curso;
 import opencollege.captura.core.excel.ProcessadorLinha;
 
 import org.xml.sax.InputSource;
@@ -111,6 +113,13 @@ public class LeituraExcel {
         colunas.put("QT_MAT_PROCESCPRIVADA", "qtdMatriculaRedePrivada");
         colunas.put("QT_CONC_PROCESCPUBLICA", "qtdConcluintesRedePublica");
         colunas.put("QT_CONC_PROCESCPRIVADA", "qtdConcluintesRedePrivada");
+
+        // Mapeamentos para Cursos e Áreas Gerais
+        colunas.put("CO_CURSO", "idCurso");
+        colunas.put("NO_CURSO", "nomeCurso");
+        colunas.put("TP_GRAU_ACADEMICO", "formacao");
+        colunas.put("CO_CINE_AREA_GERAL", "idAreaGeral");
+        colunas.put("NO_CINE_AREA_GERAL", "nomeAreaGeral");
     }
 
     public static Map<String, Object> lerPlanilha(String caminhoArquivo) throws Exception {
@@ -156,6 +165,8 @@ public class LeituraExcel {
         Map<String, Object> resultado = new HashMap<>();
         resultado.put("registros", lista);
         resultado.put("ignoradas", handler.getQtdIgnoradas());
+
+
 
         return resultado;
     }
