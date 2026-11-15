@@ -11,6 +11,8 @@ import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 import opencollege.captura.inep.modelo.Censo;
+import opencollege.captura.inep.modelo.AreaGeral;
+import opencollege.captura.inep.modelo.Curso;
 import opencollege.captura.core.excel.ProcessadorLinha;
 
 import org.xml.sax.InputSource;
@@ -111,11 +113,21 @@ public class LeituraExcel {
         colunas.put("QT_MAT_PROCESCPRIVADA", "qtdMatriculaRedePrivada");
         colunas.put("QT_CONC_PROCESCPUBLICA", "qtdConcluintesRedePublica");
         colunas.put("QT_CONC_PROCESCPRIVADA", "qtdConcluintesRedePrivada");
+
+        // Mapeamentos para Cursos e Áreas Gerais
+        colunas.put("CO_CURSO", "idCurso");
+        colunas.put("NO_CURSO", "nomeCurso");
+        colunas.put("TP_GRAU_ACADEMICO", "formacao");
+        colunas.put("CO_CINE_AREA_GERAL", "idAreaGeral");
+        colunas.put("NO_CINE_AREA_GERAL", "nomeAreaGeral");
     }
 
     public static Map<String, Object> lerPlanilha(String caminhoArquivo) throws Exception {
 
         List<Censo> lista = new ArrayList<>();
+
+        Set<AreaGeral> areasGerais = new HashSet<>();
+        Set<Curso> cursos = new HashSet<>();
 
         ZipSecureFile.setMinInflateRatio(0);
         ZipSecureFile.setMaxEntrySize(10_000_000_000L);
@@ -134,7 +146,7 @@ public class LeituraExcel {
         StylesTable styles = reader.getStylesTable();
 
         // ProcessadorDeLinha:  classe que recebe os eventos de cada linha/célula
-        ProcessadorDeLinha handler = new ProcessadorCenso(lista);
+        ProcessadorDeLinha handler = new ProcessadorCenso(lista, areasGerais, cursos);
 
         // XSSFSheetXMLHandler: conecta o parser SAX ao nosso handler
         XSSFSheetXMLHandler sheetHandler = new XSSFSheetXMLHandler(styles, sharedStrings, handler, new DataFormatter(), false);
@@ -155,7 +167,11 @@ public class LeituraExcel {
 
         Map<String, Object> resultado = new HashMap<>();
         resultado.put("registros", lista);
+        resultado.put("areasGerais", areasGerais);
+        resultado.put("cursos", cursos);
         resultado.put("ignoradas", handler.getQtdIgnoradas());
+
+
 
         return resultado;
     }
@@ -163,18 +179,27 @@ public class LeituraExcel {
     private static class ProcessadorCenso extends ProcessadorLinha {
 
         private final List<Censo> lista;
+        private final Set<AreaGeral> areasGerais;
+        private final Set<Curso> cursos;
+
         private Censo registroAtual;
+        private AreaGeral areaGeralAtual;
+        private Curso cursoAtual;
         private boolean cabecalhoProcessado = false;
 
-        public ProcessadorCenso(List<Censo> lista) {
-            this.lista = lista;
-        }
+		public ProcessadorCenso(List<Censo> lista, Set<AreaGeral> areasGerais, Set<Curso> cursos) {
+			this.lista = lista;
+			this.areasGerais = areasGerais;
+			this.cursos = cursos;
+		}
 
-        @Override
+	    @Override
         public void startRow(int rowNum) {
             super.startRow(rowNum);
             if (rowNum > 0) {
                 registroAtual = new Censo();
+                areaGeralatual = new AreaGeral();
+                cursoAtual = new Curso();
             }
         }
 
@@ -191,8 +216,8 @@ public class LeituraExcel {
                 }
             } else {
                 String campo = mapeamentoColunas.get(colunaIndex);
-                if (campo != null && registroAtual != null) {
-                    preencherDadosCenso(registroAtual, campo, valorFormatado, numeroLinha);
+                if (campo != null) {
+                    preencherDadosCenso(registroAtual, areaGeralAtual, cursoAtual, campo, valorFormatado, numeroLinha);
                 }
             }
         }
@@ -226,13 +251,21 @@ public class LeituraExcel {
 
             lista.add(registroAtual);
 
+            if(areaGeralAtual.getIdAreaGeral() != null){
+                areasGerais.add(areaGeralAtual);
+            }
+
+            if(cursoAtual.getIdCurso() != null){
+                cursos.add(cursoAtual);
+            }
+
             if (lista.size() % 10000 == 0) {
                 System.out.println("  Lidos: " + lista.size() + " registros");
             }
         }
     }
 
-    private static void preencherDadosCenso(Censo censo, String campo, String valor, int numeroLinha) {
+    private static void preencherDadosCenso(Censo censo, AreaGeral areaGeral, Curso curso, String campo, String valor, int numeroLinha) {
         if (valor == null || valor.trim().isEmpty()) {
             return;
         }
@@ -436,6 +469,26 @@ public class LeituraExcel {
                     break;
                 case "qtdConcluintesRedePrivada":
                     censo.setQtdConcluintesRedePrivada(converterParaInteiroOuZero(valor));
+                    break;
+
+                case "idCurso":
+                    Integer idC = converterParaInteiro(valor);
+                    censo.setCoCursoINEP(idC);
+                    curso.setIdCurso(idC);
+                    break;
+                case "nomeCurso":
+                    curso.setNome(valor);
+                    break;
+                case "formacao":
+                    curso.setFormacao(valor); // "Bacharelado", "Licenciatura" ou "Tecnólogo"
+                    break;
+                case "idAreaGeral":
+                    Integer idAG = converterParaInteiro(valor);
+                    areaGeral.setIdAreaGeral(idAG);
+                    curso.setIdAreaGeral(idAG); // Vincula o curso à chave estrangeira da área
+                    break;
+                case "nomeAreaGeral":
+                    areaGeral.setNome(valor);
                     break;
             }
         } catch (Exception e) {
