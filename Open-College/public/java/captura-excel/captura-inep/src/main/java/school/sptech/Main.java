@@ -12,31 +12,11 @@ import java.util.Map;
 
 public class Main {
 
-    // static final String dbURL     = "jdbc:mysql://localhost:3306/opencollege" +
-    //                                  "?useUnicode=true&characterEncoding=UTF-8" +
-    //                                  "&serverTimezone=America/Sao_Paulo" +
-    //                                  "&autoReconnect=true";
-
-    static final String dbURL = "jdbc:mysql://100.26.139.57:3306/opencollege" +
-            "?useUnicode=true&characterEncoding=UTF-8" +
-            "&serverTimezone=America/Sao_Paulo";
-
-    static final String dbUsuario = "root";
-    static final String dbSenha = "urubu100";  // SENHA_BD_EC2
-    // static final String dbSenha = "46511029";
-
     static final String caminhoArquivo = "MICRODADOS_CADASTRO_CURSOS_2024.xlsx";
 
     public static void main(String[] args) throws Exception {
 
-        // Faz a conexão com o banco
-
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl(dbURL);
-        dataSource.setUsername(dbUsuario);
-        dataSource.setPassword(dbSenha);
-
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        JdbcTemplate jdbcTemplate = new Conexao.getJdbcTemplate();
 
         CensoJdbc censoJdbc = new CensoJdbc(jdbcTemplate);
         LogJdbc logJdbc = new LogJdbc(jdbcTemplate);
@@ -76,6 +56,6 @@ public class Main {
 
         }
 
-        dataSource.close();
+        Conexao.fecharConexao();
     }
 }
