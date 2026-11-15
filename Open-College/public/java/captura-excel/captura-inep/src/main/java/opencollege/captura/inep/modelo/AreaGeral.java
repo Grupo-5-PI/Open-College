@@ -1,6 +1,6 @@
 package opencollege.captura.inep.modelo;
 
-import java.utils.Objects;
+import java.util.Objects;
 
 public class AreaGeral{
 
@@ -14,7 +14,7 @@ public class AreaGeral{
 
 	@Override
 	public boolean equals(Object o){
-		if(o == null || getClass != o.getClass())
+		if(o == null || this.getClass != o.getClass())
 			return false;
 		if(this == o)
 			return true;
