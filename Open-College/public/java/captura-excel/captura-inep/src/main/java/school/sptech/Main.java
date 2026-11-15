@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import opencollege.captura.inep.excel.LeituraExcel;
 import opencollege.captura.inep.modelo.Censo;
 import opencollege.captura.inep.jdbc.CensoJdbc;
-import opencollege.captura.inep.jdbc.LogJdbc;
+import opencollege.captura.core.jdbc.LogJdbc;
 
 import java.util.List;
 import java.util.Map;
