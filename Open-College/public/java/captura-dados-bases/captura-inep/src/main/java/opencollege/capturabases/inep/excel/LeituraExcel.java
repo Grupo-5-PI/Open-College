@@ -10,7 +10,7 @@ import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler.SheetContentsHandl
 import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFComment;
-import school.sptech.modelo.Censo;
+import opencollege.capturabases.inep.modelo.Censo;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
