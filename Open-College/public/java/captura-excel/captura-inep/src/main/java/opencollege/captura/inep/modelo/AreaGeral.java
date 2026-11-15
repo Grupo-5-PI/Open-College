@@ -12,6 +12,22 @@ public class AreaGeral{
 		this.nome = nome;
 	}
 
+	public Integer getIdAreaGeral() {
+		return idAreaGeral;
+	}
+
+	public void setIdAreaGeral(Integer idAreaGeral) {
+		this.idAreaGeral = idAreaGeral;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	@Override
 	public boolean equals(Object o){
 		if(o == null || this.getClass != o.getClass())

@@ -16,6 +16,38 @@ public class Curso{
 		this.idAreaGeral = idAreaGeral;
 	}
 
+	public Integer getIdCurso() {
+		return idCurso;
+	}
+
+	public void setIdCurso(Integer idCurso) {
+		this.idCurso = idCurso;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getFormacao() {
+		return formacao;
+	}
+
+	public void setFormacao(String formacao) {
+		this.formacao = formacao;
+	}
+
+	public Integer getIdAreaGeral() {
+		return idAreaGeral;
+	}
+
+	public void setIdAreaGeral(Integer idAreaGeral) {
+		this.idAreaGeral = idAreaGeral;
+	}
+
 	@Override
 	public boolean equals(Object o){
 		if(o == null || this.getClass != o.getClass)
