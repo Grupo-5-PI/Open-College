@@ -48,7 +48,7 @@ public class LeituraExcelIbge {
 
 		StylesTable styles = reader.getStylesTable();
 
-		ProcessadorMunicipioHandler handler = new ProcessadorMunicipioHandler(lista);
+		ProcessadorMunicipioHandler handler = new ProcessadorMunicipio(lista);
 
 		XSSFSheetXMLHandler sheetHandler = new XSSFSheetXMLHandler(styles, sharedStrings, handler, new DataFormatter(), false);
 
@@ -70,21 +70,16 @@ public class LeituraExcelIbge {
 		return resultado;
 	}
 
-	private static class ProcessadorMunicipioHandler implements SheetContentsHandler {
+	private static class ProcessadorMunicipio implements SheetContentsHandler {
 
 		private final List<Municipio> lista;
-
 		private final Map<Integer, String> mapeamentoColunas = new HashMap<>();
-
 		private Municipio registroAtual;
-
 		private Integer numeroLinha = 0;
-
 		private Boolean cabecalhoProcessado = false;
-
 		private Integer qtdIgnoradas = 0;
 
-		public ProcessadorMunicipioHandler(List<Municipio> lista) {
+		public ProcessadorMunicipio(List<Municipio> lista) {
 			this.lista = lista;
 		}
 

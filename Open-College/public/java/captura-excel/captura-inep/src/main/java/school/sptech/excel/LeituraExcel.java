@@ -162,15 +162,10 @@ public class LeituraExcel {
     private static class ProcessadorDeLinha implements SheetContentsHandler {
 
         private final List<Censo> lista;
-
         private final Map<Integer, String> mapeamentoColunas = new HashMap<>();
-
         private Censo registroAtual;
-
         private Integer numeroLinha = 0;
-
         private Boolean cabecalhoProcessado = false;
-
         private Integer qtdIgnoradas = 0;
 
         public ProcessadorDeLinha(List<Censo> lista) {
