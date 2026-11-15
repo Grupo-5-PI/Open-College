@@ -11,6 +11,7 @@ import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 import opencollege.captura.inep.modelo.Censo;
+import opencollege.captura.core.excel.ProcessadorLinha;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -133,7 +134,7 @@ public class LeituraExcel {
         StylesTable styles = reader.getStylesTable();
 
         // ProcessadorDeLinha:  classe que recebe os eventos de cada linha/célula
-        ProcessadorDeLinha handler = new ProcessadorDeLinha(lista);
+        ProcessadorDeLinha handler = new ProcessadorCenso(lista);
 
         // XSSFSheetXMLHandler: conecta o parser SAX ao nosso handler
         XSSFSheetXMLHandler sheetHandler = new XSSFSheetXMLHandler(styles, sharedStrings, handler, new DataFormatter(), false);
@@ -159,26 +160,19 @@ public class LeituraExcel {
         return resultado;
     }
 
-    private static class ProcessadorDeLinha implements SheetContentsHandler {
+    private static class ProcessadorCenso extends ProcessadorLinha {
 
         private final List<Censo> lista;
-        private final Map<Integer, String> mapeamentoColunas = new HashMap<>();
         private Censo registroAtual;
-        private Integer numeroLinha = 0;
-        private Boolean cabecalhoProcessado = false;
-        private Integer qtdIgnoradas = 0;
+        private boolean cabecalhoProcessado = false;
 
-        public ProcessadorDeLinha(List<Censo> lista) {
+        public ProcessadorCenso(List<Censo> lista) {
             this.lista = lista;
-        }
-
-        public Integer getQtdIgnoradas() {
-            return qtdIgnoradas;
         }
 
         @Override
         public void startRow(int rowNum) {
-            numeroLinha = rowNum + 1;
+            super.startRow(rowNum);
             if (rowNum > 0) {
                 registroAtual = new Censo();
             }
@@ -186,19 +180,17 @@ public class LeituraExcel {
 
         @Override
         public void cell(String referenciaCelula, String valorFormatado, XSSFComment comment) {
-            Integer colunaIndex = (int) new CellReference(referenciaCelula).getCol();
+            int colunaIndex = obterIndiceColuna(referenciaCelula);
 
             if (!cabecalhoProcessado) {
-
-                String nomeColuna = valorFormatado.trim().toUpperCase();
-
-                if (colunas.containsKey(nomeColuna)) {
-                    mapeamentoColunas.put(colunaIndex, colunas.get(nomeColuna));
+                if (valorFormatado != null) {
+                    String nomeColuna = valorFormatado.trim().toUpperCase();
+                    if (colunas.containsKey(nomeColuna)) {
+                        mapeamentoColunas.put(colunaIndex, colunas.get(nomeColuna));
+                    }
                 }
             } else {
-
                 String campo = mapeamentoColunas.get(colunaIndex);
-
                 if (campo != null && registroAtual != null) {
                     preencherDadosCenso(registroAtual, campo, valorFormatado, numeroLinha);
                 }
@@ -240,31 +232,13 @@ public class LeituraExcel {
         }
     }
 
-    private static Integer converterParaInteiro(String valor) {
-        if (valor == null || valor.isEmpty()) {
-            return null;
-        }
-        return (int) Double.parseDouble(valor.replace(",", "."));
-    }
-
-    private static Integer converterParaInteiroOuZero(String valor) {
-        if (valor == null || valor.isEmpty()) {
-            return 0;
-        }
-        return (int) Double.parseDouble(valor.replace(",", "."));
-    }
-
     private static void preencherDadosCenso(Censo censo, String campo, String valor, int numeroLinha) {
-
         if (valor == null || valor.trim().isEmpty()) {
             return;
         }
-
         valor = valor.trim();
-
         try {
             switch (campo) {
-
                 case "uf":
                     censo.setUf(valor.toUpperCase());
                     break;
@@ -468,4 +442,3 @@ public class LeituraExcel {
             System.out.println("Aviso linha " + numeroLinha + " campo '" + campo + "': valor inválido '" + valor + "'");
         }
     }
-}
