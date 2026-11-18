@@ -282,6 +282,7 @@ CREATE TABLE tblDashboardPersonalizado (
 );
 
 
-
+ALTER TABLE tblNoticia
+    ADD COLUMN descricao TEXT AFTER titulo;
 
 
