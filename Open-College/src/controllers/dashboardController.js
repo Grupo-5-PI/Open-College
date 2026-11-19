@@ -16,13 +16,15 @@ function buscarDadosKpi(req, res){
 
     } else if(dashboard == "Região"){
         
+        let regiao = parametros.regiaoParam;
+        
         if(kpi == "kpi_regiao_modalidade"){
-
+            dashboardModel.buscarDadosKpiRegiaoModalidade(regiao, ano)
         } else if(kpi == "kpi_regiao_curso"){
 
-        } else if(kpi == "kpi_regiao_area")[
-            
-        ]
+        } else if(kpi == "kpi_regiao_area"){
+
+        }
         
     } else if(dashboard == "Tendência"){
 
