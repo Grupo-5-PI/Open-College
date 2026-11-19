@@ -28,8 +28,8 @@ public class Email {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(
-                    "brenno.ferreira.melo@gmail.com",
-                    "dyihddlvxvqgrbfo"
+                    "opencollege.support@gmail.com",
+                    "uuisjkjeftyeranp"
                 );
             }
         });
@@ -39,7 +39,7 @@ public class Email {
         // 3. Construindo a mensagem
         MimeMessage mensagem = new MimeMessage(sessao);
 
-        mensagem.setFrom(new InternetAddress("brenno.ferreira.melo@gmail.com"));
+        mensagem.setFrom(new InternetAddress("opencollege.support@gmail.com"));
 
         mensagem.addRecipient(
             Message.RecipientType.TO,
