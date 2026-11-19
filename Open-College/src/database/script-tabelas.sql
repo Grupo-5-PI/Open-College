@@ -70,7 +70,7 @@ INSERT INTO tblUf (idUf, sigla, nome) VALUES
 (50, 'MS', 'Mato Grosso do Sul'),
 (51, 'MT', 'Mato Grosso'),
 (52, 'GO', 'Goiás'),
-(53, 'Distrito Federal');
+(53, 'DF', 'Distrito Federal');
 
 CREATE TABLE tblMunicipio(
   idMunicipio INT PRIMARY KEY AUTO_INCREMENT,
