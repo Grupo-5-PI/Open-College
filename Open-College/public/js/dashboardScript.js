@@ -15,9 +15,10 @@ async function buscarDadosKpi(dashboard, kpi){
     }
     else if(dashboard == "Região"){
         parametros = {
-            kpi: kpi,
-            regiao: document.getElementById("regiao_filtro_regiao").value,
-            ano: document.getElementById("regiao_filtro_ano").value
+            dashboardParam: dashboard,
+            kpiParam: kpi,
+            regiaoParam: document.getElementById("regiao_filtro_regiao").value,
+            anoParam: document.getElementById("regiao_filtro_ano").value
         };
     } else if(dashboard == "Tendência"){
 
