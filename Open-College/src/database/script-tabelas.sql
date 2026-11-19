@@ -252,7 +252,14 @@ CREATE TABLE tblDashboardPersonalizado (
         ON UPDATE CASCADE
 );
 
-
+CREATE TABLE tblLog (
+    idLog INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(10) NOT NULL,
+    descricao VARCHAR(510) NOT NULL,
+    dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT CK_tblLog_tipo
+        CHECK (tipo IN ('INFO', 'AVISO', 'ERRO'))
+);
 
 
 
