@@ -632,6 +632,50 @@ main {
     text-align: center;
 }
 /* ====================================== DASH TENDÊNCIA ======================================*/
+.nav-dash-tendencia {
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    width: 80%;
+    padding: 14px 24px;
+    background-color: var(--cor11);
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Telegraf', sans-serif;
+    font-weight: 800;
+    color: #000;
+    justify-content: space-between;
+}
+
+.filtro-ano-tendencia{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-dash-tendencia p {
+    margin: 0;
+    font-size: 22px;
+}
+
+.grid-cards-tendencia {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    flex: 1;
+    width: 100%;
+}
+
+.card-kpi-tendencia {
+    display: flex;
+    justify-content: center;  
+    align-items: center;        
+}
+
+.card-comparacao{
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Telegraf', sans-serif;
+}
 
 .graficosLadoaLado {
     display: grid;
@@ -674,7 +718,7 @@ main {
 
 .card-tendencia .card-kpi {
     width: 100%;
-     background-color: transparent;
+    background-color: transparent;
     border: 3px solid var(--cor1);
     padding: 15px;
     display: flex;
@@ -687,7 +731,49 @@ main {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.card-tendencia {
+    width: 100%;
+    background-color: transparent;
+    border: 3px solid var(--cor1);
+    padding: 20px;
+    margin-top: 15px;
+    color: #ffffff;
+    font-family: 'Telegraf', sans-serif;
+}
 
+.card-tendencia h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 800;
+}
+
+.tabela-dashboard {
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+.tabela-dashboard th, 
+.tabela-dashboard td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tabela-dashboard tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.positivo {
+    color: #3cc027 !important; /* Verde */
+    font-weight: bold;
+}
+
+.negativo {
+    color: #f51919 !important; /* Vermelho */
+    font-weight: bold;
+}
 
 /* ====================================== FOOTER ======================================*/
 
