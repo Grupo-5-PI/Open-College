@@ -90,7 +90,7 @@
                     <p>Dashboard - Região (ANO)</p>
                     <div class="grupo-filtro">
                         <p>Região:</p>
-                        <select class="filtro-regiao">
+                        <select class="filtro-regiao" id="regiao_filtro_regiao">
                             <option>SP</option>
                             <option>MG</option>
                             <option>RJ</option>
@@ -102,7 +102,7 @@
                     </div>
                     <div class="grupo-filtro">
                         <p>Ano:</p>
-                        <select class="filtro-ano">
+                        <select class="filtro-ano" id="regiao_filtro_ano">
                             <option>2025</option>
                             <option>2024</option>
                             <option>2023</option>
@@ -116,19 +116,19 @@
             </header>
 
             <div class="grid-cards-regiao">
-                <div class="card-kpi-regiao">
+                <div class="card-kpi-regiao"  id="kpi_regiao_modalidade">
                     <span class="card-titulo">Modalidade com mais alunos em <span class="texto-regiao">SP</span></span>
                     <strong class="card-valor">EAD</strong>
                     <span class="card-rodape">Anterior (2023): Presencial</span>
                 </div>
 
-                <div class="card-kpi-regiao">
+                <div class="card-kpi-regiao" id="kpi_regiao_curso">
                     <span class="card-titulo">Curso com mais alunos em <span class="texto-regiao">SP</span></span>
                     <strong class="card-valor">Direito</strong>
                     <span class="card-rodape">Anterior (2023): Administração</span>
                 </div>
 
-                <div class="card-kpi-regiao">
+                <div class="card-kpi-regiao" id="kpi_regiao_area">
                     <span class="card-titulo">Área com mais alunos na região <span class="texto-regiao">SP</span></span>
                     <strong class="card-valor">Tecnologia</strong>
                     <span class="card-rodape">Anterior (2023): Saúde</span>
@@ -320,3 +320,5 @@
     carregarIngressantesRegiao()
 
 </script>
+
+<script src="../js/dashboardScript.js"></script>
