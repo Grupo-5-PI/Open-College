@@ -25,8 +25,11 @@ function buscarDadosKpiRegiaoModalidade(regiao, ano){
             LIMIT 1
         );
     `;
+
+    return database.executar(instrucaoSql);
     
 }
+
 
 module.exports = {
     buscarDadosKpiRegiaoModalidade,
