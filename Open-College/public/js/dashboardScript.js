@@ -21,7 +21,7 @@ async function buscarDadosKpi(dashboard, kpi){
             anoParam: document.getElementById("regiao_filtro_ano").value
         };
     } else if(dashboard == "Tendência"){
-
+        
     }
 
     let retorno = await fetch(`/dashboard/buscarDadosKpi/${parametros}`);
