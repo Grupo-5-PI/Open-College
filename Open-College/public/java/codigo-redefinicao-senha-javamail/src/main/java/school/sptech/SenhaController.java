@@ -12,8 +12,8 @@ import java.util.Map;
 public class SenhaController {
 
     // credenciais do remetente
-    private String remetente = "brenno.ferreira.melo@gmail.com";
-    private String senha = "dyihddlvxvqgrbfo";
+    private String remetente = "opencollege.support@gmail.com";
+    private String senha = "uuisjkjeftyeranp";
     private String assunto = "Recuperação de senha";
     private String texto = """
             Código de recuperação:
