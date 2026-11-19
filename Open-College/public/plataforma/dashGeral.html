@@ -16,7 +16,7 @@
 
 <!-- onload="validarSessao()" -->
 
-<body>
+<body onload="obterDados()">
     <nav class="menu-lateral">
         <header class="menu-lateral-logo">
             <a href="" class="perfil-link">
@@ -104,37 +104,37 @@
                 <div class="grid-cards">
                     <div class="card-kpi">
                         <span class="card-titulo">Total de Matrículas</span>
-                        <strong class="card-valor">45.3K</strong>
+                        <strong class="card-valor" id="kpi-total-matriculas">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi">
                         <span class="card-titulo">Total de Concluintes</span>
-                        <strong class="card-valor">22.3K</strong>
+                        <strong class="card-valor" id="kpi-total-concluintes">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi">
                         <span class="card-titulo">Modalidade mais procurada</span>
-                        <strong class="card-valor">EAD</strong>
+                        <strong class="card-valor" id="kpi-modalidade-mais-procurada">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi">
                         <span class="card-titulo">Período mais procurado</span>
-                        <strong class="card-valor">NOTURNO</strong>
+                        <strong class="card-valor" id="kpi-periodo-mais-procurado">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi">
                         <span class="card-titulo">Área mais procurada</span>
-                        <strong class="card-valor">TECNOLOGIA</strong>
+                        <strong class="card-valor" id="kpi-area-mais-procurada">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi">
                         <span class="card-titulo">Tipo de graduação mais procurada</span>
-                        <strong class="card-valor">TÉCNICO</strong>
+                        <strong class="card-valor" id="kpi-graduacao-mais-procurada">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
                 </div>
@@ -188,19 +188,263 @@
         }
     }
 
-    filtroAno.addEventListener('change', atualizarAno)
+    filtroAno.addEventListener('change', function () {
+        atualizarAno()
+        obterDados()
+    })
 
     atualizarAno()
 
-    function carregarGraficoMaisProcurado() {
+    // ==================== FETCH ====================
+
+    function obterDados() {
+
+        let ano = filtroAno.value
+
+        // ==================== KPI Total De Matriculas ====================
+
+        fetch(`/dashboardGeral/kpiTotalMatriculas/${ano}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (json) {
+
+                        let valor = (json[0].totalMatriculas / 1000000).toFixed(1)
+                        document.getElementById("kpi-total-matriculas").innerHTML = valor + "M"
+                    });
+                }
+            })
+            .catch(function (erro) {
+
+                console.log(erro);
+            })
+
+        // ==================== KPI Total De Concluintes ====================
+
+        fetch(`/dashboardGeral/kpiTotalConcluintes/${ano}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (json) {
+
+                        let valor = (json[0].totalConcluintes / 1000000).toFixed(1)
+                        document.getElementById("kpi-total-concluintes").innerHTML = valor + "M"
+                    });
+                }
+            })
+            .catch(function (erro) {
+                console.log(erro);
+            })
+
+        // ==================== KPI Modalidade mais procurada ====================
+
+        fetch(`/dashboardGeral/kpiModalidadeMaisProcurada/${ano}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (json) {
+
+                        document.getElementById("kpi-modalidade-mais-procurada").innerHTML = json[0].modalidade
+                    });
+                }
+            })
+            .catch(function (erro) {
+
+                console.log(erro);
+            })
+
+        // ==================== KPI Periodo mais procurado ====================
+
+        fetch(`/dashboardGeral/kpiPeriodoMaisProcurado/${ano}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (json) {
+
+                        let totalDiurno = json[0].totalDiurno;
+                        let totalNoturno = json[0].totalNoturno;
+
+                        if (totalDiurno > totalNoturno) {
+
+                            document.getElementById("kpi-periodo-mais-procurado").innerHTML = "DIURNO"
+                        } else {
+
+                            document.getElementById("kpi-periodo-mais-procurado").innerHTML = "NOTURNO"
+                        }
+                    });
+                }
+            })
+            .catch(function (erro) {
+
+                console.log(erro);
+            })
+
+        // ==================== KPI Area mais procurada ====================
+
+        fetch(`/dashboardGeral/kpiAreaMaisProcurada/${ano}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (json) {
+                
+                        document.getElementById("kpi-area-mais-procurada").innerHTML = json[0].areaGeral
+                    });
+                }
+            })
+            .catch(function (erro) {
+                
+                console.log(erro);
+            })
+
+        // ==================== KPI Tipo Graduacao mais procurada ====================
+
+        fetch(`/dashboardGeral/kpiTipoGraduacaoMaisProcurada/${ano}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (json) {
+                
+                        let grauduacao = { 1: "Bacharelado", 2: "Licenciatura", 3: "Tecnológico" }
+                        document.getElementById("kpi-graduacao-mais-procurada").innerHTML = grauduacao[Number(json[0].tipoGrauAcademico)]
+                    });
+                }
+            })
+            .catch(function (erro) {
+                
+                console.log(erro);
+            })
+
+        // ==================== GRAFICO Graduacao mais procurada ====================
+
+        fetch(`/dashboardGeral/graficoGraduacaoMaisProcurada/${ano}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (json) {
+                
+                        carregarGraficoMaisProcurado(json)
+                    });
+                }
+            })
+            .catch(function (erro) {
+                console.log(erro);
+            })
+
+        // ==================== GRAFICO Area geral mais procurada ====================
+
+        fetch(`/dashboardGeral/graficoAreaGeralMaisProcurada/${ano}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (json) {
+                
+                        carregarGraficoAreaGeralMatricula(json)
+                    });
+                }
+            })
+            .catch(function (erro) {
+                
+                console.log(erro);
+            })
+
+        // ==================== GRAFICO Modalidade mais procurada por curso ====================
+
+        fetch(`/dashboardGeral/graficoModalidadeMaisProcurada/${ano}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (json) {
+                
+                        carregarGraficoModalidadeProcurada(json)
+                    });
+                }
+            })
+            .catch(function (erro) {
+                
+                console.log(erro);
+            })
+
+    }
+
+    // ==================== CARREGAR GRAFICOS ====================
+
+    let chartMaisProcurado = null
+    let chartAreaGeral = null
+    let chartModalidade = null
+
+    function carregarGraficoMaisProcurado(json) {
+
+        if (chartMaisProcurado) {
+            
+            chartMaisProcurado.destroy()
+        }
+
+        let total = 0
+
+        for (let i = 0; i < json.length; i++) {
+        
+            total += Number(json[i].totalMatriculas)
+        }
+
+        let labels = []
+        let data = []
+        
+        for (let i = 0; i < json.length; i++) {
+        
+            let nome = json[i].nome
+
+            if (nome == "Análise e Desenvolvimento de Sistemas") {
+                nome = "ADS"
+            }
+
+            labels.push(nome)
+            data.push(((Number(json[i].totalMatriculas) / total) * 100).toFixed(1))
+        }
+
         let maisProcurado = document.getElementById('grafico-grad-mais-procurada');
 
-        new Chart(maisProcurado, {
+        chartMaisProcurado = new Chart(maisProcurado, {
             type: 'bar',
             data: {
-                labels: ['Medicina', 'Direito', 'Pedagogia', 'Administração'],
+                labels: labels,
                 datasets: [{
-                    data: [55, 25, 15, 5],
+                    data: data,
                     backgroundColor: ['#4a7ff7', '#ae8df5', '#f3b86b', '#3cc027'],
                     borderWidth: 0,
                     borderRadius: 3,
@@ -239,7 +483,7 @@
                             weight: 'bold',
                             family: 'Telegraf'
                         },
-                        formatter: (valor) => `${valor}%`
+                        formatter: function(valor) { return valor + "%" }
                     }
                 },
                 scales: {
@@ -260,7 +504,7 @@
                         }
                     },
                     y: {
-                        afterFit: (scale) => {
+                        afterFit: function(scale) {
                             scale.width = 130;
                         },
                         ticks: {
@@ -283,30 +527,51 @@
         });
     }
 
-    carregarGraficoMaisProcurado();
+    function carregarGraficoAreaGeralMatricula(json) {
 
-    function carregarGraficoAreaGeralMatricula() {
-    let areaGeral = document.getElementById('grafico-area-geral-matricula');
+        let total = 0
+        for (let i = 0; i < json.length; i++) {
+            total += Number(json[i].totalMatriculas)
+        }
+        let media = Math.round(total / json.length)
 
-    new Chart(areaGeral, {
+        let metaMinima = []
+        for (let i = 0; i < json.length; i++) {
+            metaMinima.push(media)
+        }
+
+        let labels = []
+        let data = []
+        for (let i = 0; i < json.length; i++) {
+            labels.push(json[i].areaGeral)
+            data.push(json[i].totalMatriculas)
+        }
+
+        if (chartAreaGeral) {
+            chartAreaGeral.destroy()
+        }
+
+        let areaGeral = document.getElementById('grafico-area-geral-matricula');
+
+        chartAreaGeral = new Chart(areaGeral, {
         type: 'bar',
         data: {
-            labels: ['MEDICINA', 'DIREITO', 'TI', 'PEDAGOGIA'],
+            labels: labels,
             datasets: [
                 {
                     type: 'line',
                     label: 'Meta Mínima',
-                    data: [80, 80, 80, 80],
+                    data: metaMinima,
                     borderColor: '#ff5555',
                     borderWidth: 2,
                     pointRadius: 0,
                     fill: false,
                     datalabels: {
-                        display: false 
+                        display: false
                     }
                 },
                 {
-                    data: [95, 55, 60, 75],
+                    data: data,
                     backgroundColor: '#3cc027',
                     borderWidth: 0,
                     borderRadius: 3,
@@ -333,15 +598,15 @@
                     display: false
                 },
                 datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                        color: '#ffffff',
-                        font: {
-                            weight: 'bold',
-                            size: 15
-                        }
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#ffffff',
+                    font: {
+                        weight: 'bold',
+                        size: 15
+                    }
                 }
-            }, 
+            },
             scales: {
                 x: {
                     ticks: {
@@ -379,42 +644,69 @@
             }
         }
     }); 
-}
-    carregarGraficoAreaGeralMatricula();
+    }
 
-    function carregarGraficoModalidadeProcurada() {
+    function carregarGraficoModalidadeProcurada(json) {
+
+        var labels = []
+
+        for (var i = 0; i < json.length; i++) {
+
+            if (!labels.includes(String(json[i].ano))) {
+                labels.push(String(json[i].ano))
+
+            }
+        }
+
+        var cursos = []
+
+        for (var i = 0; i < json.length; i++) {
+
+            if (!cursos.includes(json[i].nome)) {
+
+                cursos.push(json[i].nome)
+            }
+        }
+
+        var cores = ['#4a7ff7', '#ae8df5', '#f3b86b', '#3cc027', '#ff5555']
+
+        var datasets = []
+        for (var i = 0; i < cursos.length; i++) {
+
+            var data = []
+
+            for (var j = 0; j < labels.length; j++) {
+
+                var encontrado = false
+
+                for (var k = 0; k < json.length; k++) {
+
+                    if (json[k].nome == cursos[i] && json[k].ano == labels[j]) {
+
+                        data.push(json[k].totalMatriculas)
+                        encontrado = true
+                    }
+
+                }
+                if (!encontrado) {
+
+                    data.push(0)
+                }
+            }
+            datasets.push({ label: cursos[i], data: data, backgroundColor: cores[i], borderRadius: 4 })
+        }
+
+        if (chartModalidade) {
+            chartModalidade.destroy()
+        }
+
         let modalidadeProcurada = document.getElementById('grafico-mod-mais-procurada-curso');
 
-        new Chart(modalidadeProcurada, {
+        chartModalidade = new Chart(modalidadeProcurada, {
             type: 'bar',
             data: {
-                labels: ['2020', '2021', '2022', '2023', '2024'],
-                datasets: [
-                    {
-                        label: 'Medicina',
-                        data: [120, 165, 140, 210, 195],
-                        backgroundColor: '#4a7ff7',
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Direito',
-                        data: [100, 110, 135, 150, 145],
-                        backgroundColor: '#ae8df5',
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Pedagogia',
-                        data: [80, 85, 115, 90, 130],
-                        backgroundColor: '#f3b86b',
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Administração',
-                        data: [60, 95, 70, 85, 110],
-                        backgroundColor: '#3cc027',
-                        borderRadius: 4
-                    }
-                ]
+                labels: labels,
+                datasets: datasets
             },
             options: {
                 responsive: true,
@@ -444,7 +736,7 @@
                             }
                         }
                     },
-                   datalabels: {
+                    datalabels: {
                         anchor: 'center',
                         align: 'center',
                         color: '#ffffff',
@@ -494,5 +786,4 @@
         });
     }
 
-    carregarGraficoModalidadeProcurada();
 </script>
