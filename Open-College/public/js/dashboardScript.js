@@ -9,14 +9,20 @@ async function buscarDadosKpi(dashboard, kpi){
     // na model seguir o padrão de nomeação: buscarDadosKpi{NomeDaDash}{NomeDaKpi}
     let parametros;
 
-    if(dashboard == "Geral"){
+    if (dashboard == "Geral") {
 
-    } else if(dashboard == "Perfil"){
+        parametros = {
+            dashboardParam: dashboard,
+            kpiParam: kpi,
+            anoParam: document.querySelector('.filtro-ano').value
+        };
 
-    } else if(dashboard == "Demanda"){
+    } else if (dashboard == "Perfil") {
+
+    } else if (dashboard == "Demanda") {
 
     }
-    else if(dashboard == "Região"){
+    else if (dashboard == "Região") {
         parametros = {
             dashboardParam: dashboard,
             kpiParam: kpi,
