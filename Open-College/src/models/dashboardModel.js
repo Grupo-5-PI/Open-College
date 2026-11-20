@@ -111,10 +111,28 @@ function buscarDadosGraficoRegiaoArea(ano){
 
 }
 
+function buscarDadosGraficoRegiaoIngressantes(ano){
+
+    var instrucaoSql = `
+        SELECT 
+            uf.sigla, 
+            (SUM(cen.qtdIngressantesDiurno) + SUM(cen.qtdIngressantesNoturno)) totalIngressantes
+        FROM tblCenso cen 
+        JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+        JOIN tblUf uf ON uf.idUf = mun.idUf 
+        WHERE cen.ano = ${ano} 
+        GROUP BY uf.sigla;
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 
 module.exports = {
     buscarDadosKpiRegiaoModalidade,
     buscarDadosKpiRegiaoCurso,
     buscarDadosKpiRegiaoArea,
     buscarDadosGraficoRegiaoArea,
+    buscarDadosGraficoRegiaoIngressantes,
 }
