@@ -1,5 +1,13 @@
 var database = require("../database/config");
 
+// ================ DASHBOARD GERAL ================ //
+
+// ================ DASHBOARD PERFIL ================ //
+
+// ================ DASHBOARD DEMANDA ================ //
+
+// ================ DASHBOARD REGIÃO ================ //
+
 function buscarDadosKpiRegiaoModalidade(regiao, ano){
 
     var instrucaoSql = `
@@ -128,6 +136,7 @@ function buscarDadosGraficoRegiaoIngressantes(ano){
     
 }
 
+// ================ DASHBOARD TENDÊNCIA ================ //
 
 module.exports = {
     buscarDadosKpiRegiaoModalidade,
