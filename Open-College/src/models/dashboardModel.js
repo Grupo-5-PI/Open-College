@@ -96,9 +96,25 @@ function buscarDadosKpiRegiaoArea(regiao, ano){
     
 }
 
+function buscarDadosGraficoRegiaoArea(ano){
+
+    var instrucaoSql = `
+        SELECT mun.nome municipio, SUM(cen.qtdMatricula) totalMatriculas FROM tblCenso cen 
+        JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+        WHERE cen.ano = ${ano} 
+        GROUP BY municipio 
+        ORDER BY totalMatriculas DESC 
+        LIMIT 4;
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
 
 module.exports = {
     buscarDadosKpiRegiaoModalidade,
     buscarDadosKpiRegiaoCurso,
     buscarDadosKpiRegiaoArea,
+    buscarDadosGraficoRegiaoArea,
 }
