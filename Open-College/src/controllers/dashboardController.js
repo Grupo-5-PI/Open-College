@@ -186,13 +186,50 @@ function buscarDadosKpi(req, res){
 
 function buscarDadosGrafico(req, res){
 
-    let parametros = JSON.parse(req.params.parametros);
+    let parametros = JSON.parse(decodeURIComponent(req.params.parametros));
     let dashboard = parametros.dashboardParam;
     let grafico = parametros.graficoParam;
     let ano = parametros.anoParam;
     
     if(dashboard == "Geral"){
-        
+
+        if (grafico == "grafico_graduacao_mais_procurada") {
+          
+            dashGeralModel.graficoGraduacaoMaisProcurada(ano)
+                .then(function (resultado) {
+                    
+                    res.status(200).json(resultado);
+                })
+                .catch(function (erro) {
+                    
+                    res.status(500).json(erro.sqlMessage);
+                });
+
+        } else if (grafico == "grafico_area_geral_matricula") {
+          
+            dashGeralModel.graficoAreaGeralMaisProcurada(ano)
+                .then(function (resultado) {
+                    
+                    res.status(200).json(resultado);
+                })
+                .catch(function (erro) {
+                    
+                    res.status(500).json(erro.sqlMessage);
+                });
+
+        } else if (grafico == "grafico_modalidade_mais_procurada") {
+            
+            dashGeralModel.graficoModalidadeMaisProcurada(ano)
+                .then(function (resultado) {
+            
+                    res.status(200).json(resultado);
+                })
+                .catch(function (erro) {
+            
+                    res.status(500).json(erro.sqlMessage);
+                });
+        }
+
     } else if(dashboard == "Perfil"){
 
     } else if(dashboard == "Demanda"){

@@ -54,7 +54,13 @@ async function buscarDadosGrafico(dashboard, grafico){
     let parametros;
     
     if(dashboard == "Geral"){
-
+     
+        parametros = {
+            dashboardParam: dashboard,
+            graficoParam: grafico,
+            anoParam: document.querySelector('.filtro-ano').value
+        };
+        
     } else if(dashboard == "Perfil"){
 
     } else if(dashboard == "Demanda"){
