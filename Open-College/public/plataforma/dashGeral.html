@@ -104,37 +104,37 @@
                 <div class="grid-cards">
                     <div class="card-kpi" id="total-matriculas">
                         <span class="card-titulo">Total de Matrículas</span>
-                        <strong class="card-valor">45.3K</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi" id="total-concluintes">
                         <span class="card-titulo">Total de Concluintes</span>
-                        <strong class="card-valor">22.3K</strong>
+                        <strong class="card-valor">--   </strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi" id="modalidade">
                         <span class="card-titulo">Modalidade mais procurada</span>
-                        <strong class="card-valor">EAD</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi" id="periodo">
                         <span class="card-titulo">Período mais procurado</span>
-                        <strong class="card-valor">NOTURNO</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi" id="area">
                         <span class="card-titulo">Área mais procurada</span>
-                        <strong class="card-valor">TECNOLOGIA</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
                     <div class="card-kpi" id="tipo-graduacao">
                         <span class="card-titulo">Tipo de graduação mais procurada</span>
-                        <strong class="card-valor">TÉCNICO</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
                 </div>
@@ -197,33 +197,57 @@
 
     // ============================ KPI's ============================
 
+    function formatarNumero(valor) {
+        if (valor >= 1000000) {
+            
+            return (valor / 1000000).toFixed(1).replace('.', ',') + 'M';
+        } else if (valor >= 1000) {
+            
+            return (valor / 1000).toFixed(1).replace('.', ',') + 'K';
+        }
+
+        return valor.toString();
+    }
+
     async function carregarKpiTotalMatriculas() {
-        let dados = await buscarDadosKpi("Geral", "kpi_total_matriculas");
-        document.getElementById("total-matriculas").querySelector(".card-valor").textContent = dados.totalMatriculas.toLocaleString("pt-BR");
+      
+        let retorno = await buscarDadosKpi("Geral", "kpi_total_matriculas");
+        let dados = await retorno.json();
+        document.getElementById("total-matriculas").querySelector(".card-valor").textContent = formatarNumero(Number(dados.totalMatriculas));
     }
 
     async function carregarKpiTotalConcluintes() {
-        let dados = await buscarDadosKpi("Geral", "kpi_total_concluintes");
-        document.getElementById("total-concluintes").querySelector(".card-valor").textContent = dados.totalConcluintes.toLocaleString("pt-BR");
+      
+        let retorno = await buscarDadosKpi("Geral", "kpi_total_concluintes");
+        let dados = await retorno.json();
+        document.getElementById("total-concluintes").querySelector(".card-valor").textContent = formatarNumero(Number(dados.totalConcluintes));
     }
 
     async function carregarKpiModalidadeMaisProcurada() {
-        let dados = await buscarDadosKpi("Geral", "kpi_modalidade_mais_procurada");
+      
+        let retorno = await buscarDadosKpi("Geral", "kpi_modalidade_mais_procurada");
+        let dados = await retorno.json();
         document.getElementById("modalidade").querySelector(".card-valor").textContent = dados.modalidade;
     }
 
     async function carregarKpiPeriodoMaisProcurado() {
-        let dados = await buscarDadosKpi("Geral", "kpi_periodo_mais_procurado");
+      
+        let retorno = await buscarDadosKpi("Geral", "kpi_periodo_mais_procurado");
+        let dados = await retorno.json();
         document.getElementById("periodo").querySelector(".card-valor").textContent = dados.periodo.toUpperCase();
     }
 
     async function carregarKpiAreaMaisProcurada() {
-        let dados = await buscarDadosKpi("Geral", "kpi_area_mais_procurada");
+      
+        let retorno = await buscarDadosKpi("Geral", "kpi_area_mais_procurada");
+        let dados = await retorno.json();
         document.getElementById("area").querySelector(".card-valor").textContent = dados.areaGeral.toUpperCase();
     }
 
     async function carregarKpiTipoGraduacaoMaisProcurada() {
-        let dados = await buscarDadosKpi("Geral", "kpi_tipo_graduacao_mais_procurada");
+      
+        let retorno = await buscarDadosKpi("Geral", "kpi_tipo_graduacao_mais_procurada");
+        let dados = await retorno.json();
         document.getElementById("tipo-graduacao").querySelector(".card-valor").textContent = dados.tipoGrauAcademico.toUpperCase();
     }
 
@@ -234,7 +258,9 @@
     let chartModalidade = null;
 
     async function carregarGraficoMaisProcurado() {
-        let dados = await buscarDadosKpi("Geral", "grafico_graduacao_mais_procurada");
+      
+        let retorno = await buscarDadosGrafico("Geral", "grafico_graduacao_mais_procurada");
+        let dados = await retorno.json();
 
         let totalGeral = 0;
         for (let i = 0; i < dados.length; i++) {
@@ -306,7 +332,9 @@
     }
 
     async function carregarGraficoAreaGeralMatricula() {
-        let dados = await buscarDadosKpi("Geral", "grafico_area_geral_matricula");
+      
+        let retorno = await buscarDadosGrafico("Geral", "grafico_area_geral_matricula");
+        let dados = await retorno.json();
 
         let labels = [];
         let valores = [];
@@ -390,7 +418,9 @@
     }
 
     async function carregarGraficoModalidadeProcurada() {
-        let dados = await buscarDadosKpi("Geral", "grafico_modalidade_mais_procurada");
+      
+        let retorno = await buscarDadosGrafico("Geral", "grafico_modalidade_mais_procurada");
+        let dados = await retorno.json();
 
         let anos = [];
         let valoresPresencial = [];

@@ -87,7 +87,12 @@ function kpiTipoGraduacaoMaisProcurada(ano) {
 function graficoGraduacaoMaisProcurada(ano) {
 
     var instrucaoSql = `
-    SELECT curso.nome, SUM(c.qtdMatricula) AS totalMatriculas
+    SELECT 
+        CASE curso.nome
+            WHEN 'Análise e Desenvolvimento de Sistemas' THEN 'ADS'
+            ELSE curso.nome
+        END AS nome,
+        SUM(c.qtdMatricula) AS totalMatriculas
     FROM tblCenso AS c
     JOIN tblCurso AS curso ON c.idCurso = curso.idCurso
     WHERE c.ano = ${ano}
