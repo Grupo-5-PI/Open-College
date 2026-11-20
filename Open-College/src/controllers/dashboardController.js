@@ -36,7 +36,7 @@ function buscarDadosKpi(req, res){
             
         } else if(kpi == "kpi_regiao_curso"){
             
-            dashboardModel.buscarDadosKpiRegiaoCurso(regiao, curso)
+            dashboardModel.buscarDadosKpiRegiaoCurso(regiao, ano)
             .then(function(resposta){
                 console.log(resposta);
                 if(resposta.length > 0){
@@ -52,6 +52,20 @@ function buscarDadosKpi(req, res){
             
         } else if(kpi == "kpi_regiao_area"){
 
+            dashboardModel.buscarDadosKpiRegiaoArea(regiao, ano)
+            .then(function(resposta){
+                console.log(resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+            
         }
         
     } else if(dashboard == "Tendência"){
