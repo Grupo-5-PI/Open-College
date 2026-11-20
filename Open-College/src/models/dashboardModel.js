@@ -1,5 +1,13 @@
 var database = require("../database/config");
 
+// ================ DASHBOARD GERAL ================ //
+
+// ================ DASHBOARD PERFIL ================ //
+
+// ================ DASHBOARD DEMANDA ================ //
+
+// ================ DASHBOARD REGIÃO ================ //
+
 function buscarDadosKpiRegiaoModalidade(regiao, ano){
 
     var instrucaoSql = `
@@ -96,9 +104,44 @@ function buscarDadosKpiRegiaoArea(regiao, ano){
     
 }
 
+function buscarDadosGraficoRegiaoArea(ano){
+
+    var instrucaoSql = `
+        SELECT mun.nome municipio, SUM(cen.qtdMatricula) totalMatriculas FROM tblCenso cen 
+        JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+        WHERE cen.ano = ${ano} 
+        GROUP BY municipio 
+        ORDER BY totalMatriculas DESC 
+        LIMIT 4;
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
+function buscarDadosGraficoRegiaoIngressantes(ano){
+
+    var instrucaoSql = `
+        SELECT 
+            uf.sigla, 
+            (SUM(cen.qtdIngressantesDiurno) + SUM(cen.qtdIngressantesNoturno)) totalIngressantes
+        FROM tblCenso cen 
+        JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+        JOIN tblUf uf ON uf.idUf = mun.idUf 
+        WHERE cen.ano = ${ano} 
+        GROUP BY uf.sigla;
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+// ================ DASHBOARD TENDÊNCIA ================ //
 
 module.exports = {
     buscarDadosKpiRegiaoModalidade,
     buscarDadosKpiRegiaoCurso,
     buscarDadosKpiRegiaoArea,
+    buscarDadosGraficoRegiaoArea,
+    buscarDadosGraficoRegiaoIngressantes,
 }

@@ -7,4 +7,8 @@ router.get("/buscarDadosKpi/:parametros", function(req, res){
     dashboardController.buscarDadosKpi(req, res);
 });
 
+router.get("/buscarDadosGrafico/:parametros", function(req, res){
+    dashboardController.buscarDadosGrafico(req, res);
+});
+
 module.exports = router;
