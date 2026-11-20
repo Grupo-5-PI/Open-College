@@ -74,6 +74,62 @@ function buscarDadosKpi(req, res){
     
 }
 
+function buscarDadosGrafico(req, res){
+
+    let parametros = JSON.parse(req.params.parametros);
+    let dashboard = parametros.dashboardParam;
+    let grafico = parametros.graficoParam;
+    let ano = parametros.anoParam;
+    
+    if(dashboard == "Geral"){
+        
+    } else if(dashboard == "Perfil"){
+
+    } else if(dashboard == "Demanda"){
+
+    } else if(dashboard == "Região"){
+        
+        if(grafico == "grafico-alunos-area"){
+
+            dashboardModel.buscarDadosGraficoRegiaoArea(ano)
+            .then(function(resposta){
+                console.log(resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+            
+        } else if(grafico == "grafico-ingressantes-regiao"){
+
+            dashboardModel.buscarDadosGraficoRegiaoIngressantes(ano)
+            .then(function(resposta){
+                console.log(resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+
+        }
+        
+    } else if(dashboard == "Tendência"){
+
+    }
+    
+}
+
 module.exports = {
     buscarDadosKpi,
+    buscarDadosGrafico,
 }
