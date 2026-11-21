@@ -43,10 +43,9 @@ public class CursoJdbc {
 					);
 					sucesso++;
 				} catch (Exception e) {
-					System.out.println("ERRO: id=" + c.getIdCurso() + " formacao=" + c.getFormacao() + " -> " + e.getMessage());
+					// curso ignorado por constraint inválido
 				}
 			}
 		}
-		System.out.println("Tentativas: " + tentativas + " | Sucesso: " + sucesso);
 	}
 }
