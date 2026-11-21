@@ -13,11 +13,11 @@ function buscarDadosKpi(req, res){
 
             dashGeralModel.kpiTotalMatriculas(ano)
                 .then(function (resultado) {
-
+                  
+                    if (!resultado || resultado.length == 0) return res.status(204).send();
                     res.status(200).json(resultado[0]);
                 })
                 .catch(function (erro) {
-                    
                     res.status(500).json(erro.sqlMessage);
                 });
 
@@ -25,11 +25,11 @@ function buscarDadosKpi(req, res){
             
             dashGeralModel.kpiTotalConcluintes(ano)
                 .then(function (resultado) {
-                    
+                  
+                    if (!resultado || resultado.length == 0) return res.status(204).send();
                     res.status(200).json(resultado[0]);
                 })
                 .catch(function (erro) {
-                    
                     res.status(500).json(erro.sqlMessage);
                 });
 
@@ -37,11 +37,11 @@ function buscarDadosKpi(req, res){
             
             dashGeralModel.kpiModalidadeMaisProcurada(ano)
                 .then(function (resultado) {
-            
+               
+                    if (!resultado || resultado.length == 0) return res.status(204).send();
                     res.status(200).json(resultado[0]);
                 })
                 .catch(function (erro) {
-            
                     res.status(500).json(erro.sqlMessage);
                 });
 
@@ -49,14 +49,13 @@ function buscarDadosKpi(req, res){
             
             dashGeralModel.kpiPeriodoMaisProcurado(ano)
                 .then(function (resultado) {
-            
+              
+                    if (!resultado || resultado.length == 0) return res.status(204).send();
                     let row = resultado[0];
                     let periodo = row.totalDiurno >= row.totalNoturno ? "Diurno" : "Noturno";
-            
                     res.status(200).json({ periodo });
                 })
                 .catch(function (erro) {
-            
                     res.status(500).json(erro.sqlMessage);
                 });
 
@@ -64,11 +63,10 @@ function buscarDadosKpi(req, res){
             
             dashGeralModel.kpiAreaMaisProcurada(ano)
                 .then(function (resultado) {
-            
+                    if (!resultado || resultado.length == 0) return res.status(204).send();
                     res.status(200).json(resultado[0]);
                 })
                 .catch(function (erro) {
-            
                     res.status(500).json(erro.sqlMessage);
                 });
 
@@ -76,22 +74,22 @@ function buscarDadosKpi(req, res){
             
             dashGeralModel.kpiTipoGraduacaoMaisProcurada(ano)
                 .then(function (resultado) {
-            
+                
+                    if (!resultado || resultado.length == 0) return res.status(204).send();
                     res.status(200).json(resultado[0]);
                 })
                 .catch(function (erro) {
-            
                     res.status(500).json(erro.sqlMessage);
                 });
 
         } else if (kpi == "grafico_graduacao_mais_procurada") {
             dashGeralModel.graficoGraduacaoMaisProcurada(ano)
                 .then(function (resultado) {
-            
+                    
+                    if (!resultado || resultado.length == 0) return res.status(204).send();
                     res.status(200).json(resultado);
                 })
                 .catch(function (erro) {
-            
                     res.status(500).json(erro.sqlMessage);
                 });
 
@@ -99,11 +97,11 @@ function buscarDadosKpi(req, res){
             
             dashGeralModel.graficoAreaGeralMaisProcurada(ano)
                 .then(function (resultado) {
-            
+                
+                    if (!resultado || resultado.length == 0) return res.status(204).send();
                     res.status(200).json(resultado);
                 })
                 .catch(function (erro) {
-            
                     res.status(500).json(erro.sqlMessage);
                 });
 
@@ -111,11 +109,11 @@ function buscarDadosKpi(req, res){
             
             dashGeralModel.graficoModalidadeMaisProcurada(ano)
                 .then(function (resultado) {
-            
+                    
+                    if (!resultado || resultado.length == 0) return res.status(204).send();
                     res.status(200).json(resultado);
                 })
                 .catch(function (erro) {
-            
                     res.status(500).json(erro.sqlMessage);
                 });
         }
@@ -192,7 +190,38 @@ function buscarDadosGrafico(req, res){
     let ano = parametros.anoParam;
     
     if(dashboard == "Geral"){
-        
+
+        if (grafico == "grafico_graduacao_mais_procurada") {
+            dashGeralModel.graficoGraduacaoMaisProcurada(ano)
+                .then(function (resultado) {
+                    if (!resultado || resultado.length === 0) return res.status(204).send();
+                    res.status(200).json(resultado);
+                })
+                .catch(function (erro) {
+                    res.status(500).json(erro.sqlMessage);
+                });
+
+        } else if (grafico == "grafico_area_geral_matricula") {
+            dashGeralModel.graficoAreaGeralMaisProcurada(ano)
+                .then(function (resultado) {
+                    if (!resultado || resultado.length === 0) return res.status(204).send();
+                    res.status(200).json(resultado);
+                })
+                .catch(function (erro) {
+                    res.status(500).json(erro.sqlMessage);
+                });
+
+        } else if (grafico == "grafico_modalidade_mais_procurada") {
+            dashGeralModel.graficoModalidadeMaisProcurada()
+                .then(function (resultado) {
+                    if (!resultado || resultado.length === 0) return res.status(204).send();
+                    res.status(200).json(resultado);
+                })
+                .catch(function (erro) {
+                    res.status(500).json(erro.sqlMessage);
+                });
+        }
+
     } else if(dashboard == "Perfil"){
 
     } else if(dashboard == "Demanda"){
