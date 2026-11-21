@@ -184,7 +184,7 @@ function buscarDadosKpi(req, res){
 
 function buscarDadosGrafico(req, res){
 
-    let parametros = JSON.parse(req.params.parametros);
+    let parametros = JSON.parse(decodeURIComponent(req.params.parametros));
     let dashboard = parametros.dashboardParam;
     let grafico = parametros.graficoParam;
     let ano = parametros.anoParam;

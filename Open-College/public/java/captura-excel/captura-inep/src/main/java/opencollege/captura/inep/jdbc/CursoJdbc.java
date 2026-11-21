@@ -26,18 +26,27 @@ public class CursoJdbc {
 	}
 
 	public void inserirCursos(Set<Curso> cursos) {
-		String sql = "INSERT IGNORE INTO tblCurso (idCurso, nome, formacao, idAreaGeral) VALUES (?, ?, ?, ?) " +
+		String sql = "INSERT INTO tblCurso (idCurso, nome, formacao, idAreaGeral) VALUES (?, ?, ?, ?) " +
 				"ON DUPLICATE KEY UPDATE nome = VALUES(nome), formacao = VALUES(formacao), idAreaGeral = VALUES(idAreaGeral)";
 
+		int tentativas = 0;
+		int sucesso = 0;
 		for (Curso c : cursos) {
 			if (c.getIdCurso() != null && c.getNome() != null && c.getFormacao() != null) {
-				jdbcTemplate.update(sql,
-						c.getIdCurso(),
-						c.getNome(),
-						c.getFormacao(),
-						c.getIdAreaGeral()
-				);
+				tentativas++;
+				try {
+					jdbcTemplate.update(sql,
+							c.getIdCurso(),
+							c.getNome(),
+							c.getFormacao(),
+							c.getIdAreaGeral()
+					);
+					sucesso++;
+				} catch (Exception e) {
+					System.out.println("ERRO: id=" + c.getIdCurso() + " formacao=" + c.getFormacao() + " -> " + e.getMessage());
+				}
 			}
 		}
+		System.out.println("Tentativas: " + tentativas + " | Sucesso: " + sucesso);
 	}
 }
