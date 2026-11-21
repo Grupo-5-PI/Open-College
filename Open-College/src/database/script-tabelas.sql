@@ -15,18 +15,18 @@ CREATE TABLE tblInstituicao (
 );
 
 CREATE TABLE tblAreaGeral (
-    idAreaGeral INT PRIMARY KEY AUTO_INCREMENT,
+    idAreaGeral INT PRIMARY KEY,
     nome VARCHAR(150) UNIQUE NOT NULL,
     descricao VARCHAR(500)
 );
 
 CREATE TABLE tblCurso (
     idCurso INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(150) NOT NULL,
+    nome VARCHAR(300) NOT NULL,
     formacao VARCHAR(20) NOT NULL,
     idAreaGeral INT,
     CONSTRAINT CK_tblCurso_formacao 
-		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo')),
+		CHECK (formacao IN ('Bacharelado', 'Licenciatura', 'Tecnólogo', 'Tecnológico')),
 	CONSTRAINT FK_tblCurso_idAreaGeral 
 		FOREIGN KEY (idAreaGeral) 
 			REFERENCES tblAreaGeral (idAreaGeral)
@@ -186,11 +186,11 @@ CREATE TABLE tblAtualizacao (
 CREATE TABLE tblCenso (
     idCenso INT PRIMARY KEY AUTO_INCREMENT,
     ano INT NOT NULL,
-    uf CHAR(2) NOT NULL,
-    idMunicipio CHAR(7) NOT NULL,
+    uf CHAR(2) NULL,
+    idMunicipio CHAR(7) NULL,
     tipoOrganizacaoAcademica VARCHAR(100) NOT NULL,
     idCurso INT NOT NULL,
-    tipoGrauAcademico VARCHAR(50) NOT NULL,
+    tipoGrauAcademico VARCHAR(50) NULL,
     tipoModalidadeEnsino VARCHAR(50) NOT NULL,
     tipoNivelAcademico VARCHAR(50) NOT NULL,
     qtdVagas INT NOT NULL DEFAULT 0,
@@ -284,7 +284,7 @@ CREATE TABLE tblDashboardPersonalizado (
 CREATE TABLE tblLog (
     idLog INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(10) NOT NULL,
-    descricao VARCHAR(510) NOT NULL,
+    descricao VARCHAR(2000) NOT NULL,
     dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT CK_tblLog_tipo
         CHECK (tipo IN ('INFO', 'AVISO', 'ERRO'))

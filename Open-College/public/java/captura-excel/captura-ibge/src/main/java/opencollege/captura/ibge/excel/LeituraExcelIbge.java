@@ -1,17 +1,16 @@
 package opencollege.captura.ibge.excel;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;
-import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler.SheetContentsHandler;
 import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 import opencollege.captura.ibge.modelo.Municipio;
-import opencollege.captura.core.excel.ProcessadorLinha;
+import opencollege.captura.core.excel.ProcessadorDeLinha;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -25,143 +24,140 @@ import java.util.Map;
 
 public class LeituraExcelIbge {
 
-	// Mapeamento: nome da coluna no xlsx/csv | nome do campo em Municipio
-	private static final Map<String, String> colunas = new HashMap<>();
+    private static final Map<String, String> colunas = new HashMap<>();
 
-	static {
-		colunas.put("UF", "idUf");
-		colunas.put("Código Município Completo", "idMunicipio");
-		colunas.put("Nome_Município", "nomeMunicipio");
-	}
+    static {
+        colunas.put("UF", "idUf");
+        colunas.put("CÓDIGO MUNICÍPIO COMPLETO", "idMunicipio");
+        colunas.put("NOME_MUNICÍPIO", "nomeMunicipio");
+    }
 
-	public static Map<String, Object> lerPlanilha(String caminhoArquivo) throws Exception {
+    public static Map<String, Object> lerPlanilha(String caminhoArquivo) throws Exception {
 
-		List<Municipio> lista = new ArrayList<>();
+        List<Municipio> lista = new ArrayList<>();
 
-		ZipSecureFile.setMinInflateRatio(0);
-		ZipSecureFile.setMaxEntrySize(10_000_000_000L);
+        ZipSecureFile.setMinInflateRatio(0);
+        ZipSecureFile.setMaxEntrySize(10_000_000_000L);
 
-		OPCPackage pkg = OPCPackage.open(caminhoArquivo, OPCPackage.PackageAccess.READ);
+        OPCPackage pkg = OPCPackage.open(caminhoArquivo, PackageAccess.READ);
+        XSSFReader reader = new XSSFReader(pkg);
+        SharedStrings sharedStrings = reader.getSharedStringsTable();
+        StylesTable styles = reader.getStylesTable();
 
-		XSSFReader reader = new XSSFReader(pkg);
+        ProcessadorDeLinha handler = new ProcessadorMunicipio(lista);
 
-		SharedStrings sharedStrings = reader.getSharedStringsTable();
+        XSSFSheetXMLHandler sheetHandler = new XSSFSheetXMLHandler(styles, sharedStrings, handler, new DataFormatter(), false);
 
-		StylesTable styles = reader.getStylesTable();
+        XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+        xmlReader.setContentHandler(sheetHandler);
 
-		ProcessadorMunicipioHandler handler = new ProcessadorMunicipio(lista);
+        XSSFReader.SheetIterator sheets = (XSSFReader.SheetIterator) reader.getSheetsData();
+        InputStream sheetStream = sheets.next();
 
-		XSSFSheetXMLHandler sheetHandler = new XSSFSheetXMLHandler(styles, sharedStrings, handler, new DataFormatter(), false);
+        xmlReader.parse(new InputSource(sheetStream));
 
-		XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-		xmlReader.setContentHandler(sheetHandler);
+        sheetStream.close();
+        pkg.close();
 
-		XSSFReader.SheetIterator sheets = (XSSFReader.SheetIterator) reader.getSheetsData();
-		InputStream sheetStream = sheets.next();
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("registros", lista);
+        resultado.put("ignoradas", handler.getQtdIgnoradas());
 
-		xmlReader.parse(new InputSource(sheetStream));
+        return resultado;
+    }
 
-		sheetStream.close();
-		pkg.close();
+    private static class ProcessadorMunicipio extends ProcessadorDeLinha {
 
-		Map<String, Object> resultado = new HashMap<>();
-		resultado.put("registros", lista);
-		resultado.put("ignoradas", handler.getQtdIgnoradas());
+        private final List<Municipio> lista;
+        private Municipio registroAtual;
+        private boolean cabecalhoProcessado = false;
 
-		return resultado;
-	}
+        public ProcessadorMunicipio(List<Municipio> lista) {
+            this.lista = lista;
+        }
 
-	private static class ProcessadorMunicipio extends AbstractLeituraHandler {
+        @Override
+        public void startRow(int rowNum) {
+            super.startRow(rowNum);
+            if (rowNum >= 7) {
+                registroAtual = new Municipio();
+            }
+        }
 
-		private final List<Municipio> lista;
-		private Municipio registroAtual;
-		private boolean cabecalhoProcessado = false;
+        @Override
+        public void cell(String referenciaCelula, String valorFormatado, XSSFComment comment) {
+            int colunaIndex = obterIndiceColuna(referenciaCelula);
 
-		public ProcessadorMunicipio(List<Municipio> lista) {
-			this.lista = lista;
-		}
+            if (numeroLinha == 7) {
+                if (valorFormatado != null) {
+                    String nomeColuna = valorFormatado.trim().toUpperCase()
+                            .replace("Â", "").replace("Ã", "A");
 
-		@Override
-		public void startRow(int rowNum) {
-			super.startRow(rowNum);
-			if (rowNum >= 7) {
-				registroAtual = new Municipio();
-			}
-		}
+                    for (Map.Entry<String, String> entry : colunas.entrySet()) {
+                        if (nomeColuna.equals(entry.getKey())) {
+                            mapeamentoColunas.put(colunaIndex, entry.getValue());
+                            break;
+                        }
+                    }
+                }
+            } else if (numeroLinha >= 8) {
+                String campo = mapeamentoColunas.get(colunaIndex);
+                if (campo != null && registroAtual != null) {
+                    preencherDadosMunicipio(registroAtual, campo, valorFormatado, numeroLinha);
+                }
+            }
+        }
 
-		@Override
-		public void cell(String referenciaCelula, String valorFormatado, XSSFComment comment) {
-			int colunaIndex = obterIndiceColuna(referenciaCelula);
+        @Override
+        public void endRow(int rowNum) {
+            if (rowNum == 6) {
+                cabecalhoProcessado = true;
+                System.out.println("================================================");
+                System.out.println("  Lendo arquivo do IBGE...");
+                System.out.println("  Colunas mapeadas: " + mapeamentoColunas.size());
+                System.out.println("================================================");
+                return;
+            }
 
-			if (numeroLinha == 7) {
-				if (valorFormatado != null) {
-					String nomeColuna = valorFormatado.trim().toUpperCase()
-							.replace("Â", "").replace("Ã", "A");
+            if (numeroLinha < 8 || registroAtual == null) {
+                return;
+            }
 
-					for (Map.Entry<String, String> entry : colunas.entrySet()) {
-						if (nomeColuna.contains(entry.getKey())) {
-							mapeamentoColunas.put(colunaIndex, entry.getValue());
-							break;
-						}
-					}
-				}
-			} else if (numeroLinha >= 8) {
-				String campo = mapeamentoColunas.get(colunaIndex);
-				if (campo != null && registroAtual != null) {
-					preencherDadosMunicipio(registroAtual, campo, valorFormatado, numeroLinha);
-				}
-			}
-		}
+            if (registroAtual.getIdMunicipio() == null
+                    || registroAtual.getIdUf() == null
+                    || registroAtual.getNomeMunicipio() == null
+                    || registroAtual.getNomeMunicipio().isEmpty()) {
+                qtdIgnoradas++;
+                return;
+            }
 
-		@Override
-		public void endRow(int rowNum) {
-			if (rowNum == 6) {
-				cabecalhoProcessado = true;
-				System.out.println("================================================");
-				System.out.println("  Lendo arquivo do IBGE...");
-				System.out.println("  Colunas mapeadas: " + mapeamentoColunas.size());
-				System.out.println("================================================");
-				return;
-			}
+            lista.add(registroAtual);
 
-			if (numeroLinha < 8 || registroAtual == null) {
-				return;
-			}
+            if (lista.size() % 1000 == 0) {
+                System.out.println("  Lidos: " + lista.size() + " municípios");
+            }
+        }
 
-			if (registroAtual.getIdMunicipio() == null
-					|| registroAtual.getIdUf() == null
-					|| registroAtual.getNomeMunicipio() == null
-					|| registroAtual.getNomeMunicipio().isEmpty()) {
-				qtdIgnoradas++;
-				return;
-			}
-
-			lista.add(registroAtual);
-
-			if (lista.size() % 1000 == 0) {
-				System.out.println("  Lidos: " + lista.size() + " municípios");
-			}
-		}
-	}
-
-	private static void preencherDadosMunicipio(Municipio municipio, String campo, String valor, int numeroLinha) {
-		if (valor == null || valor.trim().isEmpty()) {
-			return;
-		}
-		valor = valor.trim();
-		try {
-			switch (campo) {
-				case "idUf":
-					municipio.setIdUf(converterParaInteiro(valor));
-					break;
-				case "idMunicipio":
-					municipio.setIdMunicipio(converterParaInteiro(valor));
-					break;
-				case "nomeMunicipio":
-					municipio.setNomeMunicipio(valor);
-					break;
-			}
-		} catch (Exception e) {
-			System.out.println("Aviso linha " + numeroLinha + " campo '" + campo + "': valor inválido '" + valor + "'");
-		}
-	}
+        private void preencherDadosMunicipio(Municipio municipio, String campo, String valor, int numeroLinha) {
+            if (valor == null || valor.trim().isEmpty()) {
+                return;
+            }
+            valor = valor.trim();
+            try {
+                switch (campo) {
+                    case "idUf":
+                        municipio.setIdUf(converterParaInteiro(valor));
+                        break;
+                    case "idMunicipio":
+                        municipio.setIdMunicipio(converterParaInteiro(valor));
+                        break;
+                    case "nomeMunicipio":
+                        municipio.setNomeMunicipio(valor);
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Aviso linha " + numeroLinha + " campo '" + campo + "': valor inválido '" + valor + "'");
+            }
+        }
+    }
+}

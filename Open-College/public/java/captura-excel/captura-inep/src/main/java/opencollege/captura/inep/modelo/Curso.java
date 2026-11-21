@@ -9,6 +9,9 @@ public class Curso{
 	private String formacao;
 	private Integer idAreaGeral;
 
+	public Curso() {
+	}
+
 	public Curso(Integer idCurso, String nome, String formacao, Integer idAreaGeral) {
 		this.idCurso = idCurso;
 		this.nome = nome;
@@ -50,7 +53,7 @@ public class Curso{
 
 	@Override
 	public boolean equals(Object o){
-		if(o == null || this.getClass != o.getClass)
+		if(o == null || this.getClass() != o.getClass())
 			return false;
 		if(this == o)
 			return true;

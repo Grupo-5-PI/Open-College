@@ -7,6 +7,9 @@ public class AreaGeral{
 	private Integer idAreaGeral;
 	private String nome;
 
+	public AreaGeral() {
+	}
+
 	public AreaGeral(Integer idAreaGeral, String nome) {
 		this.idAreaGeral = idAreaGeral;
 		this.nome = nome;
@@ -30,7 +33,7 @@ public class AreaGeral{
 
 	@Override
 	public boolean equals(Object o){
-		if(o == null || this.getClass != o.getClass())
+		if(o == null || this.getClass() != o.getClass())
 			return false;
 		if(this == o)
 			return true;
