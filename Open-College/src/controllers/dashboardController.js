@@ -1,4 +1,5 @@
 var dashGeralModel = require("../models/dashGeralModel");
+var dashboardModel = require("../models/dashboardModel");
 
 function buscarDadosKpi(req, res){
 
@@ -268,7 +269,119 @@ function buscarDadosGrafico(req, res){
     
 }
 
+function atualizarPerfil(req, res) {
+
+    var ano = req.query.ano;
+
+    dashboardModel.atualizarPerfil(ano)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
+function atualizarRede(req, res) {
+
+    var ano = req.query.ano;
+
+    dashboardModel.atualizarRede(ano)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
+function atualizarGenero(req, res) {
+
+    var ano = req.query.ano;
+
+    dashboardModel.atualizarGenero(ano)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
+function atualizarKpiOcupacao(req, res) {
+
+    var ano = req.query.ano;
+
+    dashboardModel.atualizarKpiOcupacao(ano)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
+function atualizarKpiCursoMaisProcurado(req, res) {
+
+    var ano = req.query.ano;
+
+    dashboardModel.atualizarKpiCursoMaisProcurado(ano)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
+function atualizarKpiCursoMenosProcurado(req, res) {
+
+    var ano = req.query.ano;
+
+    dashboardModel.atualizarKpiCursoMenosProcurado(ano)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
+function atualizarMatriculasDoCurso(req, res) {
+
+    var ano = req.query.ano;
+
+    dashboardModel.atualizarMatriculasDoCurso(ano)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
 module.exports = {
     buscarDadosKpi,
     buscarDadosGrafico,
+    atualizarPerfil,
+    atualizarRede,
+    atualizarGenero,
+    atualizarKpiOcupacao,
+    atualizarKpiCursoMaisProcurado,
+    atualizarKpiCursoMenosProcurado,
+    atualizarMatriculasDoCurso
 }

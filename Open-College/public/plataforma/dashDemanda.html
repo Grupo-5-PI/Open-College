@@ -15,6 +15,7 @@
 </head>
 
 <!-- onload="validarSessao()" -->
+
 <body>
     <nav class="menu-lateral">
         <header class="menu-lateral-logo">
@@ -22,7 +23,7 @@
                 <div class="foto-wrapper">
                     <img id="imgUsuario" alt="foto de perfil" class="foto-perfil">
                 </div>
-                 <span class="nome-usuario" id="b_usuario">Carregando...</span>
+                <span class="nome-usuario" id="b_usuario">Carregando...</span>
             </a>
         </header>
     </nav>
@@ -109,13 +110,11 @@
 
             <section class="grid-cards-demanda">
                 <div class="card-kpi-demanda">
-                     <div class="card-kpi">
+                    <div class="card-kpi">
                         <span class="card-titulo">Cursos Mais Procurados</span>
-                        <strong class="card-valor">Culinária</strong>
-                        <strong class="card-valor">Psicologia</strong>
-                        <strong class="card-valor">Medicina</strong>
-                        <strong class="card-valor">ADS</strong>
-                        <strong class="card-valor">Computação</strong>
+                        <div id="listaCursosMaisProcurados">
+                            <strong class="card-valor">Carregando...</strong>
+                        </div>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
                 </div>
@@ -123,11 +122,10 @@
                 <div class="card-kpi-demanda">
                     <div class="card-kpi">
                         <span class="card-titulo">Cursos Menos Procurados</span>
-                        <strong class="card-valor">História</strong>
-                        <strong class="card-valor">Letras</strong>
-                        <strong class="card-valor">Matemática</strong>
-                        <strong class="card-valor">Fisíca</strong>
-                        <strong class="card-valor">Literatura</strong>
+
+                        <div id="listaCursosMenosProcurados">
+                        </div>
+
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
                 </div>
@@ -135,8 +133,8 @@
                 <div class="card-kpi-demanda">
                     <div class="card-kpi">
                         <span class="card-titulo">Taxa de Ocupação</span>
-                        <strong class="card-valor">((Vagas/matriculas) * 100)</strong>
-                        <span class="card-rodape">No ano de ANO</span>
+                        <strong class="card-valor" id="kpiOcupacao">Carregando...</strong>
+                        <span class="card-rodape" id="anoOcupacao">No ano de --</span>
                     </div>
                 </div>
             </section>
@@ -161,7 +159,7 @@
 
 </html>
 <script>
-    
+
 
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
@@ -172,6 +170,13 @@
     let filtroAno = document.querySelector('.filtro-ano')
     let cardKPI = document.querySelectorAll('.card-rodape')
 
+    let dadosMatriculasArea = [];
+    let dadosOcupacaoArea = [];
+    let dadosPeriodoProcuradoArea = [];
+
+    let graficoMatriculasPorArea = null;
+
+
     function atualizarAno() {
         let anoSelecionado = filtroAno.value;
         tituloDash.textContent = `Dashboard - Demanda (${anoSelecionado})`
@@ -181,20 +186,175 @@
         }
     }
 
-    filtroAno.addEventListener('change', atualizarAno)
+    async function atualizarKpiOcupacao() {
 
+        let ano = filtroAno.value;
+
+        try {
+
+            const resposta = await fetch(`/dashboard/atualizarKpiOcupacao?ano=${ano}`);
+
+            if (!resposta.ok) {
+                const erro = await resposta.text();
+                console.error('Erro retornado pelo servidor:', erro);
+                throw new Error(`Erro HTTP: ${resposta.status}`);
+            }
+
+            const dados = await resposta.json();
+
+            document.getElementById('kpiOcupacao').textContent =
+                `${dados[0].taxaOcupacao}%`;
+
+            document.getElementById('anoOcupacao').textContent =
+                `No ano de ${ano}`;
+
+        } catch (erro) {
+            console.error('Erro na requisição:', erro);
+        }
+    }
+
+    async function atualizarKpiCursoMaisProcurado() {
+
+        let ano = filtroAno.value;
+
+        try {
+
+            const resposta = await fetch(`/dashboard/atualizarKpiCursoMaisProcurado?ano=${ano}`);
+
+            if (!resposta.ok) {
+                const erro = await resposta.text();
+                console.error('Erro retornado pelo servidor:', erro);
+                throw new Error(`Erro HTTP: ${resposta.status}`);
+            }
+
+            const dados = await resposta.json();
+
+            let listaCursos = document.getElementById('listaCursosMaisProcurados');
+
+            listaCursos.style.display = 'flex';
+            listaCursos.style.flexDirection = 'column';
+            listaCursos.style.gap = '5px';
+            listaCursos.innerHTML = '';
+
+            for (let i = 0; i < dados.length && i < 5; i++) {
+
+                let curso = document.createElement('strong');
+
+                curso.classList.add('card-valor');
+
+                curso.textContent = dados[i].nomeCurso;
+
+                listaCursos.appendChild(curso);
+            }
+
+            if (dados.length === 0) {
+                listaCursos.textContent = 'Nenhum curso encontrado';
+            }
+
+        } catch (erro) {
+            console.error('Erro ao buscar cursos mais procurados:', erro);
+        }
+    }
+
+    async function atualizarKpiCursoMenosProcurado() {
+
+        let ano = filtroAno.value;
+
+        try {
+
+            const resposta = await fetch(`/dashboard/atualizarKpiCursoMenosProcurado?ano=${ano}`);
+
+            if (!resposta.ok) {
+                const erro = await resposta.text();
+                console.error('Erro retornado pelo servidor:', erro);
+                throw new Error(`Erro HTTP: ${resposta.status}`);
+            }
+
+            const dados = await resposta.json();
+
+            let listaCursos = document.getElementById('listaCursosMenosProcurados');
+
+            listaCursos.style.display = 'flex';
+            listaCursos.style.flexDirection = 'column';
+            listaCursos.style.gap = '5px';
+
+            listaCursos.innerHTML = '';
+
+            for (let i = 0; i < dados.length && i < 5; i++) {
+
+                let curso = document.createElement('strong');
+
+                curso.classList.add('card-valor');
+
+                curso.textContent = dados[i].nomeCurso;
+
+                listaCursos.appendChild(curso);
+            }
+
+            if (dados.length === 0) {
+                listaCursos.textContent = 'Nenhum curso encontrado';
+            }
+
+        } catch (erro) {
+            console.error('Erro ao buscar cursos menos procurados:', erro);
+        }
+    }
+
+    filtroAno.addEventListener('change', atualizarAno)
+    filtroAno.addEventListener('change', atualizarKpiOcupacao);
+    filtroAno.addEventListener('change', atualizarKpiCursoMaisProcurado);
+    filtroAno.addEventListener('change', atualizarKpiCursoMenosProcurado);
+    filtroAno.addEventListener('change', carregarGraficoMatriculasPorArea);
+
+    atualizarKpiOcupacao();
+    atualizarKpiCursoMaisProcurado();
+    atualizarKpiCursoMenosProcurado();
+    carregarGraficoMatriculasPorArea();
     atualizarAno();
 
-    function carregarGraficoMatriculasPorArea() {
+    async function carregarGraficoMatriculasPorArea() {
+
+    let ano = filtroAno.value;
+
+    try {
+
+        const resposta = await fetch(`/dashboard/atualizarMatriculasDoCurso?ano=${ano}`);
+
+        if (!resposta.ok) {
+            const erro = await resposta.text();
+            console.error('Erro retornado pelo servidor:', erro);
+            throw new Error(`Erro HTTP: ${resposta.status}`);
+        }
+
+        const dados = await resposta.json();
+
+        let labels = dados.map(item => item.nomeArea);
+
+        let valores = dados.map(item => item.porcentagemMatriculas);
+
+        let cores = ['#4a7ff7', '#ae8df5', '#f3b86b', '#3cc027', '#ff5555'];
+
+        let coresGrafico = labels.map((area, i) => cores[i % cores.length]);
+
         let areaMatricula = document.getElementById('grafico-matriculas-por-area');
 
-        new Chart(areaMatricula, {
+        if (graficoMatriculasPorArea) {
+
+            graficoMatriculasPorArea.data.labels = labels;
+            graficoMatriculasPorArea.data.datasets[0].data = valores;
+            graficoMatriculasPorArea.data.datasets[0].backgroundColor = coresGrafico;
+
+            graficoMatriculasPorArea.update();
+
+            return;
+        }
+        graficoMatriculasPorArea = new Chart(areaMatricula, {
             type: 'bar',
             data: {
-                labels: ['Medicina', 'Direito', 'Pedagogia', 'Administração'],
+                labels: labels,
                 datasets: [{
-                    data: [55, 25, 15, 5],
-                    backgroundColor: ['#4a7ff7', '#ae8df5', '#f3b86b', '#3cc027'],
+                    data: valores,
+                    backgroundColor: coresGrafico,
                     borderWidth: 0,
                     borderRadius: 3,
                 }]
@@ -274,9 +434,12 @@
                 }
             }
         });
-    }
 
-   
+    } catch (erro) {
+        console.error('Erro ao atualizar gráfico de matrículas por área:', erro);
+    }
+}
+
 
     function carregarGraficoTaxaOcupacao() {
         let taxaOcupacao = document.getElementById('grafico-taxa-ocupacao');
@@ -373,7 +536,7 @@
             }
         });
     }
-    
+
     function carregarGraficoPeriodoProcurado() {
         let periodoMaisPeriodo = document.getElementById('grafico-periodo-mais-procurado');
 
@@ -436,7 +599,7 @@
                             }
                         }
                     },
-                   datalabels: {
+                    datalabels: {
                         anchor: 'center',
                         align: 'center',
                         color: '#ffffff',

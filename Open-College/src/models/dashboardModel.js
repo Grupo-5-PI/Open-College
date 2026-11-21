@@ -4,11 +4,161 @@ var database = require("../database/config");
 
 // ================ DASHBOARD PERFIL ================ //
 
+function atualizarPerfil(ano) {
+
+    var instrucaoSql = `
+        SELECT 
+            SUM(qtdMatricula1824) AS qtdMatricula1824,
+            SUM(qtdMatricula2529) AS qtdMatricula2529,
+            SUM(qtdMatricula3034) AS qtdMatricula3034,
+            SUM(qtdMatricula3539) AS qtdMatricula3539,
+            SUM(qtdMatricula4049) AS qtdMatricula4049,
+            SUM(qtdMatricula5059) AS qtdMatricula5059,
+            SUM(qtdMatricula60Mais) AS qtdMatricula60Mais
+        FROM tblCenso
+        WHERE ano = '${ano}'
+        GROUP BY ano;
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function atualizarRede(ano) {
+
+    var instrucaoSql = `
+        SELECT 
+            ROUND(
+                SUM(qtdIngressantesRedePublica) * 100.0 /
+                SUM(qtdIngressantesRedePublica + qtdIngressantesRedePrivada),
+                2
+            ) AS porcentagemPublica,
+            ROUND(
+                SUM(qtdIngressantesRedePrivada) * 100.0 /
+                SUM(qtdIngressantesRedePublica + qtdIngressantesRedePrivada),
+                2
+            ) AS porcentagemPrivada
+        FROM tblCenso
+        WHERE ano = ${ano};
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function atualizarGenero(ano) {
+
+    var instrucaoSql = `
+        SELECT 
+            ROUND(
+                SUM(qtdMatriculaMasculino) * 100.0 /
+                SUM(qtdMatriculaMasculino + qtdMatriculaFeminino),
+                2
+            ) AS porcentagemMasculina,
+            ROUND(
+                SUM(qtdMatriculaFeminino) * 100.0 /
+                SUM(qtdMatriculaMasculino + qtdMatriculaFeminino),
+                2
+            ) AS porcentagemFeminina
+        FROM tblCenso
+        WHERE ano = ${ano};
+    `;
+
+    return database.executar(instrucaoSql);
+}
 // ================ DASHBOARD DEMANDA ================ //
+
+function atualizarKpiOcupacao(ano) {
+
+    var instrucaoSql = `
+        SELECT 
+	    ROUND (
+	    (SUM(qtdVagas) / SUM(qtdMatricula)) * 100, 2
+        ) AS taxaOcupacao
+        FROM tblCenso
+        WHERE ano = ${ano};
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function atualizarKpiCursoMaisProcurado(ano) {
+
+    var instrucaoSql = `
+        SELECT 
+            SUM(qtdMatricula) AS matriculas,
+            c.nome AS nomeCurso
+            FROM tblCenso AS cn
+            JOIN tblCurso AS c ON cn.idCurso= c.idCurso
+            WHERE ano = ${ano}
+            GROUP BY nome
+            ORDER BY matriculas DESC
+            LIMIT 5;    
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function atualizarKpiCursoMenosProcurado(ano) {
+
+    var instrucaoSql = `
+        SELECT 
+            SUM(qtdMatricula) AS matriculas,
+            c.nome AS nomeCurso
+            FROM tblCenso AS cn
+            JOIN tblCurso AS c ON cn.idCurso= c.idCurso
+            WHERE ano = ${ano}
+            GROUP BY nome
+            ORDER BY matriculas
+            LIMIT 5;    
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function atualizarMatriculasDoCurso(ano) {
+
+    var instrucaoSql = `
+        SELECT
+    censo.ano,
+    area.nome AS nomeArea,
+    ROUND(
+        SUM(censo.qtdMatricula) * 100.0 /
+        (
+            SELECT SUM(c2.qtdMatricula)
+            FROM tblCenso AS c2
+            WHERE c2.ano = censo.ano
+        ),
+            2
+        ) AS porcentagemMatriculas
+
+    FROM tblCenso AS censo
+
+    INNER JOIN tblCurso AS curso
+        ON censo.idCurso = curso.idCurso
+
+    INNER JOIN tblAreaGeral AS area
+        ON curso.idAreaGeral = area.idAreaGeral
+
+    WHERE censo.ano = ${ano}
+
+    GROUP BY
+        censo.ano,
+        area.idAreaGeral,
+        area.nome
+
+    ORDER BY
+        censo.ano,
+        porcentagemMatriculas DESC;   
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+
+
 
 // ================ DASHBOARD REGIÃO ================ //
 
-function buscarDadosKpiRegiaoModalidade(regiao, ano){
+function buscarDadosKpiRegiaoModalidade(regiao, ano) {
 
     var instrucaoSql = `
         (
@@ -35,10 +185,10 @@ function buscarDadosKpiRegiaoModalidade(regiao, ano){
     `;
 
     return database.executar(instrucaoSql);
-    
+
 }
 
-function buscarDadosKpiRegiaoCurso(regiao, ano){
+function buscarDadosKpiRegiaoCurso(regiao, ano) {
 
     var instrucaoSql = `
         (
@@ -67,10 +217,10 @@ function buscarDadosKpiRegiaoCurso(regiao, ano){
     `;
 
     return database.executar(instrucaoSql);
-    
+
 }
 
-function buscarDadosKpiRegiaoArea(regiao, ano){
+function buscarDadosKpiRegiaoArea(regiao, ano) {
 
     var instrucaoSql = `
         (
@@ -101,10 +251,10 @@ function buscarDadosKpiRegiaoArea(regiao, ano){
     `;
 
     return database.executar(instrucaoSql);
-    
+
 }
 
-function buscarDadosGraficoRegiaoArea(ano){
+function buscarDadosGraficoRegiaoArea(ano) {
 
     var instrucaoSql = `
         SELECT mun.nome municipio, SUM(cen.qtdMatricula) totalMatriculas FROM tblCenso cen 
@@ -119,7 +269,7 @@ function buscarDadosGraficoRegiaoArea(ano){
 
 }
 
-function buscarDadosGraficoRegiaoIngressantes(ano){
+function buscarDadosGraficoRegiaoIngressantes(ano) {
 
     var instrucaoSql = `
         SELECT 
@@ -133,7 +283,7 @@ function buscarDadosGraficoRegiaoIngressantes(ano){
     `;
 
     return database.executar(instrucaoSql);
-    
+
 }
 
 // ================ DASHBOARD TENDÊNCIA ================ //
@@ -144,4 +294,11 @@ module.exports = {
     buscarDadosKpiRegiaoArea,
     buscarDadosGraficoRegiaoArea,
     buscarDadosGraficoRegiaoIngressantes,
+    atualizarPerfil,
+    atualizarRede,
+    atualizarGenero,
+    atualizarKpiOcupacao,
+    atualizarKpiCursoMaisProcurado,
+    atualizarKpiCursoMenosProcurado,
+    atualizarMatriculasDoCurso
 }
