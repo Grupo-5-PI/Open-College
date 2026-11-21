@@ -227,10 +227,12 @@ function buscarDadosGrafico(req, res){
     } else if(dashboard == "Demanda"){
 
     } else if(dashboard == "Região"){
+
+        let regiao = parametros.regiaoParam;
         
         if(grafico == "grafico-alunos-area"){
 
-            dashboardModel.buscarDadosGraficoRegiaoArea(ano)
+            dashboardModel.buscarDadosGraficoRegiaoArea(ano, regiao)
             .then(function(resposta){
                 console.log(resposta);
                 if(resposta.length > 0){

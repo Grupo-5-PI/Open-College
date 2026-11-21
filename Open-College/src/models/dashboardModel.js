@@ -240,12 +240,13 @@ function buscarDadosKpiRegiaoArea(regiao, ano){
     
 }
 
-function buscarDadosGraficoRegiaoArea(ano){
+function buscarDadosGraficoRegiaoArea(ano, regiao){
 
     var instrucaoSql = `
         SELECT mun.nome municipio, SUM(cen.qtdMatricula) totalMatriculas FROM tblCenso cen 
         JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
         WHERE cen.ano = ${ano} 
+        AND mun.idUf = '${regiao}' 
         GROUP BY municipio 
         ORDER BY totalMatriculas DESC 
         LIMIT 4;
