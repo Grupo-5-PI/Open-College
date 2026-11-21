@@ -49,7 +49,6 @@ public class Main {
                 Integer qtdIgnoradas = (Integer) resultado.get("ignoradas");
 
                 logJdbc.registrarLog("INFO", "Arquivo lido: " + censos.size() + " registros");
-                System.out.println("DEBUG: censos=" + censos.size() + " areas=" + areasGerais.size() + " cursos=" + cursosUnicos.size() + " ignoradas=" + qtdIgnoradas);
 
                 cursoJdbc.inserirAreasGerais(areasGerais);
                 cursoJdbc.inserirCursos(cursosUnicos);
@@ -60,11 +59,10 @@ public class Main {
                         censoJdbc.inserir(censos.get(j));
                         inseridos++;
                     } catch (Exception e) {
-                        Censo c = censos.get(j);
-                        System.out.println("ERRO censo j=" + j + " idCurso=" + c.getIdCurso() + " coCursoINEP=" + c.getCoCursoINEP() + ": " + e.getMessage());
+                        // censo ignorado por FK inválida
                     }
 
-                    if (inseridos % 10000 == 0) {
+                    if (inseridos % 10000 == 0 && inseridos > 0) {
                         System.out.println("  Inseridos: " + inseridos + " / " + censos.size() + " registros...");
                     }
                 }
