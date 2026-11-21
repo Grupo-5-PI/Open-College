@@ -87,7 +87,7 @@
                 <a href="dashPersonalizada.html" class="buttons-header btn-add">+</a>
 
                 <nav class="nav-dash">
-                    <p>Dashboard - Região (ANO)</p>
+                    <p>Dashboard - Região (<span id="ano_selecionado">2024</span>)</p>
                     <div class="grupo-filtro">
                         <p>Região:</p>
                         <select class="filtro-regiao" id="regiao_filtro_regiao">
@@ -153,6 +153,7 @@
 
 </html>
 
+<script src="../js/dashboardScript.js"></script>
 
 <script>
 
@@ -161,41 +162,92 @@
 
     Chart.register(ChartGeo.ChoroplethController, ChartGeo.GeoFeature, ChartGeo.ColorScale, ChartGeo.ProjectionScale)
 
-    let filtroRegiao = document.querySelector('.filtro-regiao')
-    let textosRegiao = document.querySelectorAll('.texto-regiao')
+    async function carregarKpiModalidade(){
 
-    function atualizarRegiao() {
-        let regiaoSelecionada = filtroRegiao.value;
+        let ano = document.getElementById('regiao_filtro_ano').value;
+        let regiao = document.getElementById('regiao_filtro_regiao').value;
 
-        for (let i = 0; i < textosRegiao.length; i++) {
-            textosRegiao[i].textContent = regiaoSelecionada
+        let tituloKpi = document.querySelector('#kpi_regiao_modalidade .card-titulo .texto-regiao');
+        tituloKpi.textContent = regiao;
+        let valorKpi = document.querySelector('#kpi_regiao_modalidade .card-valor');
+        let rodapeKpi = document.querySelector('#kpi_regiao_modalidade .card-rodape');
+        
+        rodapeKpi.textContent = 'Carregando...';
+        
+        let dadosKpi = await buscarDadosKpiModalidade(ano, regiao);
+
+        if(dadosKpi == '204'){
+            rodapeKpi.textContent = 'Sem dados disponíveis';
+        } else if(dadosKpi == '500'){
+            rodapeKpi.textContent = 'Erro ao buscar dados';
+        } else {
+            valorKpi.textContent = dadosKpi.modalidadeAtual;    
+            rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi.modalidadeAnterior}`;
         }
+        
     }
 
-    filtroRegiao.addEventListener('change', atualizarRegiao)
-    atualizarRegiao()
+    async function carregarKpiCurso(){
 
-    let tituloDash = document.querySelector('.nav-dash p')
-    let filtroAno = document.querySelector('.filtro-ano')
+        let ano = document.getElementById('regiao_filtro_ano').value;
+        let regiao = document.getElementById('regiao_filtro_regiao').value;
 
-    function atualizarAno() {
-        let anoSelecionado = filtroAno.value
-        tituloDash.textContent = `Dashboard - Regional (${anoSelecionado})`
+        let tituloKpi = document.querySelector('#kpi_regiao_curso .card-titulo .texto-regiao');
+        tituloKpi.textContent = regiao;
+        let valorKpi = document.querySelector('#kpi_regiao_curso .card-valor');
+        let rodapeKpi = document.querySelector('#kpi_regiao_curso .card-rodape');
+        
+        rodapeKpi.textContent = 'Carregando...';
+        
+        let dadosKpi = await buscarDadosKpiCurso(ano, regiao);
+
+        if(dadosKpi == '204'){
+            rodapeKpi.textContent = 'Sem dados disponíveis';
+        } else if(dadosKpi == '500'){
+            rodapeKpi.textContent = 'Erro ao buscar dados';
+        } else {
+            valorKpi.textContent = dadosKpi.nomeCursoAtual;    
+            rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi.nomeCursoAnterior}`;
+        }
+        
     }
 
-    filtroAno.addEventListener('change', atualizarAno)
+    async function carregarKpiArea(){
 
-    atualizarAno()
+        let ano = document.getElementById('regiao_filtro_ano').value;
+        let regiao = document.getElementById('regiao_filtro_regiao').value;
 
+        let tituloKpi = document.querySelector('#kpi_regiao_area .card-titulo .texto-regiao');
+        tituloKpi.textContent = regiao;
+        let valorKpi = document.querySelector('#kpi_regiao_area .card-valor');
+        let rodapeKpi = document.querySelector('#kpi_regiao_area .card-rodape');
+        
+        rodapeKpi.textContent = 'Carregando...';
+        
+        let dadosKpi = await buscarDadosKpiArea(ano, regiao);
 
-    function carregarAlunosArea() {
-        let alunosArea = document.getElementById('grafico-alunos-area')
+        if(dadosKpi == '204'){
+            rodapeKpi.textContent = 'Sem dados disponíveis';
+        } else if(dadosKpi == '500'){
+            rodapeKpi.textContent = 'Erro ao buscar dados';
+        } else {
+            valorKpi.textContent = dadosKpi.nomeAreaAtual;
+            rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi.nomeAreaAnterior}`;
+        }
+        
+    }
 
-        new Chart(alunosArea, {
+    function carregarGraficoAlunosArea() {
+
+        let graficoAlunosArea = document.getElementById('grafico-alunos-area')
+
+        graficoAlunosArea.innerHTML = 'Carregando...';
+
+        new Chart(graficoAlunosArea, {
             type: 'bar',
             plugins: [ChartDataLabels],
             data: {
-                labels: ['SP', 'ABC', 'Campinas', 'Sorocaba'],
+                labels: ['SP', 'MG', 'RJ', 'BA'],
                 datasets: [
                     {
                         type: 'line',
@@ -316,9 +368,4 @@
             });
     }
 
-    carregarAlunosArea()
-    carregarIngressantesRegiao()
-
 </script>
-
-<script src="../js/dashboardScript.js"></script>
