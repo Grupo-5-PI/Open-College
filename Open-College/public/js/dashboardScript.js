@@ -1,5 +1,3 @@
-const { param } = require("../../src/routes/dashboard");
-
 async function buscarDadosKpi(dashboard, kpi){
     
     // Passar nessa variável os filtros que existem na dashboard e o id da kpi
@@ -54,7 +52,7 @@ async function buscarDadosGrafico(dashboard, grafico){
     let parametros;
     
     if(dashboard == "Geral"){
-     
+       
         parametros = {
             dashboardParam: dashboard,
             graficoParam: grafico,
@@ -77,7 +75,7 @@ async function buscarDadosGrafico(dashboard, grafico){
         
     }
 
-    let retorno = await fetch(`/dashboard/buscarDadosGrafico/${JSON.stringify(parametros)}`);
+    let retorno = await fetch(`/dashboard/buscarDadosGrafico/${encodeURIComponent(JSON.stringify(parametros))}`);
 
     if(retorno.status == 200)
         return retorno;

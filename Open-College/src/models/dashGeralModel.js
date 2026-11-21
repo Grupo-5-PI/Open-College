@@ -119,7 +119,7 @@ function graficoAreaGeralMaisProcurada(ano) {
     return database.executar(instrucaoSql);
 }
 
-function graficoModalidadeMaisProcurada(ano) {
+function graficoModalidadeMaisProcurada() {
 
     var instrucaoSql = `
     SELECT ano,
