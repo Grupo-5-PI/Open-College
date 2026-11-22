@@ -260,6 +260,7 @@
         dadosGrafico = dadosGrafico.json();
 
         let labels = dadosGrafico.map(item => item.municipio);
+        let data = dadosGrafico.map(item => item.totalMatriculas);
 
         new Chart(graficoAlunosArea, {
             type: 'bar',
@@ -267,22 +268,22 @@
             data: {
                 labels: labels,
                 datasets: [
-                    {
-                        type: 'line',
-                        label: 'Meta Mínima',
-                        data: [600, 600, 600, 600],
-                        borderColor: '#ff5555',
-                        borderWidth: 3,
-                        pointRadius: 0,
-                        fill: false,
-                        datalabels: {
-                            display: false
-                        }
-                    },
+                    // {
+                    //     type: 'line',
+                    //     label: 'Meta Mínima',
+                    //     data: [600, 600, 600, 600],
+                    //     borderColor: '#ff5555',
+                    //     borderWidth: 3,
+                    //     pointRadius: 0,
+                    //     fill: false,
+                    //     datalabels: {
+                    //         display: false
+                    //     }
+                    // },
                     {
                         type: 'bar',
                         label: 'Número de Alunos',
-                        data: [1500, 1000, 900, 500],
+                        data: data,
                         backgroundColor: [
                             '#4a7ff7', '#ae8df5', '#f3b86b', '#ffde59'
                         ],
@@ -330,9 +331,24 @@
     }
 
 
-    function carregarIngressantesRegiao() {
+    async function carregarIngressantesRegiao() {
 
         let canvas = document.getElementById('grafico-ingressantes-regiao');
+        canvas.innerHTML = 'Carregando...';
+
+        let dadosGrafico = await buscarDadosGrafico("Região", "grafico-ingressantes-regiao");
+
+        if(dadosGrafico == '204'){
+            canvas.innerHTML = 'Sem dados disponíveis';
+            return;
+        } else if(dadosGrafico == '500'){
+            canvas.innerHTML = 'Erro ao buscar dados';
+            return;
+        }
+
+        canvas.innerHTML = '';
+
+        dadosGrafico = dadosGrafico.json();
 
         fetch('https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson')
             .then(function (response) {
@@ -350,7 +366,7 @@
                             outline: states,
                             data: states.map((d, index) => ({
                                 feature: d,
-                                value: index
+                                value: dadosGrafico[index] ? dadosGrafico[index].totalMatriculas : 0
                             })),
                             backgroundColor: '#9e9e9e',
                             borderColor: '#ffffff',

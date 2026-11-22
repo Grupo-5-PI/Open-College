@@ -259,14 +259,31 @@ function buscarDadosGraficoRegiaoArea(ano, regiao){
 function buscarDadosGraficoRegiaoIngressantes(ano){
 
     var instrucaoSql = `
-        SELECT 
+        ( 
+            SELECT 
             uf.sigla, 
             (SUM(cen.qtdIngressantesDiurno) + SUM(cen.qtdIngressantesNoturno)) totalIngressantes
-        FROM tblCenso cen 
-        JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
-        JOIN tblUf uf ON uf.idUf = mun.idUf 
-        WHERE cen.ano = ${ano} 
-        GROUP BY uf.sigla;
+            FROM tblCenso cen 
+            JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+            JOIN tblUf uf ON uf.idUf = mun.idUf 
+            WHERE cen.ano = ${ano} 
+            AND uf.sigla != 'DF' 
+            GROUP BY uf.sigla 
+            ORDER BY uf.sigla ASC;
+        ) 
+        UNION 
+        ( 
+            SELECT 
+            uf.sigla, 
+            (SUM(cen.qtdIngressantesDiurno) + SUM(cen.qtdIngressantesNoturno)) totalIngressantes
+            FROM tblCenso cen 
+            JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio
+            JOIN tblUf uf ON uf.idUf = mun.idUf
+            WHERE cen.ano = ${ano} 
+            AND uf.sigla = 'DF' 
+            GROUP BY uf.sigla 
+            ORDER BY uf.sigla ASC;
+        )
     `;
 
     return database.executar(instrucaoSql);
