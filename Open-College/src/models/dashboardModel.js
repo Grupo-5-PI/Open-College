@@ -146,31 +146,34 @@ function graficoModalidadeMaisProcurada() {
 
 function buscarDadosKpiRegiaoModalidade(regiao, ano){
 
+    console.log("CHEGUEI NO INSTITUIÇÃO MODEL");
+    console.log("Função: buscarDadosKpiRegiaoModalidade()");
+    
     var instrucaoSql = `
-        (
-            SELECT tipoModalidadeEnsino modalidadeAtual, SUM(qtdMatricula) totalMatriculasAtual FROM tblCenso cen
-            JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
-            JOIN tblUf uf ON uf.idUf = mun.idUf 
-            WHERE cen.ano = ${ano} 
-            AND uf.sigla = '${regiao}'
-            GROUP BY tipoModalidadeEnsino 
-            ORDER BY totalMatriculasAtual DESC
-            LIMIT 1
-        )
-        UNION
-        (
-            SELECT tipoModalidadeEnsino modalidadeAnterior, SUM(qtdMatricula) totalMatriculasAnterior FROM tblCenso cen
-            JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
-            JOIN tblUf uf ON uf.idUf = mun.idUf 
-            WHERE cen.ano = ${ano} - 1
-            AND uf.sigla = '${regiao}'
-            GROUP BY tipoModalidadeEnsino 
+            (
+                SELECT tipoModalidadeEnsino modalidadeAtual, SUM(qtdMatricula) totalMatriculasAtual FROM tblCenso cen
+                JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+                JOIN tblUf uf ON uf.idUf = mun.idUf 
+                WHERE cen.ano = ${ano} 
+                AND uf.sigla = '${regiao}'
+                GROUP BY tipoModalidadeEnsino 
+                ORDER BY totalMatriculasAtual DESC
+                LIMIT 1
+                )
+                UNION
+                (
+                    SELECT tipoModalidadeEnsino modalidadeAnterior, SUM(qtdMatricula) totalMatriculasAnterior FROM tblCenso cen
+                    JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+                    JOIN tblUf uf ON uf.idUf = mun.idUf 
+                    WHERE cen.ano = ${ano} - 1
+                    AND uf.sigla = '${regiao}'
+                    GROUP BY tipoModalidadeEnsino 
             ORDER BY totalMatriculasAnterior DESC
             LIMIT 1
-        );
-    `;
-
-    return database.executar(instrucaoSql);
+            )
+        `;
+        
+        return database.executar(instrucaoSql);
     
 }
 
@@ -208,6 +211,9 @@ function buscarDadosKpiRegiaoCurso(regiao, ano){
 
 function buscarDadosKpiRegiaoArea(regiao, ano){
 
+    console.log("CHEGUEI NO INSTITUIÇÃO MODEL");
+    console.log("Função: buscarDadosKpiRegiaoArea()");
+    
     var instrucaoSql = `
         (
             SELECT are.nome nomeAreaAtual, SUM(cen.qtdMatricula) totalMatriculasAtual FROM tblCenso cen 
@@ -242,11 +248,15 @@ function buscarDadosKpiRegiaoArea(regiao, ano){
 
 function buscarDadosGraficoRegiaoArea(ano, regiao){
 
+    console.log("CHEGUEI NO INSTITUIÇÃO MODEL");
+    console.log("Função: buscarDadosGraficoRegiaoArea()");
+    
     var instrucaoSql = `
-        SELECT mun.nome municipio, SUM(cen.qtdMatricula) totalMatriculas FROM tblCenso cen 
+        SELECT mun.nome municipio, IFNULL(SUM(cen.qtdMatricula), 0) totalMatriculas FROM tblCenso cen 
         JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+        JOIN tblUf uf ON uf.idUf = mun.idUf 
         WHERE cen.ano = ${ano} 
-        AND mun.idUf = '${regiao}' 
+        AND uf.sigla = '${regiao}' 
         GROUP BY municipio 
         ORDER BY totalMatriculas DESC 
         LIMIT 4;
@@ -258,18 +268,21 @@ function buscarDadosGraficoRegiaoArea(ano, regiao){
 
 function buscarDadosGraficoRegiaoIngressantes(ano){
 
+    console.log("CHEGUEI NO INSTITUIÇÃO MODEL");
+    console.log("Função: buscarDadosGraficoRegiaoIngressantes()");
+    
     var instrucaoSql = `
         ( 
             SELECT 
             uf.sigla, 
-            (SUM(cen.qtdIngressantesDiurno) + SUM(cen.qtdIngressantesNoturno)) totalIngressantes
+            IFNULL((SUM(cen.qtdIngressantesDiurno) + SUM(cen.qtdIngressantesNoturno)), 0) totalIngressantes
             FROM tblCenso cen 
             JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
             JOIN tblUf uf ON uf.idUf = mun.idUf 
             WHERE cen.ano = ${ano} 
             AND uf.sigla != 'DF' 
             GROUP BY uf.sigla 
-            ORDER BY uf.sigla ASC;
+            ORDER BY uf.sigla ASC
         ) 
         UNION 
         ( 
@@ -282,8 +295,8 @@ function buscarDadosGraficoRegiaoIngressantes(ano){
             WHERE cen.ano = ${ano} 
             AND uf.sigla = 'DF' 
             GROUP BY uf.sigla 
-            ORDER BY uf.sigla ASC;
-        )
+            ORDER BY uf.sigla ASC
+        );
     `;
 
     return database.executar(instrucaoSql);

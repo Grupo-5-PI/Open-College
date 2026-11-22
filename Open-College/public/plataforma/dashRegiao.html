@@ -200,9 +200,14 @@
         } else if(dadosKpi == '500'){
             rodapeKpi.textContent = 'Erro ao buscar dados';
         } else {
-            dadosKpi = dadosKpi.json();
-            valorKpi.textContent = dadosKpi.modalidadeAtual;    
-            rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi.modalidadeAnterior}`;
+            dadosKpi = await dadosKpi.json();
+            valorKpi.textContent = dadosKpi[0].modalidadeAtual;    
+            // rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].modalidadeAtual}`;
+            if (dadosKpi[1]) {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].modalidadeAtual}`;
+            } else {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): Sem dados`;
+            }
         }
         
     }
@@ -226,9 +231,14 @@
         } else if(dadosKpi == '500'){
             rodapeKpi.textContent = 'Erro ao buscar dados';
         } else {
-            dadosKpi = dadosKpi.json();
-            valorKpi.textContent = dadosKpi.nomeCursoAtual;    
-            rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi.nomeCursoAnterior}`;
+            dadosKpi = await dadosKpi.json();
+            valorKpi.textContent = dadosKpi[0].nomeCursoAtual;    
+            // rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].nomeCursoAtual}`;
+            if (dadosKpi[1]) {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].nomeCursoAtual}`;
+            } else {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): Sem dados`;
+            }
         }
         
     }
@@ -252,53 +262,66 @@
         } else if(dadosKpi == '500'){
             rodapeKpi.textContent = 'Erro ao buscar dados';
         } else {
-            dadosKpi = dadosKpi.json();
-            valorKpi.textContent = dadosKpi.nomeAreaAtual;
-            rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi.nomeAreaAnterior}`;
+            dadosKpi = await dadosKpi.json();
+            valorKpi.textContent = dadosKpi[0].nomeAreaAtual;
+            // rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].nomeAreaAtual}`;
+            if (dadosKpi[1]) {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].nomeAreaAtual}`;
+            } else {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): Sem dados`;
+            }
         }
         
     }
 
     async function carregarAlunosArea() {
 
+        console.log("Carregando gráfico de alunos por área na região...");
+        
         let graficoAlunosArea = document.getElementById('grafico-alunos-area');
         graficoAlunosArea.innerHTML = 'Carregando...';
 
         let dadosGrafico = await buscarDadosGrafico("Região", "grafico-alunos-area");
 
+        console.log(dadosGrafico);
+
         if(dadosGrafico == '204'){
-            graficoAlunosArea.innerHTML = 'Sem dados disponíveis';
+            graficoAlunosArea.innerHTML = '<span>Sem dados disponíveis</span>';
             return;
         } else if(dadosGrafico == '500'){
-            graficoAlunosArea.innerHTML = 'Erro ao buscar dados';
+            graficoAlunosArea.innerHTML = '<span>Erro ao buscar dados</span>';
             return;
         }
 
-        graficosAlunosArea.innerHTML = '';
+        graficoAlunosArea.innerHTML = '';
 
-        dadosGrafico = dadosGrafico.json();
+        dadosGrafico = await dadosGrafico.json();
 
         let labels = dadosGrafico.map(item => item.municipio);
         let data = dadosGrafico.map(item => item.totalMatriculas);
 
-        new Chart(graficoAlunosArea, {
+        if(Chart.getChart(graficoAlunosArea)) {
+            Chart.getChart(graficoAlunosArea).destroy();
+        }
+
+       new Chart(graficoAlunosArea, {
             type: 'bar',
             plugins: [ChartDataLabels],
             data: {
                 labels: labels,
                 datasets: [
-                    // {
-                    //     type: 'line',
-                    //     label: 'Meta Mínima',
-                    //     data: [600, 600, 600, 600],
-                    //     borderColor: '#ff5555',
-                    //     borderWidth: 3,
-                    //     pointRadius: 0,
-                    //     fill: false,
-                    //     datalabels: {
-                    //         display: false
-                    //     }
-                    // },
+                    {
+                        type: 'line',
+                        label: 'Meta Mínima',
+                        data: [600, 600, 600, 600],
+                        borderColor: '#ff5555',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        fill: false,
+                        datalabels: {
+                            display: false
+                        }
+                    },
                     {
                         type: 'bar',
                         label: 'Número de Alunos',
@@ -349,7 +372,6 @@
         })
     }
 
-
     async function carregarIngressantesRegiao() {
 
         let canvas = document.getElementById('grafico-ingressantes-regiao');
@@ -367,7 +389,7 @@
 
         canvas.innerHTML = '';
 
-        dadosGrafico = dadosGrafico.json();
+        dadosGrafico = await dadosGrafico.json();
 
         fetch('https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson')
             .then(function (response) {
@@ -376,7 +398,13 @@
             .then(function (geoData) {
                 const states = geoData.features;
 
-                new Chart(canvas, {
+                if(Chart.getChart(canvas)) {
+                    Chart.getChart(canvas).destroy();
+                }
+
+                console.log("Dados do gráfico de ingressantes por região:", dadosGrafico);
+
+                graficoIngressantesRegiao = new Chart(canvas, {
                     type: 'choropleth',
                     data: {
                         labels: states.map(d => d.properties.name),
@@ -385,7 +413,7 @@
                             outline: states,
                             data: states.map((d, index) => ({
                                 feature: d,
-                                value: dadosGrafico[index] ? dadosGrafico[index].totalMatriculas : 0
+                                value: dadosGrafico[index] ? parseInt(dadosGrafico[index].totalIngressantes) : 0
                             })),
                             backgroundColor: '#9e9e9e',
                             borderColor: '#ffffff',
@@ -423,6 +451,7 @@
     }
 
     function carregarGraficosKpi() {
+        console.log("Carregando gráficos e KPIs da região...");
         carregarKpiModalidade();
         carregarKpiCurso();
         carregarKpiArea();
@@ -435,7 +464,11 @@
     let filtroRegiao = document.getElementById('regiao_filtro_regiao');
     let filtroAno = document.getElementById('regiao_filtro_ano');
 
-    filtroRegiao.addEventListener('change', carregarGraficosKpi());
+    filtroRegiao.addEventListener('change', function(){
+        console.log("Região alterada para: " + filtroRegiao.value);
+
+        carregarGraficosKpi();
+    });
     filtroAno.addEventListener('change', function(){
         let anoSelecionado = document.getElementById('ano_selecionado');
         anoSelecionado.textContent = filtroAno.value;

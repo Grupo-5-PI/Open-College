@@ -75,7 +75,9 @@ async function buscarDadosGrafico(dashboard, grafico){
         
     }
 
-    let retorno = await fetch(`/dashboard/buscarDadosGrafico/${encodeURIComponent(JSON.stringify(parametros))}`);
+    let retorno = (await fetch(`/dashboard/buscarDadosGrafico/${encodeURIComponent(JSON.stringify(parametros))}`));
+    console.log(grafico);
+    console.log(retorno);
 
     if(retorno.status == 200)
         return retorno;
