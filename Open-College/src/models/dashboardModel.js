@@ -2,6 +2,142 @@ var database = require("../database/config");
 
 // ================ DASHBOARD GERAL ================ //
 
+function kpiTotalMatriculas(ano) {
+
+    var instrucaoSql = `
+        SELECT SUM(qtdMatricula) AS totalMatriculas FROM tblCenso WHERE ano = ${ano};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function kpiTotalConcluintes(ano) {
+
+    var instrucaoSql = `
+        SELECT SUM(qtdConcluintes) AS totalConcluintes FROM tblCenso WHERE ano = ${ano};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function kpiModalidadeMaisProcurada(ano) {
+
+    var instrucaoSql = `
+       SELECT CASE tipoModalidadeEnsino
+            WHEN 1 THEN 'Presencial'
+            WHEN 2 THEN 'EAD'
+        END AS modalidade,
+        SUM(qtdMatricula) AS totalMatriculas
+        FROM tblCenso
+        WHERE ano = ${ano}
+        GROUP BY tipoModalidadeEnsino
+        ORDER BY totalMatriculas DESC
+        LIMIT 1;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function kpiPeriodoMaisProcurado(ano) {
+
+    var instrucaoSql = `
+    SELECT SUM(qtdMatriculaDiurno) AS totalDiurno,
+    SUM(qtdMatriculaNoturno) AS totalNoturno
+    FROM tblCenso
+    WHERE ano = ${ano};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function kpiAreaMaisProcurada(ano) {
+
+    var instrucaoSql = `
+    SELECT a.nome AS areaGeral, SUM(c.qtdMatricula) AS totalMatriculas
+    FROM tblCenso AS c
+    JOIN tblCurso AS curso ON c.idCurso = curso.idCurso
+    JOIN tblAreaGeral AS a ON curso.idAreaGeral = a.idAreaGeral
+    WHERE c.ano = ${ano}
+    GROUP BY a.nome
+    ORDER BY totalMatriculas DESC
+    LIMIT 1;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function kpiTipoGraduacaoMaisProcurada(ano) {
+
+    var instrucaoSql = `
+    SELECT 
+        CASE tipoGrauAcademico
+            WHEN 1 THEN 'Bacharelado'
+            WHEN 2 THEN 'Licenciatura'
+            WHEN 3 THEN 'Tecnológico'
+        END AS tipoGrauAcademico,
+        SUM(qtdMatricula) AS totalMatriculas
+    FROM tblCenso
+    WHERE ano = ${ano}
+    GROUP BY tipoGrauAcademico
+    ORDER BY totalMatriculas DESC
+    LIMIT 1;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function graficoGraduacaoMaisProcurada(ano) {
+
+    var instrucaoSql = `
+    SELECT 
+        CASE curso.nome
+            WHEN 'Análise e Desenvolvimento de Sistemas' THEN 'ADS'
+            ELSE curso.nome
+        END AS nome,
+        SUM(c.qtdMatricula) AS totalMatriculas
+    FROM tblCenso AS c
+    JOIN tblCurso AS curso ON c.idCurso = curso.idCurso
+    WHERE c.ano = ${ano}
+    GROUP BY curso.nome
+    ORDER BY totalMatriculas DESC
+    LIMIT 5;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function graficoAreaGeralMaisProcurada(ano) {
+
+    var instrucaoSql = `
+    SELECT ag.nome AS areaGeral, SUM(c.qtdMatricula) AS totalMatriculas
+    FROM tblCenso c
+    JOIN tblCurso AS curso ON c.idCurso = curso.idCurso
+    JOIN tblAreaGeral AS ag ON curso.idAreaGeral = ag.idAreaGeral
+    WHERE c.ano = ${ano}
+    GROUP BY ag.nome
+    ORDER BY totalMatriculas DESC;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function graficoModalidadeMaisProcurada() {
+
+    var instrucaoSql = `
+    SELECT ano,
+        CASE tipoModalidadeEnsino
+            WHEN 1 THEN 'Presencial'
+            WHEN 2 THEN 'EAD'
+        END AS modalidade,
+        SUM(qtdMatricula) AS totalMatriculas
+    FROM tblCenso
+    GROUP BY ano, tipoModalidadeEnsino
+    ORDER BY ano;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 // ================ DASHBOARD PERFIL ================ //
 
 // ================ DASHBOARD DEMANDA ================ //
@@ -10,31 +146,34 @@ var database = require("../database/config");
 
 function buscarDadosKpiRegiaoModalidade(regiao, ano){
 
+    console.log("CHEGUEI NO INSTITUIÇÃO MODEL");
+    console.log("Função: buscarDadosKpiRegiaoModalidade()");
+    
     var instrucaoSql = `
-        (
-            SELECT tipoModalidadeEnsino modalidadeAtual, SUM(qtdMatricula) totalMatriculasAtual FROM tblCenso cen
-            JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
-            JOIN tblUf uf ON uf.idUf = mun.idUf 
-            WHERE cen.ano = ${ano} 
-            AND uf.sigla = '${regiao}'
-            GROUP BY tipoModalidadeEnsino 
-            ORDER BY totalMatriculasAtual DESC
-            LIMIT 1
-        )
-        UNION
-        (
-            SELECT tipoModalidadeEnsino modalidadeAnterior, SUM(qtdMatricula) totalMatriculasAnterior FROM tblCenso cen
-            JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
-            JOIN tblUf uf ON uf.idUf = mun.idUf 
-            WHERE cen.ano = ${ano} - 1
-            AND uf.sigla = '${regiao}'
-            GROUP BY tipoModalidadeEnsino 
+            (
+                SELECT tipoModalidadeEnsino modalidadeAtual, SUM(qtdMatricula) totalMatriculasAtual FROM tblCenso cen
+                JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+                JOIN tblUf uf ON uf.idUf = mun.idUf 
+                WHERE cen.ano = ${ano} 
+                AND uf.sigla = '${regiao}'
+                GROUP BY tipoModalidadeEnsino 
+                ORDER BY totalMatriculasAtual DESC
+                LIMIT 1
+                )
+                UNION
+                (
+                    SELECT tipoModalidadeEnsino modalidadeAnterior, SUM(qtdMatricula) totalMatriculasAnterior FROM tblCenso cen
+                    JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+                    JOIN tblUf uf ON uf.idUf = mun.idUf 
+                    WHERE cen.ano = ${ano} - 1
+                    AND uf.sigla = '${regiao}'
+                    GROUP BY tipoModalidadeEnsino 
             ORDER BY totalMatriculasAnterior DESC
             LIMIT 1
-        );
-    `;
-
-    return database.executar(instrucaoSql);
+            )
+        `;
+        
+        return database.executar(instrucaoSql);
     
 }
 
@@ -72,6 +211,9 @@ function buscarDadosKpiRegiaoCurso(regiao, ano){
 
 function buscarDadosKpiRegiaoArea(regiao, ano){
 
+    console.log("CHEGUEI NO INSTITUIÇÃO MODEL");
+    console.log("Função: buscarDadosKpiRegiaoArea()");
+    
     var instrucaoSql = `
         (
             SELECT are.nome nomeAreaAtual, SUM(cen.qtdMatricula) totalMatriculasAtual FROM tblCenso cen 
@@ -104,12 +246,17 @@ function buscarDadosKpiRegiaoArea(regiao, ano){
     
 }
 
-function buscarDadosGraficoRegiaoArea(ano){
+function buscarDadosGraficoRegiaoArea(ano, regiao){
 
+    console.log("CHEGUEI NO INSTITUIÇÃO MODEL");
+    console.log("Função: buscarDadosGraficoRegiaoArea()");
+    
     var instrucaoSql = `
-        SELECT mun.nome municipio, SUM(cen.qtdMatricula) totalMatriculas FROM tblCenso cen 
+        SELECT mun.nome municipio, IFNULL(SUM(cen.qtdMatricula), 0) totalMatriculas FROM tblCenso cen 
         JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+        JOIN tblUf uf ON uf.idUf = mun.idUf 
         WHERE cen.ano = ${ano} 
+        AND uf.sigla = '${regiao}' 
         GROUP BY municipio 
         ORDER BY totalMatriculas DESC 
         LIMIT 4;
@@ -121,15 +268,35 @@ function buscarDadosGraficoRegiaoArea(ano){
 
 function buscarDadosGraficoRegiaoIngressantes(ano){
 
+    console.log("CHEGUEI NO INSTITUIÇÃO MODEL");
+    console.log("Função: buscarDadosGraficoRegiaoIngressantes()");
+    
     var instrucaoSql = `
-        SELECT 
+        ( 
+            SELECT 
+            uf.sigla, 
+            IFNULL((SUM(cen.qtdIngressantesDiurno) + SUM(cen.qtdIngressantesNoturno)), 0) totalIngressantes
+            FROM tblCenso cen 
+            JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
+            JOIN tblUf uf ON uf.idUf = mun.idUf 
+            WHERE cen.ano = ${ano} 
+            AND uf.sigla != 'DF' 
+            GROUP BY uf.sigla 
+            ORDER BY uf.sigla ASC
+        ) 
+        UNION 
+        ( 
+            SELECT 
             uf.sigla, 
             (SUM(cen.qtdIngressantesDiurno) + SUM(cen.qtdIngressantesNoturno)) totalIngressantes
-        FROM tblCenso cen 
-        JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio 
-        JOIN tblUf uf ON uf.idUf = mun.idUf 
-        WHERE cen.ano = ${ano} 
-        GROUP BY uf.sigla;
+            FROM tblCenso cen 
+            JOIN tblMunicipio mun ON mun.idMunicipio = cen.idMunicipio
+            JOIN tblUf uf ON uf.idUf = mun.idUf
+            WHERE cen.ano = ${ano} 
+            AND uf.sigla = 'DF' 
+            GROUP BY uf.sigla 
+            ORDER BY uf.sigla ASC
+        );
     `;
 
     return database.executar(instrucaoSql);
@@ -139,6 +306,17 @@ function buscarDadosGraficoRegiaoIngressantes(ano){
 // ================ DASHBOARD TENDÊNCIA ================ //
 
 module.exports = {
+
+    kpiTotalMatriculas,
+    kpiTotalConcluintes,
+    kpiModalidadeMaisProcurada,
+    kpiPeriodoMaisProcurado,
+    kpiAreaMaisProcurada,
+    kpiTipoGraduacaoMaisProcurada,
+    graficoGraduacaoMaisProcurada,
+    graficoAreaGeralMaisProcurada,
+    graficoModalidadeMaisProcurada,
+    
     buscarDadosKpiRegiaoModalidade,
     buscarDadosKpiRegiaoCurso,
     buscarDadosKpiRegiaoArea,

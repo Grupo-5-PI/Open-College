@@ -1,4 +1,4 @@
-var dashGeralModel = require("../models/dashGeralModel");
+var dashboardModel = require("../models/dashboardModel");
 
 function buscarDadosKpi(req, res){
 
@@ -11,7 +11,7 @@ function buscarDadosKpi(req, res){
         
         if (kpi == "kpi_total_matriculas") {
 
-            dashGeralModel.kpiTotalMatriculas(ano)
+            dashboardModel.kpiTotalMatriculas(ano)
                 .then(function (resultado) {
                   
                     if (!resultado || resultado.length == 0) return res.status(204).send();
@@ -23,7 +23,7 @@ function buscarDadosKpi(req, res){
 
         } else if (kpi == "kpi_total_concluintes") {
             
-            dashGeralModel.kpiTotalConcluintes(ano)
+            dashboardModel.kpiTotalConcluintes(ano)
                 .then(function (resultado) {
                   
                     if (!resultado || resultado.length == 0) return res.status(204).send();
@@ -35,7 +35,7 @@ function buscarDadosKpi(req, res){
 
         } else if (kpi == "kpi_modalidade_mais_procurada") {
             
-            dashGeralModel.kpiModalidadeMaisProcurada(ano)
+            dashboardModel.kpiModalidadeMaisProcurada(ano)
                 .then(function (resultado) {
                
                     if (!resultado || resultado.length == 0) return res.status(204).send();
@@ -47,7 +47,7 @@ function buscarDadosKpi(req, res){
 
         } else if (kpi == "kpi_periodo_mais_procurado") {
             
-            dashGeralModel.kpiPeriodoMaisProcurado(ano)
+            dashboardModel.kpiPeriodoMaisProcurado(ano)
                 .then(function (resultado) {
               
                     if (!resultado || resultado.length == 0) return res.status(204).send();
@@ -61,7 +61,7 @@ function buscarDadosKpi(req, res){
 
         } else if (kpi == "kpi_area_mais_procurada") {
             
-            dashGeralModel.kpiAreaMaisProcurada(ano)
+            dashboardModel.kpiAreaMaisProcurada(ano)
                 .then(function (resultado) {
                     if (!resultado || resultado.length == 0) return res.status(204).send();
                     res.status(200).json(resultado[0]);
@@ -72,7 +72,7 @@ function buscarDadosKpi(req, res){
 
         } else if (kpi == "kpi_tipo_graduacao_mais_procurada") {
             
-            dashGeralModel.kpiTipoGraduacaoMaisProcurada(ano)
+            dashboardModel.kpiTipoGraduacaoMaisProcurada(ano)
                 .then(function (resultado) {
                 
                     if (!resultado || resultado.length == 0) return res.status(204).send();
@@ -83,7 +83,7 @@ function buscarDadosKpi(req, res){
                 });
 
         } else if (kpi == "grafico_graduacao_mais_procurada") {
-            dashGeralModel.graficoGraduacaoMaisProcurada(ano)
+            dashboardModel.graficoGraduacaoMaisProcurada(ano)
                 .then(function (resultado) {
                     
                     if (!resultado || resultado.length == 0) return res.status(204).send();
@@ -95,7 +95,7 @@ function buscarDadosKpi(req, res){
 
         } else if (kpi == "grafico_area_geral_matricula") {
             
-            dashGeralModel.graficoAreaGeralMaisProcurada(ano)
+            dashboardModel.graficoAreaGeralMaisProcurada(ano)
                 .then(function (resultado) {
                 
                     if (!resultado || resultado.length == 0) return res.status(204).send();
@@ -107,7 +107,7 @@ function buscarDadosKpi(req, res){
 
         } else if (kpi == "grafico_modalidade_mais_procurada") {
             
-            dashGeralModel.graficoModalidadeMaisProcurada(ano)
+            dashboardModel.graficoModalidadeMaisProcurada(ano)
                 .then(function (resultado) {
                     
                     if (!resultado || resultado.length == 0) return res.status(204).send();
@@ -192,7 +192,7 @@ function buscarDadosGrafico(req, res){
     if(dashboard == "Geral"){
 
         if (grafico == "grafico_graduacao_mais_procurada") {
-            dashGeralModel.graficoGraduacaoMaisProcurada(ano)
+            dashboardModel.graficoGraduacaoMaisProcurada(ano)
                 .then(function (resultado) {
                     if (!resultado || resultado.length === 0) return res.status(204).send();
                     res.status(200).json(resultado);
@@ -202,7 +202,7 @@ function buscarDadosGrafico(req, res){
                 });
 
         } else if (grafico == "grafico_area_geral_matricula") {
-            dashGeralModel.graficoAreaGeralMaisProcurada(ano)
+            dashboardModel.graficoAreaGeralMaisProcurada(ano)
                 .then(function (resultado) {
                     if (!resultado || resultado.length === 0) return res.status(204).send();
                     res.status(200).json(resultado);
@@ -212,7 +212,7 @@ function buscarDadosGrafico(req, res){
                 });
 
         } else if (grafico == "grafico_modalidade_mais_procurada") {
-            dashGeralModel.graficoModalidadeMaisProcurada()
+            dashboardModel.graficoModalidadeMaisProcurada()
                 .then(function (resultado) {
                     if (!resultado || resultado.length === 0) return res.status(204).send();
                     res.status(200).json(resultado);
@@ -227,10 +227,12 @@ function buscarDadosGrafico(req, res){
     } else if(dashboard == "Demanda"){
 
     } else if(dashboard == "Região"){
+
+        let regiao = parametros.regiaoParam;
         
         if(grafico == "grafico-alunos-area"){
 
-            dashboardModel.buscarDadosGraficoRegiaoArea(ano)
+            dashboardModel.buscarDadosGraficoRegiaoArea(ano, regiao)
             .then(function(resposta){
                 console.log(resposta);
                 if(resposta.length > 0){
