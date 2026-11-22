@@ -68,14 +68,11 @@ function kpiTipoGraduacaoMaisProcurada(ano) {
 
     var instrucaoSql = `
     SELECT 
-        CASE tipoGrauAcademico
-            WHEN 1 THEN 'Bacharelado'
-            WHEN 2 THEN 'Licenciatura'
-            WHEN 3 THEN 'Tecnológico'
-        END AS tipoGrauAcademico,
+        tipoGrauAcademico,
         SUM(qtdMatricula) AS totalMatriculas
     FROM tblCenso
     WHERE ano = ${ano}
+    AND tipoGrauAcademico IN ('Bacharelado', 'Licenciatura', 'Tecnológico')
     GROUP BY tipoGrauAcademico
     ORDER BY totalMatriculas DESC
     LIMIT 1;
