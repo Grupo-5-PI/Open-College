@@ -174,13 +174,14 @@
         
         rodapeKpi.textContent = 'Carregando...';
         
-        let dadosKpi = await buscarDadosKpiModalidade(ano, regiao);
+        let dadosKpi = await buscarDadosKpi("Região", "kpi_regiao_modalidade");
 
         if(dadosKpi == '204'){
             rodapeKpi.textContent = 'Sem dados disponíveis';
         } else if(dadosKpi == '500'){
             rodapeKpi.textContent = 'Erro ao buscar dados';
         } else {
+            dadosKpi = dadosKpi.json();
             valorKpi.textContent = dadosKpi.modalidadeAtual;    
             rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi.modalidadeAnterior}`;
         }
@@ -199,13 +200,14 @@
         
         rodapeKpi.textContent = 'Carregando...';
         
-        let dadosKpi = await buscarDadosKpiCurso(ano, regiao);
+        let dadosKpi = await buscarDadosKpi("Região", "kpi_regiao_curso");
 
         if(dadosKpi == '204'){
             rodapeKpi.textContent = 'Sem dados disponíveis';
         } else if(dadosKpi == '500'){
             rodapeKpi.textContent = 'Erro ao buscar dados';
         } else {
+            dadosKpi = dadosKpi.json();
             valorKpi.textContent = dadosKpi.nomeCursoAtual;    
             rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi.nomeCursoAnterior}`;
         }
@@ -224,30 +226,46 @@
         
         rodapeKpi.textContent = 'Carregando...';
         
-        let dadosKpi = await buscarDadosKpiArea(ano, regiao);
+        let dadosKpi = await buscarDadosKpi("Região", "kpi_regiao_area");
 
         if(dadosKpi == '204'){
             rodapeKpi.textContent = 'Sem dados disponíveis';
         } else if(dadosKpi == '500'){
             rodapeKpi.textContent = 'Erro ao buscar dados';
         } else {
+            dadosKpi = dadosKpi.json();
             valorKpi.textContent = dadosKpi.nomeAreaAtual;
             rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi.nomeAreaAnterior}`;
         }
         
     }
 
-    function carregarGraficoAlunosArea() {
+    async function carregarAlunosArea() {
 
-        let graficoAlunosArea = document.getElementById('grafico-alunos-area')
-
+        let graficoAlunosArea = document.getElementById('grafico-alunos-area');
         graficoAlunosArea.innerHTML = 'Carregando...';
+
+        let dadosGrafico = await buscarDadosGrafico("Região", "grafico-alunos-area");
+
+        if(dadosGrafico == '204'){
+            graficoAlunosArea.innerHTML = 'Sem dados disponíveis';
+            return;
+        } else if(dadosGrafico == '500'){
+            graficoAlunosArea.innerHTML = 'Erro ao buscar dados';
+            return;
+        }
+
+        graficosAlunosArea.innerHTML = '';
+
+        dadosGrafico = dadosGrafico.json();
+
+        let labels = dadosGrafico.map(item => item.municipio);
 
         new Chart(graficoAlunosArea, {
             type: 'bar',
             plugins: [ChartDataLabels],
             data: {
-                labels: ['SP', 'MG', 'RJ', 'BA'],
+                labels: labels,
                 datasets: [
                     {
                         type: 'line',
@@ -313,7 +331,8 @@
 
 
     function carregarIngressantesRegiao() {
-        let canvas = document.getElementById('grafico-ingressantes-regiao')
+
+        let canvas = document.getElementById('grafico-ingressantes-regiao');
 
         fetch('https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson')
             .then(function (response) {
