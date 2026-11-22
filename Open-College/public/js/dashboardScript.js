@@ -29,6 +29,13 @@ async function buscarDadosKpi(dashboard, kpi){
         };
     } else if(dashboard == "Tendência"){
         
+        parametros = {
+            dashboardParam: dashboard,
+            kpiParam: kpi,
+            anoParam: document.getElementById("filtro-inicio").value,
+            anoFimParam: document.getElementById("filtro-fim").value
+        }
+
     }
 
     let retorno = await fetch(`/dashboard/buscarDadosKpi/${JSON.stringify(parametros)}`);

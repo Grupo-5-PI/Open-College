@@ -89,6 +89,7 @@
                 <nav class="nav-dash-tendencia">
                     <p>Dashboard - Tendência (ANO)</p>
                     <div class="filtro-ano-tendencia">
+                        <span>Ano de Início:</span>
                         <select class="filtro-ano" id="filtro-inicio">
                             <option>2024</option>
                             <option>2023</option>
@@ -98,6 +99,7 @@
                             <option>2019</option>
                         </select>
 
+                        <span>Ano de Fim:</span>
                         <select class="filtro-ano" id="filtro-fim">
                             <option>2024</option>
                             <option>2023</option>
@@ -111,7 +113,7 @@
             </header>
 
             <section class="grid-cards-tendencia">
-                <div class="card-kpi-tendencia">
+                <div class="card-kpi-tendencia" id="kpi_tendencia_matriculas_anterior">
                     <div class="card-kpi">
                         <span class="card-titulo">Matrículas na graduação</span>
                         <strong class="card-valor" id="kpi-valor-inicio">20.000 mil</strong>
@@ -120,7 +122,7 @@
                 </div>
 
                 <div class="card-kpi-tendencia">
-                    <div class="card-kpi">
+                    <div class="card-kpi" id="kpi_tendencia_matriculas_atual">
                         <span class="card-titulo">Matrículas na graduação</span>
                         <strong class="card-valor" id="kpi-valor-fim">40.000 mil</strong>
                         <strong class="card-comparacao" id="card-comparacao">+ 9.3% no período</strong>
@@ -129,7 +131,7 @@
                 </div>
 
                 <div class="card-kpi-tendencia">
-                    <div class="card-kpi">
+                    <div class="card-kpi" id="kpi_tendencia_crescimento_medio">
                         <span class="card-titulo">Crescimento médio ao ano</span>
                         <strong class="card-valor">+ 5% </strong>
                     </div>
@@ -138,9 +140,11 @@
 
             <div class="card-kpi-tendencia">
                 <div class="card-kpi">
-                    <span class="card-valor" id="texto-comparativo">De ANO a ANO, o EAD cresceu 32% e o presencial caiu
+                    <span class="card-valor" id="texto-comparativo">
+                        De ANO a ANO, o EAD cresceu 32% e o presencial caiu
                         4%. O curso que mais
-                        cresceu foi Análise e Des. de Sistemas (+75%)</span>
+                        cresceu foi Análise e Des. de Sistemas (+75%)
+                    </span>
                 </div>
             </div>
 

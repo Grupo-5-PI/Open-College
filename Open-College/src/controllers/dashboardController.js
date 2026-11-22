@@ -178,6 +178,16 @@ function buscarDadosKpi(req, res){
         
     } else if(dashboard == "Tendência"){
 
+        let anoFim = parametros.anoFimParam;
+        
+        if(kpi == "kpi_tendencia_matriculas_atual" || kpi == "kpi_tendencia_matriculas_anterior"){
+
+            
+            
+        } else if(kpi == "kpi_tendencia_crescimento_medio"){
+
+        }
+        
     }
     
 }
