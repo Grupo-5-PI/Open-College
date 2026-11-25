@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="../js/sessao.js"></script>
+    <script src="../js/dashboardScript.js"></script>
 </head>
 
 <!-- onload="validarSessao()" -->
@@ -89,7 +90,6 @@
                 <nav class="nav-dash">
                     <p>Dashboard - Visão Geral (ANO)</p>
                     <select class="filtro-ano">
-                        <option>2025</option>
                         <option>2024</option>
                         <option>2023</option>
                         <option>2022</option>
@@ -102,39 +102,39 @@
 
             <section class="card-grafico">
                 <div class="grid-cards">
-                    <div class="card-kpi">
+                    <div class="card-kpi" id="total-matriculas">
                         <span class="card-titulo">Total de Matrículas</span>
-                        <strong class="card-valor">45.3K</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
-                    <div class="card-kpi">
+                    <div class="card-kpi" id="total-concluintes">
                         <span class="card-titulo">Total de Concluintes</span>
-                        <strong class="card-valor">22.3K</strong>
+                        <strong class="card-valor">--   </strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
-                    <div class="card-kpi">
+                    <div class="card-kpi" id="modalidade">
                         <span class="card-titulo">Modalidade mais procurada</span>
-                        <strong class="card-valor">EAD</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
-                    <div class="card-kpi">
+                    <div class="card-kpi" id="periodo">
                         <span class="card-titulo">Período mais procurado</span>
-                        <strong class="card-valor">NOTURNO</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
-                    <div class="card-kpi">
+                    <div class="card-kpi" id="area">
                         <span class="card-titulo">Área mais procurada</span>
-                        <strong class="card-valor">TECNOLOGIA</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
 
-                    <div class="card-kpi">
+                    <div class="card-kpi" id="tipo-graduacao">
                         <span class="card-titulo">Tipo de graduação mais procurada</span>
-                        <strong class="card-valor">TÉCNICO</strong>
+                        <strong class="card-valor">--</strong>
                         <span class="card-rodape">No ano de ANO</span>
                     </div>
                 </div>
@@ -188,22 +188,126 @@
         }
     }
 
-    filtroAno.addEventListener('change', atualizarAno)
+    filtroAno.addEventListener('change', function() {
+        atualizarAno();
+        carregarDashboard();
+    })
 
     atualizarAno()
 
-    function carregarGraficoMaisProcurado() {
-        let maisProcurado = document.getElementById('grafico-grad-mais-procurada');
+    // ============================ KPI's ============================
 
-        new Chart(maisProcurado, {
+    function formatarNumero(valor) {
+
+        if (valor >= 1000000) {
+            return (valor / 1000000).toFixed(1).replace('.', ',') + 'M';
+        } else if (valor >= 1000) {
+            return (valor / 1000).toFixed(1).replace('.', ',') + 'K';
+        }
+        return valor.toString();
+    }
+
+    async function carregarKpiTotalMatriculas() {
+     
+        let retorno = await buscarDadosKpi("Geral", "kpi_total_matriculas");
+        if (retorno === "204" || retorno === "500" || retorno == null) return;
+        let dados = await retorno.json();
+        document.getElementById("total-matriculas").querySelector(".card-valor").textContent = formatarNumero(Number(dados.totalMatriculas));
+    
+    }
+
+    async function carregarKpiTotalConcluintes() {
+    
+        let retorno = await buscarDadosKpi("Geral", "kpi_total_concluintes");
+        if (retorno === "204" || retorno === "500" || retorno == null){ 
+            return};
+            
+        let dados = await retorno.json();
+        document.getElementById("total-concluintes").querySelector(".card-valor").textContent = formatarNumero(Number(dados.totalConcluintes));
+    
+    }
+
+    async function carregarKpiModalidadeMaisProcurada() {
+    
+        let retorno = await buscarDadosKpi("Geral", "kpi_modalidade_mais_procurada");
+        if (retorno === "204" || retorno === "500" || retorno == null){ 
+            return};
+            
+        let dados = await retorno.json();
+        document.getElementById("modalidade").querySelector(".card-valor").textContent = dados.modalidade;
+    
+    }
+
+    async function carregarKpiPeriodoMaisProcurado() {
+    
+        let retorno = await buscarDadosKpi("Geral", "kpi_periodo_mais_procurado");
+        if (retorno === "204" || retorno === "500" || retorno == null){ 
+            return};
+            
+        let dados = await retorno.json();
+        document.getElementById("periodo").querySelector(".card-valor").textContent = dados.periodo.toUpperCase();
+    
+    }
+
+    async function carregarKpiAreaMaisProcurada() {
+    
+        let retorno = await buscarDadosKpi("Geral", "kpi_area_mais_procurada");
+        if (retorno === "204" || retorno === "500" || retorno == null){ 
+            return};
+            
+        let dados = await retorno.json();
+        document.getElementById("area").querySelector(".card-valor").textContent = dados.areaGeral.toUpperCase();
+    
+    }
+
+    async function carregarKpiTipoGraduacaoMaisProcurada() {
+    
+        let retorno = await buscarDadosKpi("Geral", "kpi_tipo_graduacao_mais_procurada");
+        if (retorno === "204" || retorno === "500" || retorno == null){ 
+            return};
+            
+        let dados = await retorno.json();
+        if (dados.tipoGrauAcademico == null) return;
+        document.getElementById("tipo-graduacao").querySelector(".card-valor").textContent = dados.tipoGrauAcademico.toUpperCase();
+    
+    }
+
+    // ============================ Gráficos ============================
+
+    let chartGraduacao = null;
+    let chartAreaGeral = null;
+    let chartModalidade = null;
+
+    async function carregarGraficoMaisProcurado() {
+        let retorno = await buscarDadosGrafico("Geral", "grafico_graduacao_mais_procurada");
+        if (retorno === "204" || retorno === "500" || retorno == null) return;
+        let dados = await retorno.json();
+
+        let totalGeral = 0;
+        for (let i = 0; i < dados.length; i++) {
+            totalGeral += Number(dados[i].totalMatriculas);
+        }
+
+        let labels = [];
+        let valores = [];
+        for (let i = 0; i < dados.length; i++) {
+            labels.push(dados[i].nome);
+            valores.push(((Number(dados[i].totalMatriculas) / totalGeral) * 100).toFixed(1));
+        }
+
+        if (chartGraduacao != null) {
+            chartGraduacao.destroy();
+        }
+
+        chartGraduacao = new Chart(document.getElementById('grafico-grad-mais-procurada'), {
             type: 'bar',
             data: {
-                labels: ['Medicina', 'Direito', 'Pedagogia', 'Administração'],
+                labels: labels,
                 datasets: [{
-                    data: [55, 25, 15, 5],
-                    backgroundColor: ['#4a7ff7', '#ae8df5', '#f3b86b', '#3cc027'],
+                    data: valores,
+                    backgroundColor: ['#4a7ff7', '#ae8df5', '#f3b86b', '#3cc027', '#ff5555'],
                     borderWidth: 0,
-                    borderRadius: 3,
+                    borderRadius: 3
                 }]
             },
             options: {
@@ -211,207 +315,203 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 layout: {
-                    padding: {
-                        right: 50
-                    }
+                    padding: { right: 50 }
                 },
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Graduação Mais Procurada',
+                        text: 'Graduações Mais Procuradas',
                         color: '#ffffff',
                         align: 'center',
-                        font: {
-                            size: 23,
-                            family: 'Telegraf',
-                            weight: 'bold'
-                        },
+                        font: { size: 23, family: 'Telegraf', weight: 'bold' }
                     },
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: false },
                     datalabels: {
                         color: '#ffffff',
                         anchor: 'end',
                         align: 'end',
-                        font: {
-                            size: 15,
-                            weight: 'bold',
-                            family: 'Telegraf'
-                        },
-                        formatter: (valor) => `${valor}%`
+                        font: { size: 15, weight: 'bold', family: 'Telegraf' },
+                        formatter: function(valor) { return valor + '%'; }
                     }
                 },
                 scales: {
                     x: {
                         beginAtZero: true,
-                        ticks: {
-                            color: '#ffffff',
-                            font: {
-                                size: 12,
-                                family: 'Telegraf'
-                            }
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.15)'
-                        },
-                        border: {
-                            display: false
-                        }
+                        ticks: { color: '#ffffff', font: { size: 12, family: 'Telegraf' } },
+                        grid: { color: 'rgba(255, 255, 255, 0.15)' },
+                        border: { display: false }
                     },
                     y: {
-                        afterFit: (scale) => {
-                            scale.width = 130;
-                        },
-                        ticks: {
-                            color: '#ffffff',
-                            font: {
-                                size: 14,
-                                family: 'Telegraf',
-                                weight: 'bold'
-                            }
-                        },
-                        grid: {
-                            display: false
-                        },
-                        border: {
-                            display: false
-                        }
+                        afterFit: function(scale) { scale.width = 130; },
+                        ticks: { color: '#ffffff', font: { size: 14, family: 'Telegraf', weight: 'bold' } },
+                        grid: { display: false },
+                        border: { display: false }
                     }
                 }
             }
         });
     }
 
-    carregarGraficoMaisProcurado();
+    async function carregarGraficoAreaGeralMatricula() {
+    
+        let retorno = await buscarDadosGrafico("Geral", "grafico_area_geral_matricula");
+    
+        if (retorno === "204" || retorno === "500" || retorno == null) return;
+    
+        let dados = await retorno.json();
 
-    function carregarGraficoAreaGeralMatricula() {
-    let areaGeral = document.getElementById('grafico-area-geral-matricula');
+        let labels = [];
+        let valores = [];
+        let soma = 0;
 
-    new Chart(areaGeral, {
-        type: 'bar',
-        data: {
-            labels: ['MEDICINA', 'DIREITO', 'TI', 'PEDAGOGIA'],
-            datasets: [
-                {
-                    type: 'line',
-                    label: 'Meta Mínima',
-                    data: [80, 80, 80, 80],
-                    borderColor: '#ff5555',
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    fill: false,
+        for (let i = 0; i < dados.length; i++) {
+            labels.push(dados[i].areaGeral.toUpperCase());
+            valores.push(Number(dados[i].totalMatriculas));
+            soma += Number(dados[i].totalMatriculas);
+        }
+
+        let media = (soma / dados.length).toFixed(0);
+        let linhaMedia = [];
+
+        for (let i = 0; i < dados.length; i++) {
+            linhaMedia.push(media);
+        }
+
+        if (chartAreaGeral != null) {
+            chartAreaGeral.destroy();
+        }
+
+        chartAreaGeral = new Chart(document.getElementById('grafico-area-geral-matricula'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Média',
+                        data: linhaMedia,
+                        borderColor: '#ff5555',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                        datalabels: { display: false }
+                    },
+                    {
+                        data: valores,
+                        backgroundColor: '#3cc027',
+                        borderWidth: 0,
+                        borderRadius: 3,
+                        categoryPercentage: 0.9,
+                        barPercentage: 0.9
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { top: 30, bottom: 10 }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Área Geral Por Matrículas',
+                        color: '#ffffff',
+                        font: { size: 23, family: 'Telegraf', weight: 'bold' }
+                    },
+                    legend: { display: false },
                     datalabels: {
-                        display: false 
-                    }
-                },
-                {
-                    data: [95, 55, 60, 75],
-                    backgroundColor: '#3cc027',
-                    borderWidth: 0,
-                    borderRadius: 3,
-                    categoryPercentage: 0.9,
-                    barPercentage: 0.9
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Área geral Por Matrículas',
-                    color: '#ffffff',
-                    font: {
-                        size: 23,
-                        family: 'Telegraf',
-                        weight: 'bold'
-                    }
-                },
-                legend: {
-                    display: false
-                },
-                datalabels: {
                         anchor: 'end',
                         align: 'top',
                         color: '#ffffff',
-                        font: {
-                            weight: 'bold',
-                            size: 15
-                        }
-                }
-            }, 
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#ffffff',
-                        font: {
-                            size: 12,
-                            family: 'Telegraf',
-                            weight: 'bold'
-                        }
-                    },
-                    grid: {
-                        display: false
-                    },
-                    border: {
-                        display: false
+                        font: { weight: 'bold', size: 11 },
+                        formatter: function(valor) { return Number(valor).toLocaleString('pt-BR'); }
                     }
                 },
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        color: '#ffffff',
-                        font: {
-                            size: 12,
-                            family: 'Telegraf'
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#ffffff',
+                            font: { size: 9, family: 'Telegraf', weight: 'bold' },
+                            maxRotation: 45,
+                            minRotation: 45,
+                            callback: function(value) {
+                                let l = this.getLabelForValue(value);
+                                return l.length > 20 ? l.substring(0, 20) + '…' : l;
+                            }
                         },
-                        stepSize: 20
+                        grid: { display: false },
+                        border: { display: false }
                     },
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.15)'
-                    },
-                    border: {
-                        display: false
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#ffffff',
+                            font: { size: 11, family: 'Telegraf' },
+                            callback: function(v) {
+                                if (v >= 1000000) return (v/1000000).toFixed(1) + 'M';
+                                if (v >= 1000) return (v/1000).toFixed(0) + 'K';
+                                return v;
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.15)' },
+                        border: { display: false }
                     }
                 }
             }
+        });
+    }
+
+    async function carregarGraficoModalidadeProcurada() {
+       
+        let retorno = await buscarDadosGrafico("Geral", "grafico_modalidade_mais_procurada");
+        if (retorno === "204" || retorno === "500" || retorno == null) return;
+        let dados = await retorno.json();
+
+        let anos = [];
+        let valoresPresencial = [];
+        let valoresEAD = [];
+
+        for (let i = 0; i < dados.length; i++) {
+            if (anos.indexOf(dados[i].ano) === -1) anos.push(dados[i].ano);
         }
-    }); 
-}
-    carregarGraficoAreaGeralMatricula();
 
-    function carregarGraficoModalidadeProcurada() {
-        let modalidadeProcurada = document.getElementById('grafico-mod-mais-procurada-curso');
+        for (let a = 0; a < anos.length; a++) {
+            let presencial = 0;
+            let ead = 0;
 
-        new Chart(modalidadeProcurada, {
+            for (let d = 0; d < dados.length; d++) {
+                if (dados[d].ano === anos[a] && dados[d].modalidade === 'Presencial') {
+                    presencial = Number(dados[d].totalMatriculas);
+                }
+                if (dados[d].ano === anos[a] && dados[d].modalidade === 'EAD') {
+                    ead = Number(dados[d].totalMatriculas);
+                }
+            }
+
+            valoresPresencial.push(presencial);
+            valoresEAD.push(ead);
+        }
+
+        if (chartModalidade != null) {
+            chartModalidade.destroy();
+        }
+
+        chartModalidade = new Chart(document.getElementById('grafico-mod-mais-procurada-curso'), {
             type: 'bar',
             data: {
-                labels: ['2020', '2021', '2022', '2023', '2024'],
+                labels: anos,
                 datasets: [
                     {
-                        label: 'Medicina',
-                        data: [120, 165, 140, 210, 195],
+                        label: 'Presencial',
+                        data: valoresPresencial,
                         backgroundColor: '#4a7ff7',
                         borderRadius: 4
                     },
                     {
-                        label: 'Direito',
-                        data: [100, 110, 135, 150, 145],
-                        backgroundColor: '#ae8df5',
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Pedagogia',
-                        data: [80, 85, 115, 90, 130],
+                        label: 'EAD',
+                        data: valoresEAD,
                         backgroundColor: '#f3b86b',
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Administração',
-                        data: [60, 95, 70, 85, 110],
-                        backgroundColor: '#3cc027',
                         borderRadius: 4
                     }
                 ]
@@ -422,14 +522,9 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Modalidade Mais Procurada Por Curso',
+                        text: 'Modalidade Mais Procurada Por Ano',
                         color: '#ffffff',
-                        font: {
-                            size: 23,
-                            family: 'Telegraf',
-                            weight: 'bold'
-                        },
-
+                        font: { size: 23, family: 'Telegraf', weight: 'bold' }
                     },
                     legend: {
                         position: 'top',
@@ -437,62 +532,53 @@
                             color: '#ffffff',
                             boxWidth: 14,
                             boxHeight: 14,
-                            font: {
-                                size: 13,
-                                family: 'Telegraf',
-                                weight: 'bold'
-                            }
+                            font: { size: 13, family: 'Telegraf', weight: 'bold' }
                         }
                     },
-                   datalabels: {
+                    datalabels: {
                         anchor: 'center',
                         align: 'center',
                         color: '#ffffff',
-                        font: {
-                            weight: 'bold',
-                            size: 15
+                        font: { weight: 'bold', size: 15 },
+                        formatter: function(valor) {
+                            return Number(valor).toLocaleString('pt-BR');
                         }
                     }
                 },
                 scales: {
                     x: {
                         stacked: true,
-                        ticks: {
-                            color: '#ffffff',
-                            font: {
-                                size: 13,
-                                family: 'Telegraf',
-                                weight: 'bold'
-                            }
-                        },
-                        grid: {
-                            display: false
-                        },
-                        border: {
-                            display: false
-                        }
+                        ticks: { color: '#ffffff', font: { size: 13, family: 'Telegraf', weight: 'bold' } },
+                        grid: { display: false },
+                        border: { display: false }
                     },
                     y: {
                         stacked: true,
                         beginAtZero: true,
-                        ticks: {
-                            color: '#ffffff',
-                            font: {
-                                size: 12,
-                                family: 'Telegraf'
-                            }
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.15)'
-                        },
-                        border: {
-                            display: false
-                        }
+                        ticks: { color: '#ffffff', font: { size: 12, family: 'Telegraf' } },
+                        grid: { color: 'rgba(255, 255, 255, 0.15)' },
+                        border: { display: false }
                     }
                 }
             }
         });
     }
 
-    carregarGraficoModalidadeProcurada();
+    // ============================ Carregar tudo ============================
+
+    async function carregarDashboard() {
+        await Promise.all([
+            carregarKpiTotalMatriculas(),
+            carregarKpiTotalConcluintes(),
+            carregarKpiModalidadeMaisProcurada(),
+            carregarKpiPeriodoMaisProcurado(),
+            carregarKpiAreaMaisProcurada(),
+            carregarKpiTipoGraduacaoMaisProcurada(),
+            carregarGraficoMaisProcurado(),
+            carregarGraficoAreaGeralMatricula(),
+            carregarGraficoModalidadeProcurada()
+        ]);
+    }
+
+    carregarDashboard();
 </script>

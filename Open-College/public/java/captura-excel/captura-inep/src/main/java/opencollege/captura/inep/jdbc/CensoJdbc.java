@@ -15,7 +15,7 @@ public class CensoJdbc {
         String sql = """
                 INSERT INTO tblCenso (
                     ano, uf, idMunicipio, tipoOrganizacaoAcademica,
-                    idCurso, coCursoINEP, tipoGrauAcademico, tipoModalidadeEnsino, tipoNivelAcademico,
+                    idCurso, tipoGrauAcademico, tipoModalidadeEnsino, tipoNivelAcademico,
                     qtdVagas, qtdVagasDiurno, qtdVagasNoturno, qtdVagasEAD, qtdVagasNovas,
                     qtdInscritos, qtdIncritosDiurno, qtdIncritosNortuno,
                     qtdIncritosEAD, qtdIncritosVagasNovas,
@@ -39,10 +39,16 @@ public class CensoJdbc {
                     qtdMatriculaRedePublica, qtdMatriculaRedePrivada,
                     qtdConcluintesRedePublica, qtdConcluintesRedePrivada
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?
                 )
                 """;
 
@@ -55,7 +61,6 @@ public class CensoJdbc {
                 censo.getTipoOrganizacaoAcademica(),
 
                 censo.getIdCurso(),
-                censo.getCoCursoINEP(),
                 censo.getTipoGrauAcademico(),
                 censo.getTipoModalidadeEnsino(),
                 censo.getTipoNivelAcademico(),

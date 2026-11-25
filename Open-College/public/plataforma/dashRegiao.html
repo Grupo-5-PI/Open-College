@@ -87,22 +87,41 @@
                 <a href="dashPersonalizada.html" class="buttons-header btn-add">+</a>
 
                 <nav class="nav-dash">
-                    <p>Dashboard - Região (ANO)</p>
+                    <p>Dashboard - Região (<span id="ano_selecionado">2024</span>)</p>
                     <div class="grupo-filtro">
                         <p>Região:</p>
-                        <select class="filtro-regiao">
-                            <option>SP</option>
-                            <option>MG</option>
-                            <option>RJ</option>
-                            <option>BA</option>
-                            <option>CE</option>
-                            <option>PA</option>
-                            <option>SC</option>
+                        <select class="filtro-regiao" id="regiao_filtro_regiao">
+                            <option value="AC" seleceted>Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="ES">Espírito Santo</option> 
+                            <option value="GO">Goiás</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PR">Paraná</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="TO">Tocantins</option>
                         </select>
                     </div>
                     <div class="grupo-filtro">
                         <p>Ano:</p>
-                        <select class="filtro-ano">
+                        <select class="filtro-ano" id="regiao_filtro_ano">
                             <option>2025</option>
                             <option>2024</option>
                             <option>2023</option>
@@ -116,19 +135,19 @@
             </header>
 
             <div class="grid-cards-regiao">
-                <div class="card-kpi-regiao">
+                <div class="card-kpi-regiao"  id="kpi_regiao_modalidade">
                     <span class="card-titulo">Modalidade com mais alunos em <span class="texto-regiao">SP</span></span>
                     <strong class="card-valor">EAD</strong>
                     <span class="card-rodape">Anterior (2023): Presencial</span>
                 </div>
 
-                <div class="card-kpi-regiao">
+                <div class="card-kpi-regiao" id="kpi_regiao_curso">
                     <span class="card-titulo">Curso com mais alunos em <span class="texto-regiao">SP</span></span>
                     <strong class="card-valor">Direito</strong>
                     <span class="card-rodape">Anterior (2023): Administração</span>
                 </div>
 
-                <div class="card-kpi-regiao">
+                <div class="card-kpi-regiao" id="kpi_regiao_area">
                     <span class="card-titulo">Área com mais alunos na região <span class="texto-regiao">SP</span></span>
                     <strong class="card-valor">Tecnologia</strong>
                     <span class="card-rodape">Anterior (2023): Saúde</span>
@@ -153,6 +172,7 @@
 
 </html>
 
+<script src="../js/dashboardScript.js"></script>
 
 <script>
 
@@ -161,41 +181,134 @@
 
     Chart.register(ChartGeo.ChoroplethController, ChartGeo.GeoFeature, ChartGeo.ColorScale, ChartGeo.ProjectionScale)
 
-    let filtroRegiao = document.querySelector('.filtro-regiao')
-    let textosRegiao = document.querySelectorAll('.texto-regiao')
+    async function carregarKpiModalidade(){
 
-    function atualizarRegiao() {
-        let regiaoSelecionada = filtroRegiao.value;
+        let ano = document.getElementById('regiao_filtro_ano').value;
+        let regiao = document.getElementById('regiao_filtro_regiao').value;
 
-        for (let i = 0; i < textosRegiao.length; i++) {
-            textosRegiao[i].textContent = regiaoSelecionada
+        let tituloKpi = document.querySelector('#kpi_regiao_modalidade .card-titulo .texto-regiao');
+        tituloKpi.textContent = regiao;
+        let valorKpi = document.querySelector('#kpi_regiao_modalidade .card-valor');
+        let rodapeKpi = document.querySelector('#kpi_regiao_modalidade .card-rodape');
+        
+        rodapeKpi.textContent = 'Carregando...';
+        
+        let dadosKpi = await buscarDadosKpi("Região", "kpi_regiao_modalidade");
+
+        if(dadosKpi == '204'){
+            rodapeKpi.textContent = 'Sem dados disponíveis';
+        } else if(dadosKpi == '500'){
+            rodapeKpi.textContent = 'Erro ao buscar dados';
+        } else {
+            dadosKpi = await dadosKpi.json();
+            valorKpi.textContent = dadosKpi[0].modalidadeAtual;    
+            // rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].modalidadeAtual}`;
+            if (dadosKpi[1]) {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].modalidadeAtual}`;
+            } else {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): Sem dados`;
+            }
         }
+        
     }
 
-    filtroRegiao.addEventListener('change', atualizarRegiao)
-    atualizarRegiao()
+    async function carregarKpiCurso(){
 
-    let tituloDash = document.querySelector('.nav-dash p')
-    let filtroAno = document.querySelector('.filtro-ano')
+        let ano = document.getElementById('regiao_filtro_ano').value;
+        let regiao = document.getElementById('regiao_filtro_regiao').value;
 
-    function atualizarAno() {
-        let anoSelecionado = filtroAno.value
-        tituloDash.textContent = `Dashboard - Regional (${anoSelecionado})`
+        let tituloKpi = document.querySelector('#kpi_regiao_curso .card-titulo .texto-regiao');
+        tituloKpi.textContent = regiao;
+        let valorKpi = document.querySelector('#kpi_regiao_curso .card-valor');
+        let rodapeKpi = document.querySelector('#kpi_regiao_curso .card-rodape');
+        
+        rodapeKpi.textContent = 'Carregando...';
+        
+        let dadosKpi = await buscarDadosKpi("Região", "kpi_regiao_curso");
+
+        if(dadosKpi == '204'){
+            rodapeKpi.textContent = 'Sem dados disponíveis';
+        } else if(dadosKpi == '500'){
+            rodapeKpi.textContent = 'Erro ao buscar dados';
+        } else {
+            dadosKpi = await dadosKpi.json();
+            valorKpi.textContent = dadosKpi[0].nomeCursoAtual;    
+            // rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].nomeCursoAtual}`;
+            if (dadosKpi[1]) {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].nomeCursoAtual}`;
+            } else {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): Sem dados`;
+            }
+        }
+        
     }
 
-    filtroAno.addEventListener('change', atualizarAno)
+    async function carregarKpiArea(){
 
-    atualizarAno()
+        let ano = document.getElementById('regiao_filtro_ano').value;
+        let regiao = document.getElementById('regiao_filtro_regiao').value;
 
+        let tituloKpi = document.querySelector('#kpi_regiao_area .card-titulo .texto-regiao');
+        tituloKpi.textContent = regiao;
+        let valorKpi = document.querySelector('#kpi_regiao_area .card-valor');
+        let rodapeKpi = document.querySelector('#kpi_regiao_area .card-rodape');
+        
+        rodapeKpi.textContent = 'Carregando...';
+        
+        let dadosKpi = await buscarDadosKpi("Região", "kpi_regiao_area");
 
-    function carregarAlunosArea() {
-        let alunosArea = document.getElementById('grafico-alunos-area')
+        if(dadosKpi == '204'){
+            rodapeKpi.textContent = 'Sem dados disponíveis';
+        } else if(dadosKpi == '500'){
+            rodapeKpi.textContent = 'Erro ao buscar dados';
+        } else {
+            dadosKpi = await dadosKpi.json();
+            valorKpi.textContent = dadosKpi[0].nomeAreaAtual;
+            // rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].nomeAreaAtual}`;
+            if (dadosKpi[1]) {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): ${dadosKpi[1].nomeAreaAtual}`;
+            } else {
+                rodapeKpi.textContent = `Anterior (${ano - 1}): Sem dados`;
+            }
+        }
+        
+    }
 
-        new Chart(alunosArea, {
+    async function carregarAlunosArea() {
+
+        console.log("Carregando gráfico de alunos por área na região...");
+        
+        let graficoAlunosArea = document.getElementById('grafico-alunos-area');
+        graficoAlunosArea.innerHTML = 'Carregando...';
+
+        let dadosGrafico = await buscarDadosGrafico("Região", "grafico-alunos-area");
+
+        console.log(dadosGrafico);
+
+        if(dadosGrafico == '204'){
+            graficoAlunosArea.innerHTML = '<span>Sem dados disponíveis</span>';
+            return;
+        } else if(dadosGrafico == '500'){
+            graficoAlunosArea.innerHTML = '<span>Erro ao buscar dados</span>';
+            return;
+        }
+
+        graficoAlunosArea.innerHTML = '';
+
+        dadosGrafico = await dadosGrafico.json();
+
+        let labels = dadosGrafico.map(item => item.municipio);
+        let data = dadosGrafico.map(item => item.totalMatriculas);
+
+        if(Chart.getChart(graficoAlunosArea)) {
+            Chart.getChart(graficoAlunosArea).destroy();
+        }
+
+       new Chart(graficoAlunosArea, {
             type: 'bar',
             plugins: [ChartDataLabels],
             data: {
-                labels: ['SP', 'ABC', 'Campinas', 'Sorocaba'],
+                labels: labels,
                 datasets: [
                     {
                         type: 'line',
@@ -212,7 +325,7 @@
                     {
                         type: 'bar',
                         label: 'Número de Alunos',
-                        data: [1500, 1000, 900, 500],
+                        data: data,
                         backgroundColor: [
                             '#4a7ff7', '#ae8df5', '#f3b86b', '#ffde59'
                         ],
@@ -259,9 +372,24 @@
         })
     }
 
+    async function carregarIngressantesRegiao() {
 
-    function carregarIngressantesRegiao() {
-        let canvas = document.getElementById('grafico-ingressantes-regiao')
+        let canvas = document.getElementById('grafico-ingressantes-regiao');
+        canvas.innerHTML = 'Carregando...';
+
+        let dadosGrafico = await buscarDadosGrafico("Região", "grafico-ingressantes-regiao");
+
+        if(dadosGrafico == '204'){
+            canvas.innerHTML = 'Sem dados disponíveis';
+            return;
+        } else if(dadosGrafico == '500'){
+            canvas.innerHTML = 'Erro ao buscar dados';
+            return;
+        }
+
+        canvas.innerHTML = '';
+
+        dadosGrafico = await dadosGrafico.json();
 
         fetch('https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson')
             .then(function (response) {
@@ -270,7 +398,13 @@
             .then(function (geoData) {
                 const states = geoData.features;
 
-                new Chart(canvas, {
+                if(Chart.getChart(canvas)) {
+                    Chart.getChart(canvas).destroy();
+                }
+
+                console.log("Dados do gráfico de ingressantes por região:", dadosGrafico);
+
+                graficoIngressantesRegiao = new Chart(canvas, {
                     type: 'choropleth',
                     data: {
                         labels: states.map(d => d.properties.name),
@@ -279,7 +413,7 @@
                             outline: states,
                             data: states.map((d, index) => ({
                                 feature: d,
-                                value: index
+                                value: dadosGrafico[index] ? parseInt(dadosGrafico[index].totalIngressantes) : 0
                             })),
                             backgroundColor: '#9e9e9e',
                             borderColor: '#ffffff',
@@ -316,7 +450,29 @@
             });
     }
 
-    carregarAlunosArea()
-    carregarIngressantesRegiao()
+    function carregarGraficosKpi() {
+        console.log("Carregando gráficos e KPIs da região...");
+        carregarKpiModalidade();
+        carregarKpiCurso();
+        carregarKpiArea();
+        carregarAlunosArea();
+        carregarIngressantesRegiao();
+    }
+    
+    window.onload = carregarGraficosKpi();
+
+    let filtroRegiao = document.getElementById('regiao_filtro_regiao');
+    let filtroAno = document.getElementById('regiao_filtro_ano');
+
+    filtroRegiao.addEventListener('change', function(){
+        console.log("Região alterada para: " + filtroRegiao.value);
+
+        carregarGraficosKpi();
+    });
+    filtroAno.addEventListener('change', function(){
+        let anoSelecionado = document.getElementById('ano_selecionado');
+        anoSelecionado.textContent = filtroAno.value;
+        carregarGraficosKpi();
+    });
 
 </script>

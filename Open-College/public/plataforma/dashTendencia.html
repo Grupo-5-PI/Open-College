@@ -86,19 +86,63 @@
                 <a href="dashTendencia.html" class="buttons-header active">Tendência</a>
                 <a href="dashPersonalizada.html" class="buttons-header btn-add">+</a>
 
-                <nav class="nav-dash">
+                <nav class="nav-dash-tendencia">
                     <p>Dashboard - Tendência (ANO)</p>
-                    <select class="filtro-ano">
-                        <option>2025</option>
-                        <option>2024</option>
-                        <option>2023</option>
-                        <option>2022</option>
-                        <option>2021</option>
-                        <option>2020</option>
-                        <option>2019</option>
-                    </select>
+                    <div class="filtro-ano-tendencia">
+                        <select class="filtro-ano" id="filtro-inicio">
+                            <option>2024</option>
+                            <option>2023</option>
+                            <option>2022</option>
+                            <option>2021</option>
+                            <option>2020</option>
+                            <option>2019</option>
+                        </select>
+
+                        <select class="filtro-ano" id="filtro-fim">
+                            <option>2024</option>
+                            <option>2023</option>
+                            <option>2022</option>
+                            <option>2021</option>
+                            <option>2020</option>
+                            <option>2019</option>
+                        </select>
+                    </div>
                 </nav>
             </header>
+
+            <section class="grid-cards-tendencia">
+                <div class="card-kpi-tendencia">
+                    <div class="card-kpi">
+                        <span class="card-titulo">Matrículas na graduação</span>
+                        <strong class="card-valor" id="kpi-valor-inicio">20.000 mil</strong>
+                        <span class="card-rodape" id="kpi-ano-inicio">No ano de ANO</span>
+                    </div>
+                </div>
+
+                <div class="card-kpi-tendencia">
+                    <div class="card-kpi">
+                        <span class="card-titulo">Matrículas na graduação</span>
+                        <strong class="card-valor" id="kpi-valor-fim">40.000 mil</strong>
+                        <strong class="card-comparacao" id="card-comparacao">+ 9.3% no período</strong>
+                        <span class="card-rodape" id="kpi-ano-fim">No ano de ANO</span>
+                    </div>
+                </div>
+
+                <div class="card-kpi-tendencia">
+                    <div class="card-kpi">
+                        <span class="card-titulo">Crescimento médio ao ano</span>
+                        <strong class="card-valor">+ 5% </strong>
+                    </div>
+                </div>
+            </section>
+
+            <div class="card-kpi-tendencia">
+                <div class="card-kpi">
+                    <span class="card-valor" id="texto-comparativo">De ANO a ANO, o EAD cresceu 32% e o presencial caiu
+                        4%. O curso que mais
+                        cresceu foi Análise e Des. de Sistemas (+75%)</span>
+                </div>
+            </div>
 
             <section class="graficosLadoaLado">
                 <div class="grafico-duplo">
@@ -114,18 +158,45 @@
             </section>
 
             <section class="card-tendencia">
-                <div class="grid-cards">
-                    <div class="card-kpi">
-                        <span class="card-titulo">Cursos com Maior Crescimento</span>
-                        <strong class="card-valor">ADS – 287%</strong>
-                        <strong class="card-valor">Odontologia – 192%</strong>
-                        <strong class="card-valor">Computação - 100%</strong>
-                        <strong class="card-valor">Psicologia – 65%</strong>
-                        <span class="card-rodape">No ano de ANO</span>
-                    </div>
-                </div>
+                    <h3>Cursos com maior crescimento</h3>
+                    <p id="subtitulo-tabela">Ranking recalculado para anoInicio - anoFim</p>
+                    <table class="tabela-dashboard">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Análise e Desenvolvimento de Sistemas </td>
+                                <td>80mil - 140mil</td>
+                                <td class="positivo">+75,0%</td>
+                            </tr>
+                            <tr>
+                                <td>Ciências da Computação</td>
+                                <td>170mil - 235mil</td>
+                                <td class="positivo">+38,2%</td>
+                            </tr>
+                            <tr>
+                                <td>Odontologia</td>
+                                <td>82mil - 110mil</td>
+                                <td class="positivo">+34,1%</td>
+                            </tr>
+                            <tr>
+                                <td>Psicologia</td>
+                                <td>300mil - 380mil</td>
+                                <td class="positivo">+34,1%</td>
+                            </tr>
+                            <tr>
+                                <td>Direito</td>
+                                <td>120mil - 110mil</td>
+                                <td class="negativo">-10,9%</td>
+                            </tr>
+                        </tbody>
+                    </table>
             </section>
-
         </div>
     </main>
     <div class="footer">
@@ -141,34 +212,91 @@
 
     Chart.register(ChartDataLabels);
 
-    let tituloDash = document.querySelector('.nav-dash p')
-    let filtroAno = document.querySelector('.filtro-ano')
+    let tituloDash = document.querySelector('.nav-dash-tendencia p')
+    let filtroInicio = document.getElementById('filtro-inicio');
+    let filtroFim = document.getElementById('filtro-fim');
     let cardKPI = document.querySelectorAll('.card-rodape')
+    let comparacao = document.querySelectorAll('card-comparacao')
 
     function atualizarAno() {
-        let anoSelecionado = filtroAno.value
-        tituloDash.textContent = `Dashboard - Tendência (${anoSelecionado})`
+        let anoInicio = filtroInicio.value;
+        let anoFim = filtroFim.value;
 
-        for (let i = 0; i < cardKPI.length; i++) {
-            cardKPI[i].textContent = `No ano de ${anoSelecionado}`;
+        if (tituloDash) {
+            tituloDash.textContent = `Dashboard - Tendência (${anoInicio} a ${anoFim})`;
+        }
+
+        let kpiAnoInicio = document.getElementById('kpi-ano-inicio');
+
+        // Atualiza o KPI 1 com o primeiro ano
+        if (kpiAnoInicio) {
+            kpiAnoInicio.textContent = `No ano de ${anoInicio}`;
+        }
+
+        // Atualiza o KPI 2 com o segundo ano
+        let kpiAnoFim = document.getElementById('kpi-ano-fim');
+        if (kpiAnoFim) {
+            kpiAnoFim.textContent = `No ano de ${anoFim}`;
+        }
+
+        // 4. Atualiza o texto grande comparativo no meio
+        let textoComparativo = document.getElementById('texto-comparativo');
+        if (textoComparativo) {
+            textoComparativo.textContent = `De ${anoInicio} a ${anoFim}, o EAD cresceu 32% e o presencial caiu 4%. O curso que mais cresceu foi Análise e Des. de Sistemas (+75%)`;
         }
     }
 
-    filtroAno.addEventListener('change', atualizarAno)
+    function bloquearAnoRepetido() {
+        let anoInicio = filtroInicio.value;
+        let anoFim = filtroFim.value;
 
-    atualizarAno()
+        // 1. Desbloqueia TODAS as opções dos DOIS filtros primeiro
+        for (let i = 0; i < filtroInicio.options.length; i++) {
+            filtroInicio.options[i].disabled = false;
+        }
+        for (let i = 0; i < filtroFim.options.length; i++) {
+            filtroFim.options[i].disabled = false;
+        }
 
-    function carregarGraficoCrescimentoTipoDeGraduacao() {
+        // 2. Bloqueia no Filtro FIM o ano que foi escolhido no INÍCIO
+        for (let i = 0; i < filtroFim.options.length; i++) {
+            if (filtroFim.options[i].value === anoInicio) {
+                filtroFim.options[i].disabled = true;
+            }
+        }
+
+        // 3. Bloqueia no Filtro INÍCIO o ano que foi escolhido no FIM
+        for (let i = 0; i < filtroInicio.options.length; i++) {
+            if (filtroInicio.options[i].value === anoFim) {
+                filtroInicio.options[i].disabled = true;
+            }
+        }
+    }
+
+    filtroInicio.addEventListener('change', () => {
+        bloquearAnoRepetido();
+        atualizarAno();
+    });
+
+    filtroFim.addEventListener('change', () => {
+        bloquearAnoRepetido();
+        atualizarAno();
+    });
+
+    bloquearAnoRepetido();
+
+
+    function carregarGraficoCrescimentoTipoDeGraduacao(anoInicio, anoFim) {
         let crecimentoGraduacao = document.getElementById('grafico-crescimento-graduacao');
 
         new Chart(crecimentoGraduacao, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['2020', '2021', '2022', '2023', '2024'],
+                labels: ['Bacharelado', 'Licenciatura', 'Tecnólogo'],
                 datasets: [
                     {
-                        label: 'Medicina',
-                        data: [42, 46, 49, 52, 55],
+                        label: 'anoInicio',
+                        data: [1000, 500, 300], // dados mocados
                         borderColor: '#4a7ff7',
                         backgroundColor: '#4a7ff7',
                         borderWidth: 3,
@@ -179,8 +307,8 @@
                         fill: false
                     },
                     {
-                        label: 'Pedagogia',
-                        data: [10, 11, 12, 14, 15],
+                        label: 'anoFim',
+                        data: [1045, 577, 402], // dados mocados
                         borderColor: '#f3b86b',
                         backgroundColor: '#f3b86b',
                         borderWidth: 3,
@@ -188,40 +316,32 @@
                         pointBackgroundColor: '#f3b86b',
                         pointBorderColor: '#ffffff',
                         pointBorderWidth: 2,
-                        fill: false
-                    },
-                    {
-                        label: 'Direito',
-                        data: [30, 28, 33, 28, 31],
-                        borderColor: '#ae8df5',
-                        backgroundColor: '#ae8df5',
-                        borderWidth: 3,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#ae8df5',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                        fill: false
-                    },
-                    {
-                        label: 'Histório',
-                        data: [20, 24, 29, 22, 30],
-                        borderColor: '#3cc027',
-                        backgroundColor: '#3cc027',
-                        borderWidth: 3,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#3cc027',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                        fill: false
+                        fill: false,
+                        datalabels: {
+                            display: true,
+                            color: '#ffffff',
+                            backgroundColor: (context) => {
+                                // Pega o valor anterior e o atual para calcular
+                                const valorInicio = context.chart.data.datasets[0].data[context.dataIndex];
+                                const valorFim = context.dataset.data[context.dataIndex];
+                                const variacao = ((valorFim - valorInicio) / valorInicio) * 100;
+                                return variacao > 0 ? '#3cc027' : '#ff5555'; // Verde se subir, Vermelho se cair
+                            },
+                            font: { weight: 'bold', size: 12, family: 'Telegraf' },
+                            anchor: 'end',
+                            align: 'left',
+                            formatter: (valorFim, context) => {
+                                const valorInicio = context.chart.data.datasets[0].data[context.dataIndex];
+                                const variacao = ((valorFim - valorInicio) / valorInicio) * 100;
+                                return variacao > 0 ? `+${variacao.toFixed(1)}%` : `${variacao.toFixed(1)}%`;
+                            }
+                        }
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                layout: {
-                    padding: { top: 10, right: 20, bottom: 10, left: 10 }
-                },
                 interaction: {
                     mode: 'index',
                     intersect: false
@@ -241,7 +361,7 @@
                     },
                     legend: {
                         display: true,
-                        position: 'bottom',
+                        position: 'top',
                         labels: {
                             color: '#ffffff',
                             font: {
@@ -249,11 +369,6 @@
                                 family: 'Telegraf',
                                 weight: 'bold'
                             },
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            boxWidth: 10,     
-                            boxHeight: 10,
-                            padding: 15
                         }
                     },
                     datalabels: {
@@ -274,7 +389,16 @@
                             size: 13
                         },
                         callbacks: {
-                            label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y}%`
+                            label: function (context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + ' matrículas';
+                                }
+                                return label;
+                            }
                         }
                     }
                 },
@@ -296,22 +420,7 @@
                         }
                     },
                     y: {
-                        beginAtZero: true,
-                        grace: '10%',
-                        ticks: {
-                            color: '#ffffff',
-                            font: {
-                                size: 12,
-                                family: 'Telegraf'
-                            },
-                            callback: (valor) => `${valor}%`
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.15)'
-                        },
-                        border: {
-                            display: false
-                        }
+                        display: false, beginAtZero: true
                     }
                 }
             }
@@ -326,35 +435,40 @@
         new Chart(evolucaoMatricula, {
             type: 'line',
             data: {
-                labels: ['Bacherelado', 'Licenciatura', 'Tecnólogo'],
+                labels: ['anoInicio', 'anoFim'],
                 datasets: [
                     {
-                        type: 'line',
-                        label: 'Meta Mínima',
-                        data: [1500, 1500, 1500],
-                        borderColor: '#ff5555',
-                        borderWidth: 2,
-                        pointRadius: 0,
-                        fill: false,
-                        datalabels: {
-                            display: false
-                        }
-                    },
-                    {
-                        type: 'line',
-                        label: 'Matrículas',
-                        data: [2108, 1390, 3245],
+                        label: 'EAD',
+                        data: [1000, 4090], // dados mocados
                         borderColor: '#3cc027',
                         backgroundColor: '#3cc027',
                         borderWidth: 3,
-                        pointRadius: 5,
+                        pointRadius: 6,
                         pointBackgroundColor: '#3cc027',
                         pointBorderColor: '#ffffff',
                         pointBorderWidth: 2,
-                        fill: false,
-                        datalabels: {
-                            display: false
-                        }
+                    },
+                    {
+                        label: 'Semi\nPresencial',
+                        data: [2000, 2500], // dados mocados
+                        borderColor: '#ae8df5',
+                        backgroundColor: '#ae8df5',
+                        borderWidth: 3,
+                        pointRadius: 6,
+                        pointBackgroundColor: '#ae8df5',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                    },
+                    {
+                        label: 'Presencial',
+                        data: [3000, 3590], // dados mocados
+                        borderColor: '#f3b86b',
+                        backgroundColor: '#f3b86b',
+                        borderWidth: 3,
+                        pointRadius: 6,
+                        pointBackgroundColor: '#f3b86b',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
                     }
                 ]
             },
@@ -366,60 +480,58 @@
                         display: true,
                         text: 'Evolução De Matrícula Por Modalidade',
                         color: '#ffffff',
-                        font: {
-                            size: 23,
-                            family: 'Telegraf',
-                            weight: 'bold'
-                        }
+                        font: { size: 23, family: 'Telegraf', weight: 'bold' }
                     },
-                    legend: {
-                        display: false
+                    subtitle: {
+                        display: true,
+                        text: 'Comparação entre os dois anos selecionados.',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        align: 'start',
+                        font: { size: 15, family: 'Telegraf' },
+                        padding: { bottom: 20 }
                     },
+                    legend: { display: false },
+                    tooltip: { enabled: false },
                     datalabels: {
-                        display: false
+                        display: true,
+                        clip: false, // impede que o Chart.js corte o texto nas bordas
+                        color: (context) => context.dataset.borderColor,
+                        font: { weight: 'bold', size: 15, family: 'Telegraf' },
+                        align: (context) => {
+                            const isLastPoint = context.dataIndex === context.dataset.data.length - 1;
+                            return isLastPoint ? 'right' : 'top';
+                        },
+                        offset: 8,
+
+                        formatter: (value, context) => {
+                            const isLastPoint = context.dataIndex === context.dataset.data.length - 1;
+
+                            if (isLastPoint) {
+                                return `${value} (${context.dataset.label})`;
+                            }
+                            return value;
+                        }
                     }
                 },
                 scales: {
                     x: {
+                        offset: true,
                         ticks: {
                             color: '#ffffff',
-                            font: {
-                                size: 12,
-                                family: 'Telegraf',
-                                weight: 'bold'
-                            }
+                            font: { size: 15, family: 'Telegraf', weight: 'bold' }
                         },
-                        grid: {
-                            display: false
-                        },
-                        border: {
-                            display: false
-                        }
+                        grid: { display: false },
+                        border: { color: 'rgba(255,255,255,0.2)' }
                     },
                     y: {
-                        afterFit: (scale) => {
-                            scale.width = 60;
-                        },
                         beginAtZero: true,
-                        ticks: {
-                            color: '#ffffff',
-                            font: {
-                                size: 12,
-                                family: 'Telegraf'
-                            },
-                            stepSize: 500
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.15)'
-                        },
-                        border: {
-                            display: false
-                        }
+                        display: false
                     }
                 }
             }
         });
     }
+
     carregarGraficoEvolucaoPorModalidade();
 
 </script>

@@ -8,6 +8,7 @@ import opencollege.captura.ibge.jdbc.MunicipioJdbc;
 import opencollege.captura.ibge.modelo.Municipio;
 
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -24,7 +25,9 @@ public class Main {
 			logJdbc.registrarLog("INFO", "Script IBGE (Municípios) Iniciado");
 			logJdbc.registrarLog("INFO", "Lendo arquivo: " + caminhoArquivo);
 
-			List<Municipio> municipios = LeituraExcelIbge.lerPlanilha(caminhoArquivo);
+			Map<String, Object> resultado = LeituraExcelIbge.lerPlanilha(caminhoArquivo);
+			List<Municipio> municipios = (List<Municipio>) resultado.get("registros");
+			Integer qtdIgnoradas = (Integer) resultado.get("ignoradas");
 
 			logJdbc.registrarLog("INFO", "Municípios lidos do arquivo: " + municipios.size());
 
