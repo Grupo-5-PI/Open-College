@@ -281,6 +281,9 @@ CREATE TABLE tblDashboardPersonalizado (
         ON UPDATE CASCADE
 );
 
+
+ALTER TABLE tblNoticia
+    ADD COLUMN descricao TEXT AFTER titulo;
 CREATE TABLE tblLog (
     idLog INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(10) NOT NULL,
