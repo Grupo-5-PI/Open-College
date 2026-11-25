@@ -205,6 +205,8 @@
 
                     </article>
 
+                </section>
+
 
                 <!-- PAINEL DE NOTIFICAÇÕES -->
 
@@ -374,24 +376,46 @@
 
     </main>
 
+    <script>
+
+        let foto = sessionStorage.FOTO_USUARIO;
+        imgUsuario.src = `${foto}`
+
+        let popup = document.getElementById('popup');
+        let btnAbrir = document.getElementById('btn-popup');
+        let btnFechar = document.getElementById('btn-fechar');
+
+        btnAbrir.addEventListener('click', () => popup.showModal());
+        btnFechar.addEventListener('click', () => popup.close());
+
+        // fecha ao clicar fora (no fundo escuro)
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) popup.close();
+        });
+
+
+        async function buscarNoticias() {
+            try {
+                let resposta = await fetch("/painelAtualizacao/buscarNoticias", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (resposta.status === 204) return "204";
+                if (resposta.status === 500 || !resposta.ok) return "500";
+
+                return resposta;
+            } catch (erro) {
+                console.error("Erro ao buscar notícias:", erro);
+                return null;
+            }
+        }
+    </script>
+
 </body>
 
-<script>
 
-    let foto = sessionStorage.FOTO_USUARIO;
-    imgUsuario.src = `${foto}`
-
-    const popup = document.getElementById('popup');
-    const btnAbrir = document.getElementById('btn-popup');
-    const btnFechar = document.getElementById('btn-fechar');
-
-    btnAbrir.addEventListener('click', () => popup.showModal());
-    btnFechar.addEventListener('click', () => popup.close());
-
-    // fecha ao clicar fora (no fundo escuro)
-    popup.addEventListener('click', (e) => {
-        if (e.target === popup) popup.close();
-    });
-</script>
 
 </html>
