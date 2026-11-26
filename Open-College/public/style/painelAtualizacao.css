@@ -350,7 +350,7 @@ main{
 /* ================= TEXTO DA NOTÍCIA ================= */
 
 .conteudo-noticia p{
-    font-size: 1em;
+    font-size: 1.2em;
     line-height: 1.5;
     margin: 0;
     color: var(--cor7);
