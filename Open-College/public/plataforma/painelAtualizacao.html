@@ -508,6 +508,39 @@
             }
         }
 
+        let formInteresses = document.querySelector(".sessao-interesses")
+        if (formInteresses) {
+            formInteresses.addEventListener("submit", async function (e) {
+                e.preventDefault()
+
+                let interesseSelecionado = document.getElementById("interesses").value
+                let idUsuario = sessionStorage.ID_USUARIO
+
+                if (!interesseSelecionado) return
+
+                try {
+                    let resposta = await fetch("/painelAtualizacao/atualizarInteresse", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            interesse: interesseSelecionado,
+                            idUsuario: idUsuario
+                        })
+                    });
+
+                    if (resposta.ok) {
+                        await carregarNoticias()
+                    } else {
+                        console.error("Erro ao atualizar interesse:", resposta.status)
+                    }
+                } catch (erro) {
+                    console.error("Erro na requisição de interesse:", erro)
+                }
+            });
+        }
+
         async function carregarPainel() {
             await Promise.all([
                 carregarNoticias()

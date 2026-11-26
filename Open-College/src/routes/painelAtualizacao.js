@@ -11,5 +11,9 @@ router.put("/avaliarNoticia", function (req, res) {
     painelAtualizacaoController.avaliarNoticia(req, res);
 });
 
+router.put("/atualizarInteresse", function (req, res) {
+    painelAtualizacaoController.atualizarInteresse(req, res);
+});
+
 
 module.exports = router;

@@ -39,6 +39,26 @@ function avaliarNoticia(req, res) {
         });
 }
 
+function atualizarInteresse(req, res) {
+    var interesse = req.body.interesse
+    var idUsuario = req.body.idUsuario
+
+    if (interesse == undefined || interesse == "") {
+        res.status(400).send("O idNoticia está undefined!")
+        return
+    }
+
+    painelAtualizacaoModel.atualizarInteresse(interesse, idUsuario)
+        .then(function (resultado) {
+            res.status(200).json(resultado)
+        })
+        .catch(function (erro) {
+            console.log(erro)
+            console.log("\nHouve um erro ao atualizar o interesse! Erro: ", erro.sqlMessage)
+            res.status(500).json(erro.sqlMessage)
+        });
+}
+
 module.exports = {
     buscarNoticias,
 }
