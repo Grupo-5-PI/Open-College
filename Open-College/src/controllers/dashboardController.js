@@ -317,6 +317,50 @@ function buscarDadosGrafico(req, res){
         
     } else if(dashboard == "Tendência"){
 
+        if(grafico == "grafico-crescimento-graduacao"){
+            dashboardModel.buscarDadosGraficoTendenciaGraduacao(ano, anoFim)
+            .then(function(resposta){
+                console.log(resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+        } else if(grafico == "grafico-evo-matricula-mod"){
+            dashboardModel.buscarDadosGraficoTendenciaModalidade(ano, anoFim)
+            .then(function(resposta){
+                console.log(resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+        } else if(grafico == "tabela_crescimento_cursos"){
+            dashboardModel.buscarDadosGraficoTendenciaCurso(ano, anoFim)
+            .then(function(resposta){
+                console.log(resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+        }
+
     }
     
 }

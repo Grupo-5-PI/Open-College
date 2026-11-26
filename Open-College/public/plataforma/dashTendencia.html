@@ -170,7 +170,7 @@
             <section class="card-tendencia">
                     <h3>Cursos com maior crescimento</h3>
                     <p id="subtitulo-tabela">Ranking recalculado para anoInicio - anoFim</p>
-                    <table class="tabela-dashboard">
+                    <table class="tabela-dashboard" id="tabela_crescimento_cursos">
                         <thead>
                             <tr>
                                 <th></th>
@@ -297,9 +297,9 @@
 
 
     function carregarGraficoCrescimentoTipoDeGraduacao(anoInicio, anoFim) {
-        let crecimentoGraduacao = document.getElementById('grafico-crescimento-graduacao');
+        let crescimentoGraduacao = document.getElementById('grafico-crescimento-graduacao');
 
-        new Chart(crecimentoGraduacao, {
+        new Chart(crescimentoGraduacao, {
             type: 'bar',
             data: {
                 labels: ['Bacharelado', 'Licenciatura', 'Tecnólogo'],
