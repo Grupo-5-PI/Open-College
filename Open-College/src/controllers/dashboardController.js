@@ -374,6 +374,36 @@ function atualizarMatriculasDoCurso(req, res) {
 
 }
 
+function atualizarTaxaOcupacaoPorArea(req, res) {
+
+    var ano = req.query.ano;
+
+    dashboardModel.atualizarTaxaOcupacaoPorArea(ano)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
+function    atualizarPeriodoMaisProcuradoPorCurso(req, res) {
+
+    var ano = req.query.ano;
+
+    dashboardModel.   atualizarPeriodoMaisProcuradoPorCurso(ano)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
 module.exports = {
     buscarDadosKpi,
     buscarDadosGrafico,
@@ -383,5 +413,7 @@ module.exports = {
     atualizarKpiOcupacao,
     atualizarKpiCursoMaisProcurado,
     atualizarKpiCursoMenosProcurado,
-    atualizarMatriculasDoCurso
+    atualizarMatriculasDoCurso,
+    atualizarTaxaOcupacaoPorArea,
+    atualizarPeriodoMaisProcuradoPorCurso
 }

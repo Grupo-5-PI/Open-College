@@ -175,6 +175,7 @@
     let dadosPeriodoProcuradoArea = [];
 
     let graficoMatriculasPorArea = null;
+    let graficoTaxaOcupacao = null;
 
 
     function atualizarAno() {
@@ -305,6 +306,8 @@
     filtroAno.addEventListener('change', atualizarKpiCursoMaisProcurado);
     filtroAno.addEventListener('change', atualizarKpiCursoMenosProcurado);
     filtroAno.addEventListener('change', carregarGraficoMatriculasPorArea);
+    filtroAno.addEventListener('change', atualizarTaxaOcupacaoPorArea);
+    filtroAno.addEventListener('change', carregarGraficoPeriodoProcurado);
 
     atualizarKpiOcupacao();
     atualizarKpiCursoMaisProcurado();
@@ -441,18 +444,59 @@
 }
 
 
-    function carregarGraficoTaxaOcupacao() {
+    
+
+async function atualizarTaxaOcupacaoPorArea() {
+
+    let ano = filtroAno.value;
+
+
+    try {
+
+        const resposta = await fetch(`/dashboard/atualizarTaxaOcupacaoPorArea?ano=${ano}`);
+
+
+        if (!resposta.ok) {
+            const erro = await resposta.text();
+            console.error('Erro retornado pelo servidor:', erro);
+            throw new Error(`Erro HTTP: ${resposta.status}`);
+        }
+
+        const dados = await resposta.json();
+
+
+        const labels = dados.map(item => item.areaCurso);
+        const valores = dados.map(item => Number(item.ocupacao));
+
+        let cores = ['#4a7ff7', '#ae8df5', '#f3b86b', '#3cc027', '#ff5555'];
+
+        let coresGrafico = labels.map((area, i) => cores[i % cores.length]);
+
         let taxaOcupacao = document.getElementById('grafico-taxa-ocupacao');
 
-        new Chart(taxaOcupacao, {
+        if (graficoTaxaOcupacao) {
+
+            graficoTaxaOcupacao.data.labels = labels;
+
+            graficoTaxaOcupacao.data.datasets[0].data = labels.map(() => 80);
+
+            graficoTaxaOcupacao.data.datasets[1].data = valores;
+            graficoTaxaOcupacao.data.datasets[1].backgroundColor = coresGrafico;
+
+            graficoTaxaOcupacao.update();
+
+            return;
+        }
+
+        graficoTaxaOcupacao = new Chart(taxaOcupacao, {
             type: 'bar',
             data: {
-                labels: ['MEDICINA', 'DIREITO', 'TI', 'PEDAGOGIA'],
+                labels: labels,
                 datasets: [
                     {
                         type: 'line',
                         label: 'Meta Mínima',
-                        data: [80, 80, 80, 80],
+                        data: labels.map(() => 80),
                         borderColor: '#ff5555',
                         borderWidth: 2,
                         pointRadius: 0,
@@ -462,8 +506,9 @@
                         }
                     },
                     {
-                        data: [90, 55, 60, 75],
-                        backgroundColor: '#3cc027',
+                        label: 'Ocupação Geral',
+                        data: valores,
+                        backgroundColor: coresGrafico,
                         borderWidth: 0,
                         borderRadius: 3,
                         categoryPercentage: 0.9,
@@ -495,7 +540,8 @@
                         font: {
                             weight: 'bold',
                             size: 15
-                        }
+                        },
+                        formatter: (valor) => `${valor}%`
                     }
                 },
                 scales: {
@@ -535,38 +581,54 @@
                 }
             }
         });
-    }
 
-    function carregarGraficoPeriodoProcurado() {
+    } catch (erro) {
+        console.error('Erro ao atualizar gráfico de taxa de ocupação:', erro);
+    }
+}
+
+
+
+
+    
+async function carregarGraficoPeriodoProcurado() {
+
+    let ano = filtroAno.value;
+
+    try {
+
+        const resposta = await fetch(`/dashboard/atualizarPeriodoMaisProcuradoPorCurso?ano=${ano}`);
+
+        if (!resposta.ok) {
+            const erro = await resposta.text();
+            console.error('Erro retornado pelo servidor:', erro);
+            throw new Error(`Erro HTTP: ${resposta.status}`);
+        }
+
+        const dados = await resposta.json();
+
+        let labels = dados.map(item => item.nome);
+
+        let valoresDiurno = dados.map(item => Number(item.vagasDiurno));
+        let valoresNoturno = dados.map(item => Number(item.vagasNoturno));
+
         let periodoMaisPeriodo = document.getElementById('grafico-periodo-mais-procurado');
 
         new Chart(periodoMaisPeriodo, {
             type: 'bar',
             data: {
-                labels: ['2020', '2021', '2022', '2023', '2024'],
+                labels: labels,
                 datasets: [
                     {
-                        label: 'Matutino',
-                        data: [120, 165, 140, 210, 195],
+                        label: 'Diurno',
+                        data: valoresDiurno,
                         backgroundColor: '#4a7ff7',
                         borderRadius: 4
                     },
                     {
-                        label: 'Vespertino',
-                        data: [100, 120, 140, 160, 170],
-                        backgroundColor: '#ae8df5',
-                        borderRadius: 4
-                    },
-                    {
                         label: 'Noturno',
-                        data: [80, 120, 100, 110, 130],
-                        backgroundColor: '#f3b86b',
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Integral',
-                        data: [60, 70, 80, 90, 100],
-                        backgroundColor: '#3cc027',
+                        data: valoresNoturno,
+                        backgroundColor: '#ae8df5',
                         borderRadius: 4
                     }
                 ]
@@ -577,7 +639,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Período Mais Procurada Por Curso',
+                        text: 'Período Mais Procurado Por Curso',
                         color: '#ffffff',
                         font: {
                             size: 23,
@@ -647,9 +709,13 @@
                 }
             }
         });
+
+    } catch (erro) {
+        console.error('Erro ao atualizar gráfico de período mais procurado:', erro);
     }
+}
 
     carregarGraficoMatriculasPorArea();
-    carregarGraficoTaxaOcupacao();
+    atualizarTaxaOcupacaoPorArea();
     carregarGraficoPeriodoProcurado();
 </script>

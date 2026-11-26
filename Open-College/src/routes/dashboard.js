@@ -39,6 +39,13 @@ router.get("/atualizarMatriculasDoCurso", function (req, res) {
     dashboardController.atualizarMatriculasDoCurso(req, res);
 });
 
+router.get("/atualizarTaxaOcupacaoPorArea", function (req, res) {
+    dashboardController.atualizarTaxaOcupacaoPorArea(req, res);
+});
+
+router.get("/atualizarPeriodoMaisProcuradoPorCurso", function (req, res) {
+    dashboardController.atualizarPeriodoMaisProcuradoPorCurso(req, res);
+});
 
 
 module.exports = router;

@@ -153,8 +153,58 @@ function atualizarMatriculasDoCurso(ano) {
     return database.executar(instrucaoSql);
 }
 
+function atualizarTaxaOcupacaoPorArea(ano) {
 
+    var instrucaoSql = `
+    WITH quantidades AS (
+        SELECT
+        geral.nome AS areaCurso,
+        SUM(qtdVagas) AS vagas,
+        SUM(qtdMatricula) AS matriculas
+    FROM tblCenso AS censo
+    INNER JOIN tblCurso AS curso
+        ON curso.idCurso = censo.idCurso 
+    INNER JOIN tblAreaGeral AS geral
+        ON curso.idAreaGeral = geral.idAreaGeral
+    WHERE ano = ${ano}
+    GROUP BY areaCurso
+    ),
+    porcentagem AS (
+        SELECT
+        areaCurso,
+        ROUND(
+            (vagas / matriculas) * 100, 2 
+        ) AS ocupacao
+        FROM quantidades
+        GROUP BY areaCurso
+    )
+    SELECT * FROM porcentagem;  
+    `;
 
+    return database.executar(instrucaoSql);
+}   
+
+function atualizarPeriodoMaisProcuradoPorCurso(ano) {
+
+    var instrucaoSql = `
+    WITH ranking AS (
+    SELECT 
+		curso.nome,
+        SUM(qtdVagas) AS vagas,
+        SUM(qtdVagasDiurno) AS vagasDiurno,
+		SUM(qtdVagasNoturno) AS vagasNoturno
+        FROM tblCenso AS censo
+        INNER JOIN tblCurso AS curso
+			ON censo.idCurso = curso.idCurso
+        WHERE ano = ${ano}
+		GROUP BY nome
+    ) SELECT * FROM ranking
+    ORDER BY vagas DESC
+    LIMIT 5;  
+    `;
+
+    return database.executar(instrucaoSql);
+}
 
 // ================ DASHBOARD REGIÃO ================ //
 
@@ -300,5 +350,7 @@ module.exports = {
     atualizarKpiOcupacao,
     atualizarKpiCursoMaisProcurado,
     atualizarKpiCursoMenosProcurado,
-    atualizarMatriculasDoCurso
+    atualizarMatriculasDoCurso,
+    atualizarTaxaOcupacaoPorArea,
+    atualizarPeriodoMaisProcuradoPorCurso
 }
