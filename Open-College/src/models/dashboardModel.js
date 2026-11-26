@@ -305,6 +305,33 @@ function buscarDadosGraficoRegiaoIngressantes(ano){
 
 // ================ DASHBOARD TENDÊNCIA ================ //
 
+function buscarKpiTendenciaMatriculas(anoInicio, anoFim, graduacao){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarKpiTendenciaMatriculas()");
+
+    var instrucaoSql = `
+        (
+            SELECT
+                ano,
+                SUM(qtdMatricula) AS totalMatriculas
+            FROM tblCenso
+            WHERE ano = ${anoInicio} AND tipoGrauAcademico = '${graduacao}'
+        )
+        UNION
+        (
+            SELECT
+                ano,
+                SUM(qtdMatricula) AS totalMatriculas
+            FROM tblCenso
+            WHERE ano = ${anoFim} AND tipoGrauAcademico = '${graduacao}'
+        );
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
 
     kpiTotalMatriculas,
@@ -322,4 +349,6 @@ module.exports = {
     buscarDadosKpiRegiaoArea,
     buscarDadosGraficoRegiaoArea,
     buscarDadosGraficoRegiaoIngressantes,
+
+    buscarKpiTendenciaMatriculas,
 }
