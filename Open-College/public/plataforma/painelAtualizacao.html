@@ -508,15 +508,15 @@
             }
         }
 
-        let formInteresses = document.querySelector(".sessao-interesses");
+        let formInteresses = document.querySelector(".sessao-interesses")
         if (formInteresses) {
             formInteresses.addEventListener("submit", async function (e) {
-                e.preventDefault();
+                e.preventDefault()
 
-                let interesseSelecionado = document.getElementById("interesses").value;
-                let idUsuario = sessionStorage.ID_USUARIO;
+                let interesseSelecionado = document.getElementById("interesses").value
+                let idUsuario = sessionStorage.ID_USUARIO
 
-                if (!interesseSelecionado) return;
+                if (!interesseSelecionado) return
 
                 try {
                     let resposta = await fetch("/painelAtualizacao/atualizarInteresse", {
@@ -531,12 +531,12 @@
                     });
 
                     if (resposta.ok) {
-                        await carregarNoticias();
+                        await carregarNoticias()
                     } else {
-                        console.error("Erro ao atualizar interesse:", resposta.status);
+                        console.error("Erro ao atualizar interesse:", resposta.status)
                     }
                 } catch (erro) {
-                    console.error("Erro na requisição de interesse:", erro);
+                    console.error("Erro na requisição de interesse:", erro)
                 }
             });
         }
