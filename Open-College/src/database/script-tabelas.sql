@@ -168,10 +168,8 @@ CREATE TABLE tblAtualizacao (
     idUsuario INT NOT NULL,
     idCurso INT,
     idAreaGeral INT,
-    tipo VARCHAR(50) NOT NULL,
     conteudo VARCHAR(500) NOT NULL,
     dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    lida BIT NOT NULL DEFAULT 0,
     CONSTRAINT FK_tblAtualizacao_tblUsuario 
 		FOREIGN KEY (idUsuario) 
 			REFERENCES tblUsuario (idUsuario),
@@ -291,6 +289,12 @@ CREATE TABLE tblLog (
     CONSTRAINT CK_tblLog_tipo
         CHECK (tipo IN ('INFO', 'AVISO', 'ERRO'))
 );
+  
 
-
-
+CREATE TABLE tblInteresse (
+    idInteresse INT PRIMARY KEY AUTO_INCREMENT,
+    interesse VARCHAR(50),
+    CONSTRAINT chUsuario
+    FOREIGN KEY(fkUsuario)
+    REFERENCES tblUsuario (idUsuario)
+);
