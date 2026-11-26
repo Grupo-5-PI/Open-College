@@ -438,6 +438,8 @@ function buscarDadosGraficoTendenciaCursos(anoInicio, anoFim){
         JOIN tblCurso cur ON cur.idCurso = cen.idCurso
         WHERE cen.ano IN (${anoInicio}, ${anoFim})
         GROUP BY cur.nome
+        ORDER BY percentualCrescimento DESC
+        LIMIT 5;
     `;
 
     return database.executar(instrucaoSql);
