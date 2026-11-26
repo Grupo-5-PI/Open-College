@@ -39,7 +39,7 @@ async function buscarDadosKpi(dashboard, kpi){
         parametros = {
             dashboardParam: dashboard,
             kpiParam: kpi,
-            graduacaoParam: document.getElementById("filtro_graduacao").value,
+            // graduacaoParam: document.getElementById("filtro_graduacao").value,
             anoParam: anoInicio,
             anoFimParam: anoFim
         }

@@ -181,9 +181,9 @@ function buscarDadosKpi(req, res){
         let anoFim = parametros.anoFimParam;
 
         if(kpi == "kpi_tendencia_matriculas"){ 
-            let graduacao = parametros.graduacaoParam;
+            // let graduacao = parametros.graduacaoParam;
             
-            dashboardModel.buscarKpiTendenciaMatriculas(ano, anoFim, graduacao)
+            dashboardModel.buscarKpiTendenciaMatriculas(ano, anoFim)
             .then(function(resposta){
                 console.log(resposta);
                 if(resposta.length > 0){

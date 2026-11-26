@@ -305,7 +305,7 @@ function buscarDadosGraficoRegiaoIngressantes(ano){
 
 // ================ DASHBOARD TENDÊNCIA ================ //
 
-function buscarKpiTendenciaMatriculas(anoInicio, anoFim, graduacao){
+function buscarKpiTendenciaMatriculas(anoInicio, anoFim){
 
     console.log("CHEGUEI NO DASHBOARD MODEL");
     console.log("Função: buscarKpiTendenciaMatriculas()");
@@ -316,7 +316,7 @@ function buscarKpiTendenciaMatriculas(anoInicio, anoFim, graduacao){
                 ano,
                 SUM(qtdMatricula) AS totalMatriculas
             FROM tblCenso
-            WHERE ano = ${anoInicio} AND tipoGrauAcademico = '${graduacao}'
+            WHERE ano = ${anoInicio}
         )
         UNION
         (
@@ -324,7 +324,7 @@ function buscarKpiTendenciaMatriculas(anoInicio, anoFim, graduacao){
                 ano,
                 SUM(qtdMatricula) AS totalMatriculas
             FROM tblCenso
-            WHERE ano = ${anoFim} AND tipoGrauAcademico = '${graduacao}'
+            WHERE ano = ${anoFim}
         );
     `;
 
