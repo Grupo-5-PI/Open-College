@@ -181,14 +181,20 @@ function buscarDadosKpi(req, res){
         let graduacao = parametros.graduacaoParam;
         let anoFim = parametros.anoFimParam;
         
-        if(kpi == "kpi_tendencia_matriculas_atual" || kpi == "kpi_tendencia_matriculas_anterior"){
+        dashboardModel.buscarKpiTendenciaMatriculas(ano, anoFim, graduacao)
+        .then(function(resposta){
+            console.log(resposta);
+            if(resposta.length > 0){
+                res.status(200).json(resposta);
+            } else{
+                res.status(204).send(resposta);
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            res.status(500).send(erro);
+        });
 
-            
-            
-        } else if(kpi == "kpi_tendencia_crescimento_medio"){
-
-        }
-        
     }
     
 }

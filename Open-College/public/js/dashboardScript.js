@@ -29,12 +29,19 @@ async function buscarDadosKpi(dashboard, kpi){
         };
     } else if(dashboard == "Tendência"){
         
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        if(anoInicio > anoFim){
+            return "Intervalo inválido";
+        }
+        
         parametros = {
             dashboardParam: dashboard,
             kpiParam: kpi,
             graduacaoParam: document.getElementById("filtro_graduacao").value,
-            anoParam: document.getElementById("filtro-inicio").value,
-            anoFimParam: document.getElementById("filtro-fim").value
+            anoParam: anoInicio,
+            anoFimParam: anoFim
         }
 
     }
