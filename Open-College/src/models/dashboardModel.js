@@ -332,6 +332,58 @@ function buscarKpiTendenciaMatriculas(anoInicio, anoFim, graduacao){
     
 }
 
+function buscarTextoComparativoModalidade(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarTextoComparativo()");
+
+    var instrucaoSql = `
+        SELECT
+        (
+            SELECT ano, SUM(qtdMatricula) AS totalMatriculas FROM tblCenso
+            WHERE ano = ${anoInicio}
+            GROUP BY tipoModalidadeEnsino 
+        )
+        UNION
+        (
+            SELECT ano, SUM(qtdMatricula) AS totalMatriculas FROM tblCenso
+            WHERE ano = ${anoFim}
+            GROUP BY tipoModalidadeEnsino
+        )
+    `;
+    
+    return database.executar(instrucaoSql);
+    
+}
+
+function buscarTextoComparativoCurso(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarTextoComparativoCurso()");
+
+    var instrucaoSql = `
+        SELECT 
+            nomeCurso,  
+            ROUND((totalMatriculasAnoFim - totalMatriculasAnoInicio) / totalMatriculasAnoInicio * 100, 2) AS percentualCrescimento
+        FROM 
+        (
+            SELECT 
+            cur.nome AS nomeCurso,
+            SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+            SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim
+            FROM tblCenso cen
+            JOIN tblCurso cur ON cur.idCurso = cen.idCurso
+            WHERE cen.ano IN (${anoInicio}, ${anoFim})
+            GROUP BY cur.idCurso, cur.nome
+        ) AS subquery 
+        ORDER BY percentualCrescimento DESC
+        LIMIT 1;
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
 module.exports = {
 
     kpiTotalMatriculas,
@@ -351,4 +403,6 @@ module.exports = {
     buscarDadosGraficoRegiaoIngressantes,
 
     buscarKpiTendenciaMatriculas,
+    buscarTextoComparativoModalidade,
+    buscarTextoComparativoCurso, 
 }

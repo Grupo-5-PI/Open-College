@@ -87,6 +87,20 @@ async function buscarDadosGrafico(dashboard, grafico){
             anoParam: document.getElementById("regiao_filtro_ano").value
         };
     } else if(dashboard == "Tendência"){
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        if(anoInicio > anoFim){
+            return "Intervalo inválido";
+        }
+        
+        parametros = {
+            dashboardParam: dashboard,
+            graficoParam: grafico,
+            anoParam: anoInicio,
+            anoFimParam: anoFim
+        }
         
     }
 
