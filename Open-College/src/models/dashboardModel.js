@@ -384,6 +384,26 @@ function buscarTextoComparativoCurso(anoInicio, anoFim){
 
 }
 
+function buscarDadosGraficoTendenciaGraduacao(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarDadosGraficoTendenciaGraduacao()");
+
+    var instrucaoSql = `
+        SELECT 
+            tipoGraduacao, 
+            SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+            SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim
+            ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2) AS percentualCrescimento
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim})
+        GROUP BY tipoGraduacao;
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
 
     kpiTotalMatriculas,
@@ -405,4 +425,6 @@ module.exports = {
     buscarKpiTendenciaMatriculas,
     buscarTextoComparativoModalidade,
     buscarTextoComparativoCurso, 
+
+    buscarDadosGraficoTendenciaGraduacao,
 }
