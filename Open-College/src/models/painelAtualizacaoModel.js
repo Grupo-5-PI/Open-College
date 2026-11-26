@@ -32,7 +32,18 @@ function avaliarNoticia(idNoticia, delta) {
     return database.executar(instrucaoSql);
 }
 
+function atualizarInteresse(setor, idUsuario) {
+    var instrucaoSql = `
+        UPDATE tblUsuario
+        SET setor = ${setor}
+        WHERE idUsuario = ${idUsuario};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarNoticias,
-    avaliarNoticia
+    avaliarNoticia,
+    atualizarInteresse
 }

@@ -61,4 +61,6 @@ function atualizarInteresse(req, res) {
 
 module.exports = {
     buscarNoticias,
+    avaliarNoticia,
+    atualizarInteresse
 }

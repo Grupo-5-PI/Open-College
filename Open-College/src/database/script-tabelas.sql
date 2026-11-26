@@ -263,6 +263,7 @@ CREATE TABLE tblNoticia (
     dtNoticia DATETIME,
     setor VARCHAR(50),
     nota INT,
+    descricao VARCHAR(500),
     fkUsuario INT,
     CONSTRAINT chUsuario
     FOREIGN KEY(fkUsuario)
@@ -281,9 +282,7 @@ CREATE TABLE tblDashboardPersonalizado (
         ON UPDATE CASCADE
 );
 
-
-ALTER TABLE tblNoticia
-    ADD COLUMN descricao TEXT AFTER titulo;
+    
 CREATE TABLE tblLog (
     idLog INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(10) NOT NULL,

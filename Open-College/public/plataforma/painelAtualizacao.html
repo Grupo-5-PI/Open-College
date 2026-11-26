@@ -423,7 +423,7 @@
             let container = document.getElementById("sessao-noticias")
             let retorno = await buscarNoticias()
 
-            if (retorno === 204) {
+            if (retorno === "204") {
                 container.innerHTML = `
                     <article class="card-noticia">
                         <div class="conteudo-noticia">
