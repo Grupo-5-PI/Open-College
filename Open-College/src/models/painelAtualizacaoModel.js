@@ -22,6 +22,17 @@ function buscarNoticias() {
     return database.executar(instrucaoSql);
 }
 
+function avaliarNoticia(idNoticia, delta) {
+    var instrucaoSql = `
+        UPDATE tblNoticia
+        SET nota = COALESCE(nota, 0) + (${delta})
+        WHERE idNoticia = ${idNoticia};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarNoticias,
+    avaliarNoticia
 }
