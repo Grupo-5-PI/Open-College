@@ -423,7 +423,26 @@ function buscarDadosGraficoTendenciaModalidade(anoInicio, anoFim){
 
 }
 
+function buscarDadosGraficoTendenciaCursos(anoInicio, anoFim){
 
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarDadosGraficoTendenciaCursos()");
+
+    var instrucaoSql = `
+        SELECT 
+            cur.nome AS nomeCurso,
+            SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+            SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim,
+            ROUND((SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) - SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END)) / SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) * 100, 2) AS percentualCrescimento
+        FROM tblCenso cen
+        JOIN tblCurso cur ON cur.idCurso = cen.idCurso
+        WHERE cen.ano IN (${anoInicio}, ${anoFim})
+        GROUP BY cur.nome
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
 
 module.exports = {
 
@@ -449,4 +468,5 @@ module.exports = {
 
     buscarDadosGraficoTendenciaGraduacao,
     buscarDadosGraficoTendenciaModalidade,
+    buscarDadosGraficoTendenciaCursos,
 }
