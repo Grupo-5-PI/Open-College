@@ -471,8 +471,8 @@
                                     Ver notícia completa
                                 </a>
                                 <div class="avaliacao-noticia">
-                                    <button type="button">▲ Gostei</button>
-                                    <button type="button">▼ Não Gostei</button>
+                                    <button type="button" onclick="avaliarNoticia(${noticia.idNoticia}, 1)">▲ Gostei</button>
+                                    <button type="button" onclick="avaliarNoticia(${noticia.idNoticia}, -1)">▼ Não Gostei</button>
                                 </div>
                             </div>
                         </div>
@@ -482,6 +482,30 @@
 
             container.innerHTML = htmlNoticias
 
+        }
+
+
+        async function avaliarNoticia(idNoticia, delta) {
+            try {
+                let resposta = await fetch("/painelAtualizacao/avaliarNoticia", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        idNoticia: idNoticia,
+                        delta: delta
+                    })
+                });
+
+                if (resposta.ok) {
+                    await carregarNoticias();
+                } else {
+                    console.error("Erro ao avaliar notícia:", resposta.status);
+                }
+            } catch (erro) {
+                console.error("Erro na requisição de avaliação:", erro);
+            }
         }
 
         async function carregarPainel() {
@@ -494,8 +518,5 @@
     </script>
 
 </body>
-
-
-
 
 </html>
