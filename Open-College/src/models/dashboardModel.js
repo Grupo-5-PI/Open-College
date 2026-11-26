@@ -404,6 +404,27 @@ function buscarDadosGraficoTendenciaGraduacao(anoInicio, anoFim){
     
 }
 
+function buscarDadosGraficoTendenciaModalidade(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarDadosGraficoTendenciaModalidade()");
+
+    var instrucaoSql = `
+        SELECT 
+            tipoModalidadeEnsino, 
+            SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+            SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim})
+        GROUP BY tipoModalidadeEnsino;
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
+
+
 module.exports = {
 
     kpiTotalMatriculas,
@@ -427,4 +448,5 @@ module.exports = {
     buscarTextoComparativoCurso, 
 
     buscarDadosGraficoTendenciaGraduacao,
+    buscarDadosGraficoTendenciaModalidade,
 }
