@@ -7,4 +7,9 @@ router.get("/buscarNoticias", function (req, res) {
     painelAtualizacaoController.buscarNoticias(req, res);
 });
 
+router.put("/avaliarNoticia", function (req, res) {
+    painelAtualizacaoController.avaliarNoticia(req, res);
+});
+
+
 module.exports = router;
