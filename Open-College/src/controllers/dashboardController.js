@@ -185,7 +185,21 @@ function buscarDadosKpi(req, res){
             
             dashboardModel.buscarKpiTendenciaMatriculas(ano, anoFim)
             .then(function(resposta){
-                console.log(resposta);
+                console.log('kpi_tendencia_matriculas:\n', resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+        } else if(kpi == 'kpi_tendencia_crescimento_medio'){
+            dashboardModel.buscarKpiTendenciaCrescimentoMedio(ano, anoFim)
+            .then(function(resposta){
+                console.log('kpi_tendencia_crescimento_medio:\n', resposta);
                 if(resposta.length > 0){
                     res.status(200).json(resposta);
                 } else{
@@ -200,7 +214,7 @@ function buscarDadosKpi(req, res){
 
             dashboardModel.buscarTextoComparativoModalidade(ano, anoFim)
             .then(function(resposta){
-                console.log(resposta);
+                console.log('texto-comparativo-modalidade:\n', resposta);
                 if(resposta.length > 0){
                     res.status(200).json(resposta);
                 } else{

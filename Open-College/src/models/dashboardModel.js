@@ -311,21 +311,28 @@ function buscarKpiTendenciaMatriculas(anoInicio, anoFim){
     console.log("Função: buscarKpiTendenciaMatriculas()");
 
     var instrucaoSql = `
-        (
-            SELECT
-                ano,
-                SUM(qtdMatricula) AS totalMatriculas
-            FROM tblCenso
-            WHERE ano = ${anoInicio}
-        )
-        UNION
-        (
-            SELECT
-                ano,
-                SUM(qtdMatricula) AS totalMatriculas
-            FROM tblCenso
-            WHERE ano = ${anoFim}
-        );
+        SELECT 
+            SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+            SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim, 
+            ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2) AS percentualCrescimento
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim});
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function buscarKpiTendenciaCrescimentoMedio(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarKpiTendenciaCrescimentoMedio()");
+
+    var instrucaoSql = `
+        SELECT 
+            (ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2)) / (${anoFim} - ${anoInicio}) AS crescimentoMedioAnual
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim});
     `;
 
     return database.executar(instrucaoSql);
@@ -338,18 +345,15 @@ function buscarTextoComparativoModalidade(anoInicio, anoFim){
     console.log("Função: buscarTextoComparativo()");
 
     var instrucaoSql = `
-        SELECT
-        (
-            SELECT ano, SUM(qtdMatricula) AS totalMatriculas FROM tblCenso
-            WHERE ano = ${anoInicio}
-            GROUP BY tipoModalidadeEnsino 
-        )
-        UNION
-        (
-            SELECT ano, SUM(qtdMatricula) AS totalMatriculas FROM tblCenso
-            WHERE ano = ${anoFim}
-            GROUP BY tipoModalidadeEnsino
-        )
+        SELECT 
+            tipoModalidadeEnsino, 
+            SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+            SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim,
+            ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2) AS percentualCrescimento
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim})
+        GROUP BY tipoModalidadeEnsino
+        ORDER BY tipoModalidadeEnsino ASC;
     `;
     
     return database.executar(instrucaoSql);

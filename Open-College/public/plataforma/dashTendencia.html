@@ -89,15 +89,8 @@
                 <nav class="nav-dash-tendencia">
                     <p>Dashboard - Tendência (ANO)</p>
                     <div class="filtro-ano-tendencia">
-                        <!-- <span>Graduação: </span>
-                        <select class="filtro-ano" id="filtro_graduacao">
-                            <option>Bacharelado</option>
-                            <option>Licenciatura</option>
-                            <option>Tecnólogo</option>
-                        </select> -->
                         <span>Ano de Início:</span>
                         <select class="filtro-ano" id="filtro-inicio">
-                            <option>2024</option>
                             <option>2023</option>
                             <option>2022</option>
                             <option>2021</option>
@@ -137,9 +130,9 @@
                 </div>
 
                 <div class="card-kpi-tendencia">
-                    <div class="card-kpi" id="kpi_tendencia_crescimento_medio">
+                    <div class="card-kpi" >
                         <span class="card-titulo">Crescimento médio ao ano</span>
-                        <strong class="card-valor">+ 5% </strong>
+                        <strong class="card-valor" id="kpi_tendencia_crescimento_medio">+ 5%</strong>
                     </div>
                 </div>
             </section>
@@ -215,86 +208,80 @@
 </body>
 
 </html>
+<script src="../js/dashboardScript.js"></script>
 <script>
 
     let foto = sessionStorage.FOTO_USUARIO;
-    imgUsuario.src = `${foto}`
+    imgUsuario.src = `${foto}`;
+
+    async function carregarKpi(){
+
+        let kpiValorInicio = document.getElementById("kpi-valor-inicio");
+        let kpiValorFim = document.getElementById("kpi-valor-fim");
+        let cardComparacao = document.getElementById("card-comparacao");
+        let kpiCrescimentoMedio = document.getElementById("kpi_tendencia_crescimento_medio");
+
+        kpiValorInicio.textContent = "Carregando...";
+        kpiValorFim.textContent = "Carregando...";
+        cardComparacao.textContent = "";
+        kpiCrescimentoMedio.textContent = "Carregando...";
+        
+        let dadosKpi = await buscarDadosKpi("Tendência", "kpi_tendencia_matriculas");
+        
+        if(dadosKpi == '204' || dadosKpi == '500'){
+            console.log("Erro ao buscar dados do KPI");
+            kpiValorInicio.textContent = "Erro ao carregar";
+            kpiValorFim.textContent = "Erro ao carregar";
+            return;
+        }
+
+        dadosKpi = await dadosKpi.json();
+
+        kpiValorInicio.textContent = `${dadosKpi[0].totalMatriculasAnoInicio}`;
+        kpiValorFim.textContent = `${dadosKpi[0].totalMatriculasAnoFim}`;
+        let variacao = dadosKpi[0].percentualCrescimento;
+        cardComparacao.textContent = variacao > 0 ? `+ ${variacao.toFixed(1)}% no período` : `${variacao.toFixed(1)}% no período`;
+        
+        let dadosCrescimentoMedio = await buscarDadosKpi("Tendência", "kpi_tendencia_crescimento_medio");
+
+        if(dadosCrescimentoMedio == '204' || dadosCrescimentoMedio == '500'){
+            console.log("Erro ao buscar dados do KPI de crescimento médio");
+            kpiCrescimentoMedio.textContent = "Erro ao carregar";
+            return;
+        }
+
+        dadosCrescimentoMedio = await dadosCrescimentoMedio.json();
+        
+    }
+
+    async function carregarTextoComparativo(){
+        let dadosModalidade = await buscarDadosKpi("Tendência", "texto-comparativo-modalidade");
+        let dadosCurso = await buscarDadosKpi("Tendência", "texto-comparativo-curso");
+
+        if(dadosModalidade == '204' || dadosModalidade == '500' || dadosCurso == '204' || dadosCurso == '500'){
+            console.log("Erro ao buscar dados do texto comparativo");
+            return;
+        }
+
+        dadosModalidade = await dadosModalidade.json();
+        dadosCurso = await dadosCurso.json();
+
+        let textoComparativo = document.getElementById("texto-comparativo");
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        textoComparativo.textContent = `De ${anoInicio} a ${anoFim}, o EAD cresceu ${dadosModalidade[0].percentualCrescimento}% e o presencial caiu ${dadosModalidade[1].percentualCrescimento}%.
+ O curso que mais cresceu foi ${dadosCurso[0].nomeCurso} (+${dadosCurso[0].percentualCrescimento}%)`;
+        
+    }
+
+    window.onload = function() {
+        carregarKpi();
+        carregarTextoComparativo();
+    };
 
     Chart.register(ChartDataLabels);
-
-    let tituloDash = document.querySelector('.nav-dash-tendencia p')
-    let filtroInicio = document.getElementById('filtro-inicio');
-    let filtroFim = document.getElementById('filtro-fim');
-    let cardKPI = document.querySelectorAll('.card-rodape')
-    let comparacao = document.querySelectorAll('card-comparacao')
-
-    function atualizarAno() {
-        let anoInicio = filtroInicio.value;
-        let anoFim = filtroFim.value;
-
-        if (tituloDash) {
-            tituloDash.textContent = `Dashboard - Tendência (${anoInicio} a ${anoFim})`;
-        }
-
-        let kpiAnoInicio = document.getElementById('kpi-ano-inicio');
-
-        // Atualiza o KPI 1 com o primeiro ano
-        if (kpiAnoInicio) {
-            kpiAnoInicio.textContent = `No ano de ${anoInicio}`;
-        }
-
-        // Atualiza o KPI 2 com o segundo ano
-        let kpiAnoFim = document.getElementById('kpi-ano-fim');
-        if (kpiAnoFim) {
-            kpiAnoFim.textContent = `No ano de ${anoFim}`;
-        }
-
-        // 4. Atualiza o texto grande comparativo no meio
-        let textoComparativo = document.getElementById('texto-comparativo');
-        if (textoComparativo) {
-            textoComparativo.textContent = `De ${anoInicio} a ${anoFim}, o EAD cresceu 32% e o presencial caiu 4%. O curso que mais cresceu foi Análise e Des. de Sistemas (+75%)`;
-        }
-    }
-
-    function bloquearAnoRepetido() {
-        let anoInicio = filtroInicio.value;
-        let anoFim = filtroFim.value;
-
-        // 1. Desbloqueia TODAS as opções dos DOIS filtros primeiro
-        for (let i = 0; i < filtroInicio.options.length; i++) {
-            filtroInicio.options[i].disabled = false;
-        }
-        for (let i = 0; i < filtroFim.options.length; i++) {
-            filtroFim.options[i].disabled = false;
-        }
-
-        // 2. Bloqueia no Filtro FIM o ano que foi escolhido no INÍCIO
-        for (let i = 0; i < filtroFim.options.length; i++) {
-            if (filtroFim.options[i].value === anoInicio) {
-                filtroFim.options[i].disabled = true;
-            }
-        }
-
-        // 3. Bloqueia no Filtro INÍCIO o ano que foi escolhido no FIM
-        for (let i = 0; i < filtroInicio.options.length; i++) {
-            if (filtroInicio.options[i].value === anoFim) {
-                filtroInicio.options[i].disabled = true;
-            }
-        }
-    }
-
-    filtroInicio.addEventListener('change', () => {
-        bloquearAnoRepetido();
-        atualizarAno();
-    });
-
-    filtroFim.addEventListener('change', () => {
-        bloquearAnoRepetido();
-        atualizarAno();
-    });
-
-    bloquearAnoRepetido();
-
 
     function carregarGraficoCrescimentoTipoDeGraduacao(anoInicio, anoFim) {
         let crescimentoGraduacao = document.getElementById('grafico-crescimento-graduacao');
