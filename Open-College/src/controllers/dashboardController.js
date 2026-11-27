@@ -331,10 +331,12 @@ function buscarDadosGrafico(req, res){
         
     } else if(dashboard == "Tendência"){
 
+        let anoFim = parametros.anoFimParam;
+        
         if(grafico == "grafico-crescimento-graduacao"){
             dashboardModel.buscarDadosGraficoTendenciaGraduacao(ano, anoFim)
             .then(function(resposta){
-                console.log(resposta);
+                console.log('grafico-crescimento-graduacao\n', resposta);
                 if(resposta.length > 0){
                     res.status(200).json(resposta);
                 } else{

@@ -372,9 +372,9 @@ function buscarTextoComparativoCurso(anoInicio, anoFim){
         FROM 
         (
             SELECT 
-            cur.nome AS nomeCurso,
-            SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
-            SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim
+                cur.nome AS nomeCurso,
+                SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+                SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim
             FROM tblCenso cen
             JOIN tblCurso cur ON cur.idCurso = cen.idCurso
             WHERE cen.ano IN (${anoInicio}, ${anoFim})
@@ -395,13 +395,14 @@ function buscarDadosGraficoTendenciaGraduacao(anoInicio, anoFim){
 
     var instrucaoSql = `
         SELECT 
-            tipoGraduacao, 
-            SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
-            SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim
-            ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2) AS percentualCrescimento
+            tipoGrauAcademico, 
+            IFNULL(SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoInicio,
+            IFNULL(SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoFim, 
+            IFNULL(ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2), 0) AS percentualCrescimento
         FROM tblCenso
         WHERE ano IN (${anoInicio}, ${anoFim})
-        GROUP BY tipoGraduacao;
+        GROUP BY tipoGrauAcademico
+        ORDER BY tipoGrauAcademico ASC;
     `;
 
     return database.executar(instrucaoSql);
@@ -416,11 +417,12 @@ function buscarDadosGraficoTendenciaModalidade(anoInicio, anoFim){
     var instrucaoSql = `
         SELECT 
             tipoModalidadeEnsino, 
-            SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
-            SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim
+            IFNULL(SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoInicio,
+            IFNULL(SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoFim
         FROM tblCenso
         WHERE ano IN (${anoInicio}, ${anoFim})
-        GROUP BY tipoModalidadeEnsino;
+        GROUP BY tipoModalidadeEnsino
+        ORDER BY tipoModalidadeEnsino ASC;
     `;
 
     return database.executar(instrucaoSql);

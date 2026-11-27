@@ -150,11 +150,13 @@
             <section class="graficosLadoaLado">
                 <div class="grafico-duplo">
                     <div class="grafico-linha">
+                        <span id="mensagem_graduacao"></span>
                         <canvas id="grafico-crescimento-graduacao"></canvas>
                     </div>
                 </div>
                 <div class="grafico-duplo">
                     <div class="grafico-linha">
+                        <span id="mensagem_modalidade"></span>
                         <canvas id="grafico-evo-matricula-mod"></canvas>
                     </div>
                 </div>
@@ -288,24 +290,49 @@
         
     }
 
-    window.onload = function() {
-        carregarKpi();
-        carregarTextoComparativo();
-    };
-
     Chart.register(ChartDataLabels);
 
-    function carregarGraficoCrescimentoTipoDeGraduacao(anoInicio, anoFim) {
+    async function carregarGraficoCrescimentoTipoDeGraduacao() {
+
         let crescimentoGraduacao = document.getElementById('grafico-crescimento-graduacao');
+        let mensagem = document.getElementById('mensagem_graduacao');
+
+        let dadosGrafico = await buscarDadosGrafico("Tendência", "grafico-crescimento-graduacao");
+        
+        if(dadosGrafico == '500'){
+            mensagem.textContent = 'Erro ao buscar dados do gráfico!';
+            return;
+        } else if(dadosGrafico == '204'){
+            mensagem.textContent = 'Nenhum dado disponível!';
+            return;
+        }
+        
+        mensagem.textContent = "";
+        
+        dadosGrafico = await dadosGrafico.json();
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        let labels = [];
+        let dataAnoInicio = [];
+        let dataAnoFim = [];
+
+        for(let i = 0; i < dadosGrafico.length; i++){
+            let linha = dadosGrafico[i];
+            labels.push(linha.tipoGrauAcademico);
+            dataAnoInicio.push(linha.totalMatriculasAnoInicio);
+            dataAnoFim.push(linha.totalMatriculasAnoFim);
+        }
 
         new Chart(crescimentoGraduacao, {
             type: 'bar',
             data: {
-                labels: ['Bacharelado', 'Licenciatura', 'Tecnólogo'],
+                labels: labels,
                 datasets: [
                     {
-                        label: 'anoInicio',
-                        data: [1000, 500, 300], // dados mocados
+                        label: anoInicio,
+                        data: dataAnoInicio, 
                         borderColor: '#4a7ff7',
                         backgroundColor: '#4a7ff7',
                         borderWidth: 3,
@@ -316,8 +343,8 @@
                         fill: false
                     },
                     {
-                        label: 'anoFim',
-                        data: [1045, 577, 402], // dados mocados
+                        label: anoFim,
+                        data: dataAnoFim, 
                         borderColor: '#f3b86b',
                         backgroundColor: '#f3b86b',
                         borderWidth: 3,
@@ -341,6 +368,7 @@
                             align: 'left',
                             formatter: (valorFim, context) => {
                                 const valorInicio = context.chart.data.datasets[0].data[context.dataIndex];
+                                if(valorInicio == 0 || valorFim == 0) return '0.00%';
                                 const variacao = ((valorFim - valorInicio) / valorInicio) * 100;
                                 return variacao > 0 ? `+${variacao.toFixed(1)}%` : `${variacao.toFixed(1)}%`;
                             }
@@ -436,19 +464,35 @@
         });
     }
 
-    carregarGraficoCrescimentoTipoDeGraduacao();
-
-    function carregarGraficoEvolucaoPorModalidade() {
+    async function carregarGraficoEvolucaoPorModalidade() {
         let evolucaoMatricula = document.getElementById('grafico-evo-matricula-mod');
+
+        let mensagem = document.getElementById("mensagem_modalidade");
+        let dadosGrafico = await buscarDadosGrafico("Tendência", "grafico-evo-matricula-mod");
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        if(dadosGrafico == '500'){
+            mensagem.textContent = 'Erro ao buscar dados do gráfico!';
+            return;
+        } else if(dadosGrafico == '204'){
+            mensagem.textContent = 'Nenhum dado disponível!';
+            return;
+        }
+        
+        mensagem.textContent = "";
+        
+        dadosGrafico = await dadosGrafico.json();
 
         new Chart(evolucaoMatricula, {
             type: 'line',
             data: {
-                labels: ['anoInicio', 'anoFim'],
+                labels: [anoInicio, anoFim],
                 datasets: [
                     {
-                        label: 'EAD',
-                        data: [1000, 4090], // dados mocados
+                        label: dadosGrafico[0].tipoModalidadeEnsino,
+                        data: [dadosGrafico[0].totalMatriculasAnoInicio, dadosGrafico[0].totalMatriculasAnoFim],
                         borderColor: '#3cc027',
                         backgroundColor: '#3cc027',
                         borderWidth: 3,
@@ -458,8 +502,8 @@
                         pointBorderWidth: 2,
                     },
                     {
-                        label: 'Semi\nPresencial',
-                        data: [2000, 2500], // dados mocados
+                        label: dadosGrafico[1].tipoModalidadeEnsino,
+                        data: [dadosGrafico[1].totalMatriculasAnoInicio, dadosGrafico[1].totalMatriculasAnoFim],
                         borderColor: '#ae8df5',
                         backgroundColor: '#ae8df5',
                         borderWidth: 3,
@@ -468,17 +512,17 @@
                         pointBorderColor: '#ffffff',
                         pointBorderWidth: 2,
                     },
-                    {
-                        label: 'Presencial',
-                        data: [3000, 3590], // dados mocados
-                        borderColor: '#f3b86b',
-                        backgroundColor: '#f3b86b',
-                        borderWidth: 3,
-                        pointRadius: 6,
-                        pointBackgroundColor: '#f3b86b',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                    }
+                    // {
+                    //     label: dadosGrafico[2].tipoModalidadeEnsino,
+                    //     data: [dadosGrafico[2].totalMatriculasAnoInicio, dadosGrafico[2].totalMatriculasAnoFim],
+                    //     borderColor: '#f3b86b',
+                    //     backgroundColor: '#f3b86b',
+                    //     borderWidth: 3,
+                    //     pointRadius: 6,
+                    //     pointBackgroundColor: '#f3b86b',
+                    //     pointBorderColor: '#ffffff',
+                    //     pointBorderWidth: 2,
+                    // }
                 ]
             },
             options: {
@@ -487,19 +531,30 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Evolução De Matrícula Por Modalidade',
+                        text: 'Evolução De Matrículas Por Modalidade',
                         color: '#ffffff',
                         font: { size: 23, family: 'Telegraf', weight: 'bold' }
                     },
                     subtitle: {
                         display: true,
-                        text: 'Comparação entre os dois anos selecionados.',
+                        text: 'Quantidade de matrículas nos dois anos selecionados por modalidade',
                         color: 'rgba(255, 255, 255, 0.7)',
                         align: 'start',
                         font: { size: 15, family: 'Telegraf' },
                         padding: { bottom: 20 }
                     },
-                    legend: { display: false },
+                    legend: { 
+                        display: true, 
+                        position: 'bottom',
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                family: 'Telegraf',
+                                weight: 'bold',
+                                size: 14,
+                            }
+                        } 
+                    },
                     tooltip: { enabled: false },
                     datalabels: {
                         display: true,
@@ -512,14 +567,14 @@
                         },
                         offset: 8,
 
-                        formatter: (value, context) => {
-                            const isLastPoint = context.dataIndex === context.dataset.data.length - 1;
+                        // formatter: (value, context) => {
+                        //     const isLastPoint = context.dataIndex === context.dataset.data.length - 1;
 
-                            if (isLastPoint) {
-                                return `${value} (${context.dataset.label})`;
-                            }
-                            return value;
-                        }
+                        //     if (isLastPoint) {
+                        //         return `${value} (${context.dataset.label})`;
+                        //     }
+                        //     return value;
+                        // }
                     }
                 },
                 scales: {
@@ -541,6 +596,11 @@
         });
     }
 
-    carregarGraficoEvolucaoPorModalidade();
+    window.onload = function() {
+        carregarKpi();
+        carregarTextoComparativo();
+        carregarGraficoCrescimentoTipoDeGraduacao();
+        carregarGraficoEvolucaoPorModalidade();
+    };
 
 </script>
