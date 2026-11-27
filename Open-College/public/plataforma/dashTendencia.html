@@ -216,10 +216,19 @@
 
     async function carregarKpi(){
 
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+        
         let kpiValorInicio = document.getElementById("kpi-valor-inicio");
         let kpiValorFim = document.getElementById("kpi-valor-fim");
         let cardComparacao = document.getElementById("card-comparacao");
         let kpiCrescimentoMedio = document.getElementById("kpi_tendencia_crescimento_medio");
+
+        let kpiAnoInicio = document.getElementById("kpi-ano-inicio");
+        let kpiAnoFim = document.getElementById("kpi-ano-fim");
+
+        kpiAnoInicio.textContent = `No ano de ${anoInicio}`;
+        kpiAnoFim.textContent = `No ano de ${anoFim}`;
 
         kpiValorInicio.textContent = "Carregando...";
         kpiValorFim.textContent = "Carregando...";
@@ -240,7 +249,7 @@
         kpiValorInicio.textContent = `${dadosKpi[0].totalMatriculasAnoInicio}`;
         kpiValorFim.textContent = `${dadosKpi[0].totalMatriculasAnoFim}`;
         let variacao = dadosKpi[0].percentualCrescimento;
-        cardComparacao.textContent = variacao > 0 ? `+ ${variacao.toFixed(1)}% no período` : `${variacao.toFixed(1)}% no período`;
+        cardComparacao.textContent = variacao > 0 ? `+ ${variacao}% no período` : `${variacao}% no período`;
         
         let dadosCrescimentoMedio = await buscarDadosKpi("Tendência", "kpi_tendencia_crescimento_medio");
 
@@ -251,6 +260,9 @@
         }
 
         dadosCrescimentoMedio = await dadosCrescimentoMedio.json();
+        let crescimentoMedioAnual = Number(dadosCrescimentoMedio[0].crescimentoMedioAnual);
+
+        kpiCrescimentoMedio.textContent = crescimentoMedioAnual > 0 ? `+ ${crescimentoMedioAnual.toFixed(1)}%` : `${crescimentoMedio.toFixed(1)}%`;
         
     }
 

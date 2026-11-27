@@ -330,7 +330,7 @@ function buscarKpiTendenciaCrescimentoMedio(anoInicio, anoFim){
 
     var instrucaoSql = `
         SELECT 
-            (ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2)) / (${anoFim} - ${anoInicio}) AS crescimentoMedioAnual
+            ROUND((ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2)), 2) / (${anoFim} - ${anoInicio}) AS crescimentoMedioAnual
         FROM tblCenso
         WHERE ano IN (${anoInicio}, ${anoFim});
     `;
@@ -469,6 +469,7 @@ module.exports = {
     buscarDadosGraficoRegiaoIngressantes,
 
     buscarKpiTendenciaMatriculas,
+    buscarKpiTendenciaCrescimentoMedio,
     buscarTextoComparativoModalidade,
     buscarTextoComparativoCurso, 
 
