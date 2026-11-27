@@ -86,6 +86,7 @@ CREATE TABLE tblUsuario (
     nome VARCHAR(100) NOT NULL,
     cpf CHAR(11) UNIQUE NOT NULL,
     telefone VARCHAR(20),
+    interesses VARCHAR(50),
     email VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
     foto VARCHAR(255),
@@ -290,11 +291,3 @@ CREATE TABLE tblLog (
         CHECK (tipo IN ('INFO', 'AVISO', 'ERRO'))
 );
   
-
-CREATE TABLE tblInteresse (
-    idInteresse INT PRIMARY KEY AUTO_INCREMENT,
-    interesse VARCHAR(50),
-    CONSTRAINT chUsuario
-    FOREIGN KEY(fkUsuario)
-    REFERENCES tblUsuario (idUsuario)
-);
