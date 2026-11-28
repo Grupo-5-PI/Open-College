@@ -124,6 +124,10 @@
 
 <script>
 
+    let dadosEtarios = [];
+    let dadosRede = [];
+    let dadosGenero = [];
+
     let foto = sessionStorage.FOTO_USUARIO;
     imgUsuario.src = `${foto}`
 
@@ -132,23 +136,115 @@
     let tituloDash = document.querySelector('.nav-dash p')
     let filtroAno = document.querySelector('.filtro-ano')
 
-    function atualizarAno() {
-        let anoSelecionado = filtroAno.value
-        tituloDash.textContent = `Dashboard - Perfil (${anoSelecionado})`
+    async function atualizarPerfil() {
+
+        let anoSelecionado = filtroAno.value;
+
+        tituloDash.textContent = `Dashboard - Perfil (${anoSelecionado})`;
+
+        try {
+            const resposta = await fetch(`/dashboard/atualizarPerfil?ano=${anoSelecionado}`);
+
+            console.log('Status:', resposta.status);
+
+            if (!resposta.ok) {
+                throw new Error('Erro ao buscar dados do perfil');
+            }
+
+            const dados = await resposta.json();
+
+            console.log('Resposta do servidor:', dados);
+
+            dadosEtarios = dados[0];
+
+            carregarGraficoEtario();
+
+        } catch (erro) {
+            console.error('Erro na requisição:', erro);
+        }
     }
 
-    filtroAno.addEventListener('change', atualizarAno)
+    async function atualizarRede() {
 
-    atualizarAno()
+        let anoSelecionado = filtroAno.value;
 
+        tituloDash.textContent = `Dashboard - Perfil (${anoSelecionado})`;
+
+        try {
+            const resposta = await fetch(`/dashboard/atualizarRede?ano=${anoSelecionado}`);
+
+            console.log('Status:', resposta.status);
+
+            if (!resposta.ok) {
+                throw new Error('Erro ao buscar dados da rede');
+            }
+
+            const dados = await resposta.json();
+
+            console.log('Resposta do servidor:', dados);
+
+            dadosRede = dados[0];
+
+            carregarPublicoPrivada();
+
+        } catch (erro) {
+            console.error('Erro na requisição:', erro);
+        }
+    }
+
+    async function atualizarGenero() {
+
+        let anoSelecionado = filtroAno.value;
+
+        tituloDash.textContent = `Dashboard - Perfil (${anoSelecionado})`;
+
+        try {
+            const resposta = await fetch(`/dashboard/atualizarGenero?ano=${anoSelecionado}`);
+
+            console.log('Status:', resposta.status);
+
+            if (!resposta.ok) {
+                throw new Error('Erro ao buscar dados de genero');
+            }
+
+            const dados = await resposta.json();
+
+            console.log('Resposta do servidor:', dados);
+
+            dadosGenero = dados[0];
+
+            carregarPorGenero();
+
+        } catch (erro) {
+            console.error('Erro na requisição:', erro);
+        }
+    }
+
+    filtroAno.addEventListener('change', atualizarPerfil);
+    filtroAno.addEventListener('change', atualizarRede);
+    filtroAno.addEventListener('change', atualizarGenero);
+
+
+    atualizarPerfil()
+    atualizarRede()
+    atualizarGenero()
+
+    let graficoEtario;
+    let graficoRede;
+    let graficoGenero;
 
     function carregarGraficoEtario() {
+
+        if (graficoEtario) {
+            graficoEtario.destroy();
+        }
+
         let faixaEtaria = document.getElementById('grafico-faixa-etaria')
 
-        new Chart(faixaEtaria, {
+        graficoEtario = new Chart(faixaEtaria, {
             type: 'bar',
             data: {
-                labels: ['18 A 24', '25 A 30', '30 A 34', '35 A 40', '41 A 45', '46 A 50', '51 A 60'],
+                labels: ['18 A 24', '25 A 29', '30 A 34', '35 A 39', '40 A 49', '50 A 59', '60 ou mais'],
                 datasets: [
                     {
                         type: 'line',
@@ -165,7 +261,15 @@
                     {
                         type: 'bar',
                         label: 'Número de Alunos',
-                        data: [100, 250, 200, 80, 90, 30, 20],
+                        data: [
+                            dadosEtarios.qtdMatricula1824,
+                            dadosEtarios.qtdMatricula2529,
+                            dadosEtarios.qtdMatricula3034,
+                            dadosEtarios.qtdMatricula3539,
+                            dadosEtarios.qtdMatricula4049,
+                            dadosEtarios.qtdMatricula5059,
+                            dadosEtarios.qtdMatricula60Mais
+                        ],
                         backgroundColor: [
                             '#4a7ff7', '#ae8df5', '#f3b86b', '#ffde59', '#ef737c', '#e978c4', '#5cd4d3'
                         ],
@@ -213,16 +317,25 @@
     }
 
 
-    function carregarPorGenero() {
-        let porGenero = document.getElementById('grafico-por-genero')
 
-        new Chart(porGenero, {
+    function carregarPorGenero() {
+
+        let porGenero = document.getElementById('grafico-por-genero');
+
+        if (graficoGenero) {
+            graficoGenero.destroy();
+        }
+
+        graficoGenero = new Chart(porGenero, {
             type: 'pie',
             data: {
-                labels: ['Mulher Cisgênero', 'Homem Cisgênero', 'Outra Identidade'],
+                labels: ['Feminino', 'Masculino'],
                 datasets: [{
-                    data: [47, 8, 45],
-                    backgroundColor: ['#4a7ff7', '#ae8df5', '#f3b86b'],
+                    data: [
+                        dadosGenero.porcentagemFeminina,
+                        dadosGenero.porcentagemMasculina
+                    ],
+                    backgroundColor: ['#4a7ff7', '#ae8df5'],
                     borderWidth: 0
                 }]
             },
@@ -255,23 +368,32 @@
                         labels: {
                             color: '#ffffff',
                             boxWidth: 12,
-                            padding:15,
+                            padding: 15
                         }
                     }
                 }
-            },
-        })
+            }
+        });
     }
 
-    function carregarPublicoPrivada() {
-        let publicoPrivada = document.getElementById('grafico-publico-privada')
 
-        new Chart(publicoPrivada, {
+    function carregarPublicoPrivada() {
+
+        let publicoPrivada = document.getElementById('grafico-publico-privada');
+
+        if (graficoRede) {
+            graficoRede.destroy();
+        }
+
+        graficoRede = new Chart(publicoPrivada, {
             type: 'pie',
             data: {
                 labels: ['Rede Pública', 'Rede Privada'],
                 datasets: [{
-                    data: [58, 42],
+                    data: [
+                        dadosRede.porcentagemPublica,
+                        dadosRede.porcentagemPrivada
+                    ],
                     backgroundColor: ['#ef737c', '#ffde59'],
                     borderWidth: 0
                 }]
@@ -315,12 +437,9 @@
                     }
                 }
             }
-        })
-
+        });
     }
 
-    carregarGraficoEtario()
     carregarPorGenero()
-    carregarPublicoPrivada()
 
 </script>
