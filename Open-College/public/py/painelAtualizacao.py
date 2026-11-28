@@ -23,7 +23,37 @@ DB_CONFIG = {
     "database": os.getenv("DB_DATABASE") or os.getenv("DB_NAME") or "opencollege"
 }
 
+def definir_setor(lemas):
+    if any(t in lemas for t in ["tecnologia", "ti", "software", "programação", "programador",
+        "desenvolvedor", "dados", "ia", "artificial", "computação", "sistema", "digital"]):
+        return "tecnologia"
 
+    if any(t in lemas for t in ["saúde", "medicina", "médico", "enfermagem", "enfermeiro",
+        "hospital", "psicologia", "fisioterapia", "nutrição", "farmácia", "odontologia"]):
+        return "saude"
+
+    if any(t in lemas for t in ["engenharia", "engenheiro", "indústria", "industrial",
+        "construção", "civil", "elétrica", "mecânica", "automação", "infraestrutura"]):
+        return "engenharia"
+
+    if any(t in lemas for t in ["administração", "negócio", "gestão", "gestor", "financeiro",
+        "finanças", "economia", "contabilidade", "vendas", "comercial", "empreendedorismo", "rh"]):
+        return "administracao"
+
+    if any(t in lemas for t in ["direito", "jurídico", "advogado", "advocacia", "justiça", "tribunal"]):
+        return "direito"
+
+    if any(t in lemas for t in ["comunicação", "marketing", "publicidade", "jornalismo", "mídia", "branding"]):
+        return "comunicacao"
+
+    if any(t in lemas for t in ["design", "designer", "ux", "ui", "interface", "gráfico", "arquitetura"]):
+        return "design"
+
+    if any(t in lemas for t in ["educação", "ensino", "professor", "docente", "pedagogia",
+        "escola", "faculdade", "universidade", "graduação", "licenciatura"]):
+        return "educacao"
+
+    return "geral"
 
 def calcular_pontuacao(titulo, descricao):
     texto_inteiro = f"{titulo} {descricao}".lower()
@@ -44,7 +74,8 @@ def calcular_pontuacao(titulo, descricao):
     if any(termo in lemas for termo in ["futebol", "famoso", "polícia", "trânsito"]):
         nota -= 3
         
-    return nota
+    setor = definir_setor(lemas)
+    return nota, setor
 
 
 def envio_banco():
@@ -92,9 +123,9 @@ def envio_banco():
         if not titulo or not url or titulo == "[Removed]":
             continue
         
-        nota = calcular_pontuacao(titulo, descricao)
+        nota, setor = calcular_pontuacao(titulo, descricao)
         
-        print(f"   -> Nota {nota}: {titulo[:65]}...")
+        print(f"   -> Nota {nota} [{setor}]: {titulo[:65]}...")
         
         if nota >= 3:
             cursor.execute("SELECT idNoticia FROM tblNoticia WHERE url = %s", (url,))
@@ -115,7 +146,7 @@ def envio_banco():
                 descricao,
                 url,
                 data_noticia,
-                "Ensino Superior",
+                setor,
                 nota,
                 fk_usuario_teste
             )
