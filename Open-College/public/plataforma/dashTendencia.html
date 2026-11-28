@@ -326,6 +326,10 @@
             dataAnoFim.push(linha.totalMatriculasAnoFim);
         }
 
+        if(Chart.getChart(crescimentoGraduacao)){
+            Chart.getChart(crescimentoGraduacao).destroy();
+        }
+        
         new Chart(crescimentoGraduacao, {
             type: 'bar',
             data: {
@@ -486,6 +490,10 @@
         
         dadosGrafico = await dadosGrafico.json();
 
+        if(Chart.getChart(evolucaoMatricula)){
+            Chart.getChart(evolucaoMatricula).destroy();
+        }
+
         new Chart(evolucaoMatricula, {
             type: 'line',
             data: {
@@ -611,7 +619,7 @@
         subtitulo.textContent = `Ranking calculado para: ${anoInicio} - ${anoFim}`;
         headerMatriculas.textContent = `Matrículas ${anoInicio} - ${anoFim}`;
 
-
+        console.log("oier")
         let dadosGrafico = await buscarDadosGrafico("Tendência", "tabela_crescimento_cursos");
 
         if(dadosGrafico == '500'){
@@ -625,6 +633,7 @@
         mensagem.textContent = "";
 
         dadosGrafico = await dadosGrafico.json();
+        console.log(dadosGrafico)
 
         for(let i = 0; i < dadosGrafico.length; i++){
             let linha = dadosGrafico[i];
@@ -655,12 +664,17 @@
         
     }
 
-    window.onload = function() {
+    function carregarGraficosKpis(){
         carregarKpi();
         carregarTextoComparativo();
         carregarGraficoCrescimentoTipoDeGraduacao();
         carregarGraficoEvolucaoPorModalidade();
         carregarTabela();
-    };
+    }
+
+    window.onload = carregarGraficosKpis;
+
+    document.getElementById('filtro-inicio').addEventListener('change', carregarGraficosKpis);
+    document.getElementById('filtro-fim').addEventListener('change', carregarGraficosKpis);
 
 </script>
