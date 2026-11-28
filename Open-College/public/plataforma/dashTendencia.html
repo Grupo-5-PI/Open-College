@@ -89,8 +89,8 @@
                 <nav class="nav-dash-tendencia">
                     <p>Dashboard - Tendência (ANO)</p>
                     <div class="filtro-ano-tendencia">
+                        <span>Ano de Início:</span>
                         <select class="filtro-ano" id="filtro-inicio">
-                            <option>2024</option>
                             <option>2023</option>
                             <option>2022</option>
                             <option>2021</option>
@@ -98,6 +98,7 @@
                             <option>2019</option>
                         </select>
 
+                        <span>Ano de Fim:</span>
                         <select class="filtro-ano" id="filtro-fim">
                             <option>2024</option>
                             <option>2023</option>
@@ -111,7 +112,7 @@
             </header>
 
             <section class="grid-cards-tendencia">
-                <div class="card-kpi-tendencia">
+                <div class="card-kpi-tendencia" id="kpi_tendencia_matriculas_anterior">
                     <div class="card-kpi">
                         <span class="card-titulo">Matrículas na graduação</span>
                         <strong class="card-valor" id="kpi-valor-inicio">20.000 mil</strong>
@@ -120,7 +121,7 @@
                 </div>
 
                 <div class="card-kpi-tendencia">
-                    <div class="card-kpi">
+                    <div class="card-kpi" id="kpi_tendencia_matriculas_atual">
                         <span class="card-titulo">Matrículas na graduação</span>
                         <strong class="card-valor" id="kpi-valor-fim">40.000 mil</strong>
                         <strong class="card-comparacao" id="card-comparacao">+ 9.3% no período</strong>
@@ -129,29 +130,33 @@
                 </div>
 
                 <div class="card-kpi-tendencia">
-                    <div class="card-kpi">
+                    <div class="card-kpi" >
                         <span class="card-titulo">Crescimento médio ao ano</span>
-                        <strong class="card-valor">+ 5% </strong>
+                        <strong class="card-valor" id="kpi_tendencia_crescimento_medio">+ 5%</strong>
                     </div>
                 </div>
             </section>
 
             <div class="card-kpi-tendencia">
                 <div class="card-kpi">
-                    <span class="card-valor" id="texto-comparativo">De ANO a ANO, o EAD cresceu 32% e o presencial caiu
+                    <span class="card-valor" id="texto-comparativo">
+                        De ANO a ANO, o EAD cresceu 32% e o presencial caiu
                         4%. O curso que mais
-                        cresceu foi Análise e Des. de Sistemas (+75%)</span>
+                        cresceu foi Análise e Des. de Sistemas (+75%)
+                    </span>
                 </div>
             </div>
 
             <section class="graficosLadoaLado">
                 <div class="grafico-duplo">
                     <div class="grafico-linha">
+                        <span id="mensagem_graduacao"></span>
                         <canvas id="grafico-crescimento-graduacao"></canvas>
                     </div>
                 </div>
                 <div class="grafico-duplo">
                     <div class="grafico-linha">
+                        <span id="mensagem_modalidade"></span>
                         <canvas id="grafico-evo-matricula-mod"></canvas>
                     </div>
                 </div>
@@ -159,41 +164,42 @@
 
             <section class="card-tendencia">
                     <h3>Cursos com maior crescimento</h3>
-                    <p id="subtitulo-tabela">Ranking recalculado para anoInicio - anoFim</p>
-                    <table class="tabela-dashboard">
+                    <p id="subtitulo-tabela">Ranking calculado para: anoInicio - anoFim</p>
+                    <table class="tabela-dashboard" id="tabela_crescimento_cursos">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th>Curso</th>
+                                <th id="header_matriculas">Matrículas anoInicio - anoFim</th>
+                                <th>Variação</th>
                             </tr>
+                            <span id="mensagem_cursos"></span>
                         </thead>
-                        <tbody>
-                            <tr>
+                        <tbody id="corpo_tabela">
+                            <tr id="tbl_curso_1">
                                 <td>Análise e Desenvolvimento de Sistemas </td>
                                 <td>80mil - 140mil</td>
                                 <td class="positivo">+75,0%</td>
                             </tr>
-                            <tr>
+                            <tr id="tbl_curso_2">
                                 <td>Ciências da Computação</td>
                                 <td>170mil - 235mil</td>
                                 <td class="positivo">+38,2%</td>
                             </tr>
-                            <tr>
+                            <tr id="tbl_curso_3">
                                 <td>Odontologia</td>
                                 <td>82mil - 110mil</td>
                                 <td class="positivo">+34,1%</td>
                             </tr>
-                            <tr>
+                            <tr id="tbl_curso_4">
                                 <td>Psicologia</td>
                                 <td>300mil - 380mil</td>
                                 <td class="positivo">+34,1%</td>
                             </tr>
-                            <tr>
+                            <tr id="tbl_curso_5">
                                 <td>Direito</td>
                                 <td>120mil - 110mil</td>
                                 <td class="negativo">-10,9%</td>
-                            </tr>
+                            </tr> 
                         </tbody>
                     </table>
             </section>
@@ -205,98 +211,133 @@
 </body>
 
 </html>
+<script src="../js/dashboardScript.js"></script>
 <script>
 
     let foto = sessionStorage.FOTO_USUARIO;
-    imgUsuario.src = `${foto}`
+    imgUsuario.src = `${foto}`;
+
+    async function carregarKpi(){
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+        
+        let kpiValorInicio = document.getElementById("kpi-valor-inicio");
+        let kpiValorFim = document.getElementById("kpi-valor-fim");
+        let cardComparacao = document.getElementById("card-comparacao");
+        let kpiCrescimentoMedio = document.getElementById("kpi_tendencia_crescimento_medio");
+
+        let kpiAnoInicio = document.getElementById("kpi-ano-inicio");
+        let kpiAnoFim = document.getElementById("kpi-ano-fim");
+
+        kpiAnoInicio.textContent = `No ano de ${anoInicio}`;
+        kpiAnoFim.textContent = `No ano de ${anoFim}`;
+
+        kpiValorInicio.textContent = "Carregando...";
+        kpiValorFim.textContent = "Carregando...";
+        cardComparacao.textContent = "";
+        kpiCrescimentoMedio.textContent = "Carregando...";
+        
+        let dadosKpi = await buscarDadosKpi("Tendência", "kpi_tendencia_matriculas");
+        
+        if(dadosKpi == '204' || dadosKpi == '500'){
+            console.log("Erro ao buscar dados do KPI");
+            kpiValorInicio.textContent = "Erro ao carregar";
+            kpiValorFim.textContent = "Erro ao carregar";
+            return;
+        }
+
+        dadosKpi = await dadosKpi.json();
+
+        kpiValorInicio.textContent = `${dadosKpi[0].totalMatriculasAnoInicio}`;
+        kpiValorFim.textContent = `${dadosKpi[0].totalMatriculasAnoFim}`;
+        let variacao = dadosKpi[0].percentualCrescimento;
+        cardComparacao.textContent = variacao > 0 ? `+ ${variacao}% no período` : `${variacao}% no período`;
+        
+        let dadosCrescimentoMedio = await buscarDadosKpi("Tendência", "kpi_tendencia_crescimento_medio");
+
+        if(dadosCrescimentoMedio == '204' || dadosCrescimentoMedio == '500'){
+            console.log("Erro ao buscar dados do KPI de crescimento médio");
+            kpiCrescimentoMedio.textContent = "Erro ao carregar";
+            return;
+        }
+
+        dadosCrescimentoMedio = await dadosCrescimentoMedio.json();
+        let crescimentoMedioAnual = Number(dadosCrescimentoMedio[0].crescimentoMedioAnual);
+
+        kpiCrescimentoMedio.textContent = crescimentoMedioAnual > 0 ? `+ ${crescimentoMedioAnual.toFixed(1)}%` : `${crescimentoMedio.toFixed(1)}%`;
+        
+    }
+
+    async function carregarTextoComparativo(){
+        let dadosModalidade = await buscarDadosKpi("Tendência", "texto-comparativo-modalidade");
+        let dadosCurso = await buscarDadosKpi("Tendência", "texto-comparativo-curso");
+
+        if(dadosModalidade == '204' || dadosModalidade == '500' || dadosCurso == '204' || dadosCurso == '500'){
+            console.log("Erro ao buscar dados do texto comparativo");
+            return;
+        }
+
+        dadosModalidade = await dadosModalidade.json();
+        dadosCurso = await dadosCurso.json();
+
+        let textoComparativo = document.getElementById("texto-comparativo");
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        textoComparativo.textContent = `De ${anoInicio} a ${anoFim}, o EAD cresceu ${dadosModalidade[0].percentualCrescimento}% e o presencial caiu ${dadosModalidade[1].percentualCrescimento}%.
+ O curso que mais cresceu foi ${dadosCurso[0].nomeCurso} (+${dadosCurso[0].percentualCrescimento}%)`;
+        
+    }
 
     Chart.register(ChartDataLabels);
 
-    let tituloDash = document.querySelector('.nav-dash-tendencia p')
-    let filtroInicio = document.getElementById('filtro-inicio');
-    let filtroFim = document.getElementById('filtro-fim');
-    let cardKPI = document.querySelectorAll('.card-rodape')
-    let comparacao = document.querySelectorAll('card-comparacao')
+    async function carregarGraficoCrescimentoTipoDeGraduacao() {
 
-    function atualizarAno() {
-        let anoInicio = filtroInicio.value;
-        let anoFim = filtroFim.value;
+        let crescimentoGraduacao = document.getElementById('grafico-crescimento-graduacao');
+        let mensagem = document.getElementById('mensagem_graduacao');
 
-        if (tituloDash) {
-            tituloDash.textContent = `Dashboard - Tendência (${anoInicio} a ${anoFim})`;
+        let dadosGrafico = await buscarDadosGrafico("Tendência", "grafico-crescimento-graduacao");
+        
+        if(dadosGrafico == '500'){
+            mensagem.textContent = 'Erro ao buscar dados do gráfico!';
+            return;
+        } else if(dadosGrafico == '204'){
+            mensagem.textContent = 'Nenhum dado disponível!';
+            return;
+        }
+        
+        mensagem.textContent = "";
+        
+        dadosGrafico = await dadosGrafico.json();
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        let labels = [];
+        let dataAnoInicio = [];
+        let dataAnoFim = [];
+
+        for(let i = 0; i < dadosGrafico.length; i++){
+            let linha = dadosGrafico[i];
+            labels.push(linha.tipoGrauAcademico);
+            dataAnoInicio.push(linha.totalMatriculasAnoInicio);
+            dataAnoFim.push(linha.totalMatriculasAnoFim);
         }
 
-        let kpiAnoInicio = document.getElementById('kpi-ano-inicio');
-
-        // Atualiza o KPI 1 com o primeiro ano
-        if (kpiAnoInicio) {
-            kpiAnoInicio.textContent = `No ano de ${anoInicio}`;
+        if(Chart.getChart(crescimentoGraduacao)){
+            Chart.getChart(crescimentoGraduacao).destroy();
         }
-
-        // Atualiza o KPI 2 com o segundo ano
-        let kpiAnoFim = document.getElementById('kpi-ano-fim');
-        if (kpiAnoFim) {
-            kpiAnoFim.textContent = `No ano de ${anoFim}`;
-        }
-
-        // 4. Atualiza o texto grande comparativo no meio
-        let textoComparativo = document.getElementById('texto-comparativo');
-        if (textoComparativo) {
-            textoComparativo.textContent = `De ${anoInicio} a ${anoFim}, o EAD cresceu 32% e o presencial caiu 4%. O curso que mais cresceu foi Análise e Des. de Sistemas (+75%)`;
-        }
-    }
-
-    function bloquearAnoRepetido() {
-        let anoInicio = filtroInicio.value;
-        let anoFim = filtroFim.value;
-
-        // 1. Desbloqueia TODAS as opções dos DOIS filtros primeiro
-        for (let i = 0; i < filtroInicio.options.length; i++) {
-            filtroInicio.options[i].disabled = false;
-        }
-        for (let i = 0; i < filtroFim.options.length; i++) {
-            filtroFim.options[i].disabled = false;
-        }
-
-        // 2. Bloqueia no Filtro FIM o ano que foi escolhido no INÍCIO
-        for (let i = 0; i < filtroFim.options.length; i++) {
-            if (filtroFim.options[i].value === anoInicio) {
-                filtroFim.options[i].disabled = true;
-            }
-        }
-
-        // 3. Bloqueia no Filtro INÍCIO o ano que foi escolhido no FIM
-        for (let i = 0; i < filtroInicio.options.length; i++) {
-            if (filtroInicio.options[i].value === anoFim) {
-                filtroInicio.options[i].disabled = true;
-            }
-        }
-    }
-
-    filtroInicio.addEventListener('change', () => {
-        bloquearAnoRepetido();
-        atualizarAno();
-    });
-
-    filtroFim.addEventListener('change', () => {
-        bloquearAnoRepetido();
-        atualizarAno();
-    });
-
-    bloquearAnoRepetido();
-
-
-    function carregarGraficoCrescimentoTipoDeGraduacao(anoInicio, anoFim) {
-        let crecimentoGraduacao = document.getElementById('grafico-crescimento-graduacao');
-
-        new Chart(crecimentoGraduacao, {
+        
+        new Chart(crescimentoGraduacao, {
             type: 'bar',
             data: {
-                labels: ['Bacharelado', 'Licenciatura', 'Tecnólogo'],
+                labels: labels,
                 datasets: [
                     {
-                        label: 'anoInicio',
-                        data: [1000, 500, 300], // dados mocados
+                        label: anoInicio,
+                        data: dataAnoInicio, 
                         borderColor: '#4a7ff7',
                         backgroundColor: '#4a7ff7',
                         borderWidth: 3,
@@ -307,8 +348,8 @@
                         fill: false
                     },
                     {
-                        label: 'anoFim',
-                        data: [1045, 577, 402], // dados mocados
+                        label: anoFim,
+                        data: dataAnoFim, 
                         borderColor: '#f3b86b',
                         backgroundColor: '#f3b86b',
                         borderWidth: 3,
@@ -332,6 +373,7 @@
                             align: 'left',
                             formatter: (valorFim, context) => {
                                 const valorInicio = context.chart.data.datasets[0].data[context.dataIndex];
+                                if(valorInicio == 0 || valorFim == 0) return '0.00%';
                                 const variacao = ((valorFim - valorInicio) / valorInicio) * 100;
                                 return variacao > 0 ? `+${variacao.toFixed(1)}%` : `${variacao.toFixed(1)}%`;
                             }
@@ -427,19 +469,39 @@
         });
     }
 
-    carregarGraficoCrescimentoTipoDeGraduacao();
-
-    function carregarGraficoEvolucaoPorModalidade() {
+    async function carregarGraficoEvolucaoPorModalidade() {
         let evolucaoMatricula = document.getElementById('grafico-evo-matricula-mod');
+
+        let mensagem = document.getElementById("mensagem_modalidade");
+        let dadosGrafico = await buscarDadosGrafico("Tendência", "grafico-evo-matricula-mod");
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        if(dadosGrafico == '500'){
+            mensagem.textContent = 'Erro ao buscar dados do gráfico!';
+            return;
+        } else if(dadosGrafico == '204'){
+            mensagem.textContent = 'Nenhum dado disponível!';
+            return;
+        }
+        
+        mensagem.textContent = "";
+        
+        dadosGrafico = await dadosGrafico.json();
+
+        if(Chart.getChart(evolucaoMatricula)){
+            Chart.getChart(evolucaoMatricula).destroy();
+        }
 
         new Chart(evolucaoMatricula, {
             type: 'line',
             data: {
-                labels: ['anoInicio', 'anoFim'],
+                labels: [anoInicio, anoFim],
                 datasets: [
                     {
-                        label: 'EAD',
-                        data: [1000, 4090], // dados mocados
+                        label: dadosGrafico[0].tipoModalidadeEnsino,
+                        data: [dadosGrafico[0].totalMatriculasAnoInicio, dadosGrafico[0].totalMatriculasAnoFim],
                         borderColor: '#3cc027',
                         backgroundColor: '#3cc027',
                         borderWidth: 3,
@@ -449,8 +511,8 @@
                         pointBorderWidth: 2,
                     },
                     {
-                        label: 'Semi\nPresencial',
-                        data: [2000, 2500], // dados mocados
+                        label: dadosGrafico[1].tipoModalidadeEnsino,
+                        data: [dadosGrafico[1].totalMatriculasAnoInicio, dadosGrafico[1].totalMatriculasAnoFim],
                         borderColor: '#ae8df5',
                         backgroundColor: '#ae8df5',
                         borderWidth: 3,
@@ -459,17 +521,17 @@
                         pointBorderColor: '#ffffff',
                         pointBorderWidth: 2,
                     },
-                    {
-                        label: 'Presencial',
-                        data: [3000, 3590], // dados mocados
-                        borderColor: '#f3b86b',
-                        backgroundColor: '#f3b86b',
-                        borderWidth: 3,
-                        pointRadius: 6,
-                        pointBackgroundColor: '#f3b86b',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                    }
+                    // {
+                    //     label: dadosGrafico[2].tipoModalidadeEnsino,
+                    //     data: [dadosGrafico[2].totalMatriculasAnoInicio, dadosGrafico[2].totalMatriculasAnoFim],
+                    //     borderColor: '#f3b86b',
+                    //     backgroundColor: '#f3b86b',
+                    //     borderWidth: 3,
+                    //     pointRadius: 6,
+                    //     pointBackgroundColor: '#f3b86b',
+                    //     pointBorderColor: '#ffffff',
+                    //     pointBorderWidth: 2,
+                    // }
                 ]
             },
             options: {
@@ -478,19 +540,30 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Evolução De Matrícula Por Modalidade',
+                        text: 'Evolução De Matrículas Por Modalidade',
                         color: '#ffffff',
                         font: { size: 23, family: 'Telegraf', weight: 'bold' }
                     },
                     subtitle: {
                         display: true,
-                        text: 'Comparação entre os dois anos selecionados.',
+                        text: 'Quantidade de matrículas nos dois anos selecionados por modalidade',
                         color: 'rgba(255, 255, 255, 0.7)',
                         align: 'start',
                         font: { size: 15, family: 'Telegraf' },
                         padding: { bottom: 20 }
                     },
-                    legend: { display: false },
+                    legend: { 
+                        display: true, 
+                        position: 'bottom',
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                family: 'Telegraf',
+                                weight: 'bold',
+                                size: 14,
+                            }
+                        } 
+                    },
                     tooltip: { enabled: false },
                     datalabels: {
                         display: true,
@@ -503,14 +576,14 @@
                         },
                         offset: 8,
 
-                        formatter: (value, context) => {
-                            const isLastPoint = context.dataIndex === context.dataset.data.length - 1;
+                        // formatter: (value, context) => {
+                        //     const isLastPoint = context.dataIndex === context.dataset.data.length - 1;
 
-                            if (isLastPoint) {
-                                return `${value} (${context.dataset.label})`;
-                            }
-                            return value;
-                        }
+                        //     if (isLastPoint) {
+                        //         return `${value} (${context.dataset.label})`;
+                        //     }
+                        //     return value;
+                        // }
                     }
                 },
                 scales: {
@@ -532,6 +605,76 @@
         });
     }
 
-    carregarGraficoEvolucaoPorModalidade();
+    async function carregarTabela(){
+
+        let corpoTabela = document.getElementById('corpo_tabela');
+        corpoTabela.innerHTML = '';
+        let subtitulo = document.getElementById('subtitulo-tabela');
+        let headerMatriculas = document.getElementById('header_matriculas');
+        let mensagem = document.getElementById('mensagem_cursos');
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        subtitulo.textContent = `Ranking calculado para: ${anoInicio} - ${anoFim}`;
+        headerMatriculas.textContent = `Matrículas ${anoInicio} - ${anoFim}`;
+
+        console.log("oier")
+        let dadosGrafico = await buscarDadosGrafico("Tendência", "tabela_crescimento_cursos");
+
+        if(dadosGrafico == '500'){
+            mensagem.textContent = 'Erro ao buscar dados do gráfico!';
+            return;
+        } else if(dadosGrafico == '204'){
+            mensagem.textContent = 'Nenhum dado disponível!';
+            return;
+        }
+        
+        mensagem.textContent = "";
+
+        dadosGrafico = await dadosGrafico.json();
+        console.log(dadosGrafico)
+
+        for(let i = 0; i < dadosGrafico.length; i++){
+            let linha = dadosGrafico[i];
+            // let cor = linha.percentualCrescimento > 0 ? '#3cc027' : '#ff5555';
+            let classe;
+            let sinal;
+
+            if(linha.percentualCrescimento > 0){
+                classe = 'positivo'; 
+                sinal = '+';
+            } else{
+                classe = 'negativo';
+                sinal = '-';
+            }
+
+            let percentualCrescimento = Number(linha.percentualCrescimento)
+
+            corpoTabela.innerHTML += `
+                <tr>
+                    <td>${linha.nomeCurso}</td>
+                    <td>${linha.totalMatriculasAnoInicio} - ${linha.totalMatriculasAnoFim}</td>
+                    <td class="${classe}">${sinal}${percentualCrescimento.toFixed(1)}%</td>
+                </tr>
+            `;
+            
+            
+        }
+        
+    }
+
+    function carregarGraficosKpis(){
+        carregarKpi();
+        carregarTextoComparativo();
+        carregarGraficoCrescimentoTipoDeGraduacao();
+        carregarGraficoEvolucaoPorModalidade();
+        carregarTabela();
+    }
+
+    window.onload = carregarGraficosKpis;
+
+    document.getElementById('filtro-inicio').addEventListener('change', carregarGraficosKpis);
+    document.getElementById('filtro-fim').addEventListener('change', carregarGraficosKpis);
 
 </script>

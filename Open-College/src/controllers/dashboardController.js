@@ -178,6 +178,71 @@ function buscarDadosKpi(req, res){
         
     } else if(dashboard == "Tendência"){
 
+        let anoFim = parametros.anoFimParam;
+
+        if(kpi == "kpi_tendencia_matriculas"){ 
+            // let graduacao = parametros.graduacaoParam;
+            
+            dashboardModel.buscarKpiTendenciaMatriculas(ano, anoFim)
+            .then(function(resposta){
+                console.log('kpi_tendencia_matriculas:\n', resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+        } else if(kpi == 'kpi_tendencia_crescimento_medio'){
+            dashboardModel.buscarKpiTendenciaCrescimentoMedio(ano, anoFim)
+            .then(function(resposta){
+                console.log('kpi_tendencia_crescimento_medio:\n', resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+        } else if(kpi == "texto-comparativo-modalidade"){
+
+            dashboardModel.buscarTextoComparativoModalidade(ano, anoFim)
+            .then(function(resposta){
+                console.log('texto-comparativo-modalidade:\n', resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+            
+        } else if(kpi == "texto-comparativo-curso"){
+
+            dashboardModel.buscarTextoComparativoCurso(ano, anoFim)
+            .then(function(resposta){
+                console.log(resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+            
+        }
     }
     
 }
@@ -265,6 +330,52 @@ function buscarDadosGrafico(req, res){
         }
         
     } else if(dashboard == "Tendência"){
+
+        let anoFim = parametros.anoFimParam;
+        
+        if(grafico == "grafico-crescimento-graduacao"){
+            dashboardModel.buscarDadosGraficoTendenciaGraduacao(ano, anoFim)
+            .then(function(resposta){
+                console.log('grafico-crescimento-graduacao\n', resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+        } else if(grafico == "grafico-evo-matricula-mod"){
+            dashboardModel.buscarDadosGraficoTendenciaModalidade(ano, anoFim)
+            .then(function(resposta){
+                console.log(resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+        } else if(grafico == "tabela_crescimento_cursos"){
+            dashboardModel.buscarDadosGraficoTendenciaCursos(ano, anoFim)
+            .then(function(resposta){
+                console.log(resposta);
+                if(resposta.length > 0){
+                    res.status(200).json(resposta);
+                } else{
+                    res.status(204).send(resposta);
+                }
+            })
+            .catch(function(erro){
+                console.log(erro);
+                res.status(500).send(erro);
+            });
+        }
 
     }
     

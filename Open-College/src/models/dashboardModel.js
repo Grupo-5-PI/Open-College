@@ -505,6 +505,153 @@ function buscarDadosGraficoRegiaoIngressantes(ano) {
 
 // ================ DASHBOARD TENDÊNCIA ================ //
 
+function buscarKpiTendenciaMatriculas(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarKpiTendenciaMatriculas()");
+
+    var instrucaoSql = `
+        SELECT 
+            SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+            SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim, 
+            ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2) AS percentualCrescimento
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim});
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function buscarKpiTendenciaCrescimentoMedio(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarKpiTendenciaCrescimentoMedio()");
+
+    var instrucaoSql = `
+        SELECT 
+            ROUND((ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2)), 2) / (${anoFim} - ${anoInicio}) AS crescimentoMedioAnual
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim});
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function buscarTextoComparativoModalidade(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarTextoComparativo()");
+
+    var instrucaoSql = `
+        SELECT 
+            tipoModalidadeEnsino, 
+            SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+            SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim,
+            ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2) AS percentualCrescimento
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim})
+        GROUP BY tipoModalidadeEnsino
+        ORDER BY tipoModalidadeEnsino ASC;
+    `;
+    
+    return database.executar(instrucaoSql);
+    
+}
+
+function buscarTextoComparativoCurso(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarTextoComparativoCurso()");
+
+    var instrucaoSql = `
+        SELECT 
+            nomeCurso,  
+            ROUND((totalMatriculasAnoFim - totalMatriculasAnoInicio) / totalMatriculasAnoInicio * 100, 2) AS percentualCrescimento
+        FROM 
+        (
+            SELECT 
+                cur.nome AS nomeCurso,
+                SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
+                SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim
+            FROM tblCenso cen
+            JOIN tblCurso cur ON cur.idCurso = cen.idCurso
+            WHERE cen.ano IN (${anoInicio}, ${anoFim})
+            GROUP BY cur.idCurso, cur.nome
+        ) AS subquery 
+        ORDER BY percentualCrescimento DESC
+        LIMIT 1;
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
+function buscarDadosGraficoTendenciaGraduacao(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarDadosGraficoTendenciaGraduacao()");
+
+    var instrucaoSql = `
+        SELECT 
+            tipoGrauAcademico, 
+            IFNULL(SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoInicio,
+            IFNULL(SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoFim, 
+            IFNULL(ROUND((SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END) - SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END)) / SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END) * 100, 2), 0) AS percentualCrescimento
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim})
+        GROUP BY tipoGrauAcademico
+        ORDER BY tipoGrauAcademico ASC;
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
+function buscarDadosGraficoTendenciaModalidade(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarDadosGraficoTendenciaModalidade()");
+
+    var instrucaoSql = `
+        SELECT 
+            tipoModalidadeEnsino, 
+            IFNULL(SUM(CASE WHEN ano = ${anoInicio} THEN qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoInicio,
+            IFNULL(SUM(CASE WHEN ano = ${anoFim} THEN qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoFim
+        FROM tblCenso
+        WHERE ano IN (${anoInicio}, ${anoFim})
+        GROUP BY tipoModalidadeEnsino
+        ORDER BY tipoModalidadeEnsino ASC;
+    `;
+
+    return database.executar(instrucaoSql);
+
+}
+
+function buscarDadosGraficoTendenciaCursos(anoInicio, anoFim){
+
+    console.log("CHEGUEI NO DASHBOARD MODEL");
+    console.log("Função: buscarDadosGraficoTendenciaCursos()");
+
+    var instrucaoSql = `
+        SELECT 
+            cur.nome AS nomeCurso,
+            IFNULL(SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoInicio,
+            IFNULL(SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoFim,
+            IFNULL(ROUND((SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) - SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END)) / SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) * 100, 2), 0) AS percentualCrescimento
+        FROM tblCenso cen
+        JOIN tblCurso cur ON cur.idCurso = cen.idCurso
+        WHERE cen.ano IN (${anoInicio}, ${anoFim})
+        GROUP BY cur.nome
+        ORDER BY percentualCrescimento DESC
+        LIMIT 5;
+    `;
+
+    return database.executar(instrucaoSql);
+    
+}
+
 module.exports = {
 
     kpiTotalMatriculas,
@@ -522,6 +669,15 @@ module.exports = {
     buscarDadosKpiRegiaoArea,
     buscarDadosGraficoRegiaoArea,
     buscarDadosGraficoRegiaoIngressantes,
+
+    buscarKpiTendenciaMatriculas,
+    buscarKpiTendenciaCrescimentoMedio,
+    buscarTextoComparativoModalidade,
+    buscarTextoComparativoCurso, 
+
+    buscarDadosGraficoTendenciaGraduacao,
+    buscarDadosGraficoTendenciaModalidade,
+    buscarDadosGraficoTendenciaCursos,
     atualizarPerfil,
     atualizarRede,
     atualizarGenero,
