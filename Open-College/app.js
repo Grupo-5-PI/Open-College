@@ -20,7 +20,8 @@ var usuarioRouter = require("./src/routes/usuarios");
 var instituicaoRouter = require("./src/routes/instituicao")
 var dashPersoRouter = require('./src/routes/dashPerso');
 var dashboardRouter = require('./src/routes/dashboard');
-var dashboardRouter = require('./src/routes/dashboard');
+var painelAtualizacaoRouter = require('./src/routes/painelAtualizacao');
+
 
 
 
@@ -36,7 +37,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/instituicao", instituicaoRouter);
 app.use('/dashboard', dashPersoRouter);
 app.use('/dashboard', dashboardRouter);
-app.use('/dashboard', dashboardRouter);
+app.use('/painelAtualizacao', painelAtualizacaoRouter);
 
 
 app.listen(PORTA_APP, function () {

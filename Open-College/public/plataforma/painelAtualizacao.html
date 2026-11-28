@@ -28,9 +28,7 @@
 
                 <li class="nav-item">
                     <a href="dashGeral.html">
-                        <img src="../img/icones/iconHome.png"
-                             alt=""
-                             class="icone-menu-lateral">
+                        <img src="../img/icones/iconHome.png" alt="" class="icone-menu-lateral">
 
                         <span class="titulo-menu-lateral">
                             Dashboard
@@ -40,9 +38,7 @@
 
                 <li class="nav-item active">
                     <a href="painelAtualizacao.html">
-                        <img src="../img/icones/iconNotificacao.png"
-                             alt=""
-                             class="icone-menu-lateral">
+                        <img src="../img/icones/iconNotificacao.png" alt="" class="icone-menu-lateral">
 
                         <span class="titulo-menu-lateral">
                             Painel de Atualização
@@ -52,9 +48,7 @@
 
                 <li class="nav-item">
                     <a href="minha_instituicao.html">
-                        <img src="../img/icones/iconInstituicao.png"
-                             alt=""
-                             class="icone-menu-lateral">
+                        <img src="../img/icones/iconInstituicao.png" alt="" class="icone-menu-lateral">
 
                         <span class="titulo-menu-lateral">
                             Minha Instituição
@@ -64,9 +58,7 @@
 
                 <li class="nav-item">
                     <a href="#">
-                        <img src="../img/icones/iconPerfil.png"
-                             alt=""
-                             class="icone-menu-lateral">
+                        <img src="../img/icones/iconPerfil.png" alt="" class="icone-menu-lateral">
 
                         <span class="titulo-menu-lateral">
                             Minha conta
@@ -80,9 +72,7 @@
         <div class="sair">
             <div class="btn-sair">
                 <button type="button">
-                    <img src="../img/icones/iconSair.png"
-                         alt=""
-                         class="icone-menu-lateral">
+                    <img src="../img/icones/iconSair.png" alt="" class="icone-menu-lateral">
                     <span>Sair</span>
                 </button>
             </div>
@@ -176,95 +166,21 @@
 
                 <!-- NOTÍCIAS -->
 
-                <section class="sessao-noticias">
+                <section class="sessao-noticias" id="sessao-noticias">
 
-                    <!-- NOTÍCIA 1 -->
-
-                    <article class="card-noticia">
-
-                        <img
-                            src="../img/noticia1.png"
-                            alt="Profissionais trabalhando com tecnologia"
-                            class="imagem-noticia"
-                        >
-
-                        <div class="conteudo-noticia">
-
-                            <h2>
-                                Empregabilidade na área de TI cresce
-                                em 28% com o avanço das IAs
-                            </h2>
-
-                            <p>
-                                Dados do INEP indicam que pessoas com
-                                graduação na área de TI passam por
-                                menos dificuldades em encontrar emprego,
-                                principalmente na área de machine learning
-                                e dados.
-                            </p>
-
-                            <p>
-                                No ano de 2026 foi percebido um aumento
-                                de quase 30% no nível de empregabilidade
-                                em graduados em ciência da computação,
-                                20% para graduados em sistemas de informação
-                                e 12% para graduados em Análise e
-                                Desenvolvimento de Sistemas.
-                            </p>
-
-                            <div class="rodape-noticia">
-
-                                <a href="#">
-                                    Ver notícia completa
-                                </a>
-
-                                <div class="avaliacao-noticia">
-                                    <button type="button">
-                                        ▲ Gostei
-                                    </button>
-
-                                    <button type="button">
-                                        ▼ Não Gostei
-                                    </button>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- NOTÍCIA 2 -->
+                    <!-- NOTÍCIAS -->
 
                     <article class="card-noticia">
 
-                        <img
-                            src="../img/noticia2.png"
-                            alt="Tecnologia e inteligência artificial"
-                            class="imagem-noticia"
-                        >
 
                         <div class="conteudo-noticia">
-
-                            <h2>
-                                Inteligência artificial impulsiona
-                                novas oportunidades no mercado de TI
+                            <h2 class="titulo-noticia">
+                                <strong>
+                                    Carregando noticias...
+                                </strong>
                             </h2>
-
                             <p>
-                                O crescimento da inteligência artificial
-                                tem transformado o mercado de trabalho
-                                e aumentado a procura por profissionais
-                                especializados em tecnologia.
-                            </p>
-
-                            <p>
-                                Áreas como ciência de dados, desenvolvimento
-                                de software e segurança da informação
-                                apresentam novas oportunidades,
-                                influenciando a demanda por cursos
-                                de ensino superior.
+                                Buscando atualizações...
                             </p>
 
                             <div class="rodape-noticia">
@@ -460,23 +376,180 @@
 
     </main>
 
+    <script>
+
+        let foto = sessionStorage.FOTO_USUARIO;
+        let imgUsuario = document.getElementById('imgUsuario');
+        if (imgUsuario && foto) {
+            imgUsuario.src = `${foto}`;
+        }
+
+        let popup = document.getElementById('popup');
+        let btnAbrir = document.getElementById('btn-popup');
+        let btnFechar = document.getElementById('btn-fechar');
+
+        if (popup && btnAbrir && btnFechar) {
+            btnAbrir.addEventListener('click', () => popup.showModal());
+            btnFechar.addEventListener('click', () => popup.close());
+
+            // fecha ao clicar fora (no fundo escuro)
+            popup.addEventListener('click', (e) => {
+                if (e.target === popup) popup.close();
+            });
+        }
+
+
+        async function buscarNoticias() {
+            try {
+                let resposta = await fetch("/painelAtualizacao/buscarNoticias", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+
+                if (resposta.status === 204) return "204";
+                if (resposta.status === 500 || !resposta.ok) return "500";
+
+                return resposta
+            } catch (erro) {
+                console.error("Erro ao buscar notícias:", erro)
+                return null
+            }
+        }
+
+
+        async function carregarNoticias() {
+            let container = document.getElementById("sessao-noticias")
+            let retorno = await buscarNoticias()
+
+            if (retorno === "204") {
+                container.innerHTML = `
+                    <article class="card-noticia">
+                        <div class="conteudo-noticia">
+                            <h2 class="titulo-noticia">
+                                <strong>Nenhuma notícia encontrada</strong>
+                            </h2>
+                            <p>Ainda não há notícias cadastradas no banco de dados.</p>
+                        </div>
+                    </article>
+                `
+                return
+            }
+
+            if (retorno === "500" || retorno == null) {
+                container.innerHTML = `
+                    <article class="card-noticia">
+                        <div class="conteudo-noticia">
+                            <h2 class="titulo-noticia">
+                                <strong>Erro ao carregar notícias</strong>
+                            </h2>
+                            <p>Não foi possível conectar com o servidor.</p>
+                        </div>
+                    </article>
+                `
+                return
+            }
+
+
+            let dados = await retorno.json()
+            let htmlNoticias = ""
+
+            for (let i = 0; i < dados.length; i++) {
+                let noticia = dados[i]
+                let descricao = noticia.descricao || "Clique abaixo para ler a matéria completa."
+
+                htmlNoticias += `
+                    <article class="card-noticia">
+                        <div class="conteudo-noticia">
+                            <h2 class="titulo-noticia">
+                                <strong>${noticia.titulo}</strong>
+                            </h2>
+                            <p>${descricao}</p>
+                            <div class="rodape-noticia">
+                                <a href="${noticia.url}" target="_blank" rel="noopener noreferrer">
+                                    Ver notícia completa
+                                </a>
+                                <div class="avaliacao-noticia">
+                                    <button type="button" onclick="avaliarNoticia(${noticia.idNoticia}, 1)">▲ Gostei</button>
+                                    <button type="button" onclick="avaliarNoticia(${noticia.idNoticia}, -1)">▼ Não Gostei</button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                `
+            }
+
+            container.innerHTML = htmlNoticias
+
+        }
+
+
+        async function avaliarNoticia(idNoticia, delta) {
+            try {
+                let resposta = await fetch("/painelAtualizacao/avaliarNoticia", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        idNoticia: idNoticia,
+                        delta: delta
+                    })
+                });
+
+                if (resposta.ok) {
+                    await carregarNoticias();
+                } else {
+                    console.error("Erro ao avaliar notícia:", resposta.status);
+                }
+            } catch (erro) {
+                console.error("Erro na requisição de avaliação:", erro);
+            }
+        }
+
+        let formInteresses = document.querySelector(".sessao-interesses")
+        if (formInteresses) {
+            formInteresses.addEventListener("submit", async function (e) {
+                e.preventDefault()
+
+                let interesseSelecionado = document.getElementById("interesses").value
+                let idUsuario = sessionStorage.ID_USUARIO
+
+                if (!interesseSelecionado) return
+
+                try {
+                    let resposta = await fetch("/painelAtualizacao/atualizarInteresse", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            interesse: interesseSelecionado,
+                            idUsuario: idUsuario
+                        })
+                    });
+
+                    if (resposta.ok) {
+                        await carregarNoticias()
+                    } else {
+                        console.error("Erro ao atualizar interesse:", resposta.status)
+                    }
+                } catch (erro) {
+                    console.error("Erro na requisição de interesse:", erro)
+                }
+            });
+        }
+
+        async function carregarPainel() {
+            await Promise.all([
+                carregarNoticias()
+            ])
+        }
+
+        carregarPainel()
+    </script>
+
 </body>
 
-<script>
-
-    let foto = sessionStorage.FOTO_USUARIO;
-    imgUsuario.src = `${foto}`
-
-    const popup = document.getElementById('popup');
-    const btnAbrir = document.getElementById('btn-popup');
-    const btnFechar = document.getElementById('btn-fechar');
-
-    btnAbrir.addEventListener('click', () => popup.showModal());
-    btnFechar.addEventListener('click', () => popup.close());
-
-    // fecha ao clicar fora (no fundo escuro)
-    popup.addEventListener('click', (e) => {
-        if (e.target === popup) popup.close();
-    });
-</script>
 </html>

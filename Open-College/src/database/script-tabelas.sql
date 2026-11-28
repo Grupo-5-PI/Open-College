@@ -86,6 +86,7 @@ CREATE TABLE tblUsuario (
     nome VARCHAR(100) NOT NULL,
     cpf CHAR(11) UNIQUE NOT NULL,
     telefone VARCHAR(20),
+    interesses VARCHAR(50),
     email VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
     foto VARCHAR(255),
@@ -168,10 +169,8 @@ CREATE TABLE tblAtualizacao (
     idUsuario INT NOT NULL,
     idCurso INT,
     idAreaGeral INT,
-    tipo VARCHAR(50) NOT NULL,
     conteudo VARCHAR(500) NOT NULL,
     dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    lida BIT NOT NULL DEFAULT 0,
     CONSTRAINT FK_tblAtualizacao_tblUsuario 
 		FOREIGN KEY (idUsuario) 
 			REFERENCES tblUsuario (idUsuario),
@@ -263,6 +262,7 @@ CREATE TABLE tblNoticia (
     dtNoticia DATETIME,
     setor VARCHAR(50),
     nota INT,
+    descricao VARCHAR(500),
     fkUsuario INT,
     CONSTRAINT chUsuario
     FOREIGN KEY(fkUsuario)
@@ -281,6 +281,7 @@ CREATE TABLE tblDashboardPersonalizado (
         ON UPDATE CASCADE
 );
 
+    
 CREATE TABLE tblLog (
     idLog INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(10) NOT NULL,
@@ -289,6 +290,4 @@ CREATE TABLE tblLog (
     CONSTRAINT CK_tblLog_tipo
         CHECK (tipo IN ('INFO', 'AVISO', 'ERRO'))
 );
-
-
-
+  
