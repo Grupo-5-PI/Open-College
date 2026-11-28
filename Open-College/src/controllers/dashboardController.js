@@ -362,7 +362,7 @@ function buscarDadosGrafico(req, res){
                 res.status(500).send(erro);
             });
         } else if(grafico == "tabela_crescimento_cursos"){
-            dashboardModel.buscarDadosGraficoTendenciaCurso(ano, anoFim)
+            dashboardModel.buscarDadosGraficoTendenciaCursos(ano, anoFim)
             .then(function(resposta){
                 console.log(resposta);
                 if(resposta.length > 0){

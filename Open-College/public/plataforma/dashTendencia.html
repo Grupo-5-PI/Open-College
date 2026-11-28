@@ -164,16 +164,17 @@
 
             <section class="card-tendencia">
                     <h3>Cursos com maior crescimento</h3>
-                    <p id="subtitulo-tabela">Ranking recalculado para <span id="tbl_ano_inicio">anoInicio</span> - <span id="tbl_ano_fim">anoFim</span></p>
+                    <p id="subtitulo-tabela">Ranking calculado para: anoInicio - anoFim</p>
                     <table class="tabela-dashboard" id="tabela_crescimento_cursos">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th>Curso</th>
+                                <th id="header_matriculas">Matrículas anoInicio - anoFim</th>
+                                <th>Variação</th>
                             </tr>
+                            <span id="mensagem_cursos"></span>
                         </thead>
-                        <tbody>
+                        <tbody id="corpo_tabela">
                             <tr id="tbl_curso_1">
                                 <td>Análise e Desenvolvimento de Sistemas </td>
                                 <td>80mil - 140mil</td>
@@ -198,7 +199,7 @@
                                 <td>Direito</td>
                                 <td>120mil - 110mil</td>
                                 <td class="negativo">-10,9%</td>
-                            </tr>
+                            </tr> 
                         </tbody>
                     </table>
             </section>
@@ -596,11 +597,70 @@
         });
     }
 
+    async function carregarTabela(){
+
+        let corpoTabela = document.getElementById('corpo_tabela');
+        corpoTabela.innerHTML = '';
+        let subtitulo = document.getElementById('subtitulo-tabela');
+        let headerMatriculas = document.getElementById('header_matriculas');
+        let mensagem = document.getElementById('mensagem_cursos');
+
+        let anoInicio = document.getElementById("filtro-inicio").value;
+        let anoFim = document.getElementById("filtro-fim").value;
+
+        subtitulo.textContent = `Ranking calculado para: ${anoInicio} - ${anoFim}`;
+        headerMatriculas.textContent = `Matrículas ${anoInicio} - ${anoFim}`;
+
+
+        let dadosGrafico = await buscarDadosGrafico("Tendência", "tabela_crescimento_cursos");
+
+        if(dadosGrafico == '500'){
+            mensagem.textContent = 'Erro ao buscar dados do gráfico!';
+            return;
+        } else if(dadosGrafico == '204'){
+            mensagem.textContent = 'Nenhum dado disponível!';
+            return;
+        }
+        
+        mensagem.textContent = "";
+
+        dadosGrafico = await dadosGrafico.json();
+
+        for(let i = 0; i < dadosGrafico.length; i++){
+            let linha = dadosGrafico[i];
+            // let cor = linha.percentualCrescimento > 0 ? '#3cc027' : '#ff5555';
+            let classe;
+            let sinal;
+
+            if(linha.percentualCrescimento > 0){
+                classe = 'positivo'; 
+                sinal = '+';
+            } else{
+                classe = 'negativo';
+                sinal = '-';
+            }
+
+            let percentualCrescimento = Number(linha.percentualCrescimento)
+
+            corpoTabela.innerHTML += `
+                <tr>
+                    <td>${linha.nomeCurso}</td>
+                    <td>${linha.totalMatriculasAnoInicio} - ${linha.totalMatriculasAnoFim}</td>
+                    <td class="${classe}">${sinal}${percentualCrescimento.toFixed(1)}%</td>
+                </tr>
+            `;
+            
+            
+        }
+        
+    }
+
     window.onload = function() {
         carregarKpi();
         carregarTextoComparativo();
         carregarGraficoCrescimentoTipoDeGraduacao();
         carregarGraficoEvolucaoPorModalidade();
+        carregarTabela();
     };
 
 </script>

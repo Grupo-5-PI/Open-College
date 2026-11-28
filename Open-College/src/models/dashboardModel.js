@@ -437,9 +437,9 @@ function buscarDadosGraficoTendenciaCursos(anoInicio, anoFim){
     var instrucaoSql = `
         SELECT 
             cur.nome AS nomeCurso,
-            SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoInicio,
-            SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) AS totalMatriculasAnoFim,
-            ROUND((SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) - SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END)) / SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) * 100, 2) AS percentualCrescimento
+            IFNULL(SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoInicio,
+            IFNULL(SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END), 0) AS totalMatriculasAnoFim,
+            IFNULL(ROUND((SUM(CASE WHEN cen.ano = ${anoFim} THEN cen.qtdMatricula ELSE 0 END) - SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END)) / SUM(CASE WHEN cen.ano = ${anoInicio} THEN cen.qtdMatricula ELSE 0 END) * 100, 2), 0) AS percentualCrescimento
         FROM tblCenso cen
         JOIN tblCurso cur ON cur.idCurso = cen.idCurso
         WHERE cen.ano IN (${anoInicio}, ${anoFim})
